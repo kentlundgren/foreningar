@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="An accessible guide to how auditing and financial review works in a small association – for those without an accounting background." />
+  <title>How does auditing work? – A guide for everyone</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Extra styles specific to this page */
+    .step-list {
+      list-style: none;
+      padding: 0;
+      counter-reset: steps;
+    }
+    .step-list li {
+      counter-increment: steps;
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      align-items: flex-start;
+    }
+    .step-list li::before {
+      content: counter(steps);
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-top: 0.15rem;
+    }
+    .term-box {
+      background: var(--card);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .term-box strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 0.75rem;
+    }
+    .compare-table th,
+    .compare-table td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+    }
+    .compare-table th {
+      background: var(--accent);
+      color: #fff;
+    }
+    .compare-table tr:nth-child(even) td {
+      background: rgba(0,0,0,0.03);
+    }
+    @media (prefers-color-scheme: dark) {
+      .compare-table tr:nth-child(even) td {
+        background: rgba(255,255,255,0.04);
+      }
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .ai-note {
+      font-size: 0.82rem;
+      opacity: 0.65;
+      border-top: 1px solid var(--border);
+      margin-top: 2.5rem;
+      padding-top: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header>
+    <!-- Language switcher: back to Swedish version -->
+    <a class="lang-btn" href="generellt.html">🇸🇪 På svenska</a>
+    <h1>How does auditing work?</h1>
+    <p class="lead">
+      An accessible guide to what financial review of a small association involves –
+      for those who are not accountants but want to understand what an auditor actually does.
+    </p>
+  </header>
+
+  <main id="content">
+    <a class="back-link" href="index_eng.html">← Back to project overview</a>
+
+    <!-- ===== 1. What is auditing? ===== -->
+    <section aria-labelledby="what-heading">
+      <h2 id="what-heading">1. What is auditing?</h2>
+      <div class="card">
+        <p>
+          Imagine an association has a treasurer who manages all the money throughout the year.
+          The board and members trust the treasurer – but they cannot check every single receipt
+          and payment at the annual meeting. That is why an <strong>auditor</strong> is needed:
+          someone whose job it is to go through the accounts and answer the question:
+        </p>
+        <blockquote style="border-left:4px solid var(--accent); padding:0.6rem 1rem; margin:1rem 0; font-style:italic;">
+          "Does what the accounts show match reality – and do the figures give a fair picture
+          of the association's finances?"
+        </blockquote>
+        <p>
+          The auditor is not the association's adversary. On the contrary – a good audit strengthens
+          trust and gives the board, treasurer, and all members confidence that the finances are
+          properly managed.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 2. Lay auditor ===== -->
+    <section aria-labelledby="lay-heading">
+      <h2 id="lay-heading">2. Lay auditor – what is that?</h2>
+      <div class="card">
+        <p>
+          Large companies and listed corporations are legally required to engage a
+          <em>chartered auditor</em> – a trained professional. Smaller associations (non-profit
+          organisations, student nations, housing cooperatives) rarely have that obligation.
+          Instead, they elect a <strong>lay auditor</strong> at their general meeting.
+        </p>
+        <p>
+          A lay auditor does not need to be a trained accountant. However, it is important to
+          understand that the assignment is still a serious one: the lay auditor has a
+          <em>legal and moral responsibility</em> to review the accounts in a thorough and
+          independent manner.
+        </p>
+        <table class="compare-table">
+          <thead>
+            <tr><th>Lay auditor (small association)</th><th>Chartered auditor (large company)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Elected by the association's members</td><td>Engaged as a professional, regulated by law</td></tr>
+            <tr><td>No formal qualifications required</td><td>Chartered after several years of training</td></tr>
+            <tr><td>Usually works alone</td><td>Works in a team with specialists</td></tr>
+            <tr><td>Reviews on a "reasonableness" basis</td><td>Follows ISA (international auditing standards)</td></tr>
+            <tr><td>Writes a simpler audit report</td><td>Standardised audit report</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== 3. What is reviewed? ===== -->
+    <section aria-labelledby="reviewed-heading">
+      <h2 id="reviewed-heading">3. What is reviewed – step by step?</h2>
+      <div class="card">
+        <p>Here are the key checks carried out in a review:</p>
+        <ol class="step-list">
+          <li>
+            <div>
+              <strong>Bank reconciliation</strong><br />
+              The bank's own account statement is compared with what the accounts show for
+              the bank balance. They must match exactly. If they do not – why not?
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Result = Change in equity</strong><br />
+              If the association made a surplus of SEK 100,000, the association's
+              <em>equity</em> must have increased by exactly SEK 100,000. If this does not hold,
+              it is a warning sign of accounting errors or incorrect entries.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Continuity check (CB = OB next year)</strong><br />
+              What the accounts show the association owned on 31 December must be exactly
+              the same as the starting point on 1 January the following year. Otherwise, figures
+              may have been changed without a traceable record.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Sample check on vouchers</strong><br />
+              The auditor randomly selects a number of accounting vouchers – e.g. nos. A1, A22
+              and A452 – and checks that the physical receipt or invoice matches what has been
+              recorded. It is like checking that a shop's till balances against the till receipts.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Comparative analysis (year on year)</strong><br />
+              Revenue and costs are compared with the previous year. Did something increase
+              dramatically – and if so, why? Systematic deficits year after year may indicate
+              structural problems.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Receivables and liabilities</strong><br />
+              Does the association have outstanding money that has not come in for a long time?
+              A receivable that is never paid gives a misleading picture of the assets. The auditor
+              checks that such items are handled correctly.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Fraud check (using common sense)</strong><br />
+              Are there transactions without supporting documentation? Duplicate payments?
+              Unusual withdrawals? The auditor keeps their eyes open – not to suspect everyone,
+              but to protect the association and its elected representatives.
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== 4. Key terms ===== -->
+    <section aria-labelledby="terms-heading">
+      <h2 id="terms-heading">4. Key terms – explained in plain language</h2>
+      <div class="card">
+        <div class="term-box">
+          <strong>Income statement (Profit &amp; Loss account)</strong>
+          Shows what the association earned and spent during a year – and whether there was a
+          surplus or deficit. Think of it as a household's income and expenditure summarised
+          for one year.
+        </div>
+        <div class="term-box">
+          <strong>Balance sheet</strong>
+          A snapshot of what the association owns (assets), what it owes (liabilities)
+          and what is the association's equity – at a specific date, usually 31 December.
+        </div>
+        <div class="term-box">
+          <strong>Equity (net assets)</strong>
+          What "belongs to the association" once liabilities are deducted from assets. Increases
+          with a surplus, decreases with a deficit. Think of it as the association's
+          "accumulated savings and value".
+        </div>
+        <div class="term-box">
+          <strong>Voucher (accounting document)</strong>
+          Evidence that an economic event has taken place – e.g. an invoice, a receipt or a
+          bank statement. Each voucher is assigned a unique sequential number in the accounts.
+        </div>
+        <div class="term-box">
+          <strong>Opening balance (OB) and Closing balance (CB)</strong>
+          OB is the starting point (1 January), CB is the end point (31 December) for an account
+          during a year. The CB of one year must always equal the OB of the next year.
+        </div>
+        <div class="term-box">
+          <strong>Materiality</strong>
+          How large must a discrepancy be before it needs to be reported? In a small association
+          with a limited budget, an error of SEK 5,000 can be material. In a large listed company,
+          the same amount is negligible. The auditor judges what is "large enough to matter".
+        </div>
+        <div class="term-box">
+          <strong>Internal control</strong>
+          Procedures that prevent errors and irregularities – e.g. one person records transactions
+          and another approves payments. In small associations the same person often handles
+          everything, which increases the risk of mistakes (but not necessarily dishonesty).
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. Risks ===== -->
+    <section aria-labelledby="risk-heading">
+      <h2 id="risk-heading">5. What should the auditor pay particular attention to in a small association?</h2>
+      <div class="card">
+        <p>
+          A small association often does not have a team of financial professionals – the person
+          responsible for finances may change every year, and procedures may be lacking. The auditor
+          should ask themselves:
+        </p>
+        <ul>
+          <li>Has the financial officer changed since the last audit?
+            <em>(Risk: knowledge and context may have been lost in the handover.)</em>
+          </li>
+          <li>Did the finances change significantly compared with last year? <em>(Requires an explanation.)</em></li>
+          <li>Does a single person handle the <em>entire</em> financial flow? <em>(Increased risk of errors.)</em></li>
+          <li>Is the accounting system consistent and well-structured?</li>
+          <li>Are there old receivables that are unlikely ever to be paid?</li>
+        </ul>
+        <div class="note" role="note">
+          If the financial officer changes every year, the auditor should request documentation for
+          <strong>at least two years back</strong> to verify that the figures are consistent.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 6. Audit report ===== -->
+    <section aria-labelledby="report-heading">
+      <h2 id="report-heading">6. What is an audit report?</h2>
+      <div class="card">
+        <p>
+          When the review is complete, the auditor writes an <strong>audit report</strong> which is
+          submitted to the general meeting. It normally contains:
+        </p>
+        <ol>
+          <li>To whom the report is addressed (e.g. "To the general meeting of Kalmar Nation")</li>
+          <li>Which financial year has been reviewed</li>
+          <li>What has been reviewed (accounts and board management)</li>
+          <li>How the review was conducted (brief description)</li>
+          <li>Any observations or findings</li>
+          <li>
+            Recommendation for or against granting <strong>discharge from liability</strong>
+            to the board – i.e. whether the auditor recommends the meeting to "approve" the
+            board's work during the past year
+          </li>
+        </ol>
+        <p>
+          A lay auditor may write the report in a simpler and more personal style
+          than a chartered auditor, but should still cover these points.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 7. AI in the audit process ===== -->
+    <section aria-labelledby="ai-heading">
+      <h2 id="ai-heading">7. How can AI assist in the audit process?</h2>
+      <div class="card">
+        <p>
+          In the audit of Kalmar Nation 2025, the AI tool <strong>Claude</strong> (via Claude Cowork
+          and Cursor) has been used as an active support tool. Not to replace the auditor's
+          judgement – but to systematise, document and speed up the work.
+        </p>
+        <p>Practical examples:</p>
+        <ul>
+          <li>AI read the balance sheet and income statement reports and checked that the figures were consistent.</li>
+          <li>AI created structured review notes in Word format with references.</li>
+          <li>AI identified discrepancies (e.g. the inventory adjustment of SEK 137,000) and formulated
+            specific questions for the financial officer – in both Swedish and English.</li>
+        </ul>
+        <p>
+          The important thing to remember is that AI is sometimes wrong – approximately 4–5 per cent
+          of what is generated may need to be corrected. This keeps the auditor active and responsible.
+          <strong>The auditor always owns the final result.</strong>
+        </p>
+        <p>Read more in the blog post (in Swedish):
+          <a href="blogg_claude_cowork_revision.html">AI som kollektivtrafik – hur jag använde Claude Cowork för att revidera en studentnation</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Discreet note about CLAUDE.md -->
+    <p class="ai-note">
+      The technical instruction that governs how the AI assistant acts as auditor is found in
+      <a href="CLAUDE.md">CLAUDE.md</a>. That file is written for the AI model (more technical and
+      detailed) and is not primarily intended as accessible reading for non-accountants.
+    </p>
+
+  </main>
+
+  <footer>
+    <p>Kalmar Nation · audit · <span id="footer-year"></span> · <a href="index_eng.html">Project overview</a></p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

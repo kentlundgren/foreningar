@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="En lättläst guide om hur revision och ekonomisk granskning fungerar i en liten förening – för dig som inte är ekonom." />
+  <title>Hur fungerar revision? – En guide för alla</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Extra stilar specifika för denna sida */
+    .step-list {
+      list-style: none;
+      padding: 0;
+      counter-reset: steps;
+    }
+    .step-list li {
+      counter-increment: steps;
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      align-items: flex-start;
+    }
+    .step-list li::before {
+      content: counter(steps);
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-top: 0.15rem;
+    }
+    .term-box {
+      background: var(--card);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .term-box strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 0.75rem;
+    }
+    .compare-table th,
+    .compare-table td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+    }
+    .compare-table th {
+      background: var(--accent);
+      color: #fff;
+    }
+    .compare-table tr:nth-child(even) td {
+      background: rgba(0,0,0,0.03);
+    }
+    @media (prefers-color-scheme: dark) {
+      .compare-table tr:nth-child(even) td {
+        background: rgba(255,255,255,0.04);
+      }
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .ai-note {
+      font-size: 0.82rem;
+      opacity: 0.65;
+      border-top: 1px solid var(--border);
+      margin-top: 2.5rem;
+      padding-top: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#innehall">Hoppa till innehåll</a>
+
+  <header>
+    <!-- Uppdatering: språkväxlare till engelska versionen, diskret knapp uppe till höger -->
+    <a class="lang-btn" href="generellt_eng.html">🇬🇧 In English</a>
+    <h1>Hur fungerar revision?</h1>
+    <p class="lead">
+      En lättläst guide om vad ekonomisk granskning av en liten förening innebär –
+      för dig som inte är ekonom men vill förstå vad en revisor faktiskt gör.
+    </p>
+  </header>
+
+  <main id="innehall">
+    <a class="back-link" href="index.html">← Tillbaka till projektöversikten</a>
+
+    <!-- ===== 1. Vad är revision? ===== -->
+    <section aria-labelledby="vad-heading">
+      <h2 id="vad-heading">1. Vad är revision?</h2>
+      <div class="card">
+        <p>
+          Tänk dig att en förening har en kassör som sköter alla pengar under ett år. Styrelsen och
+          medlemmarna litar på kassören – men de kan inte kontrollera varenda kvitto och betalning
+          på stämman. Då behövs en <strong>revisor</strong>: en person vars uppgift är att gå igenom
+          räkenskaperna och svara på frågan:
+        </p>
+        <blockquote style="border-left:4px solid var(--accent); padding:0.6rem 1rem; margin:1rem 0; font-style:italic;">
+          "Stämmer det som bokföringen visar med verkligheten – och ger siffrorna en rättvisande
+          bild av föreningens ekonomi?"
+        </blockquote>
+        <p>
+          Revisorn är alltså inte föreningens fiende. Tvärtom – en bra revision stärker förtroendet
+          och ger styrelsen, kassören och alla medlemmar trygghet i att ekonomin är rätt skött.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 2. Lekmannarevisor ===== -->
+    <section aria-labelledby="lekman-heading">
+      <h2 id="lekman-heading">2. Lekmannarevisor – vad är det?</h2>
+      <div class="card">
+        <p>
+          Stora företag och börsbolag är skyldiga enligt lag att anlita en <em>auktoriserad revisor</em>
+          – en utbildad revisorsproffs. Mindre föreningar (ideella föreningar, studentnationer,
+          bostadsrättsföreningar) har sällan den skyldigheten. De väljer i stället en
+          <strong>lekmannarevisor</strong> på sin stämma.
+        </p>
+        <p>
+          En lekmannarevisor behöver inte vara utbildad ekonom. Men det är viktigt att förstå att
+          uppdraget ändå är seriöst: lekmannarevisorn har ett <em>juridiskt och moraliskt ansvar</em>
+          att granska på ett noggrant och oberoende sätt.
+        </p>
+        <table class="compare-table">
+          <thead>
+            <tr><th>Lekmannarevisor (liten förening)</th><th>Auktoriserad revisor (stort bolag)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Vald av föreningens medlemmar</td><td>Anlitad som proffs, reglerat i lag</td></tr>
+            <tr><td>Behöver inte ha formell utbildning</td><td>Auktoriserad efter flerårig utbildning</td></tr>
+            <tr><td>Arbetar ofta ensam</td><td>Arbetar i team med specialister</td></tr>
+            <tr><td>Granskar "rimlighetsmässigt"</td><td>Följer ISA (internationella standarder)</td></tr>
+            <tr><td>Skriver enklare revisionsberättelse</td><td>Standardiserad revisionsberättelse</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== 3. Vad granskas? ===== -->
+    <section aria-labelledby="vad-granskas-heading">
+      <h2 id="vad-granskas-heading">3. Vad granskas – steg för steg?</h2>
+      <div class="card">
+        <p>Här är de viktigaste kontrollerna som görs i en granskning:</p>
+        <ol class="step-list">
+          <li>
+            <div>
+              <strong>Bankavstämning</strong><br />
+              Bankens eget kontoutdrag jämförs med vad bokföringen visar för banksaldot.
+              De ska stämma exakt. Om de inte gör det – varför inte?
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Resultat = Förändring av eget kapital</strong><br />
+              Om föreningen gick med överskott på 100 000 kr ska föreningens <em>egna kapital</em>
+              ha ökat med exakt 100 000 kr. Stämmer inte detta är det ett varningstecken på
+              bokföringsfel eller felaktiga poster.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Kontinuitetskontroll (UB = IB nästa år)</strong><br />
+              Vad bokföringen visar att föreningen ägde den 31 december ska vara exakt
+              detsamma som startpunkten 1 januari nästa år. Annars kan siffror ha ändrats
+              utan spårbarhet.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Stickprov på verifikationer</strong><br />
+              Revisorn väljer slumpmässigt ett antal bokföringsverifikationer – t.ex. nr A1, A22 och
+              A452 – och kontrollerar att det fysiska kvittot eller fakturan stämmer med vad som
+              bokförts. Det är som att kontrollera att en butikskassa stämmer mot kassakvitton.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Jämförelseanalys (år för år)</strong><br />
+              Intäkter och kostnader jämförs med föregående år. Ökade något dramatiskt – och
+              i så fall varför? Systematiska underskott år efter år kan tyda på strukturella problem.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Fordringar och skulder</strong><br />
+              Har föreningen pengar utestående som inte kommit in på länge? En fordran som
+              aldrig betalas ger en missvisande bild av tillgångarna. Revisorn kontrollerar att
+              sådana poster hanteras rätt.
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Bedrägerikontroll (med sunt förnuft)</strong><br />
+              Finns transaktioner utan underlag? Dubbla utbetalningar? Ovanliga uttag?
+              Revisorn ska ha ögonen öppna – inte för att misstänka alla, utan för att skydda
+              föreningen och dess förtroendevalda.
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== 4. Begrepp ===== -->
+    <section aria-labelledby="begrepp-heading">
+      <h2 id="begrepp-heading">4. Viktiga begrepp – förklarat på klartext</h2>
+      <div class="card">
+        <div class="term-box">
+          <strong>Resultaträkning</strong>
+          Visar vad föreningen tjänade in och spenderade under ett år – och om det blev
+          överskott eller underskott. Tänk dig ett hushålls inkomster och utgifter sammanfattade
+          på ett år.
+        </div>
+        <div class="term-box">
+          <strong>Balansräkning</strong>
+          En ögonblicksbild av vad föreningen äger (tillgångar), vad den är skyldig (skulder)
+          och vad som är föreningens eget kapital – vid ett visst datum, vanligen 31 december.
+        </div>
+        <div class="term-box">
+          <strong>Eget kapital</strong>
+          Det som "tillhör föreningen" när skulderna räknats bort från tillgångarna. Ökar vid
+          överskott, minskar vid underskott. Tänk: föreningens "sparade pengar och värde".
+        </div>
+        <div class="term-box">
+          <strong>Verifikation</strong>
+          Ett bevis på att en ekonomisk händelse ägt rum – t.ex. en faktura, ett kvitto eller ett
+          bankkontoutdrag. Varje verifikation får ett unikt löpnummer i bokföringen.
+        </div>
+        <div class="term-box">
+          <strong>Ingående balans (IB) och Utgående balans (UB)</strong>
+          IB är startpunkten (1 januari), UB är slutpunkten (31 december) för ett konto
+          under ett år. UB ett år ska alltid vara samma som IB nästa år.
+        </div>
+        <div class="term-box">
+          <strong>Väsentlighet</strong>
+          Hur stor måste en avvikelse vara för att behöva rapporteras? I en liten förening med
+          liten budget kan ett fel på 5 000 kr vara väsentligt. I ett stort börsbolag är samma
+          belopp försumbart. Revisorn bedömer vad som är "tillräckligt stort för att spela roll".
+        </div>
+        <div class="term-box">
+          <strong>Intern kontroll</strong>
+          Rutiner som förhindrar fel och oegentligheter – t.ex. att en person bokför och en
+          annan godkänner utbetalningar. I små föreningar sköter ofta samma person allt,
+          vilket ökar risken för misstag (men inte nödvändigtvis för ohederlighet).
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. Risker ===== -->
+    <section aria-labelledby="risk-heading">
+      <h2 id="risk-heading">5. Vad ska revisorn tänka extra på i en liten förening?</h2>
+      <div class="card">
+        <p>
+          En liten förening har ofta inte ett team av ekonomiproffs – ekonomiansvarig kanske
+          byts varje år, och rutiner kan saknas. Revisorn bör ställa sig dessa frågor:
+        </p>
+        <ul>
+          <li>Har den ekonomiansvarige bytts sedan förra revisionen?
+            <em>(Risk: kunskap och sammanhang kan ha gått förlorat vid överlämningen.)</em>
+          </li>
+          <li>Förändrades ekonomin kraftigt jämfört med förra året? <em>(Kräver en förklaring.)</em></li>
+          <li>Hanterar en enda person <em>hela</em> ekonomiflödet? <em>(Ökad risk för misstag.)</em></li>
+          <li>Är bokföringssystemet konsekvent och välstrukturerat?</li>
+          <li>Finns gamla fordringar som troligen aldrig betalas?</li>
+        </ul>
+        <div class="note" role="note">
+          Om ekonomiansvarig byts varje år bör revisorn begära underlag för
+          <strong>minst två år bakåt</strong> för att kunna kontrollera att siffrorna hänger ihop.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 6. Revisionsberättelse ===== -->
+    <section aria-labelledby="berattelse-heading">
+      <h2 id="berattelse-heading">6. Vad är en revisionsberättelse?</h2>
+      <div class="card">
+        <p>
+          När granskningen är klar skriver revisorn en <strong>revisionsberättelse</strong> som
+          lämnas till föreningsstämman. Den innehåller normalt:
+        </p>
+        <ol>
+          <li>Till vem berättelsen riktas (t.ex. "Till föreningsstämman i Kalmar Nation")</li>
+          <li>Vilket räkenskapsår som granskats</li>
+          <li>Vad som har granskats (räkenskaper och styrelsens förvaltning)</li>
+          <li>Hur granskningen genomfördes (kort beskrivning)</li>
+          <li>Eventuella anmärkningar eller iakttagelser</li>
+          <li>
+            Tillstyrkan eller avstyrkan av <strong>ansvarsfrihet</strong> för styrelsen –
+            dvs. om revisorn rekommenderar stämman att "godkänna" styrelsens arbete
+            under det gångna året
+          </li>
+        </ol>
+        <p>
+          En lekmannarevisor kan skriva berättelsen på ett enklare och mer personligt sätt
+          än en auktoriserad revisor, men ska ändå täcka dessa punkter.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 7. AI i revisionsarbetet ===== -->
+    <section aria-labelledby="ai-heading">
+      <h2 id="ai-heading">7. Hur kan AI hjälpa till i revisionsarbetet?</h2>
+      <div class="card">
+        <p>
+          I revisionen av Kalmar Nation 2025 har AI-verktyget <strong>Claude</strong> (via Claude Cowork
+          och Cursor) använts som ett aktivt stöd. Inte för att ersätta revisorns omdöme –
+          utan för att systematisera, dokumentera och snabba upp arbetet.
+        </p>
+        <p>Praktiska exempel:</p>
+        <ul>
+          <li>AI läste in balans- och resultatrapporter och kontrollerade att siffrorna hängde ihop.</li>
+          <li>AI skapade strukturerade revisionsanteckningar i Word-format med källhänvisningar.</li>
+          <li>AI identifierade avvikelser (t.ex. lagerkorrigering på 137 000 kr) och formulerade
+            konkreta frågor till ekonomiansvarig – på både svenska och engelska.</li>
+        </ul>
+        <p>
+          Det viktiga att komma ihåg är att AI ibland har fel – ungefär 4–5 procent av det som
+          genereras kan behöva korrigeras. Det håller revisorn aktiv och ansvarig.
+          <strong>Revisorn är alltid den som äger slutresultatet.</strong>
+        </p>
+        <p>Läs mer i blogginlägget:
+          <a href="blogg_claude_cowork_revision.html">AI som kollektivtrafik – hur jag använde Claude Cowork för att revidera en studentnation</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Diskret notering om CLAUDE.md -->
+    <p class="ai-note">
+      Den tekniska instruktionen som styr hur AI-assistenten ska agera som revisor finns i
+      <a href="CLAUDE.md">CLAUDE.md</a>. Den filen är skriven för AI-modellen (mer teknisk och detaljerad)
+      och inte i första hand avsedd som lättläst text för icke-ekonomer.
+    </p>
+
+  </main>
+
+  <footer>
+    <p>Kalmar Nation · revision · <span id="footer-year"></span> · <a href="index.html">Projektöversikt</a></p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

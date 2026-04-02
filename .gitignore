@@ -1,0 +1,8 @@
+# Ignorera övriga projektmappar i ClaudeCowork – endast KalmarNation versionshanteras här
+LNF/
+SK/
+
+# Ignorera lokala systemfiler
+Thumbs.db
+.DS_Store
+desktop.ini
