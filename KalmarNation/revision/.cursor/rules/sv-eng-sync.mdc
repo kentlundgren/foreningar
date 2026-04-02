@@ -1,0 +1,34 @@
+---
+description: Svenska och engelska versioner av HTML-sidor ska alltid hållas synkade i innehåll och struktur
+alwaysApply: true
+---
+
+# Svenska ↔ Engelska versioner ska alltid vara synkade
+
+## Regel
+Varje ändring i en svensk HTML-fil **ska alltid speglas** i motsvarande engelsk fil, och vice versa.
+
+## Filpar i detta projekt
+
+| Svenska        | Engelska           |
+|----------------|--------------------|
+| index.html     | index_eng.html     |
+| generellt.html | generellt_eng.html |
+
+## Vad som ska synkas
+- Avsnitt som läggs till eller tas bort
+- Ändringar i struktur och layout
+- Uppdateringar av faktainnehåll (siffror, datum, status)
+- Nya sektioner, tabeller, listor
+- Ändringar i footer, header, navigation
+
+## Vad som INTE ska synkas
+- Själva texten (den ska översättas, inte kopieras)
+- Språkspecifika attribut: `lang="sv"` vs `lang="en"`
+- Titlar och meta-beskrivningar (ska vara på resp. språk)
+- Interna länktexter (t.ex. "← Tillbaka" vs "← Back")
+
+## Arbetsflöde
+1. Ändring görs i t.ex. generellt.html
+2. Motsvarande ändring görs omedelbart i generellt_eng.html
+3. Båda filerna committas i samma commit
