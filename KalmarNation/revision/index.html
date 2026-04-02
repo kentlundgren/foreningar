@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Översikt: revision av Kalmar Nations bokslut 2025. Instruktioner och arbetsflöde Cursor och Claude Cowork." />
+  <title>Kalmar Nation – revision (Lund)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#innehall">Hoppa till innehåll</a>
+
+  <header>
+    <h1>Kalmar Nation – revision</h1>
+    <p class="lead">
+      Revidering av <strong>Kalmar Nations</strong> bokslut för <strong>2025</strong> i Lund.
+      AI-assistenter ska alltid utgå från <a href="CLAUDE.md"><code>CLAUDE.md</code></a> och fråga om något är oklart.
+    </p>
+  </header>
+
+  <main id="innehall">
+    <section aria-labelledby="syfte-heading">
+      <h2 id="syfte-heading">Syfte</h2>
+      <div class="card">
+        <p>
+          Ekonomisk granskning av en mindre ideell förening (lekmannarevision): kontrollera underlag,
+          samband mellan resultat och eget kapital, bank, stickprov m.m. enligt instruktionen i
+          <strong>CLAUDE.md</strong> (version 2.0).
+        </p>
+      </div>
+    </section>
+
+    <section aria-labelledby="filer-heading">
+      <h2 id="filer-heading">Centrala filer i projektet</h2>
+      <div class="card">
+        <ul>
+          <li><a href="CLAUDE.md"><code>CLAUDE.md</code></a> – revisionsinstruktion (primär referens för AI)</li>
+          <li><code>CLAUDE.md_old</code> – äldre version</li>
+          <li>Mappar <code>2025/</code>, <code>2026/</code>, <code>1990/</code> – rapporter och PDF-underlag</li>
+          <li><code>Revisionsanteckningar_*.docx</code> / <code>.pdf</code></li>
+          <li><code>Inledande_kommentar_KalmarNation_2025*.docx</code></li>
+          <li><a href="blogg_claude_cowork_revision.html">blogg_claude_cowork_revision.html</a> – om AI-samarbete</li>
+        </ul>
+      </div>
+    </section>
+
+    <section aria-labelledby="verktyg-heading">
+      <h2 id="verktyg-heading">Cursor och Claude Cowork</h2>
+      <div class="card">
+        <p>
+          Projektet drivs även i <strong>Claude Cowork</strong> (projektmiljö med fokus på samma uppdrag:
+          läs <code>CLAUDE.md</code>, revidera bokslut 2025, fråga vid oklarhet). I Cowork kan motsvarande filer ligga under
+          t.ex. <code>OneDrive\AI\Claude\ClaudeCowork\KalmarNation\revision</code>.
+        </p>
+        <p><strong>Tänk på om du använder två verktyg mot samma filer:</strong></p>
+        <ul>
+          <li>Sista sparning vinner – risk att ändringar från det ena spåret skrivs över.</li>
+          <li>OneDrive kan ge filkonflikter; låt synk slutföras innan du byter dator eller program.</li>
+          <li>Öppna inte samma dokument för redigering på två håll samtidigt utan rutin (spara, stäng, byt).</li>
+          <li>Använd <strong>Git</strong> (commit/push) för viktiga versioner så du kan jämföra och återställa.</li>
+        </ul>
+        <div class="note" role="note">
+          <strong>Otydligheter?</strong> Bestäm vilken katalog som är huvudarbetskopia (SSD kontra OneDrive),
+          och om känsliga PDF ska finnas i publikt GitHub-repo.
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="github-heading">
+      <h2 id="github-heading">GitHub</h2>
+      <div class="card">
+        <p>
+          Kod och dokument kan ligga i repot
+          <a href="https://github.com/kentlundgren/foreningar/tree/main/KalmarNation/revision">foreningar / KalmarNation / revision</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Exempel på indatafält med gul bakgrund (enligt önskemål för tydlig markering) -->
+    <section aria-labelledby="sok-heading">
+      <h2 id="sok-heading">Snabbanteckning (lokal)</h2>
+      <div class="card">
+        <label for="anteckning">Privat anteckning i webbläsaren (sparas inte automatiskt):</label>
+        <p style="margin-top: 0.5rem;">
+          <textarea id="anteckning" name="anteckning" rows="3" cols="40" placeholder="T.ex. att göra nästa session…"></textarea>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Kalmar Nation · revision · <span id="footer-year"></span></p>
+    <p>Se även <a href="README.md">README.md</a> för samma information i Markdown.</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

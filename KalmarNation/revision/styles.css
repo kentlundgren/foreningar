@@ -1,0 +1,159 @@
+/* Kalmar Nation revision – översiktssida */
+
+:root {
+  color-scheme: light dark;
+  --bg: #f6f4ef;
+  --fg: #1a1a1a;
+  --accent: #2c5282;
+  --card: #fff;
+  --border: #c4b8a8;
+  --note: #fff9e6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1b18;
+    --fg: #f0ebe3;
+    --accent: #90cdf4;
+    --card: #2d2c28;
+    --border: #5c574e;
+    --note: #3d3628;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.55;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Layout */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 0.5rem;
+  top: 0.5rem;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  z-index: 10;
+}
+
+header {
+  padding: 1.75rem 1.25rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+
+header h1 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  font-weight: 700;
+}
+
+header .lead {
+  margin: 0;
+  max-width: 42rem;
+  opacity: 0.9;
+}
+
+main {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+  color: var(--accent);
+}
+
+/* Kort / listor */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1rem;
+}
+
+.card ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.card li {
+  margin-bottom: 0.35rem;
+}
+
+/* Gul bakgrund för indatafält (tydlig markering) – används om formulär läggs till */
+input[type="text"],
+input[type="search"],
+textarea,
+select {
+  background-color: #fff9c4;
+  color: #1a1a1a;
+  border: 1px solid #c9b84a;
+  border-radius: 4px;
+  padding: 0.45rem 0.6rem;
+  width: 100%;
+  max-width: 24rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  input[type="text"],
+  input[type="search"],
+  textarea,
+  select {
+    background-color: #4a4428;
+    color: #faf6e8;
+    border-color: #8a8040;
+  }
+}
+
+.note {
+  background: var(--note);
+  border-left: 4px solid #c9a227;
+  padding: 0.85rem 1rem;
+  border-radius: 0 6px 6px 0;
+  margin-top: 1rem;
+}
+
+footer {
+  padding: 1rem 1.25rem 2rem;
+  font-size: 0.875rem;
+  opacity: 0.75;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  text-decoration: underline;
+}
