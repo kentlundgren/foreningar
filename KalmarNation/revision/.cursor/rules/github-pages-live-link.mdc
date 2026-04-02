@@ -1,0 +1,44 @@
+---
+description: Konvention för länk mellan GitHub Pages (live) och GitHub-repot (dashboard) i KalmarNation-projektet
+alwaysApply: true
+---
+
+# GitHub Pages ↔ GitHub repo – alltid länkade
+
+## Regel
+Varje `index.html`-fil (och motsvarande engelska version) som publiceras live via GitHub Pages **ska alltid ha en diskret länk** i nedre vänstra hörnet till GitHub-repot. README.md ska ha en tydlig länk tillbaka till live-sidan.
+
+## Live-URL (GitHub Pages)
+```
+https://kentlundgren.github.io/foreningar/KalmarNation/revision/index.html
+```
+
+## Repo-URL (GitHub Dashboard)
+```
+https://github.com/kentlundgren/foreningar/tree/main/KalmarNation/revision
+```
+
+## Implementering i HTML
+Använd klassen `.github-link` (definierad i styles.css) – en liten fast knapp nere till vänster:
+
+```html
+<!-- Diskret länk till GitHub-repot (nedre vänstra hörnet) -->
+<a class="github-link"
+   href="https://github.com/kentlundgren/foreningar/tree/main/KalmarNation/revision"
+   target="_blank" rel="noopener"
+   aria-label="Visa källkod på GitHub">
+  GitHub
+</a>
+```
+
+## Implementering i README.md
+Lägg alltid till en rad i README.md:
+
+```markdown
+## Live-sida (GitHub Pages)
+[Visa live](https://kentlundgren.github.io/foreningar/KalmarNation/revision/index.html)
+```
+
+## Gäller för
+- `index.html`, `index_eng.html` och framtida index-filer i detta projekt
+- README.md ska alltid hålla live-URL uppdaterad

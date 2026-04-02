@@ -1,5 +1,14 @@
 # Kalmar Nation – revision (Lund)
 
+## Live-sida (GitHub Pages)
+
+| Sida | URL |
+|------|-----|
+| Projektöversikt (svenska) | [index.html – live](https://kentlundgren.github.io/foreningar/KalmarNation/revision/index.html) |
+| Projektöversikt (engelska) | [index_eng.html – live](https://kentlundgren.github.io/foreningar/KalmarNation/revision/index_eng.html) |
+| Guide: revision (svenska) | [generellt.html – live](https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt.html) |
+| Guide: revision (engelska) | [generellt_eng.html – live](https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt_eng.html) |
+
 Projekt för **revidering av Kalmar Nations bokslut för 2025** (lekmannarevision / ekonomisk granskning av mindre ideell förening).
 
 ## Syfte
