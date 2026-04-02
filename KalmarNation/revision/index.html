@@ -3,94 +3,312 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Översikt: revision av Kalmar Nations bokslut 2025. Instruktioner och arbetsflöde Cursor och Claude Cowork." />
-  <title>Kalmar Nation – revision (Lund)</title>
+  <meta name="description" content="Revision av Kalmar Nations bokslut 2025 – projektöversikt, granskning, anteckningar." />
+  <title>Kalmar Nation – revision 2025</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Statusmärken */
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 99px;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+    }
+    .badge-ok   { background: #c6f6d5; color: #22543d; }
+    .badge-warn { background: #fefcbf; color: #744210; }
+    .badge-open { background: #bee3f8; color: #2a4365; }
+    @media (prefers-color-scheme: dark) {
+      .badge-ok   { background: #276749; color: #c6f6d5; }
+      .badge-warn { background: #7b4710; color: #fefcbf; }
+      .badge-open { background: #2b4c7e; color: #bee3f8; }
+    }
+    /* Liten sekundär text */
+    .meta {
+      font-size: 0.82rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    /* Diskret fotnot */
+    .ai-note {
+      font-size: 0.82rem;
+      opacity: 0.6;
+      border-top: 1px solid var(--border);
+      margin-top: 2.5rem;
+      padding-top: 0.75rem;
+    }
+    /* Sammanfattningstabell */
+    .sum-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 0.75rem;
+    }
+    .sum-table th,
+    .sum-table td {
+      text-align: left;
+      padding: 0.45rem 0.7rem;
+      border: 1px solid var(--border);
+    }
+    .sum-table th {
+      background: var(--accent);
+      color: #fff;
+    }
+    .sum-table tr:nth-child(even) td {
+      background: rgba(0,0,0,0.03);
+    }
+    @media (prefers-color-scheme: dark) {
+      .sum-table tr:nth-child(even) td {
+        background: rgba(255,255,255,0.04);
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#innehall">Hoppa till innehåll</a>
 
   <header>
-    <h1>Kalmar Nation – revision</h1>
+    <h1>Kalmar Nation – revision 2025</h1>
     <p class="lead">
-      Revidering av <strong>Kalmar Nations</strong> bokslut för <strong>2025</strong> i Lund.
-      AI-assistenter ska alltid utgå från <a href="CLAUDE.md"><code>CLAUDE.md</code></a> och fråga om något är oklart.
+      Ekonomisk granskning (lekmannarevision) av <strong>Kalmar Nations</strong> bokslut
+      för räkenskapsåret <strong>2025</strong>, Lund. Revisionen pågår; fullständig
+      revisionsberättelse upprättas när granskningen är avslutad.
     </p>
   </header>
 
   <main id="innehall">
-    <section aria-labelledby="syfte-heading">
-      <h2 id="syfte-heading">Syfte</h2>
+
+    <!-- ===== 1. Om granskningen ===== -->
+    <section aria-labelledby="om-heading">
+      <h2 id="om-heading">Om granskningen</h2>
       <div class="card">
         <p>
-          Ekonomisk granskning av en mindre ideell förening (lekmannarevision): kontrollera underlag,
-          samband mellan resultat och eget kapital, bank, stickprov m.m. enligt instruktionen i
-          <strong>CLAUDE.md</strong> (version 2.0).
+          En ekonomisk granskning kontrollerar att föreningens räkenskaper ger en rättvisande bild
+          av ekonomin – att pengar redovisats rätt, att banksaldon stämmer och att inga orimliga
+          avvikelser finns. Revisorn granskar, förklarar och identifierar det som behöver åtgärdas.
+        </p>
+        <p>
+          <a href="generellt.html">Läs en lättläst guide om hur revision går till →</a>
+        </p>
+        <p>
+          Granskningen av Kalmar Nation 2025 görs av Kent Lundgren som lekmannarevisor.
+          AI-verktyget Claude används som stöd för systematik och dokumentation.
         </p>
       </div>
     </section>
 
-    <section aria-labelledby="filer-heading">
-      <h2 id="filer-heading">Centrala filer i projektet</h2>
+    <!-- ===== 2. Status granskning ===== -->
+    <section aria-labelledby="status-heading">
+      <h2 id="status-heading">Granskningsstatus</h2>
+      <div class="card">
+        <table class="sum-table" aria-label="Status per granskningsmoment">
+          <thead>
+            <tr><th>Granskningsmoment</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bankavstämning SEB per 2025-12-31</td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>Resultat = förändring av eget kapital</td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>Balansräkningen balanserar</td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>Kontinuitet UB 2023 = IB 2024</td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>Kontinuitet UB 2024 = IB 2025</td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>Kontinuitet UB 2025 = IB 2026 (varulager)</td>
+              <td><span class="badge badge-warn">Avvikelse – utreds</span></td>
+            </tr>
+            <tr>
+              <td>Januarirapporten 2026 – korrekta IB-värden</td>
+              <td><span class="badge badge-warn">Väntar på åtgärd</span></td>
+            </tr>
+            <tr>
+              <td>Stickprov verifikationer (A1, A22, A452)</td>
+              <td><span class="badge badge-open">Inväntar underlag</span></td>
+            </tr>
+            <tr>
+              <td>Granskning konto 5010 (hyra)</td>
+              <td><span class="badge badge-open">Inväntar underlag</span></td>
+            </tr>
+            <tr>
+              <td>Flerårsanalys 2023–2025</td>
+              <td><span class="badge badge-ok">Utförd</span></td>
+            </tr>
+            <tr>
+              <td>Styrelsemötesprotokoll</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr>
+              <td>Fullständig revisionsberättelse</td>
+              <td><span class="badge badge-open">Upprättas sist</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== 3. Revisionsanteckningar 260326 ===== -->
+    <section aria-labelledby="ant260326-heading">
+      <h2 id="ant260326-heading">Revisionsanteckningar per 2026-03-26</h2>
+      <div class="card">
+        <p class="meta">
+          Fil: <code>Revisionsanteckningar_KalmarNation_2025_per_260326.pdf</code> (11 sidor) ·
+          Inledande granskning
+        </p>
+
+        <h3 style="margin-top:1rem;">Bankavstämning</h3>
+        <p>
+          Alla sex SEB-konton stämmer exakt med bankens engagemangssammanställning per 31 december 2025.
+          Dessutom redovisas kassa (19 kr) och PayPal (628 kr) korrekt i bokföringen.
+          <span class="badge badge-ok">Godkänt</span>
+        </p>
+
+        <h3 style="margin-top:1rem;">Resultat och eget kapital</h3>
+        <p>
+          Beräknat resultat 2025: <strong>+505 780 kr</strong> (efter lagerkorrigering). Sambandet
+          resultat = förändring av eget kapital stämmer exakt.
+          Utan de finansiella intäkterna (utdelning m.m. från stiftelsevärdepapper, +579 000 kr) hade
+          den operativa verksamheten visat ett blygsamt överskott om knappt 48 000 kr.
+          <span class="badge badge-ok">Godkänt</span>
+        </p>
+
+        <h3 style="margin-top:1rem;">Avvikelse i varulager (UB 2025 ≠ IB 2026)</h3>
+        <p>
+          En skillnad på <strong>137 557 kr</strong> identifierades i dryckeslagret
+          (öl, cider, vin, sprit, fatöl) mellan utgående balans 2025 och ingående balans 2026.
+          Trolig förklaring: fysisk inventering gjordes vid eller strax efter årsskiftet och visade
+          lägre saldon än bokföringens beräknade värden. Frågan är om nedskrivningen ska belasta
+          2025 eller 2026 – detta beror på när inventeringen faktiskt ägde rum.
+          <span class="badge badge-warn">Kräver förklaring</span>
+        </p>
+
+        <h3 style="margin-top:1rem;">Jämförelseanalys 2025 vs 2024</h3>
+        <ul>
+          <li>Totala intäkter ökade med <strong>+37 %</strong> (+1,2 mkr).</li>
+          <li>Kostnader ökade med <strong>+31 %</strong> – lägre ökningstakt än intäkterna. Positivt.</li>
+          <li>Rörelseresultatet förbättrades från −117 000 kr (2024) till +48 000 kr (2025).</li>
+          <li>Personalkostnader minskade med −14 % jämfört med 2024.</li>
+          <li>Förbrukningsmaterial mer än fördubblades (+112 %) – värt att följa upp.</li>
+        </ul>
+
+        <h3 style="margin-top:1rem;">Jämförelse 1990 vs 2025</h3>
+        <p>
+          Bokslutet för 1990 (då Kent Lundgren var PQ/kassör) jämfördes med 2025. Nationens
+          omsättning har vuxit ×23 nominellt (×7 realt) och eget kapital ×80. Beer Tap-intäkterna
+          2025 (976 000 kr) överstiger ensamt hela nationens totala rörelseinkomster 1990.
+        </p>
+
+        <h3 style="margin-top:1rem;">Begärda underlag (stickprov)</h3>
+        <p>
+          Verifikation A1, A22 och A452 har begärts in av ekonomiansvarig (PQe),
+          liksom kontohistorik för konto 5010 (hyra, 246 597 kr, +27 % vs 2024).
+          <span class="badge badge-open">Inväntar svar</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 4. Revisionsanteckningar 260327 ===== -->
+    <section aria-labelledby="ant260327-heading">
+      <h2 id="ant260327-heading">Revisionsanteckningar per 2026-03-27</h2>
+      <div class="card">
+        <p class="meta">
+          Fil: <code>Revisionsanteckningar_KalmarNation_2025_per_260327.pdf</code> (15 sidor) ·
+          Fördjupad flerårsanalys 2023–2025 · Ekonomiansvarig 2025: Daniel Kirk
+        </p>
+
+        <h3 style="margin-top:1rem;">Uppdaterade rapporter – lagerkorrigering</h3>
+        <p>
+          Den 26 mars tillhandahöll ekonomiansvarig uppdaterade 2025-rapporter baserade på
+          faktisk lagerinventering (i stället för uppskattning). Dryckeslagret justerades ned med totalt
+          <strong>124 994 kr</strong>, varav spritlagret stod för den enskilt största minskningen (−70 407 kr).
+          Det uppdaterade beräknade resultatet är <strong>+505 780 kr</strong> och anses mer korrekt
+          än den tidigare versionen (+622 602 kr).
+          <span class="badge badge-ok">Välmotiverad korrigering</span>
+        </p>
+
+        <h3 style="margin-top:1rem;">Kontinuitet tre år bekräftad</h3>
+        <p>
+          UB 2023 = IB 2024 och UB 2024 = IB 2025: båda stämmer perfekt.
+          Bokföringstrådarna hänger ihop över tre räkenskapsår.
+          <span class="badge badge-ok">Godkänt</span>
+        </p>
+
+        <h3 style="margin-top:1rem;">Januarirapporten 2026 – felaktiga ingående balanser</h3>
+        <p>
+          Januarirapporten skrevs ut <em>dagen innan</em> de korrigerade 2025-värdena bokfördes.
+          Sju poster avviker, varav den viktigaste är BERÄKNAT RESULTAT (−20 735 kr) och
+          lager av profilprodukter (−13 888 kr).
+          Fråga 1 till Daniel Kirk: kan uppdaterad januarrapport med korrekta IB-värden tas fram?
+          <span class="badge badge-warn">Åtgärd begärd</span>
+        </p>
+
+        <h3 style="margin-top:1rem;">Flerårsanalys 2023–2025</h3>
+        <ul>
+          <li>2023: intäkter 3,6 mkr – innehåller engångsevent (Storaste Kroppkakan ~500 000 kr).</li>
+          <li>2024: intäkter 3,1 mkr – underskott i kärnverksamheten (−117 000 kr).</li>
+          <li>2025: intäkter 4,3 mkr – positivt rörelseresultat (+72 000 kr), stark kassautveckling (+160 000 kr).</li>
+          <li>Eget kapital ökar 2025 för <strong>första gången på tre år</strong>.</li>
+          <li>Fastighetsskuld om 620 000 kr reglerades under 2024 – positivt för balansräkningen.</li>
+        </ul>
+
+        <h3 style="margin-top:1rem;">Öppna frågor till Daniel Kirk</h3>
+        <p>Sex konkreta frågor har ställts (på svenska och engelska):</p>
+        <ol>
+          <li>Kan uppdaterad januarrapport 2026 tas fram med korrekta IB-värden?</li>
+          <li>Vad avser de nya verifikationerna R8–R11?</li>
+          <li>Vad representerar konto 1790 (21 421 kr förutbetald kostnad)?</li>
+          <li>Varför är pantposten konto 2499 eliminerad i nya rapporten?</li>
+          <li>Vad ingår i det generiska lagerkontot 1400 (37 125 kr, nytt 2025)?</li>
+          <li>Hur hanterades det negativa saldot på konto 1406 (fatcider)?</li>
+        </ol>
+        <span class="badge badge-open">Inväntar svar</span>
+      </div>
+    </section>
+
+    <!-- ===== 5. Övriga resurser ===== -->
+    <section aria-labelledby="resurser-heading">
+      <h2 id="resurser-heading">Övriga resurser</h2>
       <div class="card">
         <ul>
-          <li><a href="CLAUDE.md"><code>CLAUDE.md</code></a> – revisionsinstruktion (primär referens för AI)</li>
-          <li><code>CLAUDE.md_old</code> – äldre version</li>
-          <li>Mappar <code>2025/</code>, <code>2026/</code>, <code>1990/</code> – rapporter och PDF-underlag</li>
-          <li><code>Revisionsanteckningar_*.docx</code> / <code>.pdf</code></li>
-          <li><code>Inledande_kommentar_KalmarNation_2025*.docx</code></li>
-          <li><a href="blogg_claude_cowork_revision.html">blogg_claude_cowork_revision.html</a> – om AI-samarbete</li>
+          <li>
+            <a href="generellt.html">Hur fungerar revision? – en lättläst guide för alla</a>
+          </li>
+          <li>
+            <a href="blogg_claude_cowork_revision.html">Blogginlägg: AI som kollektivtrafik – revisionen av Kalmar Nation med Claude Cowork</a>
+          </li>
+          <li>
+            <a href="https://github.com/kentlundgren/foreningar/tree/main/KalmarNation/revision">GitHub – KalmarNation/revision</a>
+          </li>
         </ul>
       </div>
     </section>
 
-    <section aria-labelledby="verktyg-heading">
-      <h2 id="verktyg-heading">Cursor och Claude Cowork</h2>
-      <div class="card">
-        <p>
-          Projektet drivs även i <strong>Claude Cowork</strong> (projektmiljö med fokus på samma uppdrag:
-          läs <code>CLAUDE.md</code>, revidera bokslut 2025, fråga vid oklarhet). I Cowork kan motsvarande filer ligga under
-          t.ex. <code>OneDrive\AI\Claude\ClaudeCowork\KalmarNation\revision</code>.
-        </p>
-        <p><strong>Tänk på om du använder två verktyg mot samma filer:</strong></p>
-        <ul>
-          <li>Sista sparning vinner – risk att ändringar från det ena spåret skrivs över.</li>
-          <li>OneDrive kan ge filkonflikter; låt synk slutföras innan du byter dator eller program.</li>
-          <li>Öppna inte samma dokument för redigering på två håll samtidigt utan rutin (spara, stäng, byt).</li>
-          <li>Använd <strong>Git</strong> (commit/push) för viktiga versioner så du kan jämföra och återställa.</li>
-        </ul>
-        <div class="note" role="note">
-          <strong>Otydligheter?</strong> Bestäm vilken katalog som är huvudarbetskopia (SSD kontra OneDrive),
-          och om känsliga PDF ska finnas i publikt GitHub-repo.
-        </div>
-      </div>
-    </section>
+    <!-- Diskret notering om CLAUDE.md -->
+    <p class="ai-note">
+      Den tekniska instruktionen som styr hur AI-assistenten ska agera som revisor finns i
+      <a href="CLAUDE.md">CLAUDE.md</a>. Den filen är skriven för AI-modellen – detaljrik och teknisk –
+      och inte i första hand avsedd som lättläst text för icke-ekonomer. Vill du förstå
+      revisionsprocessen på ett enkelt sätt, läs i stället <a href="generellt.html">guiden om revision</a>.
+    </p>
 
-    <section aria-labelledby="github-heading">
-      <h2 id="github-heading">GitHub</h2>
-      <div class="card">
-        <p>
-          Kod och dokument kan ligga i repot
-          <a href="https://github.com/kentlundgren/foreningar/tree/main/KalmarNation/revision">foreningar / KalmarNation / revision</a>.
-        </p>
-      </div>
-    </section>
-
-    <!-- Exempel på indatafält med gul bakgrund (enligt önskemål för tydlig markering) -->
-    <section aria-labelledby="sok-heading">
-      <h2 id="sok-heading">Snabbanteckning (lokal)</h2>
-      <div class="card">
-        <label for="anteckning">Privat anteckning i webbläsaren (sparas inte automatiskt):</label>
-        <p style="margin-top: 0.5rem;">
-          <textarea id="anteckning" name="anteckning" rows="3" cols="40" placeholder="T.ex. att göra nästa session…"></textarea>
-        </p>
-      </div>
-    </section>
   </main>
 
   <footer>
-    <p>Kalmar Nation · revision · <span id="footer-year"></span></p>
-    <p>Se även <a href="README.md">README.md</a> för samma information i Markdown.</p>
+    <p>Kalmar Nation · revision · <span id="footer-year"></span> · <a href="README.md">README</a></p>
   </footer>
 
   <script src="script.js" defer></script>
