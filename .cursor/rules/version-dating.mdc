@@ -1,0 +1,25 @@
+---
+alwaysApply: true
+description: Versioner ska alltid ha exakt datum i formatet ÅÅÅÅ-MM-DD
+---
+
+# Versionsdatering: alltid exakt datum
+
+## Regel
+
+När ett versionsnummer anges ska datumet alltid vara **exakt** i formatet `ÅÅÅÅ-MM-DD`:
+
+- Korrekt: `Version 2.1, 2026-04-03`
+- Fel: `Version 2.1, april 2026`
+- Fel: `Version 2.1, våren 2026`
+
+## Gäller för
+
+- CLAUDE.md och liknande instruktionsfiler
+- README.md
+- Alla dokument med explicit versionsnummer
+- Även kommentarer i kod där datum anges
+
+## Bakgrund
+
+Exakt datum gör det enkelt att spåra när en förändring gjordes och jämföra med git-historiken.

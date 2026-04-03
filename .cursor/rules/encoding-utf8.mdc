@@ -1,0 +1,37 @@
+---
+alwaysApply: true
+description: Alltid UTF-8 - säkerställ att Ä, ä och ö visas korrekt i alla filer
+---
+
+# Teckenkodning: alltid UTF-8
+
+## Regel
+
+Alla nya filer som skapas ska sparas i **UTF-8** (utan BOM).
+Workspace-inställningen `files.encoding: utf8` i `.vscode/settings.json` säkerställer detta för Cursor.
+
+## För AI-assistenten
+
+- Använd **aldrig** Write-verktyget direkt för `.mdc`-filer med svenska tecken
+- Skapa `.mdc`-filer via **PowerShell** med UTF-8-kodning:
+
+```powershell
+$utf8 = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText($filväg, $text, $utf8)
+```
+
+- Verifiera alltid svenska tecken efter skrivning:
+```powershell
+$text = [System.IO.File]::ReadAllText($filväg, [System.Text.Encoding]::UTF8)
+Write-Output $text
+```
+
+## Är ett fel redan gjort?
+
+Om en fil har fel kodning, konvertera med:
+```powershell
+$win = [System.Text.Encoding]::GetEncoding(1252)
+$bytes = [System.IO.File]::ReadAllBytes($filväg)
+$text = $win.GetString($bytes)
+[System.IO.File]::WriteAllText($filväg, $text, (New-Object System.Text.UTF8Encoding $false))
+```

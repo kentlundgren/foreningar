@@ -76,6 +76,7 @@ Vid en revision ska följande underlag alltid begäras in. Fråga organisationen
 - Huvudbok för utvalda konton
 - Eventuell budget för granskningsåret (om sådan har fastställts)
 - Protokoll från styrelsemöten där ekonomiska beslut av vikt har fattats (t.ex. större inköp, lån, bidrag)
+- Kontrollera att resultatrapport och balansrapport är utskrivna vid **samma tidpunkt och med samma senaste verifikationsnummer** – om rapporterna är utskrivna vid olika tillfällen kan de visa olika saldon om bokföring skett däremellan
 
 ---
 
@@ -98,6 +99,8 @@ Använd alltid följande förklaringar när dessa begrepp förekommer, så att f
 **Ingående balans (IB):** Det värde ett konto eller eget kapital har vid årets början (1 januari).
 
 **Utgående balans (UB):** Det värde ett konto eller eget kapital har vid årets slut (31 december).
+
+**Beräknat resultat:** Det resultat som bokföringssystemet beräknar löpande under året, baserat på samtliga bokförda transaktioner. Begreppet används i t.ex. Visma och liknande system. Observera att **beräknat resultat i resultatrapporten kan skilja sig från beräknat resultat i balansrapporten** om organisationen använder konton för lagerförändringar (typiskt konto 4901–4909) och lagernedskrivningar (typiskt konto 7741–7749) som faller utanför K1-standardformatet i resultatrapporten men ingår i balansrapportens beräkning. Skillnaden är inte ett bokföringsfel – den beror på hur rapporten är uppbyggd.
 
 **Väsentlighet (materialitet):** En bedömning av hur stora fel eller avvikelser som behöver rapporteras. Det som är väsentligt är det som kan påverka en utomståendes bild av organisationens ekonomi.
 
@@ -169,6 +172,8 @@ Det vill säga:
 - Bokföringsfel eller felperiodisering
 - Rättelse av tidigare års fel som bokförts direkt mot eget kapital
 - Obokning som inte återspeglas i resultaträkningen
+
+> **Varning – lagerförändringar utanför K1-format:** I organisationer med varulager (t.ex. föreningar med bar- eller caféverksamhet) kan resultatrapporten och balansrapporten visa **olika beräknade resultat** om bokföringssystemet placerar lagerförändrings- och nedskrivningskonton utanför K1-standardformatet. Kontrollera alltid vilket belopp balansrapporten anger som beräknat resultat – det är detta belopp som ska stämma mot förändringen i eget kapital, inte nödvändigtvis det belopp som syns i resultatrapportens bottenrad.
 
 ### 6.5 Kontroll av att UB år X = IB år X+1
 
@@ -267,4 +272,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.0, mars 2026.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.1, 2026-04-03.*

@@ -1,0 +1,27 @@
+---
+alwaysApply: true
+description: Commit och push görs alltid av användaren, aldrig automatiskt av AI
+---
+
+# Git-workflow: commit och push är användarens ansvar
+
+## Regel
+
+AI-assistenten ska **aldrig** köra git commit eller git push på eget initiativ.
+
+## Tillåtet för AI
+- git status – visa vad som ändrats
+- git diff – visa exakta ändringar
+- git add – stagea filer (om användaren explicit ber om det)
+- git log – visa historik
+- git fetch / git pull – hämta fjärrhistorik (om användaren ber om det)
+
+## Inte tillåtet utan explicit instruktion
+- git commit – aldrig utan att användaren uttryckligen ber om det
+- git push – aldrig utan att användaren godkänt commiten
+
+## Arbetsflöde
+1. AI gör ändringar
+2. Användaren granskar ändringarna i Cursor
+3. Användaren säger "committa" eller "pusha" ? då utför AI kommandot
+4. AI föreslår commit-meddelande men väntar på godkännande
