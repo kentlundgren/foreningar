@@ -72,12 +72,90 @@ Vid en revision ska följande underlag alltid begäras in. Fråga organisationen
 - Resultaträkning och balansräkning för föregående år (år X−1), även om jämförelsekolumn finns i rapporten för år X
 - Balansräkning för år X−2, om möjligt, för att spåra ekonomisk kontinuitet
 - Kontoutdrag och engagemangssammanställning från banken, som bekräftar bankbehållningen per 31 december granskningsåret
-- Verifikationslista (lista över alla bokföringsverifikationer under året)
+- **Verifikationslista** – exporterad förteckning ur bokföringssystemet över samtliga bokförda händelser under räkenskapsåret (se avsnitt 3.1 för vad detta är, hur man begär det och vad som är digitalt respektive fysiskt)
 - Huvudbok för utvalda konton
 - Eventuell budget för granskningsåret (om sådan har fastställts)
 - Protokoll från styrelsemöten där ekonomiska beslut av vikt har fattats (t.ex. större inköp, lån, bidrag)
 - Verksamhetsberättelse eller förvaltningsberättelse för granskningsåret (se avsnitt 4 för skillnaden mellan dessa)
 - Kontrollera att resultatrapport och balansrapport är utskrivna vid **samma tidpunkt och med samma senaste verifikationsnummer** – om rapporterna är utskrivna vid olika tillfällen kan de visa olika saldon om bokföring skett däremellan
+
+---
+
+## 3.1 Verifikationslistan i praktiken – digitalt, fysiskt och hur man begär det
+
+### Vad är en verifikationslista?
+
+En **verifikationslista** (kallas ibland grundbok eller dagbok) är en förteckning över alla ekonomiska händelser som bokförts under ett år, sorterade i nummerordning per serie. Det är *inte* ett dokument som ekonomiansvarig (PQe) skriver ihop – det är en rapport som man exporterar direkt ur bokföringssystemet (t.ex. Visma eEkonomi) med ett knapptryck.
+
+En PQe som jobbat ett år på en nation kanske aldrig hört talas om en "verifikationslista" – de ser allt direkt i systemet och behöver inte tänka på det. Men för revisorn är listan ett oumbärligt verktyg: det är listan vi väljer stickprov från och utgår ifrån för hela granskningen.
+
+**Vad en rad i verifikationslistan typiskt innehåller:**
+
+| Fält | Exempel A | Exempel K |
+|---|---|---|
+| Serie | A | K |
+| Verifikationsnr | A 237 | K 014 |
+| Datum | 2025-08-14 | 2025-06-22 |
+| Belopp | 12 400,00 kr | 8 800,00 kr |
+| Beskrivning | Spendrups leverans v33 | Faktura – AB Företaget, event |
+| Konto | 4010 Varuinköp | 1510 Kundfordringar |
+| Debet/Kredit | Debet | Debet |
+
+En fullständig lista för ett år kan innehålla tusentals rader. I Excel kan revisorn sedan filtrera på serie, sortera på belopp och markera de verifikationer som ska granskas.
+
+### Vad är digitalt – och vad kan finnas fysiskt?
+
+Det stämmer att pärmar med pappersunderlag blivit allt ovanligare. Men det är viktigt att förstå att *underlagen* (fakturor, kvitton) och *bokföringen* (verifikationslistan) är två skilda saker. Verifikationslistan finns alltid digitalt i systemet. Underlagen kan vara digitala eller fysiska.
+
+**Alltid digitalt (exporteras direkt ur Visma):**
+- Verifikationslistan / grundboken (= listan revisorn begär)
+- Kundfakturor – skapas och sparas i Visma
+- Bankverifikationer – hämtas automatiskt via bankintegration (SEB Online m.fl.)
+- E-fakturor från leverantörer – levereras som PDF direkt till systemet
+- Zettle/kassarapporter – exporteras som CSV/PDF från Zettle-appen
+
+**Digitalt i de flesta fall (men kontrollera):**
+- Leverantörsfakturor – de flesta leverantörer skickar PDF via e-post; PQe laddar upp i Visma
+- Kvitton – kan fotograferas och laddas upp via Visma Scan-appen
+- Löneunderlag – ofta genererat i Visma Lön eller liknande
+
+**Kan fortfarande vara fysiskt (eller inscannat men med original):**
+- Kontantkvitton och kassaunderlag (småinköp: kassa, mataffär, marknad)
+- Pappersavtal – hyresavtal, leverantörsavtal, ramavtal
+- Styrelseprotokoll – kan vara inscannade men originalen är ofta fysiska
+- Handskrivna in-/utleveransdokument vid lagerinventering
+
+> **Praktisk konsekvens för revisorn:** Verifikationslistan är alltid digital och kan alltid exporteras. För de enskilda underlagen (fakturorna) – som revisorn stämmer av mot listan vid stickprov – kan revisorn antingen titta i Visma på den uppladdade PDF:en, eller be PQe att ta fram det fysiska kvittot om det inte är uppladdat. Vanligtvis räcker det med att titta i systemet.
+
+### Hur begär revisorn verifikationslistan? – guide för PQe och revisor
+
+En PQe som aldrig lämnat ifrån sig en verifikationslista kan behöva konkret vägledning. Nedan finns ett förslag på mejl:
+
+> **Ämne:** Revisionsunderlag 2025 – Verifikationslista från Visma
+>
+> Hej!
+>
+> Som revisor behöver jag ett utdrag ur Visma eEkonomi för räkenskapsåret 2025. Det kallas *verifikationslista* eller *grundbok* – en lista på alla bokförda händelser under 2025 med verifikationsnummer, serie, datum, belopp och konto.
+>
+> I Visma eEkonomi hittar du det så här:
+> 1. Logga in och gå till **Rapporter** i huvudmenyn
+> 2. Välj **Grundbok** (eller **Verifikationslista** beroende på version)
+> 3. Sätt perioden till **2025-01-01 – 2025-12-31** och välj alla serier
+> 4. Klicka **Exportera** och välj **Excel** (lättast att arbeta med) eller PDF
+>
+> Behöver du hjälp att hitta funktionen i systemet är det lättast att vi gör det tillsammans – det tar bara några minuter.
+>
+> Tack!
+
+**I Visma eEkonomi – steg för steg (revisorns perspektiv):**
+
+1. Be PQe logga in på Visma eEkonomi
+2. Gå till **Rapporter** → **Grundbok** (eller sök på "verifikation")
+3. Välj räkenskapsår **2025** och perioden **hela året**
+4. Exportera som **Excel** – filen innehåller alla serier och kan filtreras direkt
+5. Öppna Excel: sortera på serie och belopp för att välja stickprov
+
+> *Referens:* Bokföringslagens krav på vad en verifikation ska innehålla framgår av BFL 5 kap. 7–8 §§ (Riksdagen, 1999a). Minst ska finnas: datum, belopp, vad händelsen avser, och vilka parter som är inblandade.
 
 ---
 
