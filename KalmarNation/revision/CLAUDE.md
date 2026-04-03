@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 2.3, 2026-04-03 – ersätter version 2.2*
+*Version 2.4, 2026-04-03 – ersätter version 2.3*
 
 ---
 
@@ -76,6 +76,7 @@ Vid en revision ska följande underlag alltid begäras in. Fråga organisationen
 - Huvudbok för utvalda konton
 - Eventuell budget för granskningsåret (om sådan har fastställts)
 - Protokoll från styrelsemöten där ekonomiska beslut av vikt har fattats (t.ex. större inköp, lån, bidrag)
+- Verksamhetsberättelse eller förvaltningsberättelse för granskningsåret (se avsnitt 4 för skillnaden mellan dessa)
 - Kontrollera att resultatrapport och balansrapport är utskrivna vid **samma tidpunkt och med samma senaste verifikationsnummer** – om rapporterna är utskrivna vid olika tillfällen kan de visa olika saldon om bokföring skett däremellan
 
 ---
@@ -135,6 +136,20 @@ De två kontona kompletterar varandra: 4901 är systemets beräknade förändrin
 **Intern kontroll:** De rutiner och processer som finns för att förhindra och upptäcka fel eller oegentligheter i ekonomihanteringen.
 
 **Lekmannarevisor:** En av föreningens medlemmar vald revisor som inte nödvändigtvis är auktoriserad eller utbildad revisor, men som ändå har ansvar för att granska räkenskaperna.
+
+**Förvaltningsberättelse:** En formell del av årsredovisningen (ÅRL 6 kap.) som beskriver verksamhetens utveckling, resultat och ställning samt viktiga händelser under räkenskapsåret. Krävs av organisationer som är årsredovisningspliktiga (K2/K3). Kalmar Nation som K1-organisation är inte skyldig att upprätta förvaltningsberättelse.
+
+**Verksamhetsberättelse:** En icke-formell berättelse om vad föreningen gjort under året – vilka aktiviteter som genomförts, hur uppdraget fullgjorts, viktiga beslut. Ideella föreningar som inte upprättar årsredovisning (K1) har ingen lagstadgad skyldighet att upprätta förvaltningsberättelse, men producerar typiskt en verksamhetsberättelse som presenteras på årsmötet och fastställs av föreningsstämman. Verksamhetsberättelsen är viktig för revisorn vid granskning av **förvaltningen** – det är i denna handling styrelsen redogör för hur de förvaltat föreningen i enlighet med stadgar och stämmobeslut.
+
+**K1 kontra K2 – vad Kalmar Nation faktiskt följer**
+
+Kalmar Nation är, utifrån sin storlek (omsättning ~4 mkr, balansomslutning ~10 mkr, färre än 50 anställda), en **K1-organisation**. Det innebär att de inte är skyldiga att upprätta årsredovisning och formellt inte heller behöver tillämpa den detaljerade lagerredovisning (konton 4901–4909 och 7741–7749) som hör hemma i K2/ÅRL-baserad redovisning.
+
+I praktiken är deras Visma eEkonomi konfigurerat med **ÅRL-strukturerade rapporter** (K2-format) och dessa konton används faktiskt i bokföringen. Kalmar Nation tillämpar alltså frivilligt ett mer fullständigt redovisningssätt än vad K1 kräver – något som ger bättre transparens och är positivt ur revisionsperspektiv.
+
+Konsekvens för revisorn: analyserna av lagerförändringar, nedskrivningslogik och skillnaden mellan resultatrapportens och balansrapportens beräknade resultat är relevanta *just därför att* Kalmar Nation faktiskt bokar dessa poster – inte för att de är tvingade att göra det. Om en liknande organisation i stället använde ren K1-redovisning (förenklat årsbokslut) skulle dessa analyser vara mindre relevanta.
+
+Gränsen K1/K2 för ideella föreningar: en ideell förening är skyldig att upprätta årsredovisning (och tillämpa K2) om den under de senaste två räkenskapsåren uppfyllt minst **två av tre** kriterier: (1) fler än 50 anställda, (2) balansomslutning > 40 mkr, (3) nettoomsättning > 80 mkr (ÅRL 1:3). Kalmar Nation uppfyller inget av dessa kriterier.
 
 ---
 
@@ -263,16 +278,55 @@ Revisorn ska alltid förklara vad som granskas och varför – anpassat till mot
 
 ## 10. Revisionsberättelsens struktur (för lekmannarevisor)
 
+### 10.1 Under vilket regelverk revisionen utförs
+
+En lekmannarevisor i en ideell förening som Kalmar Nation utför sin granskning med stöd av:
+
+- **Föreningens stadgar** – stadgarna anger vem som utser revisor, vad revisorn ska granska och när revisionsberättelsen ska lämnas. Stadgarna är det primära styrande dokumentet.
+- **Bokföringslagen (BFL, 1999:1078)** – reglerar hur bokföringen ska skötas och vilka underlag som krävs.
+- **BFNAR 2010:1 (K1)** – det redovisningsnormverk som gäller för Kalmar Nation som K1-organisation (förenklat bokslut, inga formella krav på årsredovisning).
+- **God revisionssed** för lekmannarevisorer – det finns ingen lag som detaljreglerar lekmannarevisionen, men revisorn ska agera omsorgsfullt, objektivt och i föreningens och medlemmarnas intresse.
+
+Ange alltid i revisionsberättelsen vilket räkenskapsår och vilken organisation som granskats, och att granskningen utförts av föreningsvald lekmannarevisor.
+
+### 10.2 Granskningens två delar
+
+En lekmannarevision i en ideell förening omfattar alltid **två separata delar**:
+
+**Del 1 – Räkenskapsgranskning (granskning av räkenskaperna/bokslutet)**
+
+Revisorn granskar att:
+- Bokföringen är korrekt och fullständig
+- Verifikationer finns och stämmer med bokföringen
+- Banksaldon stämmer mot balansräkningen
+- Bokslutet (resultat- och balansräkning) ger en **rättvisande bild** av föreningens ekonomi
+- Ingående och utgående balanser hänger ihop över år
+- Resultat och förändring av eget kapital stämmer överens
+
+**Del 2 – Förvaltningsgranskning (granskning av styrelsens förvaltning)**
+
+Revisorn granskar att:
+- Styrelsen har agerat i enlighet med föreningens **stadgar**
+- Ekonomiska beslut av vikt (inköp, lån, bidrag, firmateckning) stöds av **styrelsebeslut**
+- Styrelsen har fullgjort sitt uppdrag gentemot **föreningsstämman** och medlemmarna
+- Inga transaktioner eller beslut strider mot föreningens syfte eller stadgar
+- Verksamhetsberättelsen ger en rättvisande bild av vad styrelsen faktiskt genomfört
+
+> **Viktigt:** Förvaltningsgranskningen är inte en juridisk granskning av enskilda styrelseledamöters ansvar. Den syftar till att säkerställa att styrelsen som helhet har agerat ansvarsfullt och transparent gentemot medlemmarna. Om allvarliga oegentligheter misstänks bör revisorn rådfråga juridisk kompetens.
+
+### 10.3 Revisionsberättelsens innehåll
+
 En revisionsberättelse för en liten ideell förening innehåller normalt:
 
-1. Till vem berättelsen riktas (t.ex. "Till föreningsstämman i [organisationens namn]")
-2. Vilket räkenskapsår som granskats
-3. Vad som har granskats (räkenskaper, styrelsens förvaltning)
-4. Genomförd granskning (en kort beskrivning av tillvägagångssättet)
-5. Eventuella anmärkningar eller iakttagelser
-6. Tillstyrkan eller avstyrkan av ansvarsfrihet för styrelsen
+1. **Adressat** – till vem berättelsen riktas (t.ex. "Till föreningsstämman i [föreningens namn]")
+2. **Granskningsperiod** – vilket räkenskapsår som granskats
+3. **Revisorns uppdrag och regelverk** – att granskningen utförts av föreningsvald lekmannarevisor i enlighet med föreningens stadgar och god revisionssed; att redovisningen följer K1 (BFNAR 2010:1) / BFL
+4. **Räkenskapsgranskning** – vad som granskats (bokföring, verifikationer, bankavstämning, balansräkning) och slutsats: ger räkenskaperna en rättvisande bild?
+5. **Förvaltningsgranskning** – att styrelsens förvaltning granskats mot stadgar och stämmobeslut och slutsats: har styrelsen agerat i enlighet med dessa?
+6. **Anmärkningar** – eventuella iakttagelser som föreningen bör åtgärda
+7. **Tillstyrkan eller avstyrkan** av ansvarsfrihet för styrelsen
 
-> *Skillnad mot större organisation:* En auktoriserad revisor skriver en formell revisionsberättelse enligt ISA-standarder med standardiserade formuleringar. En lekmannarevisor kan använda ett enklare språk, men bör ändå täcka de centrala punkterna ovan.
+> *Skillnad mot större organisation:* En auktoriserad revisor skriver en formell revisionsberättelse med standardiserade formuleringar enligt FAR:s mallar. En lekmannarevisor kan använda ett enklare språk, men ska ändå täcka de sju punkterna ovan och tydligt skilja på räkenskapsgranskning och förvaltningsgranskning.
 
 ---
 
@@ -298,4 +352,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.3, 2026-04-03.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.4, 2026-04-03.*
