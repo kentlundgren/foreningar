@@ -280,6 +280,8 @@ En revisionsberättelse för en liten ideell förening innehåller normalt:
 
 Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källor i Harvardformat:
 
+- BAS-intressenternas Förening (2025) *BAS-kontoplanen 2025*. Stockholm: BAS-intressenternas Förening. Tillgänglig: https://www.bas.se/kontoplaner/ (Hämtad: 2026-04-03). *Anmärkning: BAS-kontoplanen är den i Sverige vanligast förekommande kontoplanen för företag, ideella föreningar och studentnationer. Personalkostnader återfinns i kontoklass 7 (7xxx). Kommuner och statliga myndigheter använder egna kontoplaner baserade på RKR respektive ESV:s standarder.*
+
 - Bokföringsnämnden (2016) *BFNAR 2016:10 Årsredovisning i mindre företag (K2)*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/vagledningar/k2-arsredovisning-i-mindre-foretag/ (Hämtad: 2026-03-27).
 
 - Bokföringsnämnden (2012) *BFNAR 2012:1 Årsredovisning och koncernredovisning (K3)*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/vagledningar/k3-arsredovisning-och-koncernredovisning/ (Hämtad: 2026-03-27).
