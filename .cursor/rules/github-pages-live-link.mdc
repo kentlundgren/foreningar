@@ -1,0 +1,19 @@
+---
+alwaysApply: true
+description: Publicerade index.html ska länka till GitHub-repot; README ska länka till live (GitHub Pages)
+---
+
+# GitHub Pages och GitHub-repo – korslänkar (global konvention)
+
+## Regel
+
+När en webbplats publiceras med **GitHub Pages** ska följande alltid gälla för samma kodbas:
+
+1. **Live → repo:** Varje `index.html` som ingår i publiceringen (inkl. språkvarianter, t.ex. `index_eng.html`) ska ha en **diskret men tydlig länk** till **GitHub-repot** (dashboard / källkod).
+2. **Repo → live:** `README.md` ska innehålla en **tydlig länk** till **live-URL:en** på GitHub Pages.
+
+Syfte: besökare hittar källkod från sajten och live-sidan från repot.
+
+## Lokala tillägg
+
+Exakta URL:er, CSS-klasser och kodexempel för ett visst projekt läggs i **projektets** `.cursor/rules/`, t.ex. `github-pages-live-link.mdc`.

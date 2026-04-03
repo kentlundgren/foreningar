@@ -1,11 +1,17 @@
 ---
-description: Konvention för länk mellan GitHub Pages (live) och GitHub-repot (dashboard) i KalmarNation-projektet
+description: KalmarNation/revision – konkreta URL:er och HTML för GitHub Pages ↔ repo (se global regel)
 alwaysApply: true
 ---
 
-# GitHub Pages ↔ GitHub repo – alltid länkade
+# GitHub Pages ↔ GitHub-repo (KalmarNation/revision)
 
-## Regel
+## Hör ihop med global regel
+
+Allmän princip finns i `ClaudeCowork/.cursor/rules/github-pages-live-link.mdc`.
+**Denna fil** anger endast **detta projekts** live- och repo-URL:er samt kodexempel.
+
+## Regel (oförändrad i praktiken)
+
 Varje `index.html`-fil (och motsvarande engelska version) som publiceras live via GitHub Pages **ska alltid ha en diskret länk** i nedre vänstra hörnet till GitHub-repot. README.md ska ha en tydlig länk tillbaka till live-sidan.
 
 ## Live-URL (GitHub Pages)
