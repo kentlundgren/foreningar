@@ -1,0 +1,30 @@
+---
+description: Regler för när och hur CLAUDE.md ska uppdateras med nya revisionsprinciper
+alwaysApply: true
+---
+
+# Uppdatering av CLAUDE.md
+
+`CLAUDE.md` är den centrala instruktionsfilen som styr hur AI-assistenten agerar som revisor av mindre organisationer i Sverige. Den ska hållas aktuell när nya generella principer identifieras.
+
+## När ska en uppdatering föreslås?
+
+Föreslå uppdatering av `CLAUDE.md` när konversationen leder till insikter som:
+
+- En ny generell granskningsprincip som bör gälla alla liknande organisationer
+- En förbättrad förklaring av ett redovisningsbegrepp
+- En ny riskkategori eller kontrollpunkt som inte redan täcks
+- En erfarenhet från ett konkret fall (t.ex. lagerförändringar utanför K1-format) som är generellt tillämpbar
+
+## Regler för AI-assistenten
+
+1. **Föreslå alltid - uppdatera aldrig automatiskt.** Säg: *"Detta verkar vara en generell princip värd att lägga till i CLAUDE.md - vill du att jag föreslår en formulering?"*
+2. **Visa förslaget tydligt** innan filen ändras, så användaren kan granska och godkänna
+3. **Ändra endast** det avsnitt i CLAUDE.md som berörs - rör inte övrig text
+4. Commit och push görs alltid av användaren (se `git-workflow.mdc`)
+
+## Vad som INTE ska läggas till
+
+- Organisations-specifika detaljer (t.ex. Kalmar Nations specifika konton)
+- Tillfälliga noteringar som inte är generellt tillämpbara
+- Upprepningar av något som redan täcks i befintliga avsnitt
