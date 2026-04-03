@@ -7,6 +7,20 @@
   <title>How does auditing work? – A guide for everyone</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
+    /* Orange badge (synced with index_eng.html – same colour and label) */
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.12rem 0.45rem;
+      border-radius: 99px;
+      vertical-align: middle;
+      margin-left: 0.3rem;
+    }
+    .badge-sample { background: #fbd38d; color: #7b341e; }
+    @media (prefers-color-scheme: dark) {
+      .badge-sample { background: #7b341e; color: #fbd38d; }
+    }
     /* Extra styles specific to this page */
     .step-list {
       list-style: none;
@@ -70,6 +84,20 @@
         background: rgba(255,255,255,0.04);
       }
     }
+    /* Discreet version/date in header (synced with index_eng.html) */
+    .page-version {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      margin-top: 0.65rem;
+      opacity: 0.72;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      letter-spacing: 0.01em;
+    }
     .back-link {
       display: inline-block;
       margin-bottom: 1.5rem;
@@ -94,6 +122,10 @@
     <p class="lead">
       An accessible guide to what financial review of a small association involves –
       for those who are not accountants but want to understand what an auditor actually does.
+    </p>
+    <!-- Discreet version and date indicator (synced with index_eng.html) -->
+    <p class="page-version">
+      📋 Audit guide · v1.1 · Last updated: 2026-04-03
     </p>
   </header>
 
@@ -184,10 +216,22 @@
           </li>
           <li>
             <div>
-              <strong>Sample check on vouchers</strong><br />
-              The auditor randomly selects a number of accounting vouchers – e.g. nos. A1, A22
-              and A452 – and checks that the physical receipt or invoice matches what has been
-              recorded. It is like checking that a shop's till balances against the till receipts.
+              <strong>Sample check on vouchers</strong>
+              <span class="badge badge-sample">Voucher list</span><br />
+              The auditor randomly selects a number of accounting entries and checks that the
+              receipt or invoice matches what has been recorded.
+              <br /><br />
+              The starting point is the <em>voucher list</em> – a report exported directly from
+              the accounting system (Visma eEkonomi) listing every entry made during the year:
+              voucher number, series (A, B, K, M, Z...), date, amount and account.
+              This is <strong>not</strong> a physical binder – it is a digital report the
+              financial officer exports in a few minutes
+              (<strong>Reports → General Journal → Export as Excel</strong>).
+              <br /><br />
+              Different series = different types of document. Series A is typically supplier
+              invoices (e.g. drink deliveries), series K customer invoices, series M manual
+              corrections and series Z cash register (Zettle). The auditor focuses the sample
+              on the series carrying the greatest financial risk.
             </div>
           </li>
           <li>
@@ -200,18 +244,25 @@
           </li>
           <li>
             <div>
-              <strong>Receivables and liabilities</strong><br />
-              Does the association have outstanding money that has not come in for a long time?
-              A receivable that is never paid gives a misleading picture of the assets. The auditor
-              checks that such items are handled correctly.
+              <strong>Receivables – old unpaid customer invoices</strong>
+              <span class="badge badge-sample">Voucher list</span><br />
+              A receivable arises when the association has sent a <em>customer invoice</em>
+              (typically series K in the accounting system) but has not yet been paid. The
+              invoice appears as an asset in the balance sheet – but if the money never comes
+              in, it is in reality a loss. The auditor requests a list of outstanding invoices
+              (accounts receivable ledger) and checks how old they are: invoices older than
+              6 months should be discussed with the financial officer and possibly written off.
             </div>
           </li>
           <li>
             <div>
-              <strong>Fraud check (using common sense)</strong><br />
+              <strong>Fraud check (using common sense)</strong>
+              <span class="badge badge-sample">Voucher list</span><br />
               Are there transactions without supporting documentation? Duplicate payments?
-              Unusual withdrawals? The auditor keeps their eyes open – not to suspect everyone,
-              but to protect the association and its elected representatives.
+              Unusual withdrawals? The auditor scans the full voucher list for warning signs:
+              round amounts without an invoice, gaps in numbering sequences (missing vouchers),
+              payments to unusual recipients. The auditor keeps their eyes open – not to
+              suspect everyone, but to protect the association and its elected representatives.
             </div>
           </li>
         </ol>
@@ -243,6 +294,16 @@
           <strong>Voucher (accounting document)</strong>
           Evidence that an economic event has taken place – e.g. an invoice, a receipt or a
           bank statement. Each voucher is assigned a unique sequential number in the accounts.
+        </div>
+        <div class="term-box" style="border-left-color: #ed8936;">
+          <strong>Voucher list <span class="badge badge-sample">Voucher list</span></strong>
+          A report exported from the accounting system (e.g. Visma eEkonomi) listing every
+          entry made during a year – with series, number, date, amount and account.
+          This is <em>not</em> a binder of paper documents, but a digital report that the
+          financial officer (PQe) exports in minutes:
+          <strong>Reports → General Journal (Grundbok) → Export as Excel</strong>.
+          It is the auditor's map for all sample checks. All orange-tagged checks on the
+          <a href="index_eng.html">review status page</a> start from this list.
         </div>
         <div class="term-box">
           <strong>Opening balance (OB) and Closing balance (CB)</strong>

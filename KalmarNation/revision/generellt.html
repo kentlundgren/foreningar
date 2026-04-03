@@ -7,6 +7,20 @@
   <title>Hur fungerar revision? – En guide för alla</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
+    /* Orange badge (synkat med index.html – samma färg och benämning) */
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.12rem 0.45rem;
+      border-radius: 99px;
+      vertical-align: middle;
+      margin-left: 0.3rem;
+    }
+    .badge-sample { background: #fbd38d; color: #7b341e; }
+    @media (prefers-color-scheme: dark) {
+      .badge-sample { background: #7b341e; color: #fbd38d; }
+    }
     /* Extra stilar specifika för denna sida */
     .step-list {
       list-style: none;
@@ -70,6 +84,20 @@
         background: rgba(255,255,255,0.04);
       }
     }
+    /* Diskret version/datum i headern (synkat med index.html) */
+    .page-version {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      margin-top: 0.65rem;
+      opacity: 0.72;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      letter-spacing: 0.01em;
+    }
     .back-link {
       display: inline-block;
       margin-bottom: 1.5rem;
@@ -94,6 +122,10 @@
     <p class="lead">
       En lättläst guide om vad ekonomisk granskning av en liten förening innebär –
       för dig som inte är ekonom men vill förstå vad en revisor faktiskt gör.
+    </p>
+    <!-- Diskret version- och datumindikator (synkat med index.html) -->
+    <p class="page-version">
+      📋 Guide om revision · v1.1 · Senast uppdaterad: 2026-04-03
     </p>
   </header>
 
@@ -182,10 +214,22 @@
           </li>
           <li>
             <div>
-              <strong>Stickprov på verifikationer</strong><br />
-              Revisorn väljer slumpmässigt ett antal bokföringsverifikationer – t.ex. nr A1, A22 och
-              A452 – och kontrollerar att det fysiska kvittot eller fakturan stämmer med vad som
-              bokförts. Det är som att kontrollera att en butikskassa stämmer mot kassakvitton.
+              <strong>Stickprov på verifikationer</strong>
+              <span class="badge badge-sample">Verifikationslista</span><br />
+              Revisorn väljer slumpmässigt ett antal bokföringsverifikationer och kontrollerar att
+              kvitto eller faktura stämmer med det som bokförts.
+              <br /><br />
+              Startpunkten är <em>verifikationslistan</em> – en exporterad förteckning ur
+              bokföringssystemet (Visma eEkonomi) med alla bokförda händelser under hela året:
+              verifikationsnummer, serie (A, B, K, M, Z...), datum, belopp och konto.
+              Det är <strong>inte</strong> en pärm med papper – det är en digital rapport
+              som ekonomiansvarig exporterar på ett par minuter
+              (<strong>Rapporter → Grundbok → Exportera som Excel</strong>).
+              <br /><br />
+              Olika serie = olika typ av underlag. Serie A brukar vara leverantörsfakturor
+              (t.ex. dryckesleverantörer), serie K kundfakturor, serie M manuella korrigeringar
+              och serie Z kassaregister (Zettle). Revisorn fokuserar stickprovet på de serier
+              som bär störst ekonomisk risk.
             </div>
           </li>
           <li>
@@ -197,18 +241,25 @@
           </li>
           <li>
             <div>
-              <strong>Fordringar och skulder</strong><br />
-              Har föreningen pengar utestående som inte kommit in på länge? En fordran som
-              aldrig betalas ger en missvisande bild av tillgångarna. Revisorn kontrollerar att
-              sådana poster hanteras rätt.
+              <strong>Fordringar – gamla obetalda kundfakturor</strong>
+              <span class="badge badge-sample">Verifikationslista</span><br />
+              En fordran uppstår när föreningen skickat en <em>kundfaktura</em> (vanligen
+              serie K i bokföringssystemet) men ännu inte fått betalt. Fakturan syns som en
+              tillgång i balansräkningen – men om pengarna aldrig kommer in är det i
+              realiteten en förlust. Revisorn begär en lista på utestående kundfakturor
+              (kundreskontra) och kontrollerar hur gamla de är: fakturor äldre än 6 månader
+              bör diskuteras med ekonomiansvarig och eventuellt skrivas av.
             </div>
           </li>
           <li>
             <div>
-              <strong>Bedrägerikontroll (med sunt förnuft)</strong><br />
+              <strong>Bedrägerikontroll (med sunt förnuft)</strong>
+              <span class="badge badge-sample">Verifikationslista</span><br />
               Finns transaktioner utan underlag? Dubbla utbetalningar? Ovanliga uttag?
-              Revisorn ska ha ögonen öppna – inte för att misstänka alla, utan för att skydda
-              föreningen och dess förtroendevalda.
+              Revisorn söker igenom hela verifikationslistan efter varningssignaler:
+              runda belopp utan faktura, hopp i nummerserierna (saknade verifikationer),
+              betalningar till ovanliga mottagare. Revisorn ska ha ögonen öppna – inte för
+              att misstänka alla, utan för att skydda föreningen och dess förtroendevalda.
             </div>
           </li>
         </ol>
@@ -239,6 +290,15 @@
           <strong>Verifikation</strong>
           Ett bevis på att en ekonomisk händelse ägt rum – t.ex. en faktura, ett kvitto eller ett
           bankkontoutdrag. Varje verifikation får ett unikt löpnummer i bokföringen.
+        </div>
+        <div class="term-box" style="border-left-color: #ed8936;">
+          <strong>Verifikationslista <span class="badge badge-sample">Verifikationslista</span></strong>
+          En exporterad förteckning ur bokföringssystemet (t.ex. Visma eEkonomi) med alla
+          bokförda händelser under ett år – med serie, nummer, datum, belopp och konto.
+          Det är <em>inte</em> en pärm med papper, utan en digital rapport som ekonomiansvarig
+          exporterar direkt ur systemet: <strong>Rapporter → Grundbok → Exportera som Excel</strong>.
+          Det är revisorn startkarta för alla stickprovskontroller. De orange märkta kontrollerna
+          på <a href="index.html">granskningssidan</a> utgår alla från denna lista.
         </div>
         <div class="term-box">
           <strong>Ingående balans (IB) och Utgående balans (UB)</strong>

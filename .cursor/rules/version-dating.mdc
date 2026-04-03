@@ -13,13 +13,26 @@ När ett versionsnummer anges ska datumet alltid vara **exakt** i formatet `ÅÅ
 - Fel: `Version 2.1, april 2026`
 - Fel: `Version 2.1, våren 2026`
 
-## Gäller för
+## Gäller för – alla filtyper
 
-- CLAUDE.md och liknande instruktionsfiler
-- README.md
-- Alla dokument med explicit versionsnummer
-- Även kommentarer i kod där datum anges
+Versionshantering med exakt datum är obligatorisk i **alla filer** som innehåller ett versionsnummer eller senast-uppdaterad-datum:
+
+- **Instruktionsfiler:** CLAUDE.md och liknande .md-filer
+- **Regelfiler:** .mdc-filer i .cursor/rules/
+- **Readme och dokumentation:** README.md, RULES-OVERVIEW.md och alla .md-filer med versionsnummer
+- **HTML-sidor:** index.html, generellt.html, index_eng.html, generellt_eng.html – och alla framtida HTML-sidor med versionsindikator
+- **Alla övriga filer** med explicit versionsnummer eller datum, oavsett filtyp
+- **Kommentarer i kod** där datum anges
+
+## Var ska versionsinfo placeras?
+
+- **HTML-filer:** Diskret `page-version`-element i `<header>`, t.ex.:
+  `📋 Revision 2025 · Status v1.3 · Senast uppdaterad: 2026-04-03`
+- **.md- och .mdc-filer:** Överst i filen (kursivt) och/eller längst ner i filen
+- **Kod-kommentarer:** Inline-format `// Uppdaterad: 2026-04-03`
 
 ## Bakgrund
 
-Exakt datum gör det enkelt att spåra när en förändring gjordes och jämföra med git-historiken.
+Exakt datum gör det enkelt att spåra när en förändring gjordes och jämföra med git-historiken. Samma princip gäller oavsett filtyp – konsekvens gör projektets versionshistorik läsbar för alla som arbetar med projektet.
+
+*Regel uppdaterad: 2026-04-03*
