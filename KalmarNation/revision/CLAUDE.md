@@ -498,8 +498,6 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 - FAR (2024) *God revisionssed i Sverige*. Stockholm: FAR förlag. Tillgänglig: https://www.far.se (Hämtad: 2026-03-27).
 
-- Riksdagen (1995) *Årsredovisningslagen (1995:1554)*. Stockholm: Riksdagen. Tillgänglig: https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/arsredovisningslag-19951554_sfs-1995-1554/ (Hämtad: 2026-03-27).
-
 - Riksdagen (1999a) *Bokföringslagen (1999:1078)*. Stockholm: Riksdagen. Tillgänglig: https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/bokforingslag-19991078_sfs-1999-1078/ (Hämtad: 2026-03-27).
 
 - Riksdagen (1999b) *Revisionslagen (1999:1079)*. Stockholm: Riksdagen. Tillgänglig: https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/revisionslag-19991079_sfs-1999-1079/ (Hämtad: 2026-03-27).
