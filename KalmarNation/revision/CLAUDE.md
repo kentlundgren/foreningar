@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 2.2, 2026-04-03 – ersätter version 2.1 (sparad som CLAUDE.md_old)*
+*Version 2.3, 2026-04-03 – ersätter version 2.2*
 
 ---
 
@@ -282,15 +282,11 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 - BAS-intressenternas Förening (2025) *BAS-kontoplanen 2025*. Stockholm: BAS-intressenternas Förening. Tillgänglig: https://www.bas.se/kontoplaner/ (Hämtad: 2026-04-03). *Anmärkning: BAS-kontoplanen är den i Sverige vanligast förekommande kontoplanen för företag, ideella föreningar och studentnationer. Personalkostnader återfinns i kontoklass 7 (7xxx). Kommuner och statliga myndigheter använder egna kontoplaner baserade på RKR respektive ESV:s standarder.*
 
-- Bokföringsnämnden (2016) *BFNAR 2016:10 Årsredovisning i mindre företag (K2)*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/vagledningar/k2-arsredovisning-i-mindre-foretag/ (Hämtad: 2026-03-27).
+- Bokföringsnämnden (2010) *BFNAR 2010:1 Ideella föreningar och registrerade trossamfund som upprättar förenklat årsbokslut (K1)*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/vagledningar/k1-ideella-foreningar/ (Hämtad: 2026-04-03). *Anmärkning: K1-regelverket gäller för mindre ideella föreningar och registrerade trossamfund som inte är skyldiga att upprätta årsredovisning. Begreppet "K1-format" i bokföringssystem som Visma eEkonomi hänvisar till hur resultatrapporten struktureras enligt detta regelverk.*
 
-- Bokföringsnämnden (2012) *BFNAR 2012:1 Årsredovisning och koncernredovisning (K3)*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/vagledningar/k3-arsredovisning-och-koncernredovisning/ (Hämtad: 2026-03-27).
+- Bokföringsnämnden (2016) *BFNAR 2016:10 Årsredovisning i mindre företag (K2)*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/vagledningar/k2-arsredovisning-i-mindre-foretag/ (Hämtad: 2026-03-27). *Anmärkning: K2 gäller för mindre företag och föreningar som är skyldiga att upprätta årsredovisning men inte når upp till gränsen för K3.*
 
 - FAR (2024) *God revisionssed i Sverige*. Stockholm: FAR förlag. Tillgänglig: https://www.far.se (Hämtad: 2026-03-27).
-
-- International Auditing and Assurance Standards Board (IAASB) (2009) *ISA 240: The Auditor's Responsibilities Relating to Fraud in an Audit of Financial Statements*. New York: IFAC. Tillgänglig: https://www.iaasb.org (Hämtad: 2026-03-27).
-
-- International Auditing and Assurance Standards Board (IAASB) (2009) *ISA 320: Materiality in Planning and Performing an Audit*. New York: IFAC. Tillgänglig: https://www.iaasb.org (Hämtad: 2026-03-27).
 
 - Riksdagen (1995) *Årsredovisningslagen (1995:1554)*. Stockholm: Riksdagen. Tillgänglig: https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/arsredovisningslag-19951554_sfs-1995-1554/ (Hämtad: 2026-03-27).
 
@@ -302,4 +298,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.2, 2026-04-03.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.3, 2026-04-03.*
