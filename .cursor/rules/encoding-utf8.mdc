@@ -1,6 +1,6 @@
 ---
 alwaysApply: true
-description: Alltid UTF-8 - säkerställ att Ä, ä och ö visas korrekt i alla filer
+description: Alltid UTF-8 - säkerställ att å, ä och ö visas korrekt i alla filer
 ---
 
 # Teckenkodning: alltid UTF-8
@@ -10,25 +10,40 @@ description: Alltid UTF-8 - säkerställ att Ä, ä och ö visas korrekt i alla 
 Alla nya filer som skapas ska sparas i **UTF-8** (utan BOM).
 Workspace-inställningen `files.encoding: utf8` i `.vscode/settings.json` säkerställer detta för Cursor.
 
-## För AI-assistenten
+## För AI-assistenten – gäller ALLA filtyper med svenska tecken
 
-- Använd **aldrig** Write-verktyget direkt för `.mdc`-filer med svenska tecken
-- Skapa `.mdc`-filer via **PowerShell** med UTF-8-kodning:
+Använd **aldrig** Write-verktyget eller StrReplace-verktyget direkt för filer som innehåller svenska tecken (å, ä, ö).
+Detta gäller **alla filtyper**: `.mdc`, `.md`, `.html`, `.js`, `.css`, `.txt` m.fl.
+
+**Rätt tillvägagångssätt – skapa eller skriv om filen via PowerShell:**
 
 ```powershell
 $utf8 = New-Object System.Text.UTF8Encoding $false
 [System.IO.File]::WriteAllText($filväg, $text, $utf8)
 ```
 
-- Verifiera alltid svenska tecken efter skrivning:
+**Verifiera alltid svenska tecken efter skrivning (bytes, inte terminal-output):**
 ```powershell
-$text = [System.IO.File]::ReadAllText($filväg, [System.Text.Encoding]::UTF8)
-Write-Output $text
+$bytes = [System.IO.File]::ReadAllBytes($filväg)
+# ö = 0xC3 0xB6, å = 0xC3 0xA5, ä = 0xC3 0xA4
+"Bytes 0-30: $($bytes[0..30] | ForEach-Object { '0x{0:X2}' -f $_ })"
 ```
+Terminalen visar ofta skräptecken även när filen är korrekt – lita på bytes, inte på terminalens textutskrift.
+
+## Undantag: StrReplace och Write-verktyget är OK när...
+
+- Filen saknar svenska tecken (å, ä, ö) helt – t.ex. ren engelska eller HTML-entiteter
+- Du bara ändrar en liten del och de svenska tecknen **inte berörs** av ändringen
 
 ## Är ett fel redan gjort?
 
-Om en fil har fel kodning, konvertera med:
+Om en fil har fel kodning (visas som `?` eller `ï¿½`), återskapa hela filen via PowerShell:
+```powershell
+$utf8 = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText($filväg, $korrektText, $utf8)
+```
+
+Om filen råkat sparas i Windows-1252 i stället för UTF-8, konvertera med:
 ```powershell
 $win = [System.Text.Encoding]::GetEncoding(1252)
 $bytes = [System.IO.File]::ReadAllBytes($filväg)
