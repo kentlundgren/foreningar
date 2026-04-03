@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+description: Påminn användaren när sessionen bör avslutas och föreslå startprompt för ny session
+---
+
+# Sessionshälsa – påminnelse och överlämning
+
+## När ska AI varna?
+
+Varna användaren när **något av följande gäller**:
+
+- Sessionen har pågått länge och innehåller många stora filändringar, långa PDF-läsningar eller komplexa analyser
+- AI börjar tappa tråden eller måste fråga om saker som nämnts tidigare i sessionen
+- Användaren själv frågar om minnet håller på att ta slut
+
+## Vad AI ska göra
+
+1. **Bekräfta** tydligt att en ny session rekommenderas
+2. **Föreslå en startprompt** anpassad till det projekt och läge som gäller
+
+## Mall för startprompt
+
+Föreslå alltid en prompt med följande delar:
+
+```
+Jag fortsätter arbetet med [projektnamn].
+
+Läs gärna dessa filer för kontext:
+• [projektmapp]/CLAUDE.md — revisionsinstruktion / projektinstruktion
+• [projektmapp]/RULES-OVERVIEW.md — alla regler som gäller projektet
+• [projektmapp]/index.html — aktuell status på webbsidan
+
+Aktuellt läge: [kort beskrivning av vad som gjordes i föregående session]
+
+Nästa uppgift: [vad användaren vill göra härnäst]
+```
+
+## Viktigt
+
+- Skriv alltid startprompt på **användarens språk** (svenska om konversationen är på svenska)
+- Inkludera **konkreta filnamn** så att AI i ny session snabbt får rätt kontext
+- Påminn användaren om att **committa pågående ändringar** innan sessionen byts (om sådana finns)

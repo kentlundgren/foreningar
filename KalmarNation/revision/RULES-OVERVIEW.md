@@ -12,6 +12,7 @@ Alla Cursor-regler som gäller detta projekt, både globala och lokala. När du 
 | `version-dating.mdc` | Versionsnummer ska alltid ha exakt datum i formatet ÅÅÅÅ-MM-DD, aldrig bara månad. |
 | `git-workflow.mdc` | Commit och push görs alltid av användaren. AI föreslår men agerar inte utan godkännande. |
 | `rules-overview.mdc` | RULES-OVERVIEW.md ska alltid finnas lokalt i varje projekt och hållas aktuell när regler läggs till eller ändras. |
+| `session-handover.mdc` | Påminn AI att varna när sessionen bör bytas och föreslå startprompt för ny session. |
 | `github-pages-live-link.mdc` | GitHub Pages-sajter: `index.html` ska länka till repot; README ska länka till live. Lokala filer anger URL:er per projekt. |
 
 ---
