@@ -17,13 +17,16 @@
       vertical-align: middle;
       margin-left: 0.4rem;
     }
-    .badge-ok   { background: #c6f6d5; color: #22543d; }
-    .badge-warn { background: #fefcbf; color: #744210; }
-    .badge-open { background: #bee3f8; color: #2a4365; }
+    .badge-ok     { background: #c6f6d5; color: #22543d; }
+    .badge-warn   { background: #fefcbf; color: #744210; }
+    .badge-open   { background: #bee3f8; color: #2a4365; }
+    /* Orange badge for review items based on the full voucher list */
+    .badge-sample { background: #fbd38d; color: #7b341e; }
     @media (prefers-color-scheme: dark) {
-      .badge-ok   { background: #276749; color: #c6f6d5; }
-      .badge-warn { background: #7b4710; color: #fefcbf; }
-      .badge-open { background: #2b4c7e; color: #bee3f8; }
+      .badge-ok     { background: #276749; color: #c6f6d5; }
+      .badge-warn   { background: #7b4710; color: #fefcbf; }
+      .badge-open   { background: #2b4c7e; color: #bee3f8; }
+      .badge-sample { background: #7b341e; color: #fbd38d; }
     }
     /* Small secondary text */
     .meta {
@@ -181,29 +184,49 @@
             </tr>
             <tr>
               <td>
-                <strong>Sample check – vouchers (A1, A22, A452)</strong>
-                <div class="meta">Three randomly selected accounting entries are checked against original source documents (receipts and invoices).</div>
+                <strong>Sample check – supplier invoices (series A, ~452 entries)</strong>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">Series A is likely supplier invoices (food, drink, consumables). Select a sample – large amounts plus random entries – and verify each invoice exists, the amount matches, and it is coded to the right account.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting documentation</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Sample check – outgoing payments (series U, ~453 entries)</strong>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">Series U is likely outgoing supplier payments. Verify payments match invoices and check for any payments to unusual recipients.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting documentation</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Sample check – manual entries (series M, ~137 entries)</strong>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">Manual entries (accruals, corrections) are created without an external document – extra sensitive. Check a selection and ask what the purpose of each entry is.</div>
               </td>
               <td><span class="badge badge-open">Awaiting documentation</span></td>
             </tr>
             <tr>
               <td>
                 <strong>Sample check – account 5010 (rent)</strong>
-                <div class="meta">All rent payments during 2025 reviewed and verified against the lease agreement.</div>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">All rent payments during 2025 reviewed and verified against the lease agreement. A good example of an account-focused sample check.</div>
               </td>
               <td><span class="badge badge-open">Awaiting documentation</span></td>
             </tr>
             <tr>
               <td>
-                <strong>Receivables – age analysis</strong>
-                <div class="meta">Is there money the association is waiting to receive? How old are these amounts, and are they realistic to collect?</div>
+                <strong>Receivables – age analysis of customer invoices (series K, ~23 entries)</strong>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">Series K is likely customer invoices. Request the accounts receivable ledger: are there unpaid invoices older than 90 days? An old unpaid invoice is an overstatement of assets.</div>
               </td>
               <td><span class="badge badge-open">Not started</span></td>
             </tr>
             <tr>
               <td>
                 <strong>Review of unusual transactions</strong>
-                <div class="meta">Are there payments without documentation, duplicate payments, or other discrepancies that could indicate errors or irregularities?</div>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">Are there duplicate amounts, round numbers without documentation, gaps in numbering sequences, or payments to unusual recipients? Searched across the full voucher list.</div>
               </td>
               <td><span class="badge badge-open">Not started</span></td>
             </tr>

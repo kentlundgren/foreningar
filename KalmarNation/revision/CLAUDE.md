@@ -181,6 +181,65 @@ Kontrollera att: kontonummer och verifikation stämmer överens, momshantering �
 
 > *Skillnad mot större organisation:* En stor revision använder statistiska urvalsmetoder och fastställda stickprovsstorlekar baserade på matematiska modeller (t.ex. MUS, Monetary Unit Sampling). För en liten organisation är ett rimligt antal manuellt valda stickprov tillräckligt – poängen är att kontrollera att bokföringen är konsekvent och spårbar.
 
+#### 6.1.1 Verifikationsserier – vad de troligen representerar
+
+Bokföringssystem som Visma eEkonomi delar upp bokföringsunderlagen i **serier** – en bokstav per dokumenttyp. Exakt vilken serie som används för vad beror på hur systemet konfigurerats av den enskilda organisationen. **Börja alltid med att fråga ekonomiansvarig:** "Vilken serie används för leverantörsfakturor? För kundfakturor? Vad är serie X?"
+
+Kalmar Nation har följande serier i verifikationslistan för 2025 (antal = ungefärlig volym per serie):
+
+| Serie | Trolig innebörd | Volym | Prioritet för stickprov |
+|---|---|---|---|
+| A (→ 452) | Leverantörsfakturor – inköp av mat, dryck, förbrukningsvaror | Hög | **Hög** – stickprov rekommenderas |
+| B (→ 592) | Bankverifikationer – kontoutdragsposter, bankkostnader | Mycket hög | Medium – täcks delvis av bankavstämning |
+| K (→ 23) | Kundfakturor – fakturerade kunder/event | Låg | **Hög** – kopplas till fordringsgranskning |
+| M (→ 137) | Manuella verifikationer – periodiseringar, korrigeringar | Medium | **Hög** – manuella poster är extra känsliga |
+| N (→ 269) | Kassainbetalningar eller Nets/kortbetalningar | Medium–hög | Medium |
+| U (→ 453) | Utbetalningar/betalfiler – utbetalda leverantörsbetalningar | Hög | **Hög** – stickprov rekommenderas |
+| Z (→ 333) | Troligen Zettle (kassaregister, bar- och caféintäkter) | Medium–hög | Medium |
+| C, D, H, I, R | Specialserier – fråga ekonomiansvarig vad dessa innehåller | Låg (1–17 st) | Granska alltid serier med få poster – vad är de? |
+
+> **Obs:** Ovanstående är en kvalificerad gissning baserad på vanliga Visma-konfigurationer för föreningar med bar/caféverksamhet. Bekräfta alltid mot ekonomiansvarig.
+>
+> Notera att serien med lägst antal (C1, D1, H2) ofta är de mest ovanliga posterna – de bör alltid tittas på, just för att de är få och avvikande.
+
+**Behöver revisorn granska ALLA serier?** Nej – men revisorn bör:
+- Veta vad varje serie representerar
+- Granska minst ett stickprov från de högprioriterade serierna (A, K, M, U)
+- Titta på alla poster i de serier med låg volym (C, D, H, I, R) – när det bara finns 1–17 poster är det lika snabbt som ett stickprov
+
+#### 6.1.2 Vad gör man med en fullständig verifikationslista?
+
+En fullständig verifikationslista i datumordning – med verifikationsnummer, serie, datum, belopp och beskrivning – är ett av de mest värdefulla verktygen i revisionen. Så här används den:
+
+**Steg 1 – Förstå strukturen**
+Hur många verifikationer finns per serie? Vilka är de dominerande? Finns ovanliga serier du inte förstår? Fråga ekonomiansvarig om allt som är oklart innan du börjar granska.
+
+**Steg 2 – Välj ett representativt stickprov**
+Välj ut verifikationer från de viktigaste serierna (leverantörsfakturor, kundfakturor, manuella poster). Ta:
+- Några av de **största beloppen** i respektive serie (stor ekonomisk påverkan om fel)
+- Några **slumpmässiga poster** (ger en bild av vardagliga transaktioner)
+- Eventuellt de **sista posterna i serien** – bokslutsverifikationer är ofta mer komplexa
+
+**Steg 3 – Granska leverantörsfakturorna (serie A/U eller liknande)**
+Det viktigaste stickprovet. För varje vald verifikation, kontrollera:
+- Finns ett fysiskt underlag (faktura, kvitto, skannad kopia)?
+- Stämmer beloppet på fakturan med det bokförda beloppet?
+- Är kontot rimligt – är hyra bokförd på hyreskontot, mat på livsmedelskontot?
+- Är fakturan ställd till Kalmar Nation (inte en privat faktura)?
+- Är datumet rimligt – bokfördes fakturan i rätt period?
+- Om moms förekommer: är momshanteringen korrekt?
+
+**Steg 4 – Håll extra koll på manuella verifikationer (serie M)**
+Manuella poster är skapade direkt av ekonomiansvarig utan ett externt underlag (som en faktura). De är nödvändiga för periodiseringar och korrigeringar, men är också den post-typ som lättast kan missbrukas. Fråga alltid: vad är syftet med denna manuella post?
+
+**Steg 5 – Se upp för varningssignaler i listan**
+Håll ögonen öppna för:
+- **Runda belopp utan underlag** (t.ex. 5 000 kr utan faktura)
+- **Dubbla belopp** – samma belopp bokfört två gånger till samma leverantör
+- **Hopp i nummerserierna** – om A345 följs av A350, var är A346–A349? Raderade verifikationer kan tyda på problem
+- **Poster sent i december** eller strax efter bokslutet – periodavslutsposter kräver extra granskning
+- **Ovanliga mottagare** – betalningar till privatpersoner som inte kan kopplas till ett styrelsebeslut
+
 ### 6.2 Bankavstämning
 
 Kontoutdrag och/eller engagemangssammanställning från banken ska stämma överens med vad som redovisas som bankbehållning i balansräkningen per 31 december.
@@ -190,13 +249,30 @@ Kontoutdrag och/eller engagemangssammanställning från banken ska stämma över
 
 ### 6.3 Fordringar – åldersanalys och osäkra fordringar
 
-Om organisationen har fordringar redovisade i balansräkningen, begär en åldersanalys:
+**Vad är en fordran – och varför kan det vara ett problem?**
 
-- Vilken är den äldsta fordringen och hur gammal är den?
-- Har organisationen bedömt att fordringen fortfarande är realiserbar (dvs. kan den förväntas betalas)?
-- Om en fordran är gammal och det finns skäl att tvivla, ska nedskrivning diskuteras
+En fordran uppstår när föreningen har levererat något och fakturerat kunden, men ännu inte fått betalt. I praktiken: Kalmar Nation skickar en **kundfaktura** (serie K i Visma) till ett företag eller en organisation efter ett event. Tills fakturan är betald syns beloppet som en tillgång i balansräkningen – "pengar vi ska ha". Om fakturan aldrig betalas är det i realiteten en förlust som föreningen inte redovisat.
 
-Förklara: en fordran som aldrig betalas ger en missvisande bild av tillgångarna. God redovisningssed kräver att osäkra fordringar skrivs av.
+**Länken till verifikationslistan:** Kundfakturor (serie K) är alltså det underlag som skapar fordringar. Det är revisionens uppgift att kontrollera att dessa fakturor faktiskt betalas – eller att de skrivs av om de inte förväntas betalas. En fordran som år efter år finns kvar i balansräkningen utan att ha betalats ger en missvisande bild av föreningens tillgångar.
+
+**Vad ska revisorn göra?**
+
+1. **Begär kundreskontra** – en förteckning från ekonomiansvarig över alla utestående kundfakturor med fakturadatum, belopp och betalningsstatus (betald/obetald). Jämför totalsumman med vad som redovisas som fordringar i balansräkningen – de ska stämma.
+
+2. **Gör en åldersanalys** – sortera de obetalda fakturorna efter hur gamla de är:
+
+| Ålder på fordran | Bedömning | Vad revisorn bör fråga |
+|---|---|---|
+| Under 30 dagar | Normal – betalning förväntas | Inga åtgärder |
+| 30–90 dagar | Uppmärksamma | Har en påminnelse skickats? |
+| 90–180 dagar | Oroväckande | Finns en betalningsplan? Har kontakt tagits? |
+| Över 180 dagar | Troligen osäker | Bör skrivas av – annars övervärderas tillgångarna |
+
+3. **Kontrollera rimligheteten** – för varje gammal fordran: Vet ekonomiansvarig vem kunden är? Är det rimligt att pengarna kommer in? Finns dokumentation på att åtgärd vidtagits (påminnelse, inkassokrav)?
+
+4. **Diskutera nedskrivning** om fordran är gammal och bedöms osäker. Det innebär att beloppet tas bort från tillgångssidan och redovisas som en kostnad – vilket ger en rättvisande bild.
+
+> *Praktisk kontroll:* Jämför alltid totalbeloppet i kundreskontra mot fordringarna i balansräkningen. Om de inte stämmer har något bokförts fel eller utelämnats.
 
 ### 6.4 Kontroll av att resultat och eget kapital hänger ihop
 

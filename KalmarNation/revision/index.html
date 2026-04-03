@@ -17,13 +17,16 @@
       vertical-align: middle;
       margin-left: 0.4rem;
     }
-    .badge-ok   { background: #c6f6d5; color: #22543d; }
-    .badge-warn { background: #fefcbf; color: #744210; }
-    .badge-open { background: #bee3f8; color: #2a4365; }
+    .badge-ok     { background: #c6f6d5; color: #22543d; }
+    .badge-warn   { background: #fefcbf; color: #744210; }
+    .badge-open   { background: #bee3f8; color: #2a4365; }
+    /* Orange badge för granskningsmoment som utgår från verifikationslistan */
+    .badge-sample { background: #fbd38d; color: #7b341e; }
     @media (prefers-color-scheme: dark) {
-      .badge-ok   { background: #276749; color: #c6f6d5; }
-      .badge-warn { background: #7b4710; color: #fefcbf; }
-      .badge-open { background: #2b4c7e; color: #bee3f8; }
+      .badge-ok     { background: #276749; color: #c6f6d5; }
+      .badge-warn   { background: #7b4710; color: #fefcbf; }
+      .badge-open   { background: #2b4c7e; color: #bee3f8; }
+      .badge-sample { background: #7b341e; color: #fbd38d; }
     }
     /* Liten sekundär text */
     .meta {
@@ -181,29 +184,49 @@
             </tr>
             <tr>
               <td>
-                <strong>Stickprov – verifikationer (A1, A22, A452)</strong>
-                <div class="meta">Tre slumpmässigt valda bokföringsverifikationer stäms av mot originalunderlag (kvitton och fakturor).</div>
+                <strong>Stickprov – leverantörsfakturor (serie A, ~452 st)</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Serie A bedöms vara leverantörsfakturor (mat, dryck, förbrukning). Välj ut ett antal – stora belopp + slumpmässiga – och kontrollera att varje faktura finns, stämmer i belopp och är bokförd på rätt konto.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar underlag</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Stickprov – utbetalningar (serie U, ~453 st)</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Serie U bedöms vara utbetalda leverantörsbetalningar. Kontrollera att betalningar matchar fakturor och att inga betalningar till ovanliga mottagare förekommer.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar underlag</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Stickprov – manuella verifikationer (serie M, ~137 st)</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Manuella poster (periodiseringar, korrigeringar) skapas utan externt underlag – extra känsliga. Kontrollera ett urval och fråga vad syftet är med varje post.</div>
               </td>
               <td><span class="badge badge-open">Inväntar underlag</span></td>
             </tr>
             <tr>
               <td>
                 <strong>Stickprov – konto 5010 (hyra)</strong>
-                <div class="meta">Alla hyresbetalningar under 2025 genomgångna och stämda mot hyresavtal.</div>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Alla hyresbetalningar under 2025 genomgångna och stämda mot hyresavtal. Bra exempel på konto-fokuserat stickprov.</div>
               </td>
               <td><span class="badge badge-open">Inväntar underlag</span></td>
             </tr>
             <tr>
               <td>
-                <strong>Fordringar – åldersanalys</strong>
-                <div class="meta">Finns pengar som föreningen väntar på att få in? Hur gamla är de och är de realistiska att driva in?</div>
+                <strong>Fordringar – åldersanalys av kundfakturor (serie K, ~23 st)</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Serie K bedöms vara kundfakturor. Begär kundreskontra och kontrollera: finns obetalda fakturor som är mer än 90 dagar gamla? En gammal obetald faktura är en övervärdering av tillgångarna.</div>
               </td>
               <td><span class="badge badge-open">Ej påbörjad</span></td>
             </tr>
             <tr>
               <td>
                 <strong>Granskning av ovanliga transaktioner</strong>
-                <div class="meta">Finns betalningar utan underlag, dubbelutbetalningar eller andra avvikelser som kan tyda på fel eller oegentligheter?</div>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Finns dubbla belopp, runda belopp utan underlag, hopp i nummerserierna, eller betalningar till ovanliga mottagare? Söks i hela verifikationslistan.</div>
               </td>
               <td><span class="badge badge-open">Ej påbörjad</span></td>
             </tr>
