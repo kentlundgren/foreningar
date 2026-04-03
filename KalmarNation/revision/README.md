@@ -31,8 +31,7 @@ Mer om det förhållningssättet:
 | `RULES-OVERVIEW.md` | Alla regler (globala + lokala) för projektet i samlad vy. |
 | `index.html` / `index_eng.html` | Granskningsstatus: alla kontroller med statusbadges (sv/en). |
 | `generellt.html` / `generellt_eng.html` | Lättläst guide om revision för icke-ekonomer (sv/en). |
-| `CLAUDE_Revisionsinstruktion_lattlast.md` | Tillgänglig, icke-teknisk beskrivning av revisionsprocessen. |
-| `CLAUDE.docx` / `CLAUDE.pdf` | Formaterad kopia av CLAUDE.md (vid behov för utskrift/delning). |
+| `CLAUDE.pdf` | Formaterad kopia av CLAUDE.md (vid behov för utskrift/delning). |
 | `2025/`, `2026/`, `1990/` | Underlagsfiler: rapporter och PDF kopplade till granskningen. |
 
 ## GitHub
