@@ -1,83 +1,37 @@
 ---
 alwaysApply: true
-description: RULES-OVERVIEW.md ska alltid finnas lokalt och h
-å
-llas aktuell
+description: RULES-OVERVIEW.md ska alltid finnas lokalt och hållas aktuell
 ---
 
-# RULES-OVERVIEW.md - lokal regelsammanfattning
+# RULES-OVERVIEW.md – lokal regelsammanfattning
 
 ## Regel
 
 Varje projekt under ClaudeCowork ska ha en **RULES-OVERVIEW.md** i sin rotmapp.
-Den ska lista b
-å
-de globala och lokala regler s
-å
- att hela regelbilden syns p
-å
- projektniv
-å
-.
+Den ska lista både globala och lokala regler så att hela regelbilden syns på projektnivå.
 
-## N
-ä
-r ska den uppdateras?
+## När ska den uppdateras?
 
-Uppdatera RULES-OVERVIEW.md n
-ä
-r:
+Uppdatera RULES-OVERVIEW.md när:
+
 - En ny global regel skapas i ClaudeCowork/.cursor/rules/
 - En ny lokal regel skapas i projektets .cursor/rules/
-- En befintlig regel 
-ä
-ndrar inneh
-å
-ll eller syfte
-- Datumet 'Senast uppdaterad' ska alltid 
-ä
-ndras till aktuellt datum (ÅÅÅÅ-MM-DD)
+- En befintlig regel ändrar innehåll eller syfte
+- Datumet "Senast uppdaterad" ska alltid ändras till aktuellt datum (ÅÅÅÅ-MM-DD)
 
-## P
-å
-minnelse till AI-assistenten
+## Påminnelse till AI-assistenten
 
-N
-ä
-r du skapar eller 
-ä
-ndrar regler, p
-å
-minn alltid anv
-ä
-ndaren:
-1. Globala regler (ClaudeCowork/.cursor/rules/) g
-ä
-ller ALLA projekt automatiskt
-2. Lokala regler (.cursor/rules/ i projektmappen) g
-ä
-ller bara det projektet
-3. RULES-OVERVIEW.md 
-ä
-r ett register - inte sj
-ä
-lva reglerna - och ska h
-å
-llas synkad
-4. Write-verktyget f
-ö
-rst
-ö
-r svenska tecken - skapa alltid .mdc-filer via PowerShell
+När du skapar eller ändrar regler, påminn alltid användaren:
 
-## Format f
-ö
-r RULES-OVERVIEW.md
+1. Globala regler (ClaudeCowork/.cursor/rules/) gäller ALLA projekt automatiskt
+2. Lokala regler (.cursor/rules/ i projektmappen) gäller bara det projektet
+3. RULES-OVERVIEW.md är ett register – inte själva reglerna – och ska hållas synkad
+4. Write-verktyget förstör svenska tecken – skapa alltid .mdc-filer via PowerShell
+
+## Format för RULES-OVERVIEW.md
 
 | Fil | Beskrivning |
-|---|---|
-| exempel.mdc | Kort beskrivning av vad regeln g
-ö
-r |
+| --- | --- |
+| exempel.mdc | Kort beskrivning av vad regeln gör |
 
-Avsluta alltid med: '## Senast uppdaterad: ÅÅÅÅ-MM-DD'
+Avsluta alltid med: `## Senast uppdaterad: ÅÅÅÅ-MM-DD`

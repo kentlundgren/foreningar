@@ -1,89 +1,34 @@
 ---
+description: Git-workflow – commit och push görs alltid av användaren, aldrig automatiskt av AI
 alwaysApply: true
-description: Commit och push g
-ö
-rs alltid av anv
-ä
-ndaren, aldrig automatiskt av AI
 ---
 
-# Git-workflow: commit och push 
-ä
-r anv
-ä
-ndarens ansvar
+# Git-workflow: commit och push är användarens ansvar
 
 ## Regel
 
-AI-assistenten ska **aldrig** k
-ö
-ra git commit eller git push p
-å
- eget initiativ.
+AI-assistenten ska **aldrig** köra `git commit` eller `git push` på eget initiativ.
 
-## Till
-å
-tet f
-ö
-r AI
-- git status - visa vad som 
-ä
-ndrats
-- git diff - visa exakta 
-ä
-ndringar
-- git add - stagea filer (om anv
-ä
-ndaren explicit ber om det)
-- git log - visa historik
-- git fetch / git pull - h
-ä
-mta fj
-ä
-rrhistorik
+## Tillåtet för AI
 
-## Inte till
-å
-tet utan explicit instruktion
-- git commit - aldrig utan att anv
-ä
-ndaren uttryckligen ber om det
-- git push - aldrig utan att anv
-ä
-ndaren godk
-ä
-nt commiten
+- `git status` – visa vad som ändrats
+- `git diff` – visa exakta ändringar
+- `git add` – stagea filer (om användaren explicit ber om det)
+- `git log` – visa historik
+- `git fetch` / `git pull` – hämta fjärrhistorik (om användaren ber om det)
 
-## Arbetsfl
-ö
-de
-1. AI g
-ö
-r 
-ä
-ndringar
-2. Anv
-ä
-ndaren granskar 
-ä
-ndringarna i Cursor
-3. Anv
-ä
-ndaren s
-ä
-ger 'committa' eller 'pusha' - d
-å
- utf
-ö
-r AI kommandot
-4. AI f
-ö
-resl
-å
-r commit-meddelande men v
-ä
-ntar p
-å
- godk
-ä
-nnande
+## Inte tillåtet utan explicit instruktion
+
+- `git commit` – aldrig utan att användaren har sett ändringarna i Cursor och uttryckligen ber om commit
+- `git push` – aldrig utan att användaren har godkänt commiten
+
+## Arbetsflöde
+
+1. AI gör kodändringar
+2. Användaren granskar ändringarna i Cursor
+3. Användaren säger "committa" eller "pusha" → då utför AI kommandot
+4. AI föreslår ett commit-meddelande men väntar på godkännande
+
+## Varför
+
+Användaren vill alltid se ändringarna levande i Cursor-editorn innan de versionshanteras och publiceras på GitHub Pages.
