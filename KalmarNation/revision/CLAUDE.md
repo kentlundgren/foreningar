@@ -215,19 +215,25 @@ De två kontona kompletterar varandra: 4901 är systemets beräknade förändrin
 
 **Lekmannarevisor:** En av föreningens medlemmar vald revisor som inte nödvändigtvis är auktoriserad eller utbildad revisor, men som ändå har ansvar för att granska räkenskaperna.
 
-**Förvaltningsberättelse:** En formell del av årsredovisningen (ÅRL 6 kap.) som beskriver verksamhetens utveckling, resultat och ställning samt viktiga händelser under räkenskapsåret. Krävs av organisationer som är årsredovisningspliktiga (K2/K3). Kalmar Nation som K1-organisation är inte skyldig att upprätta förvaltningsberättelse.
+**Förvaltningsberättelse:** En formell del av årsredovisningen (ÅRL 6 kap.) som beskriver verksamhetens utveckling, resultat och ställning samt viktiga händelser under räkenskapsåret. Krävs av organisationer som är årsredovisningspliktiga (K2/K3). Kalmar Nation är inte skyldig att upprätta årsredovisning och behöver därmed inte heller upprätta förvaltningsberättelse.
 
 **Verksamhetsberättelse:** En icke-formell berättelse om vad föreningen gjort under året – vilka aktiviteter som genomförts, hur uppdraget fullgjorts, viktiga beslut. Ideella föreningar som inte upprättar årsredovisning (K1) har ingen lagstadgad skyldighet att upprätta förvaltningsberättelse, men producerar typiskt en verksamhetsberättelse som presenteras på årsmötet och fastställs av föreningsstämman. Verksamhetsberättelsen är viktig för revisorn vid granskning av **förvaltningen** – det är i denna handling styrelsen redogör för hur de förvaltat föreningen i enlighet med stadgar och stämmobeslut.
 
-**K1 kontra K2 – vad Kalmar Nation faktiskt följer**
+**Tre nivåer för ideella föreningar – var befinner sig Kalmar Nation?**
 
-Kalmar Nation är, utifrån sin storlek (omsättning ~4 mkr, balansomslutning ~10 mkr, färre än 50 anställda), en **K1-organisation**. Det innebär att de inte är skyldiga att upprätta årsredovisning och formellt inte heller behöver tillämpa den detaljerade lagerredovisning (konton 4901–4909 och 7741–7749) som hör hemma i K2/ÅRL-baserad redovisning.
+BFN:s regelverk delar upp ideella föreningar i tre nivåer beroende på storlek (Bokföringsnämnden, u.å.b):
 
-I praktiken är deras Visma eEkonomi konfigurerat med **ÅRL-strukturerade rapporter** (K2-format) och dessa konton används faktiskt i bokföringen. Kalmar Nation tillämpar alltså frivilligt ett mer fullständigt redovisningssätt än vad K1 kräver – något som ger bättre transparens och är positivt ur revisionsperspektiv.
+| Nivå | Krav | Gäller när |
+|---|---|---|
+| **Förenklat K1-bokslut** (BFNAR 2010:1) | Resultaträkning + balansräkning | Nettoomsättning normalt ≤ 3 mkr |
+| **K2-baserat årsbokslut** (BFNAR 2017:3) | Resultaträkning + balansräkning + upplysningar | Nettoomsättning > 3 mkr, ej "större förening" |
+| **Årsredovisning** (K2/K3) | Resultaträkning + balansräkning + noter + förvaltningsberättelse | "Större förening": ≥ 1 av – fler än 50 anställda, balansomslutning > 40 mkr, nettoomsättning > 80 mkr – under vart och ett av de två senaste räkenskapsåren |
 
-Konsekvens för revisorn: analyserna av lagerförändringar, nedskrivningslogik och skillnaden mellan resultatrapportens och balansrapportens beräknade resultat är relevanta *just därför att* Kalmar Nation faktiskt bokar dessa poster – inte för att de är tvingade att göra det. Om en liknande organisation i stället använde ren K1-redovisning (förenklat årsbokslut) skulle dessa analyser vara mindre relevanta.
+**Kalmar Nations klassificering:** Nettoomsättningen är ~4,3 mkr (2025) och ~3,1 mkr (2024), vilket konsekvent överstiger gränsen om 3 mkr. Kalmar Nation ska därför upprätta ett **K2-baserat årsbokslut** (BFNAR 2017:3) – inte ett förenklat K1-bokslut, och inte heller en fullständig årsredovisning. Föreningen uppfyller inget av kriterierna för "större förening" (ÅRL 1:3).
 
-Gränsen K1/K2 för ideella föreningar: en ideell förening är skyldig att upprätta årsredovisning (och tillämpa K2) om den under de senaste två räkenskapsåren uppfyllt minst **två av tre** kriterier: (1) fler än 50 anställda, (2) balansomslutning > 40 mkr, (3) nettoomsättning > 80 mkr (ÅRL 1:3). Kalmar Nation uppfyller inget av dessa kriterier.
+I praktiken är deras Visma eEkonomi konfigurerat med **ÅRL-strukturerade rapporter** (K2-format) och lagerförändrings- och nedskrivningskonton (4901–4909 och 7741–7749) används faktiskt i bokföringen – i linje med vad K2-bokslutet kräver.
+
+Konsekvens för revisorn: analyserna av lagerförändringar, nedskrivningslogik och skillnaden mellan resultatrapportens och balansrapportens beräknade resultat är direkt relevanta eftersom Kalmar Nation är skyldig att tillämpa ett fullständigt K2-baserat bokslut. Dessa poster ska vara bokförda; om de saknas är det en brist.
 
 ---
 
@@ -438,7 +444,7 @@ En lekmannarevisor i en ideell förening som Kalmar Nation utför sin granskning
 
 - **Föreningens stadgar** – stadgarna anger vem som utser revisor, vad revisorn ska granska och när revisionsberättelsen ska lämnas. Stadgarna är det primära styrande dokumentet.
 - **Bokföringslagen (BFL, 1999:1078)** – reglerar hur bokföringen ska skötas och vilka underlag som krävs.
-- **BFNAR 2010:1 (K1)** – det redovisningsnormverk som gäller för Kalmar Nation som K1-organisation (förenklat bokslut, inga formella krav på årsredovisning).
+- **BFNAR 2017:3 (K2 – årsbokslut)** – det redovisningsnormverk som gäller för Kalmar Nation. Föreningen är skyldig att upprätta ett K2-baserat **årsbokslut** (nettoomsättning > 3 mkr), men inte en fullständig årsredovisning.
 - **God revisionssed** för lekmannarevisorer – det finns ingen lag som detaljreglerar lekmannarevisionen, men revisorn ska agera omsorgsfullt, objektivt och i föreningens och medlemmarnas intresse.
 
 Ange alltid i revisionsberättelsen vilket räkenskapsår och vilken organisation som granskats, och att granskningen utförts av föreningsvald lekmannarevisor.
