@@ -21,7 +21,7 @@ Föreslå uppdatering av `CLAUDE.md` när konversationen leder till insikter som
 1. **Föreslå alltid - uppdatera aldrig automatiskt.** Säg: *"Detta verkar vara en generell princip värd att lägga till i CLAUDE.md - vill du att jag föreslår en formulering?"*
 2. **Visa förslaget tydligt** innan filen ändras, så användaren kan granska och godkänna
 3. **Ändra endast** det avsnitt i CLAUDE.md som berörs - rör inte övrig text
-4. Commit och push görs alltid av användaren (se `git-workflow.mdc`)
+4. Commit och push görs alltid av användaren (se global `ClaudeCowork/.cursor/rules/git-workflow.mdc`)
 
 ## Vad som INTE ska läggas till
 

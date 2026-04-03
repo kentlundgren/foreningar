@@ -1,6 +1,6 @@
 # Regelöversikt – KalmarNation/revision
 
-Alla Cursor-regler som gäller detta projekt, både globala och lokala. Globala regler finns i `ClaudeCowork/.cursor/rules/` och gäller alla projekt automatiskt. Lokala regler finns i `KalmarNation/revision/.cursor/rules/` och gäller bara detta projekt.
+Alla Cursor-regler som gäller detta projekt, både globala och lokala. När du öppnar **ClaudeCowork** som workspace-rot laddas globala regler automatiskt från `ClaudeCowork/.cursor/rules/`. I `KalmarNation/revision/.cursor/rules/` ligger **endast projektspecifika** regler – inga kopior av globala regler (undviker dubbletter och motsägelser).
 
 ---
 
@@ -21,9 +21,13 @@ Alla Cursor-regler som gäller detta projekt, både globala och lokala. Globala 
 | --- | --- |
 | `sv-eng-sync.mdc` | Varje ändring i en svensk HTML-fil speglas omedelbart i motsvarande engelsk fil. |
 | `github-pages-live-link.mdc` | Alla index.html-filer ska ha diskret länk till GitHub-repot. README.md ska ha länk till live-sidan. |
-| `git-workflow.mdc` | Lokal kopia av global regel. |
 | `claude-md-updates.mdc` | CLAUDE.md uppdateras när nya revisionsprinciper identifieras. AI föreslår alltid först. |
-| `encoding-utf8.mdc` | Lokal kopia av global regel – UTF-8, svenska tecken via PowerShell. |
+
+---
+
+## Viktigt om workspace
+
+Om du i stället öppnar **endast** mappen `KalmarNation/revision` som egen workspace-rot (utan föräldermappen ClaudeCowork) laddas inte de globala reglerna automatiskt. Rekommendation: öppna hela **ClaudeCowork** som workspace så gäller samma globala regler överallt.
 
 ---
 
