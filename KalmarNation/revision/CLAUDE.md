@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 2.1, 2026-04-03 – ersätter tidigare version som nu finns sparad som CLAUDE.md_old*
+*Version 2.2, 2026-04-03 – ersätter version 2.1 (sparad som CLAUDE.md_old)*
 
 ---
 
@@ -100,7 +100,23 @@ Använd alltid följande förklaringar när dessa begrepp förekommer, så att f
 
 **Utgående balans (UB):** Det värde ett konto eller eget kapital har vid årets slut (31 december).
 
-**Beräknat resultat:** Det resultat som bokföringssystemet beräknar löpande under året, baserat på samtliga bokförda transaktioner. Begreppet används i t.ex. Visma och liknande system. Observera att **beräknat resultat i resultatrapporten kan skilja sig från beräknat resultat i balansrapporten** om organisationen använder konton för lagerförändringar (typiskt konto 4901–4909) och lagernedskrivningar (typiskt konto 7741–7749) som faller utanför K1-standardformatet i resultatrapporten men ingår i balansrapportens beräkning. Skillnaden är inte ett bokföringsfel – den beror på hur rapporten är uppbyggd.
+**Beräknat resultat:** Det resultat som bokföringssystemet beräknar löpande under året, baserat på samtliga bokförda transaktioner. Begreppet används i t.ex. Visma och liknande system. Observera att **beräknat resultat i resultatrapporten kan skilja sig från beräknat resultat i balansrapporten** om organisationen använder konton för lagerförändringar (typiskt konto 4901–4909) och lagernedskrivningar (typiskt konto 7741–7749) som faller utanför K1-standardformatet i resultatrapporten men ingår i balansrapportens beräkning. Skillnaden är inte ett bokföringsfel – den beror på hur rapporten är uppbyggd. **Viktigt att förstå:** Att dessa konton "faller utanför K1-formatet" i resultatrapporten betyder *inte* att de är obokade eller saknas i systemet. De är fullt ut bokade och syns i balansrapportens beräknade resultat. Det handlar uteslutande om hur rapporten presenterar siffrorna, inte om att transaktionerna fattas. Det beräknade resultatet i *balansrapporten* är det som ska stämma mot förändringen i eget kapital.
+
+**K1-rapport och K1-format:** K1 (BFNAR 2016:10, *Årsredovisning i mindre företag*) är ett förenklat regelverk för redovisning som gäller för mindre företag och organisationer i Sverige. I bokföringssystem som Visma eEkonomi används begreppet "K1-format" för att beskriva hur resultatrapporten är strukturerad. Det är viktigt att känna till vad som ingår respektive inte ingår i detta format, eftersom det direkt påverkar hur man tolkar siffrorna.
+
+*Vad som ingår i K1-formatets resultatrapport:*
+- Rörelsens intäkter (konto 3xxx)
+- Varuinköp och direkta kostnader (konto 4xxx, men *exklusive* lagerförändrings- och nedskrivningskonton)
+- Övriga externa kostnader (konto 5xxx–6xxx)
+- Personalkostnader (konto 7xxx, men *exklusive* lagernedskrivningskonton)
+- Avskrivningar (konto 78xx)
+- Finansiella poster (konto 8xxx)
+
+*Vad som inte visas separat i K1-formatets resultatrapport – men ändå är bokfört och syns i balansrapporten:*
+- Lagerförändringar (konto 4901–4909): förändring av varulagrets bokförda värde under året
+- Lagernedskrivningar (konto 7741–7749): nedskrivning av varulager till verkligt värde (t.ex. vid fysisk inventering)
+
+*Konsekvens:* En organisation med varulager (t.ex. bar- eller caféverksamhet) kommer att se olika summor för "beräknat resultat" i resultatrapporten och balansrapporten. Balansrapportens siffra är den korrekta att använda vid kontroll mot eget kapital. Skillnaden är ett presentationsproblem, inte ett bokföringsfel.
 
 **Väsentlighet (materialitet):** En bedömning av hur stora fel eller avvikelser som behöver rapporteras. Det som är väsentligt är det som kan påverka en utomståendes bild av organisationens ekonomi.
 
@@ -173,7 +189,7 @@ Det vill säga:
 - Rättelse av tidigare års fel som bokförts direkt mot eget kapital
 - Obokning som inte återspeglas i resultaträkningen
 
-> **Varning – lagerförändringar utanför K1-format:** I organisationer med varulager (t.ex. föreningar med bar- eller caféverksamhet) kan resultatrapporten och balansrapporten visa **olika beräknade resultat** om bokföringssystemet placerar lagerförändrings- och nedskrivningskonton utanför K1-standardformatet. Kontrollera alltid vilket belopp balansrapporten anger som beräknat resultat – det är detta belopp som ska stämma mot förändringen i eget kapital, inte nödvändigtvis det belopp som syns i resultatrapportens bottenrad.
+> **Varning – lagerförändringar utanför K1-format:** I organisationer med varulager (t.ex. föreningar med bar- eller caféverksamhet) kan resultatrapporten och balansrapporten visa **olika beräknade resultat** om bokföringssystemet placerar lagerförändrings- och nedskrivningskonton (4901–4909 resp. 7741–7749) utanför K1-standardformatet. Kontrollera alltid vilket belopp balansrapporten anger som beräknat resultat – det är detta belopp som ska stämma mot förändringen i eget kapital, inte nödvändigtvis det belopp som syns i resultatrapportens bottenrad. **Dessa konton är bokade i systemet** – de är inte uteblivna transaktioner som "ännu inte bokförts". Skillnaden mellan de två rapporternas resultat är uteslutande en presentationsskillnad beroende på K1-formatets uppbyggnad. Se avsnitt 4 (K1-rapport och K1-format) för en fullständig förklaring av vad som ingår respektive inte ingår.
 
 ### 6.5 Kontroll av att UB år X = IB år X+1
 
@@ -272,4 +288,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.1, 2026-04-03.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.2, 2026-04-03.*
