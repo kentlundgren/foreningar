@@ -226,10 +226,10 @@ BFN:s regelverk delar upp ideella föreningar i tre nivåer beroende på storlek
 | Nivå | Krav | Gäller när |
 |---|---|---|
 | **Förenklat K1-bokslut** (BFNAR 2010:1) | Resultaträkning + balansräkning | Nettoomsättning normalt ≤ 3 mkr |
-| **K2-baserat årsbokslut** (BFNAR 2017:3) | Resultaträkning + balansräkning + upplysningar | Nettoomsättning > 3 mkr, ej "större förening" |
+| **K2-baserat årsbokslut** ([BFNAR 2017:3](https://www.bfn.se/wp-content/uploads/vl17-3-ab-kons.pdf)) | Resultaträkning + balansräkning + upplysningar | Nettoomsättning > 3 mkr, ej "större förening" |
 | **Årsredovisning** (K2/K3) | Resultaträkning + balansräkning + noter + förvaltningsberättelse | "Större förening": ≥ 1 av – fler än 50 anställda, balansomslutning > 40 mkr, nettoomsättning > 80 mkr – under vart och ett av de två senaste räkenskapsåren |
 
-**Kalmar Nations klassificering:** Nettoomsättningen är ~4,3 mkr (2025) och ~3,1 mkr (2024), vilket konsekvent överstiger gränsen om 3 mkr. Kalmar Nation ska därför upprätta ett **K2-baserat årsbokslut** (BFNAR 2017:3) – inte ett förenklat K1-bokslut, och inte heller en fullständig årsredovisning. Föreningen uppfyller inget av kriterierna för "större förening" (ÅRL 1:3).
+**Kalmar Nations klassificering:** Nettoomsättningen är ~4,3 mkr (2025) och ~3,1 mkr (2024), vilket konsekvent överstiger gränsen om 3 mkr. Kalmar Nation ska därför upprätta ett **K2-baserat årsbokslut** ([BFNAR 2017:3](https://www.bfn.se/wp-content/uploads/vl17-3-ab-kons.pdf)) – inte ett förenklat K1-bokslut, och inte heller en fullständig årsredovisning. Föreningen uppfyller inget av kriterierna för "större förening" (ÅRL 1:3).
 
 I praktiken är deras Visma eEkonomi konfigurerat med **ÅRL-strukturerade rapporter** (K2-format) och lagerförändrings- och nedskrivningskonton (4901–4909 och 7741–7749) används faktiskt i bokföringen – i linje med vad K2-bokslutet kräver.
 
@@ -444,7 +444,7 @@ En lekmannarevisor i en ideell förening som Kalmar Nation utför sin granskning
 
 - **Föreningens stadgar** – stadgarna anger vem som utser revisor, vad revisorn ska granska och när revisionsberättelsen ska lämnas. Stadgarna är det primära styrande dokumentet.
 - **Bokföringslagen (BFL, 1999:1078)** – reglerar hur bokföringen ska skötas och vilka underlag som krävs.
-- **BFNAR 2017:3 (K2 – årsbokslut)** – det redovisningsnormverk som gäller för Kalmar Nation. Föreningen är skyldig att upprätta ett K2-baserat **årsbokslut** (nettoomsättning > 3 mkr), men inte en fullständig årsredovisning.
+- **[BFNAR 2017:3](https://www.bfn.se/wp-content/uploads/vl17-3-ab-kons.pdf) (K2 – årsbokslut)** – det redovisningsnormverk som gäller för Kalmar Nation. Föreningen är skyldig att upprätta ett K2-baserat **årsbokslut** (nettoomsättning > 3 mkr), men inte en fullständig årsredovisning.
 - **God revisionssed** för lekmannarevisorer – det finns ingen lag som detaljreglerar lekmannarevisionen, men revisorn ska agera omsorgsfullt, objektivt och i föreningens och medlemmarnas intresse.
 
 Ange alltid i revisionsberättelsen vilket räkenskapsår och vilken organisation som granskats, och att granskningen utförts av föreningsvald lekmannarevisor.
