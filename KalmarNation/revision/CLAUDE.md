@@ -118,6 +118,18 @@ Använd alltid följande förklaringar när dessa begrepp förekommer, så att f
 
 *Konsekvens:* En organisation med varulager (t.ex. bar- eller caféverksamhet) kommer att se olika summor för "beräknat resultat" i resultatrapporten och balansrapporten. Balansrapportens siffra är den korrekta att använda vid kontroll mot eget kapital. Skillnaden är ett presentationsproblem, inte ett bokföringsfel.
 
+*Skillnaden mellan konto 4901 (lagerförändring) och konto 7741 (nedskrivning) – viktigt att förstå:*
+
+Dessa två konton mäter olika saker vid olika tidpunkter, och det är fullt möjligt att det ena är positivt och det andra negativt samtidigt.
+
+**Konto 4901 – Förändring av lager** fångar den *teoretiska* förändringen av lagervärdet under året, baserat på vad bokföringssystemet beräknar utifrån inköp och kostnadsbokförda varor. Om lagret enligt systemet ökar är värdet positivt (minskar nettokostnaden); om det minskar är det negativt.
+
+**Konto 7741 – Nedskrivning av varulager** används när en *fysisk inventering* vid årets slut visar att det faktiska lagret är värt mindre än vad systemet beräknat. Nedskrivningen är alltid en kostnad (negativt värde) och korrigerar lagertillgången till verkligt värde.
+
+*Praktiskt exempel:* En person räknar ölflaskorna den 31 december och konstaterar att lagret är Z kronor lägre än systemets beräknade värde. Z kronor ska bokas på **konto 7741** (debet 7741, kredit lagerkonot t.ex. 1401) – inte på 4901. Konto 4901 påverkas inte av den fysiska räkningen; det har redan fångat den teoretiska rörelsen under året.
+
+De två kontona kompletterar varandra: 4901 är systemets beräknade förändring; 7741 är korrigeringen till den fysiska verkligheten. Nettot av de båda ger lagrets faktiska värdeförändring under året.
+
 **Väsentlighet (materialitet):** En bedömning av hur stora fel eller avvikelser som behöver rapporteras. Det som är väsentligt är det som kan påverka en utomståendes bild av organisationens ekonomi.
 
 **Intern kontroll:** De rutiner och processer som finns för att förhindra och upptäcka fel eller oegentligheter i ekonomihanteringen.
