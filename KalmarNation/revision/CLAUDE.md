@@ -484,13 +484,15 @@ En revisionsberättelse för en liten ideell förening innehåller normalt:
 
 ---
 
-## 11. Källor och referensram (Harvardformat)
+## 11. Källor och referensram
 
 Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källor i Harvardformat:
 
 - BAS-intressenternas Förening (2025) *BAS-kontoplanen 2025*. Stockholm: BAS-intressenternas Förening. Tillgänglig: https://www.bas.se/kontoplaner/ (Hämtad: 2026-04-03). *Anmärkning: BAS-kontoplanen är den i Sverige vanligast förekommande kontoplanen för företag, ideella föreningar och studentnationer. Personalkostnader återfinns i kontoklass 7 (7xxx). Kommuner och statliga myndigheter använder egna kontoplaner baserade på RKR respektive ESV:s standarder.*
 
-- Bokföringsnämnden (2010) *BFNAR 2010:1 Ideella föreningar och registrerade trossamfund som upprättar förenklat årsbokslut (K1)*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/vagledningar/k1-ideella-foreningar/ (Hämtad: 2026-04-03). *Anmärkning: K1-regelverket gäller för mindre ideella föreningar och registrerade trossamfund som inte är skyldiga att upprätta årsredovisning. Begreppet "K1-format" i bokföringssystem som Visma eEkonomi hänvisar till hur resultatrapporten struktureras enligt detta regelverk.*
+- Bokföringsnämnden (u.å.a) *Ideella föreningar – vad gäller för redovisning och bokföring*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/redovisningsregler/vad-galler-for/ideella-foreningar/ (Hämtad: 2026-04-03). *Anmärkning: BFN:s samlade webbsida för redovisningsregler som gäller ideella föreningar, inklusive K1-regelverket (BFNAR 2010:1), K2/K3-val och bokföringsskyldighet. Begreppet "K1-format" i bokföringssystem som Visma eEkonomi hänvisar till hur resultatrapporten struktureras enligt BFNAR 2010:1.*
+
+- Bokföringsnämnden (u.å.b) *Ideella föreningar m.fl. – Bokföringsskyldighet och hur den löpande bokföringen ska avslutas*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/wp-content/uploads/2020/06/bokforingsskyldig-ideell-kons.pdf (Hämtad: 2026-04-03). *Anmärkning: BFN:s informationsskrift om när och hur bokföringsskyldighet inträder för ideella föreningar, samt krav på verifikationer och arkivering. Relevant för förståelsen av vad revisorn kan kräva in som underlag.*
 
 - Bokföringsnämnden (2016) *BFNAR 2016:10 Årsredovisning i mindre företag (K2)*. Stockholm: Bokföringsnämnden. Tillgänglig: https://www.bfn.se/vagledningar/k2-arsredovisning-i-mindre-foretag/ (Hämtad: 2026-03-27). *Anmärkning: K2 gäller för mindre företag och föreningar som är skyldiga att upprätta årsredovisning men inte når upp till gränsen för K3.*
 
