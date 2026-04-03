@@ -22,7 +22,7 @@ Alla Cursor-regler som gäller detta projekt, både globala och lokala. När du 
 | --- | --- |
 | `sv-eng-sync.mdc` | Varje ändring i en svensk HTML-fil speglas omedelbart i motsvarande engelsk fil. |
 | `github-pages-live-link.mdc` | KalmarNation/revision: konkreta Pages- och repo-URL:er samt HTML-/README-exempel (bygger på global regel). |
-| `claude-md-updates.mdc` | CLAUDE.md uppdateras när nya revisionsprinciper identifieras. AI föreslår alltid först. |
+| claude-md-updates.mdc | CLAUDE.md: nya principer föreslås alltid först; versionsnummer och datum (ÅÅÅÅ-MM-DD) ska synkas överst och längst ner i filen. |
 
 ---
 
