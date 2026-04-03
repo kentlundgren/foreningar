@@ -10,6 +10,10 @@ $RECYCLE.BIN/
 *.swp
 *~
 
+# Word-dokument – lagras enbart lokalt, ska ej versionshanteras på GitHub
+*.docx
+*.doc
+
 # Word skapar tillfälliga låsfiler när ett dokument är öppet
 ~$*.docx
 ~$*.doc
