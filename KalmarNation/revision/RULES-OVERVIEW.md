@@ -1,31 +1,1 @@
-# Regelˆversikt ñ KalmarNation/revision
-
-Alla Cursor-regler som g‰ller detta projekt, bÂde globala och lokala.
-Globala regler finns i `ClaudeCowork/.cursor/rules/` och g‰ller alla projekt.
-Lokala regler finns i `KalmarNation/revision/.cursor/rules/` och g‰ller bara detta projekt.
-
----
-
-## Globala regler (`ClaudeCowork/.cursor/rules/`)
-
-| Fil | Beskrivning |
-|---|---|
-| `encoding-utf8.mdc` | Alla filer sparas i UTF-8. Filer med svenska tecken (Â, ‰, ˆ) skapas via PowerShell med `[char]`-metoden ñ aldrig direkt med Write-verktyget. |
-| `version-dating.mdc` | Versionsnummer ska alltid ha exakt datum i formatet `≈≈≈≈-MM-DD`, aldrig bara mÂnad eller s‰song. |
-| `git-workflow.mdc` | Commit och push gˆrs alltid av anv‰ndaren. AI fˆreslÂr men agerar inte utan godk‰nnande. |
-
----
-
-## Lokala regler (`KalmarNation/revision/.cursor/rules/`)
-
-| Fil | Beskrivning |
-|---|---|
-| `sv-eng-sync.mdc` | Varje ‰ndring i en svensk HTML-fil speglas omedelbart i motsvarande engelsk fil (`index.html` ? `index_eng.html`, `generellt.html` ? `generellt_eng.html`). |
-| `github-pages-live-link.mdc` | Alla `index.html`-filer ska ha en diskret l‰nk till GitHub-repot. README.md ska ha l‰nk tillbaka till live-sidan. |
-| `git-workflow.mdc` | Lokal kopia av global regel ñ commit/push gˆrs av anv‰ndaren. |
-| `claude-md-updates.mdc` | CLAUDE.md uppdateras n‰r nya generella revisionsprinciper identifieras under en konversation. AI fˆreslÂr alltid innan det ‰ndras. |
-| `encoding-utf8.mdc` | Lokal kopia av global regel ñ alltid UTF-8, svenska tecken via PowerShell. |
-
----
-
-## Senast uppdaterad: 2026-04-03
+# Regel√∂versikt - KalmarNation/revision  Alla Cursor-regler som g√§ller detta projekt, b√•de globala och lokala. Globala regler finns i `ClaudeCowork/.cursor/rules/` och g√§ller alla projekt automatiskt. Lokala regler finns i `KalmarNation/revision/.cursor/rules/` och g√§ller bara detta projekt.  ---  ## Globala regler (`ClaudeCowork/.cursor/rules/`)  | Fil | Beskrivning | |---|---| | `encoding-utf8.mdc` | Alla filer sparas i UTF-8. Filer med svenska tecken (√•, √§, √∂) skapas via PowerShell med [char]-metoden - aldrig via Write-verktyget. | | `version-dating.mdc` | Versionsnummer ska alltid ha exakt datum i formatet √Ö√Ö√Ö√Ö-MM-DD, aldrig bara m√•nad. | | `git-workflow.mdc` | Commit och push g√∂rs alltid av anv√§ndaren. AI f√∂resl√•r men agerar inte utan godk√§nnande. | | `rules-overview.mdc` | RULES-OVERVIEW.md ska alltid finnas lokalt i varje projekt och h√•llas aktuell n√§r regler l√§ggs till eller √§ndras. |  ---  ## Lokala regler (`KalmarNation/revision/.cursor/rules/`)  | Fil | Beskrivning | |---|---| | `sv-eng-sync.mdc` | Varje √§ndring i en svensk HTML-fil speglas omedelbart i motsvarande engelsk fil. | | `github-pages-live-link.mdc` | Alla index.html-filer ska ha diskret l√§nk till GitHub-repot. README.md ska ha l√§nk till live-sidan. | | `git-workflow.mdc` | Lokal kopia av global regel. | | `claude-md-updates.mdc` | CLAUDE.md uppdateras n√§r nya revisionsprinciper identifieras. AI f√∂resl√•r alltid f√∂rst. | | `encoding-utf8.mdc` | Lokal kopia av global regel - UTF-8, svenska tecken via PowerShell. |  ---  ## Senast uppdaterad: 2026-04-03

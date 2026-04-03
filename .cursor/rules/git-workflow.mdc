@@ -1,27 +1,89 @@
 ---
 alwaysApply: true
-description: Commit och push görs alltid av användaren, aldrig automatiskt av AI
+description: Commit och push g
+Ã¶
+rs alltid av anv
+Ã¤
+ndaren, aldrig automatiskt av AI
 ---
 
-# Git-workflow: commit och push är användarens ansvar
+# Git-workflow: commit och push 
+Ã¤
+r anv
+Ã¤
+ndarens ansvar
 
 ## Regel
 
-AI-assistenten ska **aldrig** köra git commit eller git push på eget initiativ.
+AI-assistenten ska **aldrig** k
+Ã¶
+ra git commit eller git push p
+Ã¥
+ eget initiativ.
 
-## Tillåtet för AI
-- git status – visa vad som ändrats
-- git diff – visa exakta ändringar
-- git add – stagea filer (om användaren explicit ber om det)
-- git log – visa historik
-- git fetch / git pull – hämta fjärrhistorik (om användaren ber om det)
+## Till
+Ã¥
+tet f
+Ã¶
+r AI
+- git status - visa vad som 
+Ã¤
+ndrats
+- git diff - visa exakta 
+Ã¤
+ndringar
+- git add - stagea filer (om anv
+Ã¤
+ndaren explicit ber om det)
+- git log - visa historik
+- git fetch / git pull - h
+Ã¤
+mta fj
+Ã¤
+rrhistorik
 
-## Inte tillåtet utan explicit instruktion
-- git commit – aldrig utan att användaren uttryckligen ber om det
-- git push – aldrig utan att användaren godkänt commiten
+## Inte till
+Ã¥
+tet utan explicit instruktion
+- git commit - aldrig utan att anv
+Ã¤
+ndaren uttryckligen ber om det
+- git push - aldrig utan att anv
+Ã¤
+ndaren godk
+Ã¤
+nt commiten
 
-## Arbetsflöde
-1. AI gör ändringar
-2. Användaren granskar ändringarna i Cursor
-3. Användaren säger "committa" eller "pusha" ? då utför AI kommandot
-4. AI föreslår commit-meddelande men väntar på godkännande
+## Arbetsfl
+Ã¶
+de
+1. AI g
+Ã¶
+r 
+Ã¤
+ndringar
+2. Anv
+Ã¤
+ndaren granskar 
+Ã¤
+ndringarna i Cursor
+3. Anv
+Ã¤
+ndaren s
+Ã¤
+ger 'committa' eller 'pusha' - d
+Ã¥
+ utf
+Ã¶
+r AI kommandot
+4. AI f
+Ã¶
+resl
+Ã¥
+r commit-meddelande men v
+Ã¤
+ntar p
+Ã¥
+ godk
+Ã¤
+nnande
