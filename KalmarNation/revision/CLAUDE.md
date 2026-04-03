@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 2.0 – ersätter tidigare version som nu finns sparad som CLAUDE.md_old*
+*Version 2.1, 2026-04-03 – ersätter tidigare version som nu finns sparad som CLAUDE.md_old*
 
 ---
 

@@ -16,11 +16,27 @@ Föreslå uppdatering av `CLAUDE.md` när konversationen leder till insikter som
 - En ny riskkategori eller kontrollpunkt som inte redan täcks
 - En erfarenhet från ett konkret fall (t.ex. lagerförändringar utanför K1-format) som är generellt tillämpbar
 
+## Versionsnummer och datum (alltid synkade)
+
+När `CLAUDE.md` ändras ska **versionsnummer** och **datum** vara **identiska** på alla ställen de anges. Minst dessa två:
+
+1. **Högst upp** – versionsraden direkt under huvudrubriken (kursiv rad under `# CLAUDE.md ...`).
+2. **Längst ner** – avslutande fotrad efter källförteckningen.
+
+**Format för datum:** alltid **ÅÅÅÅ-MM-DD** (samma som i global `version-dating.mdc`). Skriv aldrig bara månad eller löst formulering.
+
+**Vid versionshöjning eller datumbyte:** uppdatera **båda** ställena (och eventuella andra förekomster) **i samma redigering**, så att inget ställe ligger kvar på gammal version eller gammalt datum.
+
+Exempel på par som ska matcha varandra:
+
+- Övre: `*Version 2.1, 2026-04-03 – ersätter tidigare version ...*`
+- Nedre: `*... Version 2.1, 2026-04-03.*`
+
 ## Regler för AI-assistenten
 
-1. **Föreslå alltid - uppdatera aldrig automatiskt.** Säg: *"Detta verkar vara en generell princip värd att lägga till i CLAUDE.md - vill du att jag föreslår en formulering?"*
+1. **Föreslå alltid – uppdatera aldrig automatiskt.** Säg: *"Detta verkar vara en generell princip värd att lägga till i CLAUDE.md – vill du att jag föreslår en formulering?"*
 2. **Visa förslaget tydligt** innan filen ändras, så användaren kan granska och godkänna
-3. **Ändra endast** det avsnitt i CLAUDE.md som berörs - rör inte övrig text
+3. **Ändra endast** det avsnitt i CLAUDE.md som berörs – rör inte övrig text, **utom** att du **måste** justera versionsrad överst och fotrad underst om version eller revisionsdatum ändras
 4. Commit och push görs alltid av användaren (se global `ClaudeCowork/.cursor/rules/git-workflow.mdc`)
 
 ## Vad som INTE ska läggas till
