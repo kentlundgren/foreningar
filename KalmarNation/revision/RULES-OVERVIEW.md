@@ -1,6 +1,6 @@
-# Regelöversikt – KalmarNation/revision
+# RegelÃ¶versikt â€“ KalmarNation/revision
 
-Alla Cursor-regler som gäller detta projekt, både globala och lokala. När du öppnar **ClaudeCowork** som workspace-rot laddas globala regler automatiskt från `ClaudeCowork/.cursor/rules/`. I `KalmarNation/revision/.cursor/rules/` ligger **endast projektspecifika** regler – inga kopior av globala regler (undviker dubbletter och motsägelser).
+Alla Cursor-regler som gÃ¤ller detta projekt, bÃ¥de globala och lokala. NÃ¤r du Ã¶ppnar **ClaudeCowork** som workspace-rot laddas globala regler automatiskt frÃ¥n `ClaudeCowork/.cursor/rules/`. I `KalmarNation/revision/.cursor/rules/` ligger **endast projektspecifika** regler â€“ inga kopior av globala regler (undviker dubbletter och motsÃ¤gelser).
 
 ---
 
@@ -8,12 +8,12 @@ Alla Cursor-regler som gäller detta projekt, både globala och lokala. När du öpp
 
 | Fil | Beskrivning |
 | --- | --- |
-| `encoding-utf8.mdc` | Alla filer sparas i UTF-8. Filer med svenska tecken (å, ä, ö) skapas via PowerShell med `[char]`-metoden – aldrig via Write-verktyget. |
-| `version-dating.mdc` | Versionsnummer ska alltid ha exakt datum i formatet ÅÅÅÅ-MM-DD, aldrig bara månad. |
-| `git-workflow.mdc` | Commit och push görs alltid av användaren. AI föreslår men agerar inte utan godkännande. |
-| `rules-overview.mdc` | RULES-OVERVIEW.md ska alltid finnas lokalt i varje projekt och hållas aktuell när regler läggs till eller ändras. |
-| `session-handover.mdc` | Påminn AI att varna när sessionen bör bytas och föreslå startprompt för ny session. |
-| `github-pages-live-link.mdc` | GitHub Pages-sajter: `index.html` ska länka till repot; README ska länka till live. Lokala filer anger URL:er per projekt. |
+| `encoding-utf8.mdc` | Alla filer sparas i UTF-8. Filer med svenska tecken (Ã¥, Ã¤, Ã¶) skapas via PowerShell med `[char]`-metoden â€“ aldrig via Write-verktyget. |
+| `version-dating.mdc` | Versionsnummer ska alltid ha exakt datum i formatet Ã…Ã…Ã…Ã…-MM-DD, aldrig bara mÃ¥nad. |
+| `git-workflow.mdc` | Commit och push gÃ¶rs alltid av anvÃ¤ndaren. AI fÃ¶reslÃ¥r men agerar inte utan godkÃ¤nnande. |
+| `rules-overview.mdc` | RULES-OVERVIEW.md ska alltid finnas lokalt i varje projekt och hÃ¥llas aktuell nÃ¤r regler lÃ¤ggs till eller Ã¤ndras. |
+| `session-handover.mdc` | PÃ¥minn AI att varna nÃ¤r sessionen bÃ¶r bytas och fÃ¶reslÃ¥ startprompt fÃ¶r ny session. |
+| `github-pages-live-link.mdc` | GitHub Pages-sajter: `index.html` ska lÃ¤nka till repot; README ska lÃ¤nka till live. Lokala filer anger URL:er per projekt. |
 
 ---
 
@@ -21,15 +21,15 @@ Alla Cursor-regler som gäller detta projekt, både globala och lokala. När du öpp
 
 | Fil | Beskrivning |
 | --- | --- |
-| `sv-eng-sync.mdc` | Varje ändring i en svensk HTML-fil speglas omedelbart i motsvarande engelsk fil. |
-| `github-pages-live-link.mdc` | KalmarNation/revision: konkreta Pages- och repo-URL:er samt HTML-/README-exempel (bygger på global regel). |
-| `claude-md-updates.mdc` | CLAUDE.md: nya principer föreslås alltid först; versionsnummer och datum (ÅÅÅÅ-MM-DD) ska synkas överst och längst ner i filen. |
+| `sv-eng-sync.mdc` | Varje Ã¤ndring i en svensk HTML-fil speglas omedelbart i motsvarande engelsk fil. |
+| `github-pages-live-link.mdc` | KalmarNation/revision: konkreta Pages- och repo-URL:er samt HTML-/README-exempel (bygger pÃ¥ global regel). |
+| `claude-md-updates.mdc` | CLAUDE.md: nya principer fÃ¶reslÃ¥s alltid fÃ¶rst; versionsnummer och datum (Ã…Ã…Ã…Ã…-MM-DD) ska synkas Ã¶verst och lÃ¤ngst ner i filen. |
 
 ---
 
 ## Viktigt om workspace
 
-Om du i stället öppnar **endast** mappen `KalmarNation/revision` som egen workspace-rot (utan föräldermappen ClaudeCowork) laddas inte de globala reglerna automatiskt. Rekommendation: öppna hela **ClaudeCowork** som workspace så gäller samma globala regler överallt.
+Om du i stÃ¤llet Ã¶ppnar **endast** mappen `KalmarNation/revision` som egen workspace-rot (utan fÃ¶rÃ¤lderknappen ClaudeCowork) laddas inte de globala reglerna automatiskt. Rekommendation: Ã¶ppna hela **ClaudeCowork** som workspace sÃ¥ gÃ¤ller samma globala regler Ã¶verallt.
 
 ---
 
