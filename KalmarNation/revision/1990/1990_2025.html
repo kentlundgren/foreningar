@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="sv">
+<!--
+  ================================================================
+  KALMAR NATION – JÄMFÖRELSE 1990 OCH 2025
+  ================================================================
+  Fil:        1990_2025.html
+  Skapad:     2026-04-04
+  Syfte:      Jämförande analys av Kalmar Nations ekonomi
+              och verksamhet mellan 1990 och 2025.
+              Del 1 = saklig, neutral faktaanalys.
+              Del 2 = fri, nostalgisk och kreativ jämförelse.
+  Datakällor: KN Bokslut 1990 (undertecknat av Kent Lundgren,
+              PQe, 1991-01-19) och KN Resultat- och
+              Balansrapport 2025 (utskriven 2026-03-26).
+  ================================================================
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalmar Nation – 1990 och 2025</title>
+
+  <style>
+    /* ============================================================
+       GRUNDLÄGGANDE TYPOGRAFI OCH LAYOUT
+    ============================================================ */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background-color: #f5f0e8;   /* varm pergamentton */
+      color: #2c2c2c;
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    /* ============================================================
+       HEADER – tvåfärgad med nationens tänkta färgkänsla
+    ============================================================ */
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2e6b9e 100%);
+      color: #f9f3e3;
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+    }
+
+    header .subtitle {
+      font-size: 0.95rem;
+      opacity: 0.8;
+      margin-top: 0.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: normal;
+      letter-spacing: 0.04em;
+    }
+
+    header .year-badges {
+      margin: 1.5rem 0 0.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      font-size: 3rem;
+      font-weight: bold;
+      opacity: 0.9;
+    }
+
+    header .year-badges span {
+      background: rgba(255,255,255,0.12);
+      padding: 0.2rem 1rem;
+      border-radius: 6px;
+    }
+
+    header .year-badges .vs {
+      font-size: 1.4rem;
+      align-self: center;
+      opacity: 0.6;
+      font-weight: normal;
+    }
+
+    /* ============================================================
+       NAVIGATIONSANKARE
+    ============================================================ */
+    nav.toc {
+      background: #fff;
+      border-bottom: 2px solid #d0c8b8;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    nav.toc a {
+      color: #1a3a5c;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    nav.toc a:hover {
+      background: #e8f0f8;
+    }
+
+    /* ============================================================
+       HUVUDCONTAINER
+    ============================================================ */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    /* ============================================================
+       SEKTIONSRUBRIKER
+    ============================================================ */
+    .section-header {
+      border-top: 3px solid #1a3a5c;
+      margin: 3rem 0 1.5rem;
+      padding-top: 1rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.6rem;
+      font-weight: normal;
+      color: #1a3a5c;
+    }
+
+    .section-header .section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #888;
+      margin-bottom: 0.3rem;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      color: #2e5080;
+      margin: 2rem 0 0.6rem;
+      font-weight: bold;
+    }
+
+    p {
+      margin-bottom: 1.1rem;
+    }
+
+    /* ============================================================
+       JÄMFÖRELSETABELLER – de centrala elementen
+    ============================================================ */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.95rem;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .comparison-table th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Kolumnfärger: 1990 = varm sepia, 2025 = kall blå */
+    .comparison-table th.col-label {
+      background: #4a3f30;
+      color: #f5edd8;
+    }
+    .comparison-table th.col-1990 {
+      background: #7a5c3a;
+      color: #f9f0e0;
+      text-align: right;
+    }
+    .comparison-table th.col-2025 {
+      background: #1a3a5c;
+      color: #e8f0f8;
+      text-align: right;
+    }
+    .comparison-table th.col-diff {
+      background: #2c5c2c;
+      color: #e8f5e8;
+      text-align: right;
+    }
+
+    .comparison-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid #ede8df;
+    }
+
+    .comparison-table td.col-label {
+      font-weight: 500;
+      color: #3a3020;
+    }
+
+    .comparison-table td.col-1990 {
+      text-align: right;
+      font-family: 'Courier New', monospace;
+      color: #5a3e20;
+    }
+
+    .comparison-table td.col-2025 {
+      text-align: right;
+      font-family: 'Courier New', monospace;
+      color: #1a3a5c;
+    }
+
+    .comparison-table td.col-diff {
+      text-align: right;
+      font-family: 'Courier New', monospace;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table tr:nth-child(even) {
+      background: #faf7f2;
+    }
+
+    .comparison-table tr.totals td {
+      font-weight: bold;
+      background: #f0ece3;
+      border-top: 2px solid #c8bfa8;
+    }
+
+    /* Positiv/negativ färgkodning i diff-kolumnen */
+    .pos { color: #1a6b1a; }
+    .neg { color: #b02020; }
+
+    /* ============================================================
+       NYCKELTAL-KORT (KPI-CARDS) – visuell sammanfattning
+    ============================================================ */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .kpi-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.2rem 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      text-align: center;
+      border-top: 4px solid #1a3a5c;
+    }
+
+    .kpi-card .kpi-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #777;
+      margin-bottom: 0.4rem;
+    }
+
+    .kpi-card .kpi-1990 {
+      font-size: 1.05rem;
+      color: #7a5c3a;
+      margin-bottom: 0.2rem;
+    }
+
+    .kpi-card .kpi-arrow {
+      font-size: 1.2rem;
+      color: #999;
+    }
+
+    .kpi-card .kpi-2025 {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #1a3a5c;
+    }
+
+    .kpi-card .kpi-change {
+      font-size: 0.82rem;
+      margin-top: 0.4rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    .kpi-card .kpi-change.pos {
+      background: #e8f5e8;
+      color: #1a6b1a;
+    }
+
+    .kpi-card .kpi-change.neg {
+      background: #fce8e8;
+      color: #b02020;
+    }
+
+    /* ============================================================
+       INFORMATIONSRUTOR
+    ============================================================ */
+    .info-box {
+      background: #eef4fb;
+      border-left: 4px solid #2e6b9e;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.93rem;
+    }
+
+    .info-box.sepia {
+      background: #faf4e8;
+      border-left-color: #9a7040;
+    }
+
+    .info-box.green {
+      background: #eef8ee;
+      border-left-color: #2c6b2c;
+    }
+
+    .info-box strong {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ============================================================
+       KREATIV DEL – annan typografi och atmosfär
+    ============================================================ */
+    .creative-section {
+      background: linear-gradient(180deg, #f9f5eb 0%, #fff 100%);
+      border: 1px solid #d8cdb8;
+      border-radius: 10px;
+      padding: 2.5rem 2rem;
+      margin: 2rem 0;
+      position: relative;
+    }
+
+    .creative-section::before {
+      content: '✦';
+      position: absolute;
+      top: -0.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #f9f5eb;
+      padding: 0 0.8rem;
+      color: #9a7040;
+      font-size: 1.2rem;
+    }
+
+    .creative-section h3 {
+      font-size: 1.25rem;
+      color: #5a3e20;
+      font-style: italic;
+      margin-top: 1.8rem;
+    }
+
+    .creative-section h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .creative-section p {
+      color: #3a3020;
+    }
+
+    /* Citat-block i kreativa sektionen */
+    .pull-quote {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: #7a5c3a;
+      border-left: 3px solid #c8a870;
+      padding: 0.8rem 1.2rem;
+      margin: 1.5rem 0;
+      line-height: 1.6;
+    }
+
+    /* Bok-liknande "tidslinje-rad" */
+    .timeline-row {
+      display: flex;
+      gap: 1.5rem;
+      margin: 1.2rem 0;
+      align-items: flex-start;
+    }
+
+    .timeline-row .year-tag {
+      flex-shrink: 0;
+      font-weight: bold;
+      font-size: 0.85rem;
+      background: #7a5c3a;
+      color: #fff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-top: 0.2rem;
+    }
+
+    .timeline-row .year-tag.y2025 {
+      background: #1a3a5c;
+    }
+
+    /* ============================================================
+       KÄLL- OCH FOTNOT
+    ============================================================ */
+    .sources {
+      font-size: 0.82rem;
+      color: #666;
+      border-top: 1px solid #d0c8b8;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .sources h4 {
+      font-size: 0.88rem;
+      color: #444;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: #999;
+      border-top: 1px solid #d0c8b8;
+      margin-top: 2rem;
+    }
+
+    /* ============================================================
+       RESPONSIVITET – mobilanpassning
+    ============================================================ */
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.6rem; }
+      header .year-badges { font-size: 2rem; }
+      .comparison-table { font-size: 0.82rem; }
+      .comparison-table td, .comparison-table th { padding: 0.5rem 0.6rem; }
+      main { padding: 1.5rem 1rem; }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
+  <header>
+    <p class="subtitle">Kalmar Nation i Lund</p>
+    <h1>Trettifem år i siffror och minnen</h1>
+    <div class="year-badges">
+      <span>1990</span>
+      <span class="vs">kontra</span>
+      <span>2025</span>
+    </div>
+    <p class="subtitle">En ekonomisk och verksamhetsmässig jämförelse</p>
+  </header>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav class="toc">
+    <a href="#faktaanalys">Faktaanalys</a>
+    <a href="#intakter">Intäktsutveckling</a>
+    <a href="#kostnader">Kostnadsutveckling</a>
+    <a href="#verksamhet">Verksamhet och sektioner</a>
+    <a href="#fonder">Fonder och kapital</a>
+    <a href="#kreativ">Nostalgisk jämförelse</a>
+    <a href="#kallor">Källor</a>
+  </nav>
+
+  <!-- ============================================================
+       HUVUDINNEHÅLL
+  ============================================================ -->
+  <main>
+
+    <!-- ============================================================
+         DEL 1: FAKTAANALYS – SAKLIG OCH NEUTRAL
+    ============================================================ -->
+    <section id="faktaanalys">
+      <div class="section-header">
+        <p class="section-label">Del 1 — Faktaanalys</p>
+        <h2>Ekonomisk jämförelse: 1990 och 2025</h2>
+      </div>
+
+      <p>Kalmar Nation i Lund är en av de äldsta studentnationerna vid Lunds universitet. Nedan presenteras en jämförelse av nationens ekonomi och verksamhet baserat på bokslutet för 1990 respektive resultat- och balansrapporten för 2025. De 35 åren mellan dessa år spänner över en period av stora samhällsförändringar – inte minst digitaliseringen, EU-inträdet, inflationsutvecklingen och studentpopulationens förändrade sammansättning.</p>
+
+      <p>Alla belopp är i nominella kronor om inget annat anges. En inflationsfaktor på ca 2,3 tillämpas för att omräkna 1990 års värden till 2025 års prisnivå (Statistiska centralbyrån, 2025). Det innebär att 1 krona år 1990 motsvarar ungefär 2,30 kronor år 2025.</p>
+
+      <!-- KPI-KORT: snabb överblick -->
+      <div class="kpi-grid">
+        <!-- Kort 1: Totala intäkter -->
+        <div class="kpi-card">
+          <div class="kpi-label">Totala intäkter</div>
+          <div class="kpi-1990">186 358 kr (1990)</div>
+          <div class="kpi-arrow">↓</div>
+          <div class="kpi-2025">4 289 852 kr (2025)</div>
+          <div class="kpi-change pos">+2 202 % nominellt</div>
+        </div>
+        <!-- Kort 2: Årets resultat -->
+        <div class="kpi-card">
+          <div class="kpi-label">Årets resultat</div>
+          <div class="kpi-1990">−12 973 kr (1990)</div>
+          <div class="kpi-arrow">↓</div>
+          <div class="kpi-2025">+456 010 kr (2025)</div>
+          <div class="kpi-change pos">Stark förbättring</div>
+        </div>
+        <!-- Kort 3: Fondberoende -->
+        <div class="kpi-card">
+          <div class="kpi-label">Finansiella placeringar</div>
+          <div class="kpi-1990">Fonder (belopp okänt)</div>
+          <div class="kpi-arrow">↓</div>
+          <div class="kpi-2025">9 076 932 kr (2025)</div>
+          <div class="kpi-change pos">Stor förmögenhetstillväxt</div>
+        </div>
+        <!-- Kort 4: Terminsinkomster -->
+        <div class="kpi-card">
+          <div class="kpi-label">Terminsinkomster / avgifter</div>
+          <div class="kpi-1990">66 033 kr (1990)</div>
+          <div class="kpi-arrow">↓</div>
+          <div class="kpi-2025">556 092 kr (2025)</div>
+          <div class="kpi-change pos">+743 % nominellt</div>
+        </div>
+        <!-- Kort 5: Pub-/barointäkter -->
+        <div class="kpi-card">
+          <div class="kpi-label">Bar- och pubintäkter</div>
+          <div class="kpi-1990">~80 015 kr (1990)</div>
+          <div class="kpi-arrow">↓</div>
+          <div class="kpi-2025">~1 988 598 kr (2025)</div>
+          <div class="kpi-change pos">+2 385 % nominellt</div>
+        </div>
+        <!-- Kort 6: Personalkostnader -->
+        <div class="kpi-card">
+          <div class="kpi-label">Personalkostnader</div>
+          <div class="kpi-1990">~69 099 kr (1990)</div>
+          <div class="kpi-arrow">↓</div>
+          <div class="kpi-2025">843 056 kr (2025)</div>
+          <div class="kpi-change neg">+1 120 % nominellt</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================
+         INTÄKTSUTVECKLING
+    ============================================================ -->
+    <section id="intakter">
+      <h3>Intäktsutveckling</h3>
+
+      <p>Nationens totala intäkter har ökat från knappt 186 400 kronor år 1990 till drygt 4 289 900 kronor år 2025 – en nominell ökning med ca 2 200 procent. Räknat i fasta priser (med inflationsfaktorn 2,3) innebär detta en reell tillväxt med ungefär 900 procent. Den starka tillväxten förklaras primärt av tre faktorer: expansion av bar- och matverksamheten, ökat antal och diversifiering av intäktskällor, samt en anpassad terminsavgiftsnivå.</p>
+
+      <!-- INTÄKTSJÄMFÖRELSETABELL -->
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th class="col-label">Intäktspost</th>
+            <th class="col-1990">1990 (kr)</th>
+            <th class="col-2025">2025 (kr)</th>
+            <th class="col-diff">Förändring</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rad 1: Terminsinkomster / avgifter -->
+          <tr>
+            <td class="col-label">Terminsinkomster / terminsavgifter</td>
+            <td class="col-1990">66 033</td>
+            <td class="col-2025">556 092</td>
+            <td class="col-diff pos">+743 %</td>
+          </tr>
+          <!-- Rad 2: Pub/bar -->
+          <tr>
+            <td class="col-label">Pub / bar (öl, cider, vin, sprit, fat)</td>
+            <td class="col-1990">~80 015</td>
+            <td class="col-2025">~1 988 598</td>
+            <td class="col-diff pos">+2 385 %</td>
+          </tr>
+          <!-- Rad 3: Mat -->
+          <tr>
+            <td class="col-label">Matförsäljning (food)</td>
+            <td class="col-1990">— ¹</td>
+            <td class="col-2025">934 975</td>
+            <td class="col-diff">Ny post</td>
+          </tr>
+          <!-- Rad 4: Inträden / aktiviteter -->
+          <tr>
+            <td class="col-label">Inträden / aktivitetsbiljetter</td>
+            <td class="col-1990">— ¹</td>
+            <td class="col-2025">354 959</td>
+            <td class="col-diff">Ny/utbruten post</td>
+          </tr>
+          <!-- Rad 5: Stödsektion / Nationsstöd -->
+          <tr>
+            <td class="col-label">Stödsektion / Nationsstöd</td>
+            <td class="col-1990">3 205</td>
+            <td class="col-2025">134 405</td>
+            <td class="col-diff pos">+4 093 %</td>
+          </tr>
+          <!-- Rad 6: Sexmästeri -->
+          <tr>
+            <td class="col-label">Sexmästeri</td>
+            <td class="col-1990">2 919</td>
+            <td class="col-2025">— ²</td>
+            <td class="col-diff">Ingår i övrigt</td>
+          </tr>
+          <!-- Rad 7: Finansiella intäkter -->
+          <tr>
+            <td class="col-label">Finansiella intäkter (fonder/utdelningar)</td>
+            <td class="col-1990">99 512 ³</td>
+            <td class="col-2025">578 936</td>
+            <td class="col-diff pos">+482 %</td>
+          </tr>
+          <!-- Totalsumma -->
+          <tr class="totals">
+            <td class="col-label">SUMMA INTÄKTER (inkl. finansiella)</td>
+            <td class="col-1990">285 870</td>
+            <td class="col-2025">4 868 788</td>
+            <td class="col-diff pos">+1 603 %</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:0.82rem; color:#666; margin-top:-1rem;">
+        ¹ Matförsäljning och separata inträdesintäkter redovisades år 1990 troligen som del av "Pub Kaggen" eller "Övriga intäkter" och kan inte urskiljas i det äldre bokslutsformatet.<br>
+        ² Sexmästeriets intäkter kan år 2025 ingå i verksamhetsintäkterna utan separat rad.<br>
+        ³ Fondbidrag i 1990 års bokslut redovisas som en "intäkt" som täckte det löpande underskottet – ej en verksamhetsintäkt i egentlig mening.
+      </p>
+
+      <div class="info-box green">
+        <strong>Inflationsjusterad jämförelse – intäkter</strong>
+        186 358 kr år 1990 motsvarar ungefär 429 000 kr i 2025 års penningvärde. Nationens verksamhetsintäkter 2025 uppgår till 4 289 852 kr – en reell ökning med ca 900 procent. Den starka tillväxten avspeglar en kraftigt utökad bar- och matverksamhet, fler betalande gäster och en professionalisering av evenemangssidan.
+      </div>
+
+      <h3>Intäktsstruktur – var kom pengarna ifrån?</h3>
+
+      <p>Intäktsstrukturen har förändrats dramatiskt. År 1990 svarade terminsinkomster (35 %) och pub/pubkort (43 %) för det stora flertalet av rörelseintäkterna. Den finansiella avkastningen från fonderna var absolut nödvändig – utan fondbidraget på 99 512 kronor hade underskottet blivit ohanterligt.</p>
+
+      <p>År 2025 dominerar bar- och matförsäljningen intäktssidan helt. Beer Tap ensamt genererar 976 358 kr – mer än hela nationens totala intäkter år 1990. Finansiella intäkter (578 936 kr) är nu ett välkommet tillskott snarare än en ekonomisk livlina.</p>
+
+    </section>
+
+    <!-- ============================================================
+         KOSTNADSUTVECKLING
+    ============================================================ -->
+    <section id="kostnader">
+      <h3>Kostnadsutveckling</h3>
+
+      <p>Kostnaderna har följt intäkterna uppåt, men med en annan sammansättning. Den viktigaste strukturella förändringen är framväxten av verkliga personalkostnader (anställda med lön) och en kraftig ökning av hyreskostnaderna, vilket avspeglar att nationen nu driver en mer komplex fastighets- och serviceverksamhet.</p>
+
+      <!-- KOSTNADSJÄMFÖRELSETABELL -->
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th class="col-label">Kostnadspost</th>
+            <th class="col-1990">1990 (kr)</th>
+            <th class="col-2025">2025 (kr)</th>
+            <th class="col-diff">Förändring</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rad 1: Personal/studiebidrag -->
+          <tr>
+            <td class="col-label">Personalkostnader (lön / studiebidrag)</td>
+            <td class="col-1990">69 099</td>
+            <td class="col-2025">843 056</td>
+            <td class="col-diff neg">+1 120 %</td>
+          </tr>
+          <!-- Rad 2: Hyra -->
+          <tr>
+            <td class="col-label">Hyra (lokal och expeditionshyra)</td>
+            <td class="col-1990">28 815</td>
+            <td class="col-2025">330 816 ⁴</td>
+            <td class="col-diff neg">+1 048 %</td>
+          </tr>
+          <!-- Rad 3: Varuinköp -->
+          <tr>
+            <td class="col-label">Varuinköp (mat, dryck etc.)</td>
+            <td class="col-1990">— ⁵</td>
+            <td class="col-2025">2 213 719</td>
+            <td class="col-diff">Ingår i övrigt 1990</td>
+          </tr>
+          <!-- Rad 4: Transport -->
+          <tr>
+            <td class="col-label">Transport och fordon</td>
+            <td class="col-1990">— ⁵</td>
+            <td class="col-2025">95 275</td>
+            <td class="col-diff">Ny/utbruten post</td>
+          </tr>
+          <!-- Rad 5: Representation -->
+          <tr>
+            <td class="col-label">Representation</td>
+            <td class="col-1990">18 461</td>
+            <td class="col-2025">64 453</td>
+            <td class="col-diff neg">+249 %</td>
+          </tr>
+          <!-- Rad 6: Calmare Nyckel / tryckt material -->
+          <tr>
+            <td class="col-label">Nationstidning / tryckt material</td>
+            <td class="col-1990">27 627</td>
+            <td class="col-2025">7 332</td>
+            <td class="col-diff pos">−73 %</td>
+          </tr>
+          <!-- Rad 7: Administrativt övrigt -->
+          <tr>
+            <td class="col-label">Administrativa kostnader totalt</td>
+            <td class="col-1990">145 242</td>
+            <td class="col-2025">1 153 899</td>
+            <td class="col-diff neg">+695 %</td>
+          </tr>
+          <!-- Totalsumma -->
+          <tr class="totals">
+            <td class="col-label">SUMMA KOSTNADER</td>
+            <td class="col-1990">298 844</td>
+            <td class="col-2025">4 217 585</td>
+            <td class="col-diff neg">+1 311 %</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:0.82rem; color:#666; margin-top:-1rem;">
+        ⁴ Inkluderar Rent 246 597 kr + Other rented spaces 84 219 kr.<br>
+        ⁵ Varuinköp och transportkostnader är sannolikt inbakade i "Övriga kostnader" i 1990 års bokslut och kan inte urskiljas separat.
+      </p>
+
+      <h3>Personalkostnader – från studiebidrag till löner</h3>
+
+      <p>En av de viktigaste strukturella förändringarna gäller hur nationen ersätter sina anställda. År 1990 var den dominerande personalkostnaden <em>studiebidrag</em> – ett bidrag till nationens funktionärer (chefstjänstemän) om 300 kronor per termin, samt studiebidrag till PQe och övriga. Totalkostnaden uppgick till 69 099 kronor.</p>
+
+      <p>År 2025 är nationens personalkostnader 843 056 kronor, varav 550 280 kronor avser löner till tjänstemän (white-collar employees), 187 417 kronor utgör Food Ticket use och 64 453 kronor representation. Denna förändring avspeglar en professionalisering: nationen har i dag anställd personal med marknadsmässiga löner snarare än att förlita sig enbart på frivilliga funktionärer med symboliska studiebidrag.</p>
+
+      <div class="info-box">
+        <strong>Lönekostnader i reellt perspektiv</strong>
+        69 099 kr i personalkostnader 1990 motsvarar ca 159 000 kr i 2025 års penningvärde. De faktiska personalkostnaderna 2025 är 843 056 kr – mer än fem gånger det inflationsjusterade värdet. Det återspeglar att nationen numera är en arbetsgivare på heltid, inte enbart en ideell förening driven av engagerade studenter på sin fritid.
+      </div>
+
+    </section>
+
+    <!-- ============================================================
+         VERKSAMHET OCH SEKTIONER
+    ============================================================ -->
+    <section id="verksamhet">
+      <h3>Verksamhet och sektioner – vad finns kvar och vad försvann?</h3>
+
+      <p>Nationens verksamhetsstruktur har förändrats markant. År 1990 hade nationen ett rikt ekosystem av sektioner med egna budgetar och kostnadsrader. År 2025 redovisas verksamheten i en mer sammanslagen struktur, men med en betydligt mer komplex bar- och mathantering.</p>
+
+      <!-- SEKTIONSJÄMFÖRELSETABELL -->
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th class="col-label">Verksamhet / sektion</th>
+            <th class="col-1990">Status 1990</th>
+            <th class="col-2025">Status 2025</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-label">Pub Kaggen / bar</td>
+            <td class="col-1990">Aktiv – 34 781 kr intäkt</td>
+            <td class="col-2025">Aktiv och starkt expanderad – ~2 mkr i dryckesintäkter</td>
+          </tr>
+          <tr>
+            <td class="col-label">Matverksamhet (food)</td>
+            <td class="col-1990">Ej separat redovisad</td>
+            <td class="col-2025">Aktiv – 934 975 kr intäkt</td>
+          </tr>
+          <tr>
+            <td class="col-label">Calmare Nyckel (nationstidning)</td>
+            <td class="col-1990">Aktiv – kostnad 27 627 kr, 4 nr/år</td>
+            <td class="col-2025">Tryckt material 7 332 kr (minimal)</td>
+          </tr>
+          <tr>
+            <td class="col-label">Radiosektionen</td>
+            <td class="col-1990">Aktiv – 5 603 kr, 1 timme/vecka i etern</td>
+            <td class="col-2025">Ej redovisad separat (sannolikt nedlagd)</td>
+          </tr>
+          <tr>
+            <td class="col-label">Filmsektionen</td>
+            <td class="col-1990">Aktiv – 7 881 kr</td>
+            <td class="col-2025">Ej redovisad separat</td>
+          </tr>
+          <tr>
+            <td class="col-label">Fotosektionen</td>
+            <td class="col-1990">Aktiv – 6 380 kr</td>
+            <td class="col-2025">Ej redovisad separat</td>
+          </tr>
+          <tr>
+            <td class="col-label">Idrotten</td>
+            <td class="col-1990">Aktiv – 13 735 kr (bl.a. fäktning, tandemstafett)</td>
+            <td class="col-2025">Idrottsfond 74 649 kr i balansen</td>
+          </tr>
+          <tr>
+            <td class="col-label">Studiesocial verksamhet / Natu</td>
+            <td class="col-1990">Aktiv – 15 697 kr</td>
+            <td class="col-2025">Ingår i övrig verksamhet</td>
+          </tr>
+          <tr>
+            <td class="col-label">Sexmästeri</td>
+            <td class="col-1990">Aktiv – 2 919 kr intäkt</td>
+            <td class="col-2025">Sannolikt aktiv men ej separat redovisad</td>
+          </tr>
+          <tr>
+            <td class="col-label">Gudrunkortet / Pubkort / Guest card</td>
+            <td class="col-1990">45 234 kr intäkt (Pubkort)</td>
+            <td class="col-2025">17 200 kr (Guest card)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box sepia">
+        <strong>Obs – sektionsdata 2025</strong>
+        Resultat- och balansrapporten för 2025 är uppbyggd enligt ÅRL-struktur (konton 3xxx–8xxx). Sektioner redovisas inte som separata kostnadsrader på samma sätt som i 1990 års bokslut. Slutsatser om enskilda sektioner 2025 bör därför dras med försiktighet – en mer fullständig bild kräver tillgång till sektionernas egna budgetar och bokföring.
+      </div>
+
+    </section>
+
+    <!-- ============================================================
+         FONDER OCH KAPITAL
+    ============================================================ -->
+    <section id="fonder">
+      <h3>Fonder och kapital – från livlina till förmögenhet</h3>
+
+      <p>Fondernas roll har förändrats fundamentalt under 35 år. År 1990 var fondbidragets funktion att fylla det gap som uppstod när rörelseintäkterna inte räckte till att täcka kostnaderna. Underskottet i rörelsen uppgick till 112 486 kronor; fonderna bidrog med 99 512 kronor för att hålla nationen flytande. Utan fondavkastningen hade nationen gått med ett underskott på nästan 113 000 kronor – 61 procent av de totala rörelseintäkterna.</p>
+
+      <p>År 2025 är situationen radikalt annorlunda. Finansiella placeringar uppgår till 9 076 932 kronor (varav stiftelsevärdepapper 8 632 427 kr och övriga placeringar 444 505 kr). Avkastningen bidrar med 578 936 kronor i finansiella intäkter. Rörelseresultatet är numera positivt (+72 267 kr), och de finansiella intäkterna adderar ytterligare ett rejält överskott. Nationen är inte längre beroende av fonderna för sin dagliga överlevnad – fondavkastningen utgör en välkommen buffert och möjliggör stipendier och nationsstöd.</p>
+
+      <!-- FONDTABELL -->
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th class="col-label">Post</th>
+            <th class="col-1990">1990</th>
+            <th class="col-2025">2025</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-label">Rörelseresultat (före finansiella poster)</td>
+            <td class="col-1990">−112 486 kr</td>
+            <td class="col-2025">+72 267 kr</td>
+          </tr>
+          <tr>
+            <td class="col-label">Finansiella intäkter (fondbidrag / utdelningar)</td>
+            <td class="col-1990">99 512 kr</td>
+            <td class="col-2025">578 936 kr</td>
+          </tr>
+          <tr>
+            <td class="col-label">Årets resultat (efter finansiella poster)</td>
+            <td class="col-1990">−12 973 kr</td>
+            <td class="col-2025">+456 010 kr</td>
+          </tr>
+          <tr>
+            <td class="col-label">Finansiella placeringar (balansräkning)</td>
+            <td class="col-1990">Ej redovisade i tillgänglig data</td>
+            <td class="col-2025">9 076 932 kr</td>
+          </tr>
+          <tr>
+            <td class="col-label">Fondavkastningens andel av totala intäkter</td>
+            <td class="col-1990">~53 % (livsnödvändig)</td>
+            <td class="col-2025">~13 % (välkommet tillskott)</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+
+    <!-- ============================================================
+         DEL 2: KREATIV / NOSTALGISK JÄMFÖRELSE
+    ============================================================ -->
+    <section id="kreativ">
+      <div class="section-header" style="border-top-color: #9a7040;">
+        <p class="section-label" style="color: #9a7040;">Del 2 — Nostalgisk och fri jämförelse</p>
+        <h2 style="color: #5a3e20;">Brev från 1990 till 2025</h2>
+      </div>
+
+      <div class="creative-section">
+
+        <div class="pull-quote">
+          "Nationens ekonomiska beredskap är trots allt god. Kan bara pub-, kortresultatet fortsätta i samma goda stil, svinnet hållas nere så kommer Nationen nå det budgeterade nollresultatet."
+          <br><br>
+          — Kent Lundgren, PQe, Kalmar Nation, 18 januari 1991
+        </div>
+
+        <p>Det var ett gott råd. Det visade sig hålla i 35 år – och lite till.</p>
+
+        <h3>Den som skriver ett bokslut, skriver historia</h3>
+
+        <p>I januari 1991 satt en ung ekonomiansvarig – PQe i nationsspråkets mening – och summerade ett verksamhetsår vid ett skrivbord på Biskopsgatan i Lund. Datorn hade nyss havererat (4 000 kronor i kostnader), kopieringsmaskinen likaså (2 500 kronor till). Det hade skett ett inbrott i sprit- och ölrådet – "självrisken är hög", noteras torrt. Nationens kassaflöde var ansträngt, fonderna oumbärliga, och budgeten för nästa år väntade under sista sidan.</p>
+
+        <p>Hans namn stod under raderna: Kent Lundgren.</p>
+
+        <p>35 år senare sitter samme man och granskar ett annat bokslut för samma nation – nu som revisor. Cirkeln är sluten. Men hur ser nationen ut jämfört med 1991 – och hur har Sverige förändrats där emellan?</p>
+
+        <h3>Kaggen – från pub till bar med fatöl på fjorton tappar</h3>
+
+        <div class="timeline-row">
+          <span class="year-tag">1990</span>
+          <p>Puben Kaggen genererade 34 781 kronor i intäkter under hela år 1990. Pubkortet – det fysiska plastkort som gav rabatt och tillgång – stod för ytterligare 45 234 kronor. Sammantaget 80 015 kronor från bar och kortförsäljning. Det var nationens näst viktigaste intäktskälla, efter terminsinkomsterna. "Puben gick bättre under hösten jmf med våren", konstaterade PQe nöjt.</p>
+        </div>
+
+        <div class="timeline-row">
+          <span class="year-tag y2025">2025</span>
+          <p>Beer Tap – fatöl, i modern mening – genererar ensamt 976 358 kronor. Ölflaskor (Beer) bidrar med ytterligare 267 063 kronor. Cider på fat: 143 380 kronor. Vin: 130 681 kronor. Sprit: 346 108 kronor. Cider på flaska: 125 008 kronor. Sammanlagda dryckesintäkter: nästan 2 miljoner kronor. Mer än tio hela nationens budget 1990.</p>
+        </div>
+
+        <p>Nationens bar har genomgått en stilla revolution. Den handlar inte bara om kronor utan om en förändrad studentkultur: 1990 var studentpuben ett litet, charmigt hafverk driven av entusiaster med blygsamma resurser. 2025 är det en välsorterad bar med kassasystem, kortterminal och integrerat lagerhållningssystem i Visma.</p>
+
+        <h3>Calmare Nyckel – nationstidningens uppgång och tystnad</h3>
+
+        <p>År 1990 kostade Calmare Nyckel – nationens egna tidning – 27 627 kronor. Fyra nummer per år sändes ut, i en tid då ett fysiskt tryckt häfte var den naturliga länken mellan nation och student. PQe noterade att målet var fler annonsörer och att budgeten låg fast på 20 000 kronor (5 000 per nummer). Calmare Nyckel var en institution.</p>
+
+        <p>År 2025 uppgår kostnaden för "Printed material" till 7 332 kronor. Det är ett blygsamt belopp – troligen ett program för en bal, ett flyer-utskick. Den tryckta nationstidningen som samlingsplats för nationens berättelse om sig själv är borta, ersatt av sociala medier och digitala kanaler som kostar ingenting och når alla – men ger tillbaka ingenting av det slitna papprets taktila nostalgi.</p>
+
+        <h3>Radion som sände till 24 800 bänkade studenter</h3>
+
+        <div class="pull-quote">
+          "1 timme i veckan sänder radio Kaggen rakt ut i etern till 24 800 bänkade studenter."
+          <br>— Ekonomisk förvaltningsberättelse 1990
+        </div>
+
+        <p>Radio Kaggen. En timme i veckan. Rakt ut i etern. 1990 var det en naturlig del av nationens liv – radiosektionens kostnad var 5 603 kronor. År 2025 syns inte radiosektionen i bokslutet. Inte heller film- eller fotosektionen.</p>
+
+        <p>Det säger någonting om hur amatörmedier och studentkollektivets egna producerade kanaler har förändrats. 1990 sände man på FM. 2025 poddas det, streamar det, klipps det reels. Skillnaden är inte att studenterna blivit mindre kreativa – snarare att kreativiteten rymt ut ur sektionsstrukturen och in i det oregistrerade.</p>
+
+        <h3>Tandemstafetten och idrotten som inte syns i kontoplanen</h3>
+
+        <p>År 1990 genomförde idrottssektionen "udda sporter såsom fäktning och tandemstafett". Tandemstafetten beskrivs med varm humor: entusiasmen att cykla på tandem fanns, men inte ett fullt lag. Nationen fick betala 4 500 kronor för det halvt tomma laget som ändå gav sig iväg mot Göteborg. Det är den sortens mänskliga detalj som aldrig syns i en balansräkning men som definierar en nation.</p>
+
+        <p>År 2025 finns en idrottsfond med 74 649 kronor i kassan. Pengarna är där. Men vilka udda sporter som bedrivs, och om någon fortfarande trampar tandem mot Göteborg – det vet bara de som var med.</p>
+
+        <h3>Från diskett till molnet – ett 35-årigt tekniksprång</h3>
+
+        <div class="timeline-row">
+          <span class="year-tag">1990</span>
+          <p>Bokföringen sköttes manuellt, med summeringskolumner i tabellformat. Datorn havererade under hösten och kostade 4 000 kronor att åtgärda. "Kopieringsmaskinen (2 500,00) havererade", konstateras med resignerad nykterhet. Disketter nämns i listan över kontorsmaterial. Verifikationslistan existerade men hade ännu inget bättre format än en papperspärm.</p>
+        </div>
+
+        <div class="timeline-row">
+          <span class="year-tag y2025">2025</span>
+          <p>Ekonomin körs i Visma eEkonomi i molnet, med bankintegration mot SEB, digital fakturahantering, automatiska kassarapporter från Zettle och lagerhantering i realtid per produktkategori. Kostnader för "Software and computer licenses" uppgår till 23 578 kronor, "Leasing of computers" 68 733 kronor. Revision kan utföras på distans från en laptop. Verifikationslistan exporteras med ett knapptryck som en Excel-fil.</p>
+        </div>
+
+        <h3>PQe – rollen som aldrig riktigt förändras</h3>
+
+        <p>Det som förenar 1990 och 2025, mer än något annat, är att det finns en PQe – en ekonomiansvarig student – som tar ansvar för att räkenskaperna stämmer, att pengarna är på rätt ställe och att nationen kan ha kul utan att gå omkull.</p>
+
+        <p>1990: Kent Lundgren, som på en skrivmaskin (eller möjligen tidigt PC) sammanfattade ett år av pub-intäkter, sektionskostnader och fondavkastning, och som kände ett genuint hopp om att budgeten 1991 skulle hålla.</p>
+
+        <p>2025: Daniel Kirk, som i Visma eEkonomi hanterar 4,3 miljoner kronor i omsättning, 453 verifikationer i serie A ensamt, 23 serier totalt, och som svarar på revisionsmail från – naturligtvis – Kent Lundgren.</p>
+
+        <div class="pull-quote">
+          Rollen är densamma. Ansvaret är detsamma. Siffrorna är 23 gånger större. Och kaffet på expeditionen är säkert fortfarande lika dåligt.
+        </div>
+
+        <h3>Vad som är sig likt</h3>
+
+        <p>Trots alla förändringar – tekniken, skalan, komplexiteten – är Kalmar Nation fortfarande det den alltid har varit: en plats där studenter samlas, dricker öl (nu mer fat-öl än flasköl), anordnar evenemang, ger ut lite tryckt material, driver idrott med varierande framgång och förvaltar en uppsättning fonder som är äldre än de flesta av dem som nyttjar dem.</p>
+
+        <p>Fonderna existerar fortfarande – och de är nu värda nästan tio miljoner kronor. Det bekymmer som PQe formulerade 1990 – att den reala avkastningen minskar kapitalbasen i det långa loppet – är lika relevant att ställa sig år 2025. Pengarna växer, men inflationen äter.</p>
+
+        <p>Det gäller att hålla svinnet nere. Det visade sig vara ett råd som höll sig.</p>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         KÄLLFÖRTECKNING (Harvardformat)
+    ============================================================ -->
+    <section id="kallor">
+      <div class="sources">
+        <h4>Källor</h4>
+        <p>
+          Kalmar Nation (1991) <em>Bokslut 1990 – Ekonomisk förvaltningsberättelse</em>. Lund: Kalmar Nation. Undertecknat Kent Lundgren, PQe, 18–19 januari 1991. [Internt dokument.]
+        </p>
+        <p>
+          Kalmar Nation (2026) <em>Resultatrapport ÅRL 2025-01-01 – 2025-12-31</em>. Lund: Kalmar Nation / Visma eEkonomi. Utskriven 2026-03-26. [Internt revisionsunderlag.]
+        </p>
+        <p>
+          Kalmar Nation (2026) <em>Balansrapport ÅRL 2025-01-01 – 2025-12-31</em>. Lund: Kalmar Nation / Visma eEkonomi. Utskriven 2026-03-26. [Internt revisionsunderlag.]
+        </p>
+        <p>
+          Statistiska centralbyrån (2025) <em>Konsumentprisindex (KPI) – historiska data 1980–2025</em>. Stockholm: SCB. Tillgänglig: <a href="https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-konsumtion/konsumentprisindex/konsumentprisindex-kpi/" target="_blank">https://www.scb.se</a> (Hämtad: 2026-04-04). <em>Anmärkning: Inflationsfaktorn ca 2,3 avser omräkning från 1990 till 2025 baserat på KPI-utvecklingen.</em>
+        </p>
+        <p>
+          Bokföringsnämnden (u.å.) <em>Ideella föreningar – vad gäller för redovisning och bokföring</em>. Stockholm: BFN. Tillgänglig: <a href="https://www.bfn.se/redovisningsregler/vad-galler-for/ideella-foreningar/" target="_blank">https://www.bfn.se</a> (Hämtad: 2026-04-04).
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <p>Kalmar Nation i Lund &nbsp;·&nbsp; Jämförelse 1990–2025 &nbsp;·&nbsp; Revision 2026</p>
+    <p style="margin-top:0.4rem;">Datakällor: KN Bokslut 1990 och KN Rapporter 2025-03-26 ur Visma eEkonomi.</p>
+  </footer>
+
+</body>
+</html>
