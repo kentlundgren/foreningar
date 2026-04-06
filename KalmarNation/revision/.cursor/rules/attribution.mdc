@@ -1,0 +1,33 @@
+# Attribuering – sidor ska inte skrivas under med "Kalmar Nation i Lund"
+
+## Regel
+
+Sidor i detta projekt ska **inte** ge intrycket att det är Kalmar Nation som organisation
+som officiellt står bakom texten eller ansvarar för dess innehåll. Texterna är
+**privata analyser och jämförelser** sammanställda av Kent Lundgren som privatperson
+i egenskap av lekmannarevisor.
+
+## Vad som ska undvikas
+
+- "Kalmar Nation i Lund" som avsändare i footer eller header (ger intrycket av officiell text)
+- Formuleringar som "Kalmar Nation presenterar" eller "Kalmar Nations revision"
+  när kontexten är privatpersonens analys, inte nationens officiella kommunikation
+
+## Vad som är OK
+
+- "Kalmar Nation" som objekt (organisationen som granskas), t.ex.
+  "Kalmar Nations ekonomi 1990–2025"
+- "Privat analys av Kent Lundgren" i footer
+- "Revision 2025 · Version X.X, ÅÅÅÅ-MM-DD" i footer (neutral versionsinfo)
+
+## Format för footer på analyssidor
+
+**Faktaanalyser och jämförelsesidor** (t.ex. 1990_2025.html, 1990_2025_eng.html):
+```
+Privat analys av Kent Lundgren · [sidans ämne] · Version X.X, ÅÅÅÅ-MM-DD
+```
+
+**Revisionssidor** (index.html, index_eng.html) – befintligt format OK eftersom
+det tydligt framgår att det är en lekmannarevision utförd av Kent Lundgren.
+
+*Regel skapad: 2026-04-06*
