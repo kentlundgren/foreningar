@@ -10,19 +10,40 @@ Varje ändring i en svensk HTML-fil **ska alltid speglas** i motsvarande engelsk
 
 ## Filpar i detta projekt
 
-| Svenska        | Engelska           |
-|----------------|--------------------|
-| index.html     | index_eng.html     |
-| generellt.html | generellt_eng.html |
+| Svenska                  | Engelska                      | Undantag                          |
+|--------------------------|-------------------------------|-----------------------------------|
+| index.html               | index_eng.html                | —                                 |
+| generellt.html           | generellt_eng.html            | —                                 |
+| 1990/1990_2025.html      | 1990/1990_2025_eng.html       | Se nedan – partiell spegling      |
 
-## Vad som ska synkas
+## Undantag: 1990_2025_eng.html speglar bara Del 1
+
+`1990_2025_eng.html` är **inte** en fullständig spegling av `1990_2025.html`.
+Filen ska spegla **enbart Del 1 – Faktaanalys** (section id="faktaanalys" och tillhörande
+sektioner: intäkter, kostnader, verksamhet, fonder och källor).
+
+**Del 2 – "Nostalgisk och fri jämförelse"** (section id="kreativ") ska **inte**
+inkluderas i den engelska versionen. Den nostalgiska texten är personlig och
+kulturellt betingad på ett sätt som inte är meningsfullt att översätta.
+
+### Vad som ändå ska synkas (Del 1)
+- Faktaändringar: siffror, datum, tabellrader, fotnoter
+- Nya avsnitt eller sektioner inom Del 1
+- Ändringar i header, navigation (för Del 1-länkarna), footer och back-länk
+- Ändringar i källförteckningen
+
+### Vad som INTE ska synkas
+- Del 2 (nostalgisk jämförelse) – finns bara på svenska
+- Navigationsankaret till #kreativ – finns bara i index.html, inte i index_eng.html
+
+## Vad som ska synkas (generellt för alla filpar)
 - Avsnitt som läggs till eller tas bort
 - Ändringar i struktur och layout
 - Uppdateringar av faktainnehåll (siffror, datum, status)
 - Nya sektioner, tabeller, listor
 - Ändringar i footer, header, navigation
 
-## Vad som INTE ska synkas
+## Vad som INTE ska synkas (generellt)
 - Själva texten (den ska översättas, inte kopieras)
 - Språkspecifika attribut: `lang="sv"` vs `lang="en"`
 - Titlar och meta-beskrivningar (ska vara på resp. språk)
@@ -32,3 +53,5 @@ Varje ändring i en svensk HTML-fil **ska alltid speglas** i motsvarande engelsk
 1. Ändring görs i t.ex. generellt.html
 2. Motsvarande ändring görs omedelbart i generellt_eng.html
 3. Båda filerna committas i samma commit
+
+*Senast uppdaterad: 2026-04-06*
