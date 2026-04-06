@@ -439,6 +439,17 @@
       font-style: normal;
       position: relative;
       white-space: nowrap;
+      text-decoration: none; /* tar bort webbläsarens standardlänkunderstrykning */
+    }
+
+    /* När harvard-ref används på en <a>-tagg: visa klick-markör och behåll stil */
+    a.harvard-ref {
+      cursor: pointer;
+    }
+
+    a.harvard-ref:hover {
+      color: #1a3a5c;
+      border-bottom-style: solid;
     }
 
     .harvard-ref::after {
@@ -1072,9 +1083,11 @@
       inte kapitalet, är det rätt att använda <strong>kursavkastning exklusive
       utdelning</strong> som tillväxtfaktor för aktiedepåns kapitalvärde. Källan för
       kursavkastningen är
-      <span class="harvard-ref"
+      <a class="harvard-ref"
+        href="https://indexes.nasdaqomx.com/index/overview/omxspi"
+        target="_blank" rel="noopener"
         data-ref="Nasdaq OMX (2025) OMX Stockholm PI – OMXSPI Index Overview. Stockholm: Nasdaq OMX. Tillgänglig: https://indexes.nasdaqomx.com/index/overview/omxspi (Hämtad: 2026-04-06). Basindex 100 per 1995-12-31; indexvärde ca 1 030 per 2025-12-31 → CAGR ca 8,1 % per år (kursavkastning exkl. utdelning, 30 år).">OMXSPI
-      (OMX Stockholm Price Index)</span> – ett rent kursindex som <em>inte</em>
+      (OMX Stockholm Price Index)</a> – ett rent kursindex som <em>inte</em>
       inkluderar återlagda utdelningar. Basindex = 100 per 1995-12-31; indexvärdet per
       december 2025 var ca 1&nbsp;030, vilket ger en genomsnittlig kursavkastning om
       ca 8,1&nbsp;% per år för perioden 1995–2025 (30 år).</p>
@@ -1094,9 +1107,11 @@
         konservativ uppskattning av kursavkastning exkl. utdelning.
         Bygger på OMXSPI (8,1&nbsp;%/år 1995–2025) med nedjustering för
         krisåren 1990–1995. Kursavkastning beräknad med
-        <span class="harvard-ref"
+        <a class="harvard-ref"
+          href="https://indexes.nasdaqomx.com/index/overview/omxspi"
+          target="_blank" rel="noopener"
           data-ref="Nasdaq OMX (2025) OMX Stockholm PI – OMXSPI Index Overview. Stockholm: Nasdaq OMX. Tillgänglig: https://indexes.nasdaqomx.com/index/overview/omxspi (Hämtad: 2026-04-06). Basindex 100 per 1995-12-31; indexvärde ca 1 030 per 2025-12-31 → CAGR ca 8,1 % per år (exkl. utdelning).">OMXSPI
-          som källa</span>.
+          som källa</a>.
         Jämför: totalavkastning inkl. utdelning ≈ 9&nbsp;%/år (separat beräkning nedan).
         (2)&nbsp;<em>Obligationsfond:</em> 5&nbsp;% per år –
         svenska räntor föll kraftigt 1990–2020, men steg 2022–2025.
@@ -1408,6 +1423,17 @@
           Stockholm: SEB. [Internt underlag, mottaget 2026-03-26.] <em>Anmärkning:
           Marknadsvärde totalt för depån: 12 536 278 kr. Används som grund för
           jämförelse med bokfört värde (9 076 932 kr) och beräkning av dold reserv.</em>
+        </p>
+        <p>
+          Nasdaq OMX (2025) <em>OMX Stockholm PI – OMXSPI Index Overview</em>.
+          Stockholm: Nasdaq OMX. Tillgänglig:
+          <a href="https://indexes.nasdaqomx.com/index/overview/omxspi" target="_blank" rel="noopener">https://indexes.nasdaqomx.com/index/overview/omxspi</a>
+          (Hämtad: 2026-04-06). <em>Anmärkning: OMXSPI är ett rent kursindex (prisindex)
+          som inte inkluderar återlagda utdelningar. Basindex 100 per 1995-12-31;
+          indexvärde ca 1&nbsp;030 per 2025-12-31, vilket ger en genomsnittlig
+          kursavkastning (exkl. utdelning) om ca 8,1&nbsp;% per år under perioden
+          1995–2025 (30 år). Används som referens för uppskattning av aktiedepåns
+          hypotetiska värdeutveckling 1990–2025.</em>
         </p>
       </div>
     </section>
