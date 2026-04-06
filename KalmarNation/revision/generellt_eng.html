@@ -428,6 +428,27 @@
     { } GitHub
   </a>
 
+  <!-- Discreet link bottom-right → print-friendly audit instructions -->
+  <a style="position:fixed;bottom:1rem;right:1rem;display:inline-flex;align-items:center;
+            gap:0.3rem;font-size:0.74rem;font-weight:600;color:#1a3a5c;
+            background:#f0f6ff;border:1px solid #a0b8d0;border-radius:6px;
+            padding:0.3rem 0.7rem;text-decoration:none;opacity:0.55;
+            transition:opacity 0.15s,box-shadow 0.15s;z-index:50;position:fixed;"
+     onmouseover="this.style.opacity='1';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.12)';document.getElementById('print-tooltip').style.opacity='1'"
+     onmouseout="this.style.opacity='0.55';this.style.boxShadow='none';document.getElementById('print-tooltip').style.opacity='0'"
+     href="Revisionsinstruktion_eng.html"
+     aria-label="Print-friendly audit instructions">
+    &#x1F4CB; Print version
+    <span id="print-tooltip"
+          style="position:absolute;bottom:130%;right:0;width:220px;background:#1a3a5c;
+                 color:#e8f0f8;font-size:0.73rem;font-weight:normal;line-height:1.4;
+                 padding:0.5rem 0.75rem;border-radius:6px;white-space:normal;
+                 opacity:0;pointer-events:none;transition:opacity 0.2s;
+                 box-shadow:0 3px 12px rgba(0,0,0,0.2);">
+      Print-friendly version of what is generally reviewed &ndash; save as PDF via Ctrl+P
+    </span>
+  </a>
+
   <script src="script.js" defer></script>
 </body>
 </html>

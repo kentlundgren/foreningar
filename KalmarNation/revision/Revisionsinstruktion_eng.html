@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  ================================================================
+  AUDIT INSTRUCTIONS – WHAT A LAY AUDITOR REVIEWS
+  ================================================================
+  File:        Revisionsinstruktion_eng.html
+  Purpose:     Print-ready audit instruction document for
+               elected lay auditors of smaller non-profit
+               organisations, student organisations, and similar.
+  Based on:    CLAUDE.md (revision instructions) and the
+               Granskningsstatus section in index.html.
+  Created:     2026-04-06
+  Version:     1.0, 2026-04-06
+  ================================================================
+-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+        content="Audit instructions for lay auditors of smaller organisations – what is reviewed and what documents are required." />
+  <title>Audit Instructions – What a Lay Auditor Reviews</title>
+
+  <style>
+    /* ============================================================
+       VARIABLES
+    ============================================================ */
+    :root {
+      --navy:   #1a3a5c;
+      --blue:   #2e6b9e;
+      --light:  #e8f0f8;
+      --bg:     #f7f4ee;
+      --card:   #ffffff;
+      --text:   #2c2c2c;
+      --muted:  #666;
+      --border: #d4cec4;
+      --green:  #2c6b2c;
+      --amber:  #ed8936;
+      --amber-bg: #fef3e2;
+    }
+
+    /* ============================================================
+       BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    /* ============================================================
+       SCREEN HEADER (hidden in print)
+    ============================================================ */
+    .screen-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: #f0f6ff;
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+    }
+    .screen-header h1 {
+      font-size: 2rem;
+      font-weight: normal;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.5rem;
+    }
+    .screen-header .lead {
+      font-size: 1rem;
+      opacity: 0.85;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .screen-header .meta {
+      font-size: 0.78rem;
+      opacity: 0.65;
+      margin-top: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================================
+       NAVIGATION BAR (screen only)
+    ============================================================ */
+    .screen-nav {
+      background: var(--card);
+      border-bottom: 2px solid var(--border);
+      padding: 0.65rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.88rem;
+      flex-wrap: wrap;
+    }
+    .screen-nav a {
+      color: var(--navy);
+      text-decoration: none;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .screen-nav a:hover { background: var(--light); }
+    .screen-nav .sep { color: var(--border); }
+
+    /* ============================================================
+       MAIN CONTAINER
+    ============================================================ */
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 3rem;
+    }
+
+    /* ============================================================
+       SECTION HEADINGS
+    ============================================================ */
+    .section-block {
+      margin-bottom: 2.5rem;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: normal;
+      color: var(--navy);
+      border-top: 3px solid var(--navy);
+      padding-top: 0.8rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: 0.01em;
+    }
+    h3 {
+      font-size: 1.05rem;
+      color: var(--blue);
+      margin: 1.5rem 0 0.5rem;
+      font-weight: bold;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.35rem; }
+
+    /* ============================================================
+       INTRO BOX
+    ============================================================ */
+    .intro-box {
+      background: var(--light);
+      border-left: 5px solid var(--navy);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 2rem;
+      font-size: 0.97rem;
+    }
+
+    /* ============================================================
+       REVIEW CHECKLIST TABLE
+    ============================================================ */
+    .review-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.91rem;
+      margin: 1rem 0 1.5rem;
+      background: var(--card);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    }
+    .review-table thead th {
+      background: var(--navy);
+      color: #f0f6ff;
+      padding: 0.65rem 1rem;
+      text-align: left;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .review-table tbody tr:nth-child(even) td { background: #faf8f3; }
+    .review-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .review-table tr:last-child td { border-bottom: none; }
+    .review-table .item-name { font-weight: bold; color: var(--navy); }
+    .review-table .item-why  { font-size: 0.88rem; color: var(--muted); }
+    .review-table .part-label {
+      background: var(--blue);
+      color: #e8f0f8;
+      padding: 0.4rem 1rem;
+      font-size: 0.78rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================================
+       DOCUMENTS TABLE
+    ============================================================ */
+    .docs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.91rem;
+      margin: 0.75rem 0 1.5rem;
+      background: var(--card);
+      box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .docs-table th {
+      background: var(--navy);
+      color: #f0f6ff;
+      padding: 0.6rem 1rem;
+      text-align: left;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .docs-table td {
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .docs-table tr:last-child td { border-bottom: none; }
+    .docs-table tr:nth-child(even) td { background: #faf8f3; }
+    .docs-table .doc-name  { font-weight: 600; color: var(--navy); }
+    .docs-table .doc-why   { font-size: 0.86rem; color: var(--muted); }
+    .docs-group-header td {
+      background: var(--light);
+      color: var(--navy);
+      font-weight: bold;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.45rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ============================================================
+       INFO BOXES
+    ============================================================ */
+    .info-box {
+      background: var(--light);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 6px 6px 0;
+      padding: 0.85rem 1.1rem;
+      margin: 1rem 0;
+      font-size: 0.93rem;
+    }
+    .info-box.amber {
+      background: var(--amber-bg);
+      border-left-color: var(--amber);
+    }
+    .info-box strong { display: block; margin-bottom: 0.2rem; }
+
+    /* ============================================================
+       SOURCE / REFERENCE
+    ============================================================ */
+    .source-block {
+      border-top: 2px solid var(--border);
+      margin-top: 3rem;
+      padding-top: 1.25rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .source-block h2 {
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #444;
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+      margin-bottom: 0.6rem;
+    }
+
+    /* ============================================================
+       PRINT-READY VERSION BADGE
+    ============================================================ */
+    .version-badge {
+      font-size: 0.78rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      display: inline-block;
+      margin-bottom: 2rem;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .page-footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+      margin-top: 1rem;
+    }
+
+    /* ============================================================
+       BACK BUTTON (discreet, fixed bottom-right – screen only)
+    ============================================================ */
+    .back-btn {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--navy);
+      background: #f0f6ff;
+      border: 1px solid #a0b8d0;
+      border-radius: 6px;
+      padding: 0.3rem 0.7rem;
+      text-decoration: none;
+      opacity: 0.55;
+      transition: opacity 0.15s, box-shadow 0.15s;
+      z-index: 50;
+    }
+    .back-btn:hover {
+      opacity: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .back-btn::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 130%;
+      right: 0;
+      width: 230px;
+      background: var(--navy);
+      color: #e8f0f8;
+      font-size: 0.74rem;
+      font-weight: normal;
+      line-height: 1.4;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      white-space: normal;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+    }
+    .back-btn:hover::after { opacity: 1; }
+
+    /* ============================================================
+       PRINT STYLES
+    ============================================================ */
+    @media print {
+      .screen-header { display: none; }
+      .screen-nav    { display: none; }
+      .back-btn      { display: none; }
+      .page-footer   { display: none; }
+
+      body {
+        background: #fff;
+        font-size: 11pt;
+        line-height: 1.6;
+      }
+      main {
+        max-width: 100%;
+        padding: 0;
+      }
+      h2 { font-size: 13pt; page-break-after: avoid; }
+      h3 { font-size: 11.5pt; page-break-after: avoid; }
+      .review-table, .docs-table { page-break-inside: auto; }
+      .review-table tr, .docs-table tr { page-break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+
+      /* Print-only document header */
+      .print-header {
+        display: block !important;
+        text-align: center;
+        border-bottom: 2pt solid #1a3a5c;
+        padding-bottom: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+      .print-header h1 {
+        font-size: 18pt;
+        font-weight: normal;
+        color: #1a3a5c;
+        margin-bottom: 0.3rem;
+      }
+      .print-header p {
+        font-size: 10pt;
+        color: #555;
+        margin: 0;
+      }
+    }
+
+    /* Hide print header on screen */
+    .print-header { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       SCREEN HEADER (hidden when printing)
+  ============================================================ -->
+  <header class="screen-header">
+    <h1>Audit Instructions</h1>
+    <p class="lead">
+      What a lay auditor reviews in a smaller organisation &ndash;
+      a practical guide to the audit process and required documents.
+    </p>
+    <p class="meta">Version 1.0, 2026-04-06 &nbsp;&middot;&nbsp; Print-friendly &ndash; use Ctrl+P to save as PDF</p>
+  </header>
+
+  <!-- ============================================================
+       NAVIGATION (screen only)
+  ============================================================ -->
+  <nav class="screen-nav" aria-label="Page navigation">
+    <a href="generellt_eng.html">&#x2190; Audit guide (accessible)</a>
+    <span class="sep">|</span>
+    <a href="index_eng.html">Project overview</a>
+  </nav>
+
+  <!-- ============================================================
+       MAIN CONTENT
+  ============================================================ -->
+  <main id="content">
+
+    <!-- Print-only document header (only visible when printing) -->
+    <div class="print-header" aria-hidden="true">
+      <h1>Audit Instructions for Smaller Organisations</h1>
+      <p>What a lay auditor reviews &ndash; scope, checklist, and required documents</p>
+      <p style="margin-top:0.3rem; font-size:9pt; color:#888;">Version 1.0, 2026-04-06</p>
+    </div>
+
+    <p class="version-badge">&#x1F4CB; Audit instructions &middot; v1.0 &middot; 2026-04-06</p>
+
+    <!-- ============================================================
+         1. PURPOSE
+    ============================================================ -->
+    <section class="section-block" aria-labelledby="h-purpose">
+      <h2 id="h-purpose">1. Purpose</h2>
+
+      <div class="intro-box">
+        This document describes what a lay auditor generally reviews when auditing a
+        <strong>smaller non-profit organisation</strong> &ndash; such as a student association,
+        sports club, tenant-owner association, or similar body. It outlines the scope of the audit,
+        a structured checklist of review items, and the documents and materials the auditor needs
+        to request before starting.
+      </div>
+
+      <p>
+        A lay auditor is elected by the members at the general meeting. Unlike a chartered auditor
+        in a large company, the lay auditor does not need formal accounting qualifications &ndash;
+        but the assignment is nonetheless a serious one carrying both legal and moral responsibility.
+        The audit protects the members' trust and the association's long-term financial health.
+      </p>
+      <p>
+        In a small organisation, <strong>all amounts are potentially material</strong>: an error
+        of SEK&nbsp;5,000 in a budget of SEK&nbsp;500,000 (1&nbsp;%) can be highly significant
+        and should always be noted. A small association also often lacks the formal internal control
+        structures found in larger organisations (approval procedures, separation of duties), which
+        means the auditor must exercise independent, careful judgement.
+      </p>
+      <p>
+        The audit covers two distinct parts: a <strong>financial audit</strong> (review of the
+        accounts) and an <strong>administrative audit</strong> (review of the board's governance).
+        Both are required in order to assess whether the board should be granted discharge of
+        liability at the general meeting.
+      </p>
+    </section>
+
+    <!-- ============================================================
+         2. REVIEW CHECKLIST
+    ============================================================ -->
+    <section class="section-block" aria-labelledby="h-checklist">
+      <h2 id="h-checklist">2. Scope of the Audit &ndash; Review Checklist</h2>
+      <p>
+        The table below lists all items that make up a complete lay audit of a smaller organisation,
+        together with a brief explanation of why each item is important.
+      </p>
+
+      <table class="review-table" aria-label="Audit review checklist">
+        <thead>
+          <tr>
+            <th style="width:44%">What is reviewed</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- PART 1 label -->
+          <tr><td class="part-label" colspan="2">Part 1 &ndash; Financial Audit (Review of the Accounts)</td></tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Risk assessment</span>
+              <div class="item-why">Before the detailed review begins</div>
+            </td>
+            <td>
+              Identify factors that increase risk: has the financial officer changed?
+              Have finances changed significantly compared with last year? Does one single
+              person control the entire financial flow (concentration risk)?
+              The risk assessment determines where to focus attention.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Bank reconciliation</span>
+              <div class="item-why">Bank statement vs. balance sheet as at 31 December</div>
+            </td>
+            <td>
+              The bank's own account statement must match exactly what the bookkeeping shows
+              as the bank balance. This is one of the most fundamental checks: if they do not
+              agree, there is either a bookkeeping error or something that requires explanation.
+              All bank accounts must be reconciled separately.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Balance sheet balances</span>
+              <div class="item-why">Assets = Liabilities + Equity</div>
+            </td>
+            <td>
+              The balance sheet must always balance: total assets must equal total liabilities
+              plus equity. If it does not, there is a bookkeeping error in the closing accounts.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Result = Change in equity</span>
+              <div class="item-why">The most important arithmetic check</div>
+            </td>
+            <td>
+              The net result for the year (surplus or deficit) must explain the change in equity
+              from one year to the next. A surplus of SEK&nbsp;10,000 means equity must increase
+              by exactly SEK&nbsp;10,000. If this relationship does not hold, it is a warning sign
+              of accounting errors or entries made directly against equity.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Continuity check &ndash; CB year X = OB year X+1</span>
+              <div class="item-why">The accounts thread must be unbroken</div>
+            </td>
+            <td>
+              The closing balance of the reviewed year must match the opening balance of the
+              following year, item by item in the balance sheet. This check is particularly
+              important in associations where the financial officer changes every year, as
+              knowledge can be lost in the handover. If balances do not agree, figures may
+              have been altered without a traceable record.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Sample testing &ndash; supplier invoices</span>
+              <div class="item-why">Voucher list required as starting point</div>
+            </td>
+            <td>
+              Select a representative sample of supplier invoices from the voucher list
+              (typically the largest amounts plus random items). For each item: verify that
+              a supporting document exists (invoice, receipt), that the amount matches, that
+              the account code is reasonable, and that the invoice is addressed to the
+              organisation (not a private person).
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Sample testing &ndash; disbursements and payments</span>
+              <div class="item-why">Voucher list required as starting point</div>
+            </td>
+            <td>
+              Check that outgoing payments match corresponding invoices and that no payments
+              have been made to unusual recipients. Particular attention to payments made
+              without a board resolution.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Sample testing &ndash; manual entries</span>
+              <div class="item-why">Voucher list required as starting point</div>
+            </td>
+            <td>
+              Manual entries (accruals, corrections, period adjustments) are created directly
+              by the financial officer without an external supporting document. They are
+              necessary and legitimate, but also the entry type most susceptible to misuse.
+              For each manual entry selected: what is its stated purpose? Is it reasonable?
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Sample testing &ndash; specific accounts (e.g. rent)</span>
+              <div class="item-why">Account-focused check using general ledger</div>
+            </td>
+            <td>
+              For a selected account (e.g. rent, account 5010), review all transactions
+              during the year. Check that the number of payments matches the agreed rent
+              period, that amounts are consistent, and that no irregular items appear on
+              the account.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Receivables &ndash; age analysis of customer invoices</span>
+              <div class="item-why">Voucher list and accounts receivable ledger required</div>
+            </td>
+            <td>
+              Unpaid customer invoices appear as assets in the balance sheet. If an invoice
+              is never paid, this is in reality a loss that has not been recognised. Request
+              the accounts receivable ledger and sort outstanding invoices by age:
+              invoices older than 90&nbsp;days are a warning sign; those older than
+              180&nbsp;days should usually be written off.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Unusual transactions review</span>
+              <div class="item-why">Voucher list required as starting point</div>
+            </td>
+            <td>
+              Scan the full voucher list for warning signs: round amounts without supporting
+              documentation, duplicate amounts to the same supplier, gaps in number sequences
+              (deleted vouchers may indicate a problem), entries very late in December or just
+              after year-end, payments to private individuals not traceable to a board decision.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Multi-year comparative analysis</span>
+              <div class="item-why">At least two years: year X vs. year X&minus;1</div>
+            </td>
+            <td>
+              Compare revenue, costs, and equity across at least two years. Have any items
+              increased or decreased dramatically? Is equity strengthening or weakening over
+              time? Are there structural patterns (e.g. costs consistently exceeding revenue)
+              that require attention?
+            </td>
+          </tr>
+
+          <!-- PART 2 label -->
+          <tr><td class="part-label" colspan="2">Part 2 &ndash; Administrative Audit (Review of the Board's Governance)</td></tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Board meeting minutes &ndash; financial decisions</span>
+            </td>
+            <td>
+              All significant financial decisions (larger purchases, loans, grants,
+              authorised signatories) must be supported by a board resolution. Check that
+              decisions are documented in the minutes and that the bookkeeping reflects
+              what the board decided.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Activity report &ndash; governance review</span>
+              <div class="item-why">Annual report / activity report required</div>
+            </td>
+            <td>
+              The activity report (or annual report) is the board's own account of what the
+              association has accomplished during the year. The auditor checks that this
+              description is consistent with what the accounts show, and that the board has
+              acted in accordance with the association's statutes and the decisions of the
+              general meeting. See section 5 for further detail.
+            </td>
+          </tr>
+
+          <!-- AUDIT REPORT label -->
+          <tr><td class="part-label" colspan="2">Final Output</td></tr>
+
+          <tr>
+            <td>
+              <span class="item-name">Audit report</span>
+              <div class="item-why">Written after all other items are complete</div>
+            </td>
+            <td>
+              The written audit report is submitted to the general meeting. It covers: period
+              reviewed, what was examined, conclusions on the financial audit, conclusions on
+              the administrative audit, any observations, and the auditor's recommendation
+              on whether to grant the board discharge of liability.
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================
+         3. REQUIRED DOCUMENTS
+    ============================================================ -->
+    <section class="section-block" aria-labelledby="h-docs">
+      <h2 id="h-docs">3. Required Documents and Materials</h2>
+      <p>
+        The following documents should be requested before the audit begins. Ask the financial
+        officer if anything is missing &ndash; do not start the review until the core documents
+        (income statement, balance sheet, bank statement, voucher list) are in hand. Always
+        verify that the income statement and balance sheet have been printed at the <strong>same
+        point in time</strong> and with the <strong>same last voucher number</strong>: if printed
+        on different occasions, bookkeeping entered in between may cause the figures to diverge.
+      </p>
+
+      <table class="docs-table" aria-label="Required audit documents">
+        <thead>
+          <tr>
+            <th style="width:38%">Document</th>
+            <th>What to check / why it is needed</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- GROUP: Accounts -->
+          <tr class="docs-group-header">
+            <td colspan="2">Financial Statements</td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Income statement</span>
+              <div class="doc-why">Year under review (year X)</div>
+            </td>
+            <td>
+              Shows all revenue and costs during the year and the net result.
+              Foundation for all comparative and equity checks.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Balance sheet</span>
+              <div class="doc-why">Year under review (year X)</div>
+            </td>
+            <td>
+              Shows assets, liabilities, and equity as at 31 December. Used for bank
+              reconciliation, equity check, and continuity verification.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Income statement and balance sheet</span>
+              <div class="doc-why">Previous year (year X&minus;1)</div>
+            </td>
+            <td>
+              Required for multi-year analysis and to verify that the opening balance
+              of year X matches the closing balance of year X&minus;1. Even if a
+              comparison column exists in the year X report, a standalone copy is preferred.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Balance sheet</span>
+              <div class="doc-why">Two years prior (year X&minus;2), if available</div>
+            </td>
+            <td>
+              Enables a three-year continuity and trend analysis. Particularly important
+              when the financial officer has changed, as it helps establish whether figures
+              are consistent across handovers.
+            </td>
+          </tr>
+
+          <!-- GROUP: Bank -->
+          <tr class="docs-group-header">
+            <td colspan="2">Bank Documents</td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Bank statement / account summary</span>
+              <div class="doc-why">All accounts, as at 31 December year X</div>
+            </td>
+            <td>
+              The bank's own statement of balances for all accounts as at the closing date.
+              Must match the corresponding bank account(s) in the balance sheet exactly.
+              Request a summary for all accounts, not just the main account.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Annual securities statement</span>
+              <div class="doc-why">For organisations with financial investments</div>
+            </td>
+            <td>
+              If the association holds shares, bonds, or funds, request the annual securities
+              statement from the bank or custodian (e.g. SEB annual statement as at
+              31 December). Compare the market value with the book value shown in the balance
+              sheet. A significant difference between market and book value may require
+              attention under the lower of cost or market principle.
+            </td>
+          </tr>
+
+          <!-- GROUP: Bookkeeping -->
+          <tr class="docs-group-header">
+            <td colspan="2">Bookkeeping Records</td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Voucher list (transaction log)</span>
+              <div class="doc-why">Exported from accounting system, full year</div>
+            </td>
+            <td>
+              A complete list of every bookkeeping entry during the year: series, voucher
+              number, date, amount, account, and description. This is <em>not</em> a physical
+              folder &ndash; it is a digital report exported directly from the accounting
+              system (e.g. Visma eEkonomi: Reports &rarr; General Journal &rarr; Export as
+              Excel). It is the auditor's primary tool for selecting and performing sample tests.
+            </td>
+          </tr>
+
+          <!-- GROUP: Year-end appendices -->
+          <tr class="docs-group-header">
+            <td colspan="2">Year-End Closing Appendices (Boksluts&shy;bilagor)</td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Accounts receivable ledger (customer ledger)</span>
+            </td>
+            <td>
+              A list of all outstanding customer invoices with invoice date, amount, and
+              payment status. The total must match the receivables figure in the balance sheet.
+              Sort by age to identify invoices older than 90 or 180 days.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Tax account statement</span>
+              <div class="doc-why">If applicable</div>
+            </td>
+            <td>
+              Statement from the Swedish Tax Agency showing the association's tax account
+              balance as at year-end. Verify this matches the tax account balance in the
+              balance sheet.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Specification of prepaid expenses</span>
+              <div class="doc-why">Accruals &ndash; costs paid in advance</div>
+            </td>
+            <td>
+              A list of costs that have been paid before year-end but relate to a future period
+              (e.g. insurance paid in December for January&ndash;December next year). Verify
+              that the specification adds up to the prepaid expenses item in the balance sheet.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Specification of accrued income</span>
+              <div class="doc-why">Income earned but not yet received</div>
+            </td>
+            <td>
+              Income that has been earned before year-end but not yet invoiced or received
+              (e.g. event held in December, invoice not yet sent). Verify that the amounts
+              are reasonable and will actually materialise as cash.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Tax allocation reserve</span>
+              <div class="doc-why">If applicable</div>
+            </td>
+            <td>
+              Specification of any tax allocation reserve (periodiseringsfond), if the
+              organisation has set one aside. Verify against the balance sheet.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Accounts payable ledger (supplier ledger)</span>
+            </td>
+            <td>
+              A list of all unpaid supplier invoices as at year-end. The total must match the
+              accounts payable figure in the balance sheet. Check for unusually old unpaid
+              invoices.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Project income statement</span>
+              <div class="doc-why">For organisations running separate projects</div>
+            </td>
+            <td>
+              If the organisation runs one or more separately tracked projects (e.g. events
+              funded by earmarked grants), request a project-level income statement showing
+              revenue and costs per project. Verify that grant conditions have been met.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Accrued expenses and deferred income</span>
+            </td>
+            <td>
+              Costs incurred before year-end but not yet invoiced (accrued expenses), and
+              income received in advance for a future period (deferred income). Verify
+              amounts and that they are reasonable.
+            </td>
+          </tr>
+
+          <!-- GROUP: Other -->
+          <tr class="docs-group-header">
+            <td colspan="2">Other Documents</td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Budget</span>
+              <div class="doc-why">If one was adopted for the year</div>
+            </td>
+            <td>
+              Compare actual results with the budget approved by the general meeting.
+              Large deviations should be explained by the board.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="doc-name">Board meeting minutes</span>
+              <div class="doc-why">Financial decisions during the year</div>
+            </td>
+            <td>
+              Minutes from board meetings where financially significant decisions were made
+              (larger purchases, loans, grants, new contracts, changes to authorised
+              signatories). Verify that these decisions are reflected in the accounts.
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============================================================
+         4. VOUCHER LIST
+    ============================================================ -->
+    <section class="section-block" aria-labelledby="h-voucher">
+      <h2 id="h-voucher">4. The Voucher List &ndash; the Auditor's Primary Tool</h2>
+      <p>
+        The <strong>voucher list</strong> (also called the general journal or transaction log) is
+        a digital report exported directly from the accounting system. It lists every bookkeeping
+        entry made during the year: series, voucher number, date, amount, account code, and
+        description.
+      </p>
+      <p>
+        It is <em>not</em> a binder of physical documents &ndash; it is a structured log the
+        financial officer exports in a few minutes. In Visma eEkonomi:
+        <strong>Reports &rarr; General Journal (Grundbok) &rarr; Export as Excel</strong>.
+      </p>
+      <div class="info-box amber">
+        <strong>How to use the voucher list</strong>
+        Open the exported file in Excel. Sort by series to understand the structure: which
+        series contains supplier invoices (often A), customer invoices (often K), manual entries
+        (often M), or cash register data (often Z)? Ask the financial officer to confirm what
+        each series represents. Then select a sample: the largest amounts, some random items,
+        and all entries in series with very few items (e.g. only 1&ndash;5 entries). For each
+        selected entry, verify that a supporting document exists and that the amounts and account
+        codes are correct.
+      </div>
+    </section>
+
+    <!-- ============================================================
+         5. ACTIVITY REPORT – ADMINISTRATIVE AUDIT
+    ============================================================ -->
+    <section class="section-block" aria-labelledby="h-activity">
+      <h2 id="h-activity">5. Activity Report &ndash; Required for the Administrative Audit</h2>
+      <p>
+        To carry out the <strong>administrative audit</strong> (review of the board's governance),
+        the auditor needs the association's <strong>activity report</strong> (Swedish:
+        <em>verksamhetsberättelse</em>).
+      </p>
+      <p>
+        The activity report is the board's own account of what the association has done during the
+        year: which activities were carried out, how the mission was fulfilled, and what significant
+        decisions were made. Smaller non-profit organisations that are not required to prepare a
+        formal annual report (such as those below the 3&nbsp;million SEK threshold) have no statutory
+        obligation to produce a formal management report &ndash; but they typically produce an
+        activity report that is presented and adopted at the general meeting.
+      </p>
+      <div class="info-box">
+        <strong>What the auditor checks against the activity report</strong>
+        The activity report is assessed against: the association's <strong>statutes</strong>
+        (has the board acted within its mandate?), decisions from the <strong>previous general
+        meeting</strong> (has the board done what it was instructed to do?), and the
+        <strong>accounts</strong> (is what the board claims to have done consistent with the
+        financial transactions visible in the bookkeeping?).
+      </div>
+      <p>
+        Without an activity report, the administrative audit cannot be completed. If no activity
+        report has been prepared, this should be noted in the audit report, and the board should
+        be asked to provide a written summary of the year's activities before the general meeting.
+      </p>
+    </section>
+
+    <!-- ============================================================
+         6. MATERIALITY AND INTERNAL CONTROL
+    ============================================================ -->
+    <section class="section-block" aria-labelledby="h-material">
+      <h2 id="h-material">6. Materiality and Internal Control</h2>
+      <h3>Materiality</h3>
+      <p>
+        In a large organisation, auditors calculate a formal materiality threshold &ndash; an
+        amount below which individual errors are not reported because they do not affect the overall
+        picture. In a small association, <strong>all amounts are potentially material</strong>:
+        with a budget of SEK&nbsp;500,000, an error of SEK&nbsp;5,000 (1&nbsp;%) can be
+        significant and should always be noted
+        (<a href="https://www.bfn.se/wp-content/uploads/2020/06/bokforingsskyldig-ideell-kons.pdf"
+            target="_blank" rel="noopener">Bokforing&shy;snamnden, n.d.</a>).
+      </p>
+      <h3>Internal control</h3>
+      <p>
+        Larger organisations have systems of internal control: approval procedures, dual
+        authorisation for payments, and clear separation of duties. In many smaller associations,
+        a single person handles the entire financial flow &ndash; recording transactions, approving
+        them, and making payments. This <strong>concentration risk</strong> is not necessarily a
+        sign of dishonesty, but it means the auditor must take a more independent and thorough
+        approach to sample testing.
+      </p>
+      <p>
+        If the financial officer changes every year (common in student organisations), this further
+        increases the risk of errors through loss of institutional knowledge during the handover.
+        In such cases, the auditor should request documentation covering <strong>at least two
+        years back</strong>.
+      </p>
+    </section>
+
+    <!-- ============================================================
+         SOURCE
+    ============================================================ -->
+    <div class="source-block" id="source">
+      <h2>Source</h2>
+      <p>
+        Bokforing&shy;snamnden [Swedish Accounting Standards Board] (n.d.)
+        <em>Ideella foreningar m.fl. &ndash; Bokforingsskyldighet och hur den lopande
+        bokforingen ska avslutas</em> [Non-profit associations &ndash; Accounting obligations
+        and how the accounts are to be closed]. Stockholm: Bokforing&shy;snamnden. Available:
+        <a href="https://www.bfn.se/wp-content/uploads/2020/06/bokforingsskyldig-ideell-kons.pdf"
+           target="_blank" rel="noopener">
+          https://www.bfn.se/wp-content/uploads/2020/06/bokforingsskyldig-ideell-kons.pdf
+        </a>
+        (Accessed: 2026-04-06).
+        <em>Note: BFN's information document on when and how accounting obligations arise for
+        non-profit organisations, including requirements for vouchers and archiving. The document
+        contains decision diagrams (pp.&nbsp;4&ndash;5) distinguishing between the K1 simplified
+        annual accounts, K2 annual accounts, and full annual report &ndash; based on the
+        organisation's net revenue.</em>
+      </p>
+    </div>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER (screen only)
+  ============================================================ -->
+  <footer class="page-footer" aria-label="Page footer">
+    Audit Instructions for Smaller Organisations &nbsp;&middot;&nbsp; v1.0, 2026-04-06
+    &nbsp;&middot;&nbsp;
+    <a href="generellt_eng.html">Back to audit guide</a>
+    &nbsp;&middot;&nbsp;
+    <a href="index_eng.html">Project overview</a>
+  </footer>
+
+  <!-- ============================================================
+       DISCREET BACK BUTTON – bottom right (links to generellt_eng.html)
+  ============================================================ -->
+  <a class="back-btn"
+     href="generellt_eng.html"
+     data-tooltip="Back to the accessible audit guide (generellt_eng.html)"
+     aria-label="Back to audit guide">
+    &#x1F4D6; Audit guide
+  </a>
+
+</body>
+</html>
