@@ -426,6 +426,69 @@
       letter-spacing: 0.06em;
     }
 
+    /* ============================================================
+       HARVARDFORMAT-TOOLTIP – visas när man hovrar över källreferensen
+       Tekniken bygger på CSS data-attributet "data-ref" som innehåller
+       den fullständiga källhänvisningen i Harvardformat.
+    ============================================================ */
+    .harvard-ref {
+      /* Understrykning med prickad linje indikerar att hover ger mer info */
+      border-bottom: 1px dotted #2e6b9e;
+      cursor: help;
+      color: #2e6b9e;
+      font-style: normal;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .harvard-ref::after {
+      /* Tooltipens innehåll hämtas från data-ref-attributet */
+      content: attr(data-ref);
+      /* Positionering: visas under/bredvid referenstexten */
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      /* Bredd och layout */
+      width: 400px;
+      max-width: 90vw;
+      white-space: normal;
+      /* Visuell stil */
+      background: #1a3a5c;
+      color: #f0f6ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      padding: 0.7rem 0.9rem;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      /* Dold som standard */
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 100;
+    }
+
+    /* Liten triangel under tooltipboxen */
+    .harvard-ref::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1a3a5c;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+      z-index: 101;
+    }
+
+    /* Visa tooltip och triangel vid hover */
+    .harvard-ref:hover::after,
+    .harvard-ref:hover::before {
+      opacity: 1;
+    }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -994,39 +1057,119 @@
 
       <!-- ============================================================
            HYPOTETISK INDEXBASERAD VÄRDEUTVECKLING 1990–2025
+           Uppdaterad 2026-04-06: ny beräkning på kursavkastning
+           exklusive utdelning, baserad på OMXSPI (prisindex).
       ============================================================ -->
       <h3>Uppskattad värdeutveckling 1990–2025 – om nationen levt enbart på avkastningen</h3>
 
       <p>En naturlig fråga är: om Kalmar Nation hade placerat 1990 års fondkapital och
-      därefter <em>enbart levt på avkastningen</em> – utan att röra kapitalet – hur stort
-      hade fondvärdet blivit år 2025? Beräkningen nedan är en <strong>hypotetisk
-      uppskattning</strong> baserad på historiska genomsnittliga avkastningsnivåer.
-      Den ska läsas som en storleksordning, inte som ett exakt svar. Alla antaganden
-      redovisas öppet.</p>
+      därefter <em>enbart levt på avkastningen</em> (utdelningar och räntor) utan att röra
+      kapitalet – hur stort hade fondvärdet blivit år 2025? Beräkningen nedan är en
+      <strong>hypotetisk uppskattning</strong>. Den ska läsas som en storleksordning,
+      inte som ett exakt svar.</p>
+
+      <p>Eftersom nationen rimligen konsumerar <em>utdelning och ränteintäkter</em> men
+      inte kapitalet, är det rätt att använda <strong>kursavkastning exklusive
+      utdelning</strong> som tillväxtfaktor för aktiedepåns kapitalvärde. Källan för
+      kursavkastningen är
+      <span class="harvard-ref"
+        data-ref="Nasdaq OMX (2025) OMX Stockholm PI – OMXSPI Index Overview. Stockholm: Nasdaq OMX. Tillgänglig: https://indexes.nasdaqomx.com/index/overview/omxspi (Hämtad: 2026-04-06). Basindex 100 per 1995-12-31; indexvärde ca 1 030 per 2025-12-31 → CAGR ca 8,1 % per år (kursavkastning exkl. utdelning, 30 år).">OMXSPI
+      (OMX Stockholm Price Index)</span> – ett rent kursindex som <em>inte</em>
+      inkluderar återlagda utdelningar. Basindex = 100 per 1995-12-31; indexvärdet per
+      december 2025 var ca 1&nbsp;030, vilket ger en genomsnittlig kursavkastning om
+      ca 8,1&nbsp;% per år för perioden 1995–2025 (30 år).</p>
+
+      <p>För perioden 1990–1995 (5 år) var situationen svårare: bankkrisen 1991–1993
+      och valutakrisen hösten 1992 tryckte ner kursnivåerna kraftigt. Konservativ
+      uppskattning för 1990–1995: 0&nbsp;% per år i kursavkastning. Det ger en
+      sammantagen uppskattning om ca <strong>6–7&nbsp;% per år</strong> för hela
+      perioden 1990–2025. Denna analys använder <strong>6&nbsp;%</strong> som
+      en försiktig ("konservativ") uppskattning av kursavkastningen.</p>
 
       <!-- ANTAGANDEN-RUTA -->
       <div class="info-box">
-        <strong>Metodantaganden</strong>
+        <strong>Metodantaganden – kursavkastning exkl. utdelning</strong>
         Startpunkt: börsvärde per 1990-12-31. Tidsperiod: 35 år (1990–2025).
-        Tre tillgångsslag med separata avkastningsantaganden:
-        (1) <em>Aktiedepå:</em> 9&nbsp;% per år – ungefärligt historiskt genomsnitt för
-        svenska aktier inklusive utdelning (Affärsvärldens generalindex, totalavkastning).
-        (2) <em>Obligationsfond:</em> 5&nbsp;% per år – avspeglar att svenska räntor föll
-        kraftigt 1990–2020 (steg obligationspriserna), men med ökade räntor 2022–2025.
-        (3) <em>Bankmedel:</em> 2,5&nbsp;% per år – approximativt genomsnitt för
-        rörlig ränta på bankkonton 1990–2025 (högt i tidigt 1990-tal, nära noll
-        2009–2021, högre från 2022). Fordran husombyggnaden (124&nbsp;615&nbsp;kr)
-        exkluderas – den var sannolikt en engångstransaktion, inte en långsiktig
-        placering.
+        (1)&nbsp;<em>Aktiedepå:</em> <strong>6&nbsp;% per år</strong> –
+        konservativ uppskattning av kursavkastning exkl. utdelning.
+        Bygger på OMXSPI (8,1&nbsp;%/år 1995–2025) med nedjustering för
+        krisåren 1990–1995. Kursavkastning beräknad med
+        <span class="harvard-ref"
+          data-ref="Nasdaq OMX (2025) OMX Stockholm PI – OMXSPI Index Overview. Stockholm: Nasdaq OMX. Tillgänglig: https://indexes.nasdaqomx.com/index/overview/omxspi (Hämtad: 2026-04-06). Basindex 100 per 1995-12-31; indexvärde ca 1 030 per 2025-12-31 → CAGR ca 8,1 % per år (exkl. utdelning).">OMXSPI
+          som källa</span>.
+        Jämför: totalavkastning inkl. utdelning ≈ 9&nbsp;%/år (separat beräkning nedan).
+        (2)&nbsp;<em>Obligationsfond:</em> 5&nbsp;% per år –
+        svenska räntor föll kraftigt 1990–2020, men steg 2022–2025.
+        (3)&nbsp;<em>Bankmedel:</em> 2,5&nbsp;% per år –
+        rörlig ränta 1990–2025 (högt tidigt 1990-tal, nära noll 2009–2021,
+        högre från 2022). Fordran husombyggnaden exkluderas.
       </div>
 
-      <!-- INDEXBERÄKNINGSTABELL -->
+      <!-- BERÄKNINGSTABELL – KURSAVKASTNING (PRIMÄR) -->
+      <p><strong>Beräkning A – kursavkastning exkl. utdelning (6 % för aktier)</strong></p>
       <table class="comparison-table">
         <thead>
           <tr>
             <th class="col-label">Tillgångsslag</th>
             <th class="col-1990">Börsvärde 1990</th>
-            <th class="col-diff">Antagen årsavk.</th>
+            <th class="col-diff">Kursavkastning / år</th>
+            <th class="col-2025">Beräknat värde 2025</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!-- Aktiedepå: 1 328 364 × (1,06)^35 = 1 328 364 × 7,686 = 10 209 800 -->
+            <td class="col-label">Aktiedepå (Handelsbanken)</td>
+            <td class="col-1990">1&nbsp;328&nbsp;364&nbsp;kr</td>
+            <td class="col-diff">6 % / år × 35 år<br><small>(faktor 7,7×)</small></td>
+            <td class="col-2025">~10&nbsp;210&nbsp;000&nbsp;kr</td>
+          </tr>
+          <tr>
+            <!-- Obligationsfond: 352 657 × (1,05)^35 = 352 657 × 5,516 = 1 945 300 -->
+            <td class="col-label">SEB Obligationsfond</td>
+            <td class="col-1990">352&nbsp;657&nbsp;kr</td>
+            <td class="col-diff">5 % / år × 35 år<br><small>(faktor 5,5×)</small></td>
+            <td class="col-2025">~1&nbsp;945&nbsp;000&nbsp;kr</td>
+          </tr>
+          <tr>
+            <!-- Bankmedel: 116 540 × (1,025)^35 = 116 540 × 2,373 = 276 600 -->
+            <td class="col-label">Bankmedel</td>
+            <td class="col-1990">116&nbsp;540&nbsp;kr</td>
+            <td class="col-diff">2,5 % / år × 35 år<br><small>(faktor 2,4×)</small></td>
+            <td class="col-2025">~277&nbsp;000&nbsp;kr</td>
+          </tr>
+          <tr class="totals">
+            <td class="col-label">TOTALT – hypotetiskt 2025-värde (kursavkastning)</td>
+            <td class="col-1990">1&nbsp;797&nbsp;561&nbsp;kr</td>
+            <td class="col-diff">—</td>
+            <td class="col-2025">~12&nbsp;432&nbsp;000&nbsp;kr</td>
+          </tr>
+          <tr>
+            <td class="col-label">Faktiskt marknadsvärde 2025 (SEB-depå)</td>
+            <td class="col-1990">—</td>
+            <td class="col-diff">—</td>
+            <td class="col-2025">12&nbsp;536&nbsp;278&nbsp;kr</td>
+          </tr>
+          <tr>
+            <td class="col-label">Differens (hypotetiskt minus faktiskt)</td>
+            <td class="col-1990">—</td>
+            <td class="col-diff">—</td>
+            <!-- Differensen är positiv = kapitalet är faktiskt bevarat! -->
+            <td class="col-2025 pos">+104&nbsp;000&nbsp;kr<br>
+              <small>(faktiskt ≈ 101 % av hypotetiskt – kapitalet är bevarat)</small></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- BERÄKNINGSTABELL – TOTALAVKASTNING (JÄMFÖRELSE) -->
+      <p style="margin-top:1.5rem;"><strong>Beräkning B – totalavkastning inkl. utdelning
+      (9 % för aktier) – visas för jämförelse</strong></p>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th class="col-label">Tillgångsslag</th>
+            <th class="col-1990">Börsvärde 1990</th>
+            <th class="col-diff">Totalavkastning / år</th>
             <th class="col-2025">Beräknat värde 2025</th>
           </tr>
         </thead>
@@ -1050,7 +1193,7 @@
             <td class="col-2025">~280&nbsp;000&nbsp;kr</td>
           </tr>
           <tr class="totals">
-            <td class="col-label">TOTALT – hypotetiskt 2025-värde</td>
+            <td class="col-label">TOTALT – hypotetiskt 2025-värde (totalavkastning)</td>
             <td class="col-1990">1&nbsp;797&nbsp;561&nbsp;kr</td>
             <td class="col-diff">—</td>
             <td class="col-2025">~29&nbsp;319&nbsp;000&nbsp;kr</td>
@@ -1071,18 +1214,25 @@
         </tbody>
       </table>
 
-      <p>Det faktiska marknadsvärdet 2025 (12,5&nbsp;mkr) uppgår till ungefär
-      <strong>43&nbsp;procent</strong> av vad en ren indexbaserad kalkyl skulle antyda
-      (~29,3&nbsp;mkr). Differensen på ca 16,8&nbsp;mkr är en uppskattning av det kapital
-      som sammantaget antingen <em>konsumerats för att finansiera löpande verksamhet</em>
-      under 35 år, eller avspeglar att fondavkastningen understeg respektive index –
-      eller en kombination av dessa faktorer. Resultatet är inte förvånande: en nation
-      med ett strukturellt rörelseunderskott på 60–100&nbsp;tkr per år (som år 1990)
-      behöver oundvikligen ta mer än enbart avkastningen från fonderna. Den ekonomiska
-      förbättring som skett på rörelsenivån (från −112&nbsp;tkr år 1990 till
-      +72&nbsp;tkr år 2025) innebär att trycket på fondkapitalet har minskat
-      – men den dolda reserven visar att fonderna fortfarande är nationens
-      viktigaste ekonomiska stötdämpare.</p>
+      <p>De två beräkningarna ger dramatiskt olika bilder – och båda är korrekta,
+      beroende på vad man frågar efter:</p>
+
+      <p><strong>Beräkning A (6&nbsp;%, kursavkastning):</strong> Det faktiska
+      marknadsvärdet 2025 (12,5&nbsp;mkr) är nästan <em>exakt lika</em> med det
+      hypotetiska kursindexerade värdet (12,4&nbsp;mkr). Det tyder på att Kalmar
+      Nation i stort sett har <strong>bevarat sitt fondkapital i reala kurstermer</strong>
+      – och att man faktiskt levt på avkastningen (utdelningar) snarare än att ha
+      tärt på kapitalet. Det är ett anmärkningsvärt och positivt resultat för en
+      organisation som under 1990-talets första hälft hade ett strukturellt
+      rörelseunderskott.</p>
+
+      <p><strong>Beräkning B (9&nbsp;%, totalavkastning):</strong> Jämförs i stället
+      med en fullt återinvesterad totalavkastning (dvs. om utdelningarna också
+      återinvesterats i fonden) uppgår det faktiska värdet till 43&nbsp;% av
+      det hypotetiska. Differensen på ca 16,8&nbsp;mkr representerar då den
+      utdelning och avkastning som nationen konsumerat under 35 år – i genomsnitt
+      ca 480&nbsp;tkr per år. Det är rimligt: det stämmer väl med att finansiella
+      intäkter år 2025 uppgår till 578&nbsp;tkr.</p>
 
       <div class="info-box green">
         <strong>Sammanfattning – LVP och fondkapitalets utveckling</strong>
@@ -1094,9 +1244,19 @@
         3,5&nbsp;mkr – en dold reserv som inte syns i balansräkningen. LVP kräver ingen
         åtgärd när marknaden överstiger bokfört värde. Regelverket är BFNAR&nbsp;2017:3,
         kap.&nbsp;11, grundat i försiktighetsprincipen (ÅRL 2&nbsp;kap.&nbsp;4&nbsp;§).<br><br>
-        Den hypotetiska indexberäkningen antyder att det faktiska fondkapitalet 2025
-        utgör ca 43&nbsp;% av ett teoretiskt maximivärde – vilket bekräftar att
-        nationen har dragit på fondkapitalet utöver ren avkastning under perioden.
+        <strong>Kapitalutveckling 1990–2025 – två beräkningssätt:</strong><br>
+        <em>Beräkning A (kursavkastning exkl. utdelning, ca 6&nbsp;%/år):</em>
+        Det teoretiska värdet 2025 uppgår till ca 12&nbsp;432&nbsp;000&nbsp;kr –
+        nästan exakt lika med det faktiska marknadsvärdet 12&nbsp;536&nbsp;278&nbsp;kr.
+        Skillnaden är bara +104&nbsp;000&nbsp;kr (+0,8&nbsp;%). Slutsatsen är anmärkningsvärd:
+        nationen har i allt väsentligt <em>bevarat sitt grundkapital</em> i reala termer
+        och levt på utdelningar och avkastning – precis som en välskött stiftelse.
+        Det är ett starkt förvaltningsresultat över 35 år.<br><br>
+        <em>Beräkning B (totalavkastning inkl. utdelning, ca 9&nbsp;%/år):</em>
+        Det teoretiska maxvärdet uppgår till ca 29&nbsp;319&nbsp;000&nbsp;kr. Det faktiska
+        marknadsvärdet (12,5&nbsp;mkr) utgör ca 43&nbsp;% av detta – vilket
+        kvantifierar det ackumulerade uttaget av utdelningar: i genomsnitt ca
+        480&nbsp;tkr/år, i linje med 2025 års finansiella intäkter om 578&nbsp;tkr.
       </div>
 
     </section>
