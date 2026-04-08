@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 2.5, 2026-04-07 – ersätter version 2.4*
+*Version 2.6, 2026-04-08 – ersätter version 2.5*
 
 ---
 
@@ -396,6 +396,32 @@ Begär alltid in resultat- och balansräkning för föregående år, även om en
 - Om det finns tecken på strukturella problem (t.ex. att kostnaderna systematiskt överstiger intäkterna)
 
 > *Skillnad mot större organisation:* Stora organisationer gör formell analytisk granskning med nyckeltal, branschtrender och förväntade värden baserade på statistiska modeller. För en liten organisation räcker en rimlig jämförelse år för år, med fokus på ovanliga avvikelser och konsekventa trender.
+
+### 6.7 Granskning av sena och manuella bokslutsverifikationer
+
+En av de mest riskfyllda faserna i en liten organisations bokföring är de **sista dagarna innan bokslutet färdigställs**. Det är då ekonomiansvarig gör justeringar, rättelser och "städar upp" konton som ser konstiga ut. Dessa poster är nödvändiga – men de kan också vara felaktiga om personen inte är van vid bokslutsarbete.
+
+**Revisorn ska alltid göra detta kontrollsteg *tidigt* – innan stickprov på enskilda fakturor:**
+
+Kontrollera att **årets resultat = förändring av eget kapital**. Om sambandet inte stämmer finns det en felaktig bokning någonstans – och den sitter troligen i en sen manuell verifikation.
+
+Beräkningen är enkel:
+- Eget kapital UB − Eget kapital IB = förväntad förändring
+- Denna ska vara identisk med beräknat resultat i balansrapporten
+- Om de skiljer sig: leta efter manuella poster i bokslutsserien (Y, M eller liknande)
+
+**Var extra uppmärksam på:**
+
+- Verifikationer i serier som används för manuella bokslutsrättelser (ofta Y-serien, M-serien eller liknande) – särskilt de sista posterna i serien, som tillkommit allra sist
+- Manuella poster som kombinerar ett **eget kapital-konto (2xxx)** med ett **intäktskonto (8xxx)**: en debitering av t.ex. konto 2099 (Årets resultat) och kreditering av ett 8xxx-konto är en varningssignal – det tar kapital ur eget kapital och för in det som intäkt, vilket är cirkulärt om ingen faktisk betalning inkommit utifrån
+- Runda belopp i manuella poster utan tydligt angivet syfte
+- Poster som skapats sent – sortera verifikationslistan på registreringsdatum (Regdat), inte bokföringsdatum, för att se vad som tillkommit sist
+
+**Fråga alltid:** Vilket underlag finns för denna manuella post? Kan inte ekonomiansvarig ange ett konkret underlag (bankutdrag, beslut, faktura) bör posten ifrågasättas.
+
+> **Praktiskt exempel (Kalmar Nation 2025):** Vernr Y2 debiterade konto 2099 (Årets resultat) och krediterade konto 8999 med 881 657 kr. Effekten var att beräknat resultat ökade med 881 657 kr utan att ett enda nytt öre kommit in. Det organiska resultatet var 419 046 kr. Felet hade kunnat hittas redan vid det allra första kontrollsteget: sambandet resultat = Δ eget kapital stämde inte, vilket pekade direkt mot de sena manuella posterna.
+
+> *Skillnad mot större organisation:* I en professionell revision granskas manuella journalposter (manual journal entries) systematiskt som ett eget riskområde, i enlighet med ISA 240. För en liten organisation är det viktigaste att revisorn känner till att dessa poster finns, vet var i verifikationslistan de syns, och kontrollerar sambandet resultat = Δ eget kapital som ett snabbt första steg.
 
 ---
 
