@@ -423,6 +423,33 @@ Beräkningen är enkel:
 
 > *Skillnad mot större organisation:* I en professionell revision granskas manuella journalposter (manual journal entries) systematiskt som ett eget riskområde, i enlighet med ISA 240. För en liten organisation är det viktigaste att revisorn känner till att dessa poster finns, vet var i verifikationslistan de syns, och kontrollerar sambandet resultat = Δ eget kapital som ett snabbt första steg.
 
+### 6.8 Vinstdisposition – när och hur årets resultat överförs till eget kapital
+
+En vanlig missuppfattning – särskilt hos ekonomiansvariga utan formell bokföringsutbildning – är att årets resultat måste *bokföras manuellt* som en verifikation för att "fångas upp" i räkenskaperna. Det stämmer inte. Bokföringssystemet (t.ex. Visma eEkonomi) beräknar resultatet automatiskt som differensen mellan alla intäkts- och kostnadskonton. Det finns inget att manuellt bokföra under löpande år.
+
+**Rätt process sker i två steg:**
+
+**Steg 1 – Under räkenskapsåret:** Inga manuella resultatöverföringar görs. Konto 2099 "Årets resultat" i balansräkningen speglar det automatiskt beräknade värdet. Ingen verifikation krävs.
+
+**Steg 2 – Nästkommande räkenskapsår, efter stämmans godkännande:** När föreningsstämman har beslutat om dispositionen av årets överskott eller underskott, bokförs det i *nästkommande* räkenskapsårs böcker:
+
+- Debet 2099 "Årets resultat" [belopp, kr]
+- Kredit 2010 "Balanserat resultat" [samma belopp, kr]
+
+**Förslag till vinstdisposition** är det dokument styrelsen presenterar på stämman. Strukturen:
+
+| Beskrivning | Belopp |
+|---|---|
+| Balanserat överskott (ingående) | IB eget kapital, kr |
+| Årets överskott/underskott | Årets resultat, kr |
+| **Summa disponibelt** | **Summa, kr** |
+
+Styrelsen föreslår normalt att årets överskott balanseras i ny räkning (överförs till konto 2010) om inte stämman beslutar om annan användning.
+
+**Varningssignal:** Om en ekonomiansvarig under räkenskapsåret manuellt debiterar konto 2099 och krediterar ett intäktskonto (t.ex. 8xxx) – utan att det finns en faktisk betalning eller ett externt beslut som underlag – är det sannolikt ett misstag. Effekten är att resultatet ökar med det bokförda beloppet, vilket skapar en cirkulär konstruktion (resultatet inkluderar sin egen bokning). Kontrollera alltid sambandet resultat = Δ eget kapital som ett första steg (se avsnitt 6.7).
+
+> **Praktiskt exempel (Kalmar Nation 2025):** PQe bokförde vernr Y2 – Debet 2099 / Kredit 8999 med 881 657 kr – i tron att årets resultat måste aktiveras manuellt. Effekten blev en cirkulär intäkt. Det korrekta resultatet (organiskt + lagerförändringar) var 434 975 kr. Y2 stornerades; disposition av 434 975 kr sker i 2026 års böcker efter stämmans beslut: Debet 2099 / Kredit 2010 = 434 975 kr.
+
 ---
 
 ## 7. Bedrägeri och oegentligheter
