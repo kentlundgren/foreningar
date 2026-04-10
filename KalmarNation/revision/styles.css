@@ -256,6 +256,11 @@ a:hover {
   opacity: 1;
 }
 
+/* Bredare tooltip-variant för längre förklarande texter (t.ex. begreppsförklaringar) */
+.tooltip.tooltip-wide .tooltip-text {
+  width: 370px;
+}
+
 @media (prefers-color-scheme: dark) {
   .tooltip .tooltip-text {
     background: #e2e8f0;

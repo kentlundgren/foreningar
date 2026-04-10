@@ -516,7 +516,7 @@
         <p>
           Per 2026-04-08 visade balansrapporten <strong>+1 316 633 kr</strong>. Vernr Y2
           (konto 8999, 881 658 kr) har dock identifierats som en felaktig bokning – se avsnittet nedan.
-          När Y2 stornerats är <strong>korrekt beräknat resultat +434 975 kr</strong>.
+          När Y2 <span class="tooltip tooltip-wide">reverserats<span class="tooltip-text"><strong>Storno / reversering – bokföringsterm</strong><br><br>Från italienskans <em>stornare</em> ("vända tillbaka"). Har använts i bokföring sedan 1800-talet, via tyska <em>stornieren</em> och franska <em>storne</em>.<br><br>I Visma, Fortnox och Bokio finns en explicit funktion kallad <strong>"Storno"</strong> eller <strong>"Reversera"</strong> – den upphäver en felaktig verifikation genom att skapa en spegelvänd motpost med omvända debet/kredit.<br><br>Storno och reversera är synonymer; storno är det klassiska fackbegreppet.</span></span> är <strong>korrekt beräknat resultat +434 975 kr</strong>.
         </p>
         <table class="sum-table" aria-label="Resultatuppbyggnad 2025" style="max-width:560px;">
           <thead>
@@ -527,21 +527,21 @@
             <tr><td>Finansnetto (värdepapper, stipendier m.m.)</td><td style="text-align:right;">+383 743</td></tr>
             <tr><td><em>Delsumma (Över-/underskott efter fin. poster)</em></td><td style="text-align:right;"><em>+419 047</em></td></tr>
             <tr style="background:rgba(254,178,178,0.35);color:#742a2a;text-decoration:line-through;">
-              <td>Konto 8999 / vernr Y2 – felaktig cirkulär bokning (stornering begärd 2026-04-09)</td>
+              <td>Konto 8999 / vernr Y2 – felaktig cirkulär bokning (reversering begärd 2026-04-09)</td>
               <td style="text-align:right;">+881 658</td>
             </tr>
             <tr><td>Lagerförändringar utanför K1-format (4901–4909, 7741–7749)</td><td style="text-align:right;">+15 929</td></tr>
-            <tr><td><strong>KORREKT BERÄKNAT RESULTAT (efter stornering av Y2)</strong></td><td style="text-align:right;"><strong>+434 975</strong></td></tr>
+            <tr><td><strong>KORREKT BERÄKNAT RESULTAT (efter reversering av Y2)</strong></td><td style="text-align:right;"><strong>+434 975</strong></td></tr>
           </tbody>
         </table>
         <p style="margin-top:0.6rem;">
-          Konsistenstest efter stornering: resultatrapport 419 046 kr vs balansrapport 434 975 kr –
+          Konsistenstest efter reversering: resultatrapport 419 046 kr vs balansrapport 434 975 kr –
           skillnad = 15 929 kr = exakt summan av lagerförändrings- och nedskrivningskonton utanför
           K1-format. Korrekt och förväntat.
           <span class="badge badge-ok">Kontrollerat</span>
         </p>
 
-        <h3 style="margin-top:1rem;">Konto 8999 / vernr Y2 – förklaring mottagen, stornering begärd</h3>
+        <h3 style="margin-top:1rem;">Konto 8999 / vernr Y2 – förklaring mottagen, reversering begärd</h3>
         <p>
           Konto 8999 innehåller <strong>881 657 kr</strong> via vernr Y2 (debet 2099 / kredit 8999).
           Daniel svarade 2026-04-09: bokningen gjordes i tron att årets resultat måste bokföras
@@ -568,7 +568,7 @@
 
         <h3 style="margin-top:1rem;">Återstående steg inför revisionsberättelsen</h3>
         <ul>
-          <li>Daniel stornerar vernr Y2 – korrekt resultat bekräftas till 434 975 kr</li>
+          <li>Daniel reverserar vernr Y2 – korrekt resultat bekräftas till 434 975 kr</li>
           <li>Kundreskontra – åldersanalys av kundfakturor (86 386 kr i UB 2025)</li>
           <li>Stickprov K-serien (kundfakturor), M-serien (manuella poster) och U-serien (utbetalningar)</li>
           <li>Styrelsemötesprotokoll 2025</li>
@@ -585,13 +585,13 @@
       <h2 id="notes260409-heading">Revisionsanteckningar per 2026-04-09</h2>
       <div class="card">
 
-        <h3 style="margin-top:1rem;">Daniels svar – vernr Y2 förklarat och stornering begärd</h3>
+        <h3 style="margin-top:1rem;">Daniels svar – vernr Y2 förklarat och reversering begärd</h3>
         <p>
           DK svarade 2026-04-09 och förklarade logiken bakom vernr Y2 (debet 2099 /
           kredit 8999, 881 657 kr). Han trodde att det var nödvändigt att manuellt bokföra årets
           resultat som en verifikation för att det skulle "fångas upp" i räkenskaperna. Kent
           skickade ett detaljerat svarsmejl samma dag som förklarar varför detta är fel och
-          begär att Y2 storneras.
+          begär att Y2 reverseras.
         </p>
         <p>
           <strong>Varför Y2 är felaktig:</strong> Bokföringssystemet (Visma) beräknar årets
@@ -600,7 +600,7 @@
           beräknade resultatet med samma belopp. Bokningen är cirkulär.
         </p>
         <p>
-          <strong>Korrekt resultat efter stornering:</strong> 434 975 kr
+          <strong>Korrekt resultat efter reversering:</strong> 434 975 kr
           (organiskt resultat 419 046 kr + lagerförändringar 15 929 kr).
         </p>
         <p>
