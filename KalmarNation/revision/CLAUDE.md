@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 2.6, 2026-04-08 – ersätter version 2.5*
+*Version 2.7, 2026-04-10 – ersätter version 2.6*
 
 ---
 
