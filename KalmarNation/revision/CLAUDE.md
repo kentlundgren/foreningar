@@ -448,7 +448,7 @@ Styrelsen föreslår normalt att årets överskott balanseras i ny räkning (öv
 
 **Varningssignal:** Om en ekonomiansvarig under räkenskapsåret manuellt debiterar konto 2099 och krediterar ett intäktskonto (t.ex. 8xxx) – utan att det finns en faktisk betalning eller ett externt beslut som underlag – är det sannolikt ett misstag. Effekten är att resultatet ökar med det bokförda beloppet, vilket skapar en cirkulär konstruktion (resultatet inkluderar sin egen bokning). Kontrollera alltid sambandet resultat = Δ eget kapital som ett första steg (se avsnitt 6.7).
 
-> **Praktiskt exempel (Kalmar Nation 2025):** PQe bokförde vernr Y2 – Debet 2099 / Kredit 8999 med 881 657 kr – i tron att årets resultat måste aktiveras manuellt. Effekten blev en cirkulär intäkt. Det korrekta resultatet (organiskt + lagerförändringar) var 434 975 kr. Y2 stornerades; disposition av 434 975 kr sker i 2026 års böcker efter stämmans beslut: Debet 2099 / Kredit 2010 = 434 975 kr.
+> **Praktiskt exempel (Kalmar Nation 2025):** PQe bokförde vernr Y2 – Debet 2099 / Kredit 8999 med 881 657 kr – i tron att årets resultat måste aktiveras manuellt. Effekten blev en cirkulär intäkt. Det korrekta resultatet (organiskt + lagerförändringar) var 434 975 kr. Y2 reverserats; disposition av 434 975 kr sker i 2026 års böcker efter stämmans beslut: Debet 2099 / Kredit 2010 = 434 975 kr.
 
 ---
 
@@ -566,4 +566,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.4, 2026-04-03.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.7, 2026-04-10.*
