@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 2.9, 2026-04-13 – ersätter version 2.8*
+*Version 3.0, 2026-04-13 – ersätter version 2.9*
 
 ---
 
@@ -588,6 +588,28 @@ En revisionsberättelse för en liten ideell förening innehåller normalt:
 
 > *Skillnad mot större organisation:* En auktoriserad revisor skriver en formell revisionsberättelse med standardiserade formuleringar enligt FAR:s mallar. En lekmannarevisor kan använda ett enklare språk, men ska ändå täcka de sju punkterna ovan och tydligt skilja på räkenskapsgranskning och förvaltningsgranskning.
 
+### 10.4 Två nivåer: standardmall och utförlig dokumentation
+
+I praktiken används ofta en **tvånivåmodell** för revisionsberättelsen i en liten ideell förening:
+
+**Nivå 1 – Standardmallen (det formella dokumentet)**
+
+Föreningen har ofta en kortfattad standardtext för revisionsberättelsen som används år efter år och presenteras på nationsmötet. Revisorn skriver under denna. Det är det *formellt giltiga* dokumentet. Lekmannarevisorn ska alltid fråga om en sådan mall finns, och i så fall använda den.
+
+**Nivå 2 – Den utförliga dokumentationen (underlagshandling)**
+
+Vid en mer genomarbetad revision – t.ex. när ekonomin är komplex, när fel har upptäckts, eller när revisorn vill dokumentera sitt arbete tydligare – kan en utförlig granskningssammanfattning tas fram som komplement. Denna:
+- Är inte ett krav att presentera på nationsmötet
+- Tjänar som underlag för revisorns bedömning och nationens arkiv
+- Kan bifogas eller hänvisas till som komplement till standardmallen
+- Är särskilt värdefull om iakttagelser gjorts, eftersom den ger nationsmötet ett fullständigt underlag
+
+**Praktisk handläggning:**
+1. Fråga alltid om föreningen har en standardmall för revisionsberättelsen
+2. Erbjud att underteckna standardmallen i enlighet med nationens praxis
+3. Ta alltid fram en utförlig dokumentation som underlag – oavsett om iakttagelser gjorts eller inte
+4. Presentera den utförliga dokumentationen som bilaga eller separat handling vid behov
+
 ---
 
 ## 11. Källor och referensram
@@ -612,4 +634,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.9, 2026-04-13.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.0, 2026-04-13.*
