@@ -125,7 +125,7 @@
     </p>
     <!-- Diskret version- och datumindikator (synkat med index.html) -->
     <p class="page-version">
-      📋 Guide om revision · v1.1 · Senast uppdaterad: 2026-04-03
+      📋 Guide om revision · v1.2 · Senast uppdaterad: 2026-04-13
     </p>
   </header>
 
@@ -300,9 +300,48 @@
               En fordran uppstår när föreningen skickat en <em>kundfaktura</em> (vanligen
               serie K i bokföringssystemet) men ännu inte fått betalt. Fakturan syns som en
               tillgång i balansräkningen – men om pengarna aldrig kommer in är det i
-              realiteten en förlust. Revisorn begär en lista på utestående kundfakturor
-              (kundreskontra) och kontrollerar hur gamla de är: fakturor äldre än 6 månader
-              bör diskuteras med ekonomiansvarig och eventuellt skrivas av.
+              realiteten en förlust. Revisorn begär kundreskontra och kontrollerar hur gamla
+              fordringarna är: fakturor äldre än 6 månader bör diskuteras med ekonomiansvarig
+              och eventuellt skrivas av.
+
+              <details style="margin-top:0.75rem;">
+                <summary style="cursor:pointer; font-weight:600; color:#1a3a5c;">
+                  ▶ Metod: matcha K-serien mot I-serien för att hitta äldre fordringar
+                </summary>
+                <div style="margin-top:0.6rem; padding:0.75rem; background:#f0f4fa; border-left:3px solid #4a7ab5; border-radius:0 4px 4px 0; font-size:0.93em;">
+                  <p style="margin:0 0 0.5rem 0;">
+                    <strong>Vanligt misstag:</strong> Det räcker inte att konstatera att alla
+                    <em>årets</em> K-fakturor är betalda. Konto 1510 (kundfordringar) innehåller
+                    också fordringar från <em>tidigare år</em> – representerade av kontots
+                    ingående balans (IB). Om revisorn bara jämför årets K-fakturor mot årets
+                    I-betalningar kan slutsatsen felaktigt bli "inga gamla obetalda fordringar".
+                  </p>
+                  <p style="margin:0 0 0.5rem 0;">
+                    <strong>Matchningsnyckeln är fakturanumret.</strong> I-seriens beskrivningsfält
+                    innehåller fakturanumret inom parentes, t.ex. "Inbetalning Moll Wendén (730)".
+                    Koppla varje I-post till sin K-faktura via detta nummer. K-fakturor utan
+                    matchande I-post är obetalda.
+                  </p>
+                  <p style="margin:0 0 0.5rem 0;">
+                    <strong>Identifiera betalningar av äldre fakturor:</strong> I-poster med
+                    ett fakturanummer <em>lägre</em> än årets första K-faktura är betalningar
+                    av fordringar från föregående år (eller äldre). Dra av dessa från IB
+                    kto 1510 för att beräkna vad som kvarstår från tidigare år.
+                  </p>
+                  <p style="margin:0 0 0.5rem 0;">
+                    <strong>Kontrollformel:</strong><br />
+                    UB kto 1510 = (IB − betalningar av äldre fakturor) + obetalda årets fakturor<br />
+                    Om beräknat UB stämmer mot balansräkningens UB med differens 0,00 kr är
+                    matchningen fullständig.
+                  </p>
+                  <p style="margin:0;">
+                    <strong>Kvarstående äldre fordringar</strong> (IB minus äldre inbetalningar)
+                    är per definition minst 12 månader gamla vid bokslutsdag och är den egentliga
+                    riskposten. Fråga ekonomiansvarig: vad avser dessa? Förväntas betalning,
+                    eller bör de skrivas av?
+                  </p>
+                </div>
+              </details>
             </div>
           </li>
           <li>

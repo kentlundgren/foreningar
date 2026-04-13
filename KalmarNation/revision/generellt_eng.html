@@ -125,7 +125,7 @@
     </p>
     <!-- Discreet version and date indicator (synced with index_eng.html) -->
     <p class="page-version">
-      📋 Audit guide · v1.1 · Last updated: 2026-04-03
+      📋 Audit guide · v1.2 · Last updated: 2026-04-13
     </p>
   </header>
 
@@ -304,9 +304,49 @@
               A receivable arises when the association has sent a <em>customer invoice</em>
               (typically series K in the accounting system) but has not yet been paid. The
               invoice appears as an asset in the balance sheet – but if the money never comes
-              in, it is in reality a loss. The auditor requests a list of outstanding invoices
-              (accounts receivable ledger) and checks how old they are: invoices older than
-              6 months should be discussed with the financial officer and possibly written off.
+              in, it is in reality a loss. The auditor requests the accounts receivable ledger
+              and checks how old the outstanding items are: invoices older than 6 months should
+              be discussed with the financial officer and possibly written off.
+
+              <details style="margin-top:0.75rem;">
+                <summary style="cursor:pointer; font-weight:600; color:#1a3a5c;">
+                  ▶ Method: matching K-series against I-series to identify older receivables
+                </summary>
+                <div style="margin-top:0.6rem; padding:0.75rem; background:#f0f4fa; border-left:3px solid #4a7ab5; border-radius:0 4px 4px 0; font-size:0.93em;">
+                  <p style="margin:0 0 0.5rem 0;">
+                    <strong>Common mistake:</strong> It is not sufficient to confirm that all
+                    <em>current-year</em> K-invoices have been paid. Account 1510 (accounts
+                    receivable) also contains receivables from <em>prior years</em> – represented
+                    by the account's opening balance (OB). If the auditor only matches the
+                    current year's K-invoices against the current year's I-payments, the
+                    conclusion may incorrectly be "no old unpaid receivables".
+                  </p>
+                  <p style="margin:0 0 0.5rem 0;">
+                    <strong>The matching key is the invoice number.</strong> The I-series
+                    description field contains the invoice number in parentheses, e.g.
+                    "Payment Moll Wendén (730)". Link each I-entry to its K-invoice via this
+                    number. K-invoices without a matching I-entry are unpaid.
+                  </p>
+                  <p style="margin:0 0 0.5rem 0;">
+                    <strong>Identify payments of prior-year invoices:</strong> I-entries with
+                    an invoice number <em>lower</em> than the current year's first K-invoice
+                    are payments of receivables from prior years (or older). Subtract these
+                    from OB of account 1510 to calculate what remains from previous years.
+                  </p>
+                  <p style="margin:0 0 0.5rem 0;">
+                    <strong>Control formula:</strong><br />
+                    CB acc. 1510 = (OB − payments of prior-year invoices) + unpaid current-year invoices<br />
+                    If the calculated closing balance matches the balance sheet figure with a
+                    difference of SEK 0.00, the matching is complete.
+                  </p>
+                  <p style="margin:0;">
+                    <strong>Remaining prior-year receivables</strong> (OB minus prior-year
+                    payments received) are by definition at least 12 months old at the balance
+                    sheet date and represent the real risk item. Ask the financial officer:
+                    what do these relate to? Are payments expected, or should they be written off?
+                  </p>
+                </div>
+              </details>
             </div>
           </li>
           <li>

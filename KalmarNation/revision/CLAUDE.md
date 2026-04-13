@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 2.8, 2026-04-13 – ersätter version 2.7*
+*Version 2.9, 2026-04-13 – ersätter version 2.8*
 
 ---
 
@@ -360,6 +360,51 @@ En fordran uppstår när föreningen har levererat något och fakturerat kunden,
 
 > *Praktisk kontroll:* Jämför alltid totalbeloppet i kundreskontra mot fordringarna i balansräkningen. Om de inte stämmer har något bokförts fel eller utelämnats.
 
+#### 6.3.1 Matcha K-serien mot I-serien – metod för att identifiera äldre fordringar
+
+> **Varning för vanligt misstag:** Det räcker INTE att konstatera att alla K-fakturor utfärdade under granskningsåret är betalda via I-serien. Balansräkningens konto 1510 (kundfordringar) innehåller också fordringar från *tidigare år* som inte syns i årets K-serie – dessa representeras av kontots ingående balans (IB). Om revisorn bara jämför årets K-fakturor mot årets I-betalningar kan slutsatsen felaktigt bli "inga gamla obetalda fordringar", trots att IB innehåller osäkra äldre poster.
+
+**Hur matchningen går till i verifikationslistan:**
+
+K-serien och I-serien i Visma eEkonomi är länkade via **fakturanumret**, som anges inom parentes i I-seriens beskrivningsfält. Exempel: I8 kan ha beskrivningen "Inbetalning Moll Wendén Advokatbyrå (730)", där "(730)" är fakturanumret som matchar K3 (fakturanr 730). Matchningsnyckeln är alltså fakturanumret, inte verifikationsnumret.
+
+**Steg-för-steg:**
+
+1. Skapa en tabell med alla K-poster: K-vernr, fakturanummer, kund, belopp, datum
+2. Skapa en tabell med alla I-poster: I-vernr, fakturanummer (ur parentes), inbetalt belopp, datum
+3. Koppla ihop K och I via fakturanumret – varje K-faktura bör ha en matchande I-post
+4. K-fakturor utan matchande I-post är **obetalda** och ska stämma mot kundreskontra
+5. Summera: K-fakturor totalt − betalda = obetalda 2025-fakturor → stäm mot UB kto 1510
+
+**Identifiera fordringar från föregående år:**
+
+I-serien kan innehålla betalningar avseende fakturor från *tidigare år* – dessa känns igen på att fakturanumret i parentesen är *lägre* än det lägsta fakturanumret i årets K-serie.
+
+Exempel: Om årets K-serie börjar på fakturanummer 728 (K1), är alla I-poster med fakturanummer < 728 betalningar av fordringar från föregående år (eller ännu äldre). Dessa ska dras av från kontots IB för att beräkna hur stor del av de äldre fordringarna som kvarstår.
+
+**Beräkningsformel – kontroll mot UB kto 1510:**
+
+```
+UB kto 1510 = (IB kto 1510 − betalningar av äldre fakturor via I-serien) + obetalda 2025-fakturor
+```
+
+Om beräknat UB stämmer mot balansräkningens UB kto 1510 med differens 0,00 kr är matchningen fullständig.
+
+**Praktiskt exempel (Kalmar Nation 2025):**
+
+| Post | Belopp |
+|---|---|
+| IB kto 1510 (2024-fordringar) | 62 126 kr |
+| − I1 (fakt.nr 727, inbet. 2025-01-02) | −4 084 kr |
+| − I17 (fakt.nr 726, inbet. 2025-12-29) | −5 082 kr |
+| = Kvarstående 2024-fordringar | **52 961 kr** |
+| + Obetalda 2025-fakturor (K15, K17–K23) | +33 425 kr |
+| = Beräknat UB kto 1510 | **86 386 kr** |
+| Balansräkningens UB kto 1510 | 86 386 kr |
+| **Differens** | **0,00 kr ✓** |
+
+De 52 961 kr i kvarstående 2024-fordringar är okända till sin sammansättning (de enskilda fakturorna syns inte i 2025 års K-serie) – de är per definition minst 12 månader gamla vid bokslutsdag och är den egentliga riskposten i kto 1510. Ekonomiansvarig bör tillfrågas: vad avser dessa? Är de inbetalda sedan tidigare (felperiodiserade), bedöms de komma in, eller bör de skrivas av?
+
 ### 6.4 Kontroll av att resultat och eget kapital hänger ihop
 
 Detta är en av de viktigaste kontrollerna. Sambandet är:
@@ -567,4 +612,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.8, 2026-04-13.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 2.9, 2026-04-13.*
