@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 3.3, 2026-04-14 – ersätter version 3.2*
+*Version 3.4, 2026-04-14 – ersätter version 3.3*
 
 ---
 
@@ -292,16 +292,20 @@ Kalmar Nation har följande serier i verifikationslistan för 2025 (antal = unge
 | N (→ 269) | Kassainbetalningar eller Nets/kortbetalningar | Medium–hög | Medium |
 | U (→ 453) | Utbetalningar/betalfiler – utbetalda leverantörsbetalningar | Hög | **Hög** – stickprov rekommenderas |
 | Z (→ 333) | Troligen Zettle (kassaregister, bar- och caféintäkter) | Medium–hög | Medium |
-| C, D, H, I, R | Specialserier – fråga ekonomiansvarig vad dessa innehåller | Låg (1–17 st) | Granska alltid serier med få poster – vad är de? |
+| I (→ 17) | Inbetalningar av kundfakturor – matchas mot K-serien via fakturanummer | Låg–Medium | **Hög** – granska alltid tillsammans med K för att identifiera obetalda fakturor och fordringar från föregående år (se avsnitt 6.3.1) |
+| C, D, H, R | Specialserier – fråga ekonomiansvarig vad dessa innehåller | Låg (1–4 st) | Granska alltid serier med få poster – vad är de? |
 
 > **Obs:** Ovanstående är en kvalificerad gissning baserad på vanliga Visma-konfigurationer för föreningar med bar/caféverksamhet. Bekräfta alltid mot ekonomiansvarig.
 >
 > Notera att serien med lägst antal (C1, D1, H2) ofta är de mest ovanliga posterna – de bör alltid tittas på, just för att de är få och avvikande.
+>
+> **I-serien och K-serien hänger ihop:** I-serien innehåller inbetalningar av kundfakturor och är länkad till K-serien via fakturanumret (anges inom parentes i I-seriens beskrivningsfält). Dessa två serier ska alltid granskas tillsammans för att säkerställa att alla utfärdade kundfakturor är betalda och för att identifiera om fordringar från föregående år kvarstår. Se avsnitt 6.3.1 för en detaljerad matchningsmetod.
 
 **Behöver revisorn granska ALLA serier?** Nej – men revisorn bör:
 - Veta vad varje serie representerar
 - Granska minst ett stickprov från de högprioriterade serierna (A, K, M, U)
-- Titta på alla poster i de serier med låg volym (C, D, H, I, R) – när det bara finns 1–17 poster är det lika snabbt som ett stickprov
+- Granska alltid I-serien tillsammans med K-serien – de är sammankopplade via fakturanummer och avslöjar obetalda fordringar (se avsnitt 6.3.1)
+- Titta på alla poster i de serier med låg volym (C, D, H, R) – när det bara finns 1–4 poster är det lika snabbt som ett stickprov
 
 #### 6.1.2 Vad gör man med en fullständig verifikationslista?
 
@@ -676,4 +680,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.3, 2026-04-14.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.4, 2026-04-14.*
