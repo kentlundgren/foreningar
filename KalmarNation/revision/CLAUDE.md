@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 3.1, 2026-04-14 – ersätter version 3.0*
+*Version 3.3, 2026-04-14 – ersätter version 3.2*
 
 ---
 
@@ -345,6 +345,26 @@ Kontoutdrag och/eller engagemangssammanställning från banken ska stämma över
 
 ### 6.3 Fordringar – åldersanalys och osäkra fordringar
 
+**Granska ALLA fordringskonton – inte bara 1510**
+
+Granskningen av fordringar ska alltid omfatta **samtliga fordringskonton i balansräkningen**, inte enbart konto 1510 (kundfordringar). Vanliga fordringskonton att kontrollera:
+
+- **1510 Kundfordringar** – externa kundfordringar, t.ex. fakturerade events och tjänster
+- **1610–1699 Övriga kortfristiga fordringar** – t.ex. förskott till eller fordringar på personal, styrelseledamöter, kuratelmedlemmar (se nedan)
+- **1790 Förutbetalda kostnader och upplupna intäkter** – periodiseringspost; kontrollera att underlag finns
+
+Börja alltid med att identifiera vilka fordringskonton som har saldo i balansräkningen. Fråga ekonomiansvarig om syftet med respektive konto om det är oklart.
+
+**Varningssignal – negativa saldon på fordringskonton**
+
+Om ett fordringskonto uppvisar ett **negativt saldo** har det tekniskt sett övergått till en skuld – nationen är skyldig pengar till motparten, inte tvärtom. Kontot är felklassificerat: det redovisas som en tillgång men borde redovisas som en skuld.
+
+Möjliga förklaringar: motparten har betalat in mer än nationen lagt ut för den personen, en kreditnota har bokförts mot fel konto, eller ett avrundningsfel vid löneredovisning. Oavsett belopp ska negativa saldon på fordringskonton alltid uppmärksammas och antingen:
+- **Rättas** – bokas om till ett korrekt skuldkonto (t.ex. 2890 Övriga kortfristiga skulder), eller
+- **Förklaras** – ekonomiansvarig anger ett konkret underlag för varför saldot är negativt
+
+> **Praktiskt exempel (Kalmar Nation 2025):** Konton 1602 (−498,75 kr), 1603 (−475 kr) och 1605 (−525 kr) uppvisade negativa saldon vid årets slut, totalt −1 498,75 kr. Dessa kuratelmedlemmar var vid bokslutstillfället nettokreditorer gentemot nationen – nationen var skyldig dem pengar. Beloppen är små men principiellt felklassificerade.
+
 **Vad är en fordran – och varför kan det vara ett problem?**
 
 En fordran uppstår när föreningen har levererat något och fakturerat kunden, men ännu inte fått betalt. I praktiken: Kalmar Nation skickar en **kundfaktura** (serie K i Visma) till ett företag eller en organisation efter ett event. Tills fakturan är betald syns beloppet som en tillgång i balansräkningen – "pengar vi ska ha". Om fakturan aldrig betalas är det i realiteten en förlust som föreningen inte redovisat.
@@ -532,6 +552,18 @@ Revisorn ska alltid förklara vad som granskas och varför – anpassat till mot
 - Anpassa detaljnivån: en erfaren kassör behöver inte samma grundläggande förklaringar som en person som aldrig arbetat med bokföring
 - Om något är oklart om organisationen eller uppdraget – **fråga alltid innan arbetet påbörjas**
 
+### 8.1 Layout och läsbarhet i e-post och kommunikation
+
+När förslag på e-post eller annan text som ska skickas vidare tas fram, ska texten alltid ha en **tydlig och läsarvänlig layout**. Det innebär:
+
+- Dela upp texten i **stycken** med ett tydligt syfte per stycke – aldrig ett enda sammanhängande textblock
+- Använd **fetstil** för att markera centrala belopp, kontonummer eller nyckelbegrepp
+- Vid e-post som täcker flera ärenden: strukturera med **numrerade punkter** (1, 2, 3) eller tydliga inledande meningar per ämne, så att mottagaren lätt kan svara punkt för punkt
+- **Inledning:** Börja alltid med en kort, vänlig öppning som bekräftar sammanhanget
+- **Avslutning:** Avsluta med ett konkret next step ("Please let me know…", "Once I have that, I can…") så att det är tydligt vad som förväntas av mottagaren
+- Håll meningarna kortare än i löptext – e-post ska vara lätt att skumma
+- **Undvik:** långa inledande bakgrundsbeskrivningar som mottagaren redan känner till
+
 ---
 
 ## 9. Outputformat och frågerutiner
@@ -644,4 +676,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.1, 2026-04-14.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.3, 2026-04-14.*
