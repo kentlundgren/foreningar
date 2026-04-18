@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 3.4, 2026-04-14 – ersätter version 3.3*
+*Version 3.5, 2026-04-18 – ersätter version 3.4*
 
 ---
 
@@ -660,6 +660,14 @@ Vid en mer genomarbetad revision – t.ex. när ekonomin är komplex, när fel h
 
 ## 11. Källor och referensram
 
+**Regler för källhänvisningar:**
+
+- Ange alltid källor i Harvardformat.
+- Inkludera alltid en länk till källan när det är möjligt.
+- Länken ska vara **klickbar** – använd Markdown-syntaxen `[länktext](URL)` eller HTML `<a href="URL">länktext</a>` beroende på outputformat. Skriv aldrig en URL som ren oformaterad text.
+- **Kontrollera alltid** att länkarna fungerar och leder till rätt källa innan de inkluderas i ett dokument eller en rapport.
+- Om en länk inte kan verifieras eller inte längre fungerar, ange det explicit: t.ex. "(länk ej verifierad)" eller "(sidan kan ha ändrats)".
+
 Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källor i Harvardformat:
 
 - BAS-intressenternas Förening (2025) *BAS-kontoplanen 2025*. Stockholm: BAS-intressenternas Förening. Tillgänglig: https://www.bas.se/kontoplaner/ (Hämtad: 2026-04-03). *Anmärkning: BAS-kontoplanen är den i Sverige vanligast förekommande kontoplanen för företag, ideella föreningar och studentnationer. Personalkostnader återfinns i kontoklass 7 (7xxx). Kommuner och statliga myndigheter använder egna kontoplaner baserade på RKR respektive ESV:s standarder.*
@@ -680,4 +688,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.4, 2026-04-14.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.5, 2026-04-18.*
