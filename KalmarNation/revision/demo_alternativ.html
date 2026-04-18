@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo – tre alternativ för granskningsstatus</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ===== Gemensamma stilar ===== */
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 99px;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+    }
+    .badge-ok     { background: #c6f6d5; color: #22543d; }
+    .badge-warn   { background: #fefcbf; color: #744210; }
+    .badge-open   { background: #bee3f8; color: #2a4365; }
+    .badge-sample { background: #fbd38d; color: #7b341e; }
+    @media (prefers-color-scheme: dark) {
+      .badge-ok   { background: #276749; color: #c6f6d5; }
+      .badge-warn { background: #7b4710; color: #fefcbf; }
+      .badge-open { background: #2b4c7e; color: #bee3f8; }
+      .badge-sample { background: #7b341e; color: #fbd38d; }
+    }
+    .meta {
+      font-size: 0.82rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .sum-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 0.75rem;
+    }
+    .sum-table th,
+    .sum-table td {
+      text-align: left;
+      padding: 0.45rem 0.7rem;
+      border: 1px solid var(--border);
+    }
+    .sum-table th {
+      background: var(--accent);
+      color: #fff;
+    }
+    .sum-table tr:nth-child(even) td {
+      background: rgba(0,0,0,0.03);
+    }
+
+    /* ===== Alternativrubriker ===== */
+    .alt-label {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.2rem 0.7rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+    .alt-desc {
+      font-size: 0.9rem;
+      opacity: 0.75;
+      margin-bottom: 0.75rem;
+      font-style: italic;
+    }
+    .alt-divider {
+      border: none;
+      border-top: 3px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ===== ALT A: rubrikrader + underrader ===== */
+    /* Rubrikrad = en av de 8 punkterna från generellt.html */
+    .row-group-header td {
+      background: #e8f0fb !important;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-top: 2px solid #4a7ab5;
+      padding: 0.55rem 0.7rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .row-group-header td {
+        background: #1e3258 !important;
+      }
+    }
+    /* Numret i cirkeln för de 8 stegen */
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+    /* Underrad (indraget) */
+    .row-sub td:first-child {
+      padding-left: 2.2rem;
+      font-size: 0.85rem;
+    }
+    .row-sub td {
+      font-size: 0.85rem;
+      background: rgba(255,255,255,0.4);
+    }
+    @media (prefers-color-scheme: dark) {
+      .row-sub td { background: rgba(255,255,255,0.04); }
+    }
+
+    /* ===== ALT B: enkel lista, 8 rader ===== */
+    /* Länk till detaljerna */
+    .detail-link {
+      font-size: 0.78rem;
+      opacity: 0.6;
+      margin-top: 0.2rem;
+    }
+
+    /* ===== ALT C: 8 rader, komprimerade beskrivningar ===== */
+    .compress-meta {
+      font-size: 0.8rem;
+      opacity: 0.68;
+      margin-top: 0.3rem;
+      line-height: 1.45;
+    }
+
+    /* Notera att detta är ett demo */
+    .demo-banner {
+      background: rgba(251,211,141,0.25);
+      border: 1px solid #ed8936;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#innehall">Hoppa till innehåll</a>
+
+  <header>
+    <h1>Demo – tre layoutalternativ</h1>
+    <p class="lead">
+      Konkret jämförelse av hur granskningsstatustabellen i <code>index.html</code>
+      kan struktureras så att den speglar de 8 stegen i <code>generellt.html</code>.
+    </p>
+    <p class="page-version">📋 Demo · Senast uppdaterad: 2026-04-18</p>
+  </header>
+
+  <main id="innehall">
+    <a class="back-link" href="index.html" style="display:inline-block;margin-bottom:1.5rem;font-size:0.9rem;">← Tillbaka till projektöversikten</a>
+
+    <div class="demo-banner">
+      <strong>Det här är ett demo-dokument</strong> – inga ändringar har gjorts i index.html.
+      Välj det alternativ du föredrar, så uppdaterar vi den riktiga filen.
+      <br>De tre alternativen använder verkliga data från revisionen av Kalmar Nation 2025.
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         ALTERNATIV A – Rubrikrader + underrader (träd)
+    ═══════════════════════════════════════════════════ -->
+    <section aria-labelledby="alt-a-heading">
+      <h2 id="alt-a-heading">Alternativ A – Rubrikrader med underrader</h2>
+      <span class="alt-label">ALT A</span>
+      <p class="alt-desc">
+        De 8 stegen från generellt.html blir blå rubrikrader i tabellen.
+        Under varje rubrik syns de detaljerade kontrollerna indragna som underrader.
+        Man ser direkt vilka "bockar" som tillhör vilket steg.
+      </p>
+      <div class="card">
+        <table class="sum-table" aria-label="Alt A – rubrikrader med underrader">
+          <thead>
+            <tr><th>Vad granskas (speglar steg 1–8 i generellt.html)</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+
+            <!-- 1. BANKAVSTÄMNING -->
+            <tr class="row-group-header">
+              <td><span class="step-num">1</span>Bankavstämning</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                Bankavstämning SEB per 2025-12-31
+                <div class="meta">Alla sex SEB-konton stämmer mot bankens engagemangssammanställning.</div>
+              </td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+
+            <!-- 2. RESULTAT = FÖRÄNDRING AV EGET KAPITAL -->
+            <tr class="row-group-header">
+              <td><span class="step-num">2</span>Resultat = förändring av eget kapital</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                Balansräkningen balanserar
+                <div class="meta">Tillgångar = skulder + eget kapital. Grundläggande kontroll.</div>
+              </td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                Resultat = förändring av eget kapital (434 975 kr)
+                <div class="meta">Y2 (881 658 kr) identifierad som felaktig cirkulär bokning och reverserad 2026-04-13. Korrekt resultat bekräftat.</div>
+              </td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+
+            <!-- 3. KONTINUITETSKONTROLL -->
+            <tr class="row-group-header">
+              <td><span class="step-num">3</span>Kontinuitetskontroll – UB = IB nästa år</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Kontinuitet UB 2023 = IB 2024<div class="meta">Den ekonomiska tråden hel bakåt.</div></td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Kontinuitet UB 2024 = IB 2025<div class="meta">Inga oförklarade hopp.</div></td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Kontinuitet UB 2025 = IB 2026 – alla konton<div class="meta">Alla konton, inklusive samtliga varulager, kontrollerade post för post.</div></td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Januarirapporten 2026 – korrekta ingående balanser<div class="meta">Slutgiltig januarrapport granskad. Konto 2099 stängs korrekt till 2010.</div></td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+
+            <!-- 4. STICKPROV -->
+            <tr class="row-group-header">
+              <td><span class="step-num">4</span>Stickprov på verifikationer <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Leverantörsfakturor – serie A (452 st) <span class="badge badge-sample">Verifikationslista</span><div class="meta">A1, A22, A452 granskade. Notering A452 (påminnelse, försumbart belopp).</div></td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Utbetalningar – serie U (~453 st) <span class="badge badge-sample">Verifikationslista</span><div class="meta">Konsekvent Levbet-mönster, inga ovanliga mottagare.</div></td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Eventinbetalningar – serie M (137 st) <span class="badge badge-sample">Verifikationslista</span><div class="meta">Förskott för sittningar och event. Inga anmärkningar.</div></td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Stickprov konto 5010 (hyra) <span class="badge badge-sample">Verifikationslista</span><div class="meta">19 poster, konsekvent hyra till Kalmargården.</div></td>
+              <td><span class="badge badge-ok">Godkänd</span></td>
+            </tr>
+
+            <!-- 5. JÄMFÖRELSEANALYS -->
+            <tr class="row-group-header">
+              <td><span class="step-num">5</span>Jämförelseanalys år för år</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Flerårsanalys 2023–2025<div class="meta">Intäkter +37 %, kostnader +31 %, eget kapital ökar för första gången på tre år.</div></td>
+              <td><span class="badge badge-ok">Utförd</span></td>
+            </tr>
+
+            <!-- 6. FORDRINGAR -->
+            <tr class="row-group-header">
+              <td><span class="step-num">6</span>Fordringar – gamla obetalda kundfakturor <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-warn">⚠ Pågår</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                Åldersanalys kundfakturor – serie K (23 st) <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Äldre fordringar 52 961 kr (2022–2024). Nedskrivning 10 000 kr (tobaksautomat) föreslagen – inväntar svar.</div>
+              </td>
+              <td><span class="badge badge-warn">Delvis klar</span></td>
+            </tr>
+
+            <!-- 7. BEDRÄGERIKONTROLL -->
+            <tr class="row-group-header">
+              <td><span class="step-num">7</span>Bedrägerikontroll <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Serieöversikt – 15 serier granskade <span class="badge badge-sample">Verifikationslista</span><div class="meta">Inga dubbla belopp, omotiverade runda belopp eller ovanliga mottagare. Y2 hanterades separat.</div></td>
+              <td><span class="badge badge-ok">Utförd</span></td>
+            </tr>
+
+            <!-- 8. FÖRVALTNINGSGRANSKNING -->
+            <tr class="row-group-header">
+              <td><span class="step-num">8</span>Förvaltningsgranskning – styrelsens arbete</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>Granskning baserad på verksamhetsberättelsen<div class="meta">Verksamheten bedrivs enligt stadgarna. Inga anmärkningar.</div></td>
+              <td><span class="badge badge-ok">Utförd</span></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.87rem;opacity:0.7;margin-top:0.5rem;">
+        <strong>Fördelar:</strong> Tydlig hierarki, man ser direkt vilka detaljer som hör till vilket steg.<br>
+        <strong>Nackdelar:</strong> Tabellen blir lång (många rader). Kan kännas tung.
+      </p>
+    </section>
+
+    <hr class="alt-divider" />
+
+    <!-- ═══════════════════════════════════════════════════
+         ALTERNATIV B – Enkel 8-radstabell + länk till detaljer
+    ═══════════════════════════════════════════════════ -->
+    <section aria-labelledby="alt-b-heading">
+      <h2 id="alt-b-heading">Alternativ B – Enkel 8-radstabell</h2>
+      <span class="alt-label">ALT B</span>
+      <p class="alt-desc">
+        Tabellen har exakt 8 rader – en per steg i generellt.html.
+        Varje rad visar en kort sammanfattad status.
+        Detaljerna finns kvar längre ned på sidan i revisionsanteckningarna (som de gör idag).
+      </p>
+      <div class="card">
+        <table class="sum-table" aria-label="Alt B – 8 sammanfattade rader">
+          <thead>
+            <tr><th>Granskningssteg (speglar generellt.html)</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong><span class="step-num">1</span>Bankavstämning</strong>
+                <div class="detail-link">↓ Detaljer i revisionsanteckningar 2026-03-26</div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">2</span>Resultat = förändring av eget kapital</strong>
+                <div class="detail-link">↓ Detaljer i revisionsanteckningar 2026-04-08 och 2026-04-09</div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">3</span>Kontinuitetskontroll – UB = IB</strong>
+                <div class="detail-link">↓ Tre år kontrollerade (2023–2026). Detaljer i anteckningar 2026-03-27 och 2026-04-08</div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">4</span>Stickprov på verifikationer</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="detail-link">↓ Serie A, U, M och konto 5010. Detaljer i anteckningar 2026-04-08</div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">5</span>Jämförelseanalys år för år</strong>
+                <div class="detail-link">↓ Flerårsanalys 2023–2025. Detaljer i anteckningar 2026-03-26 och 2026-03-27</div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">6</span>Fordringar – gamla obetalda kundfakturor</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="detail-link">↓ Äldre fordringar 52 961 kr. Nedskrivning föreslagen. Inväntar svar.</div>
+              </td>
+              <td><span class="badge badge-warn">⚠ Pågår</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">7</span>Bedrägerikontroll</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="detail-link">↓ 15 serier granskade. Y2 hanterades separat. Detaljer i granskningsstatus</div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">8</span>Förvaltningsgranskning</strong>
+                <div class="detail-link">↓ Baserad på verksamhetsberättelsen 2025. Detaljer i anteckningar 2026-04-09</div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.85rem;opacity:0.7;margin-top:0.75rem;">
+          De detaljerade anteckningarna (som idag finns under "Revisionsanteckningar per...") finns kvar längre ned på sidan, oförändrade.
+        </p>
+      </div>
+      <p style="font-size:0.87rem;opacity:0.7;margin-top:0.5rem;">
+        <strong>Fördelar:</strong> Kompakt och överskådlig – man ser på sekunden om alla 8 steg är klara. Rent och enkelt.<br>
+        <strong>Nackdelar:</strong> Detaljerna är dolda längre ned – tabellen berättar inte <em>vad</em> som gjorts, bara att det är klart.
+      </p>
+    </section>
+
+    <hr class="alt-divider" />
+
+    <!-- ═══════════════════════════════════════════════════
+         ALTERNATIV C – 8 rader med komprimerade beskrivningar
+    ═══════════════════════════════════════════════════ -->
+    <section aria-labelledby="alt-c-heading">
+      <h2 id="alt-c-heading">Alternativ C – 8 rader med komprimerade beskrivningar</h2>
+      <span class="alt-label">ALT C</span>
+      <p class="alt-desc">
+        8 rader – men varje rad innehåller en kort sammanfattning av vad som faktiskt gjorts,
+        direkt i tabellen. Inget separat detaljlagret behövs – allt som är väsentligt syns i tabellen.
+        Revisionsanteckningarna nedanför kan finnas kvar som arkiv/spårbarhet.
+      </p>
+      <div class="card">
+        <table class="sum-table" aria-label="Alt C – 8 rader med inbyggda beskrivningar">
+          <thead>
+            <tr><th>Granskningssteg – vad gjordes</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong><span class="step-num">1</span>Bankavstämning</strong>
+                <div class="compress-meta">
+                  Alla sex SEB-konton + kassa (19 kr) + PayPal (628 kr) stämmer exakt mot
+                  bankens engagemangssammanställning per 2025-12-31.
+                </div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">2</span>Resultat = förändring av eget kapital</strong>
+                <div class="compress-meta">
+                  Korrekt resultat 434 975 kr bekräftat (419 047 kr organiskt + 15 929 kr lagerförändringar).
+                  Felaktig bokning Y2 (881 658 kr) identifierad och reverserad 2026-04-13 av Daniel Kirk.
+                </div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">3</span>Kontinuitetskontroll – UB = IB</strong>
+                <div class="compress-meta">
+                  Tre år kontrollerade: UB 2023 = IB 2024 ✓ · UB 2024 = IB 2025 ✓ · UB 2025 = IB 2026 ✓
+                  (alla konton, inklusive 9 varulagerkon­ton). Januarirapporten 2026 bekräftar korrekt öppning.
+                </div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">4</span>Stickprov på verifikationer</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="compress-meta">
+                  A-serien: A1 (Siemens 8 026 kr) ✓ · A22 (Martin &amp; Servera 119 693 kr) ✓ · A452 (Lundgrens 103 kr, påminnelse – försumbart) ✓<br>
+                  U-serien: konsekvent Levbet-mönster, inga ovanliga mottagare ✓<br>
+                  M-serien: eventförskott, M1–M11 retroaktivt registrerade (förklarlig eftersläpning) ✓<br>
+                  Konto 5010 (hyra): 19 poster, konsekvent hyra Kalmargården ✓
+                </div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">5</span>Jämförelseanalys år för år</strong>
+                <div class="compress-meta">
+                  Intäkter +37 % (+1,2 mkr) · Kostnader +31 % (lägre ökning, positivt) · Eget kapital ökar
+                  för första gången på tre år · Personalkostnader −14 %.
+                </div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">6</span>Fordringar – gamla obetalda kundfakturor</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="compress-meta">
+                  K-serien (23 st) matchad mot I-serien. Differens kto 1510 = 0,00 kr ✓<br>
+                  Äldre fordringar 52 961 kr: 2022: 13 151 kr · 2023: 9 257 kr · 2024: 30 553 kr (inkl. 10 000 kr tobaksautomat).<br>
+                  <strong>Nedskrivning 10 000 kr föreslagen 2026-04-17 – inväntar bekräftelse.</strong>
+                </div>
+              </td>
+              <td><span class="badge badge-warn">⚠ Pågår</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">7</span>Bedrägerikontroll</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="compress-meta">
+                  Samtliga 15 serier granskade. Inga dubbla belopp, hopp i nummerserier eller ovanliga
+                  mottagare. Y2 (cirkulär bokning) identifierades vid kontrollen av eget kapital och
+                  hanterades separat (reverserad).
+                </div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr>
+              <td>
+                <strong><span class="step-num">8</span>Förvaltningsgranskning – styrelsens arbete</strong>
+                <div class="compress-meta">
+                  Verksamhetsberättelse 2025 mottagen och granskad. Verksamheten bedöms ha bedrivits
+                  i enlighet med stadgarnas ändamålsbestämmelse. Styrelsemötesprotokoll har inte begärts.
+                  Inga anmärkningar.
+                </div>
+              </td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.87rem;opacity:0.7;margin-top:0.5rem;">
+        <strong>Fördelar:</strong> Allt väsentligt syns i tabellen utan att man behöver scrolla till anteckningarna.
+        Kompakt men ändå informativt – en mellanväg.<br>
+        <strong>Nackdelar:</strong> Beskrivningscellerna kan bli lite tätpackade, särskilt steg 4.
+        Revisionsanteckningarna nedanför kan kännas som dubbletter.
+      </p>
+    </section>
+
+    <hr class="alt-divider" />
+
+    <!-- Sammanfattning -->
+    <section aria-labelledby="summary-heading">
+      <h2 id="summary-heading">Vilket alternativ passar bäst?</h2>
+      <div class="card">
+        <table class="sum-table">
+          <thead>
+            <tr><th>Alternativ</th><th>Passar om…</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>A – Rubrikrader + underrader</strong></td>
+              <td>Du vill se full spårbarhet direkt i tabellen: vilka detaljkontroller hör till vilket steg. Bra för revisionsarkivet.</td>
+            </tr>
+            <tr>
+              <td><strong>B – Enkel 8-radstabell</strong></td>
+              <td>Du vill ha ett snabbt överblicksläge längst upp, med detaljerna längre ned i anteckningarna precis som idag.</td>
+            </tr>
+            <tr>
+              <td><strong>C – 8 rader med beskrivningar</strong></td>
+              <td>Du vill ha en mellanlösning: 8 tydliga steg med tillräcklig detalj i tabellen, utan separata underrader.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top:1rem;">
+          Välj det alternativ du föredrar – eller en kombination – så uppdaterar vi <code>index.html</code> direkt.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Kalmar Nation · revision · demo · <a href="index.html">Tillbaka till projektöversikten</a></p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
