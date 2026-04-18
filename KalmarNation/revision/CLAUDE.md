@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 3.7, 2026-04-18 – ersätter version 3.6*
+*Version 3.8, 2026-04-18 – ersätter version 3.7*
 
 ---
 
@@ -584,6 +584,8 @@ När förslag på e-post eller annan text som ska skickas vidare tas fram, ska t
 
 **Konvention för index-HTML-filer (generellt.html och index.html):** Alla granskningsöversikter – oavsett organisation – ska följa en enhetlig **10-stegsstruktur**. Stegen är numrerade 1–10 och speglar varandra mellan den allmänna guiden (generellt.html) och den organisationsspecifika statusöversikten (index.html). Stegen är: 1. Riskbedömning, 2. Bankavstämning, 3. Resultat = Δ eget kapital (kan delas i 3a initial/3b slutgiltig), 4. Kontinuitetskontroll, 5. Stickprov, 6. Jämförelseanalys, 7. Fordringar, 8. Bedrägerikontroll, 9. Förvaltningsgranskning, 10. Revisionsberättelse. Denna struktur ska användas för alla nya organisationer som granskas.
 
+**Revisionsanteckningar i index-HTML-filer – automatisk uppdatering:** När viktiga händelser inträffar under revisionen – t.ex. svar från ekonomiansvarig, nya fynd, beslut om nedskrivning, genomförda stickprov, mottagna underlag – ska en **ny datumstämplad revisionsanteckning** läggas till i index.html (och index_eng.html) *utan att Kent explicit behöver begära det*. Anteckningen läggs alltid till som en ny `<section>` med rubrik `Revisionsanteckningar per ÅÅÅÅ-MM-DD` (resp. `Review notes as of YYYY-MM-DD`), direkt före `.ai-note`-stycket. Versionsnumret räknas upp i båda filerna. Anteckningen ska vara kortfattad men fullständig: vad hände, vad innebär det för revisionen, och vilket är nästa steg.
+
 ---
 
 ## 10. Revisionsberättelsens struktur (för lekmannarevisor)
@@ -692,4 +694,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.7, 2026-04-18.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.8, 2026-04-18.*
