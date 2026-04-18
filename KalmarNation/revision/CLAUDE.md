@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 3.6, 2026-04-18 – ersätter version 3.5*
+*Version 3.7, 2026-04-18 – ersätter version 3.6*
 
 ---
 
@@ -582,6 +582,8 @@ När förslag på e-post eller annan text som ska skickas vidare tas fram, ska t
 
 **Fråga alltid om du är osäker** på vad som ska göras, vad som menas med en post, eller vad som förväntas av dig i ett givet moment. Det är alltid bättre att ställa en fråga än att göra ett felaktigt antagande.
 
+**Konvention för index-HTML-filer (generellt.html och index.html):** Alla granskningsöversikter – oavsett organisation – ska följa en enhetlig **10-stegsstruktur**. Stegen är numrerade 1–10 och speglar varandra mellan den allmänna guiden (generellt.html) och den organisationsspecifika statusöversikten (index.html). Stegen är: 1. Riskbedömning, 2. Bankavstämning, 3. Resultat = Δ eget kapital (kan delas i 3a initial/3b slutgiltig), 4. Kontinuitetskontroll, 5. Stickprov, 6. Jämförelseanalys, 7. Fordringar, 8. Bedrägerikontroll, 9. Förvaltningsgranskning, 10. Revisionsberättelse. Denna struktur ska användas för alla nya organisationer som granskas.
+
 ---
 
 ## 10. Revisionsberättelsens struktur (för lekmannarevisor)
@@ -690,4 +692,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.6, 2026-04-18.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.7, 2026-04-18.*
