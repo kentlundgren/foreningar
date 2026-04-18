@@ -586,6 +586,8 @@ När förslag på e-post eller annan text som ska skickas vidare tas fram, ska t
 
 **Revisionsanteckningar i index-HTML-filer – automatisk uppdatering:** När viktiga händelser inträffar under revisionen – t.ex. svar från ekonomiansvarig, nya fynd, beslut om nedskrivning, genomförda stickprov, mottagna underlag – ska en **ny datumstämplad revisionsanteckning** läggas till i index.html (och index_eng.html) *utan att Kent explicit behöver begära det*. Anteckningen läggs alltid till som en ny `<section>` med rubrik `Revisionsanteckningar per ÅÅÅÅ-MM-DD` (resp. `Review notes as of YYYY-MM-DD`), direkt före `.ai-note`-stycket. Versionsnumret räknas upp i båda filerna. Anteckningen ska vara kortfattad men fullständig: vad hände, vad innebär det för revisionen, och vilket är nästa steg.
 
+**Ton och formulering i revisionsanteckningar:** Index-filerna är professionella revisionsdokument som ekonomiansvarig (PQe), styrelse och övriga intressenter kan läsa. Anteckningarna ska formuleras som om revisorn kommunicerar direkt och självständigt – aldrig på ett sätt som avslöjar intern arbetsprocess, utkast eller att revisorn valt bland alternativa formuleringar. Skriv inte t.ex. "Kent valde Alternativ 2" eller "Kent svarade med en balanserad formulering". Skriv i stället vad revisorn faktiskt kommunicerade i sak: "Kent klargjorde att... och bad om ett ställningstagande." Samma princip gäller den engelska versionen. Tänk alltid: *kan Daniel eller Cas läsa detta utan att det uppfattas som oprofessionellt?*
+
 ---
 
 ## 10. Revisionsberättelsens struktur (för lekmannarevisor)
