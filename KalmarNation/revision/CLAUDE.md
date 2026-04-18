@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 3.8, 2026-04-18 – ersätter version 3.7*
+*Version 3.9, 2026-04-18 – ersätter version 3.7*
 
 ---
 
@@ -588,6 +588,8 @@ När förslag på e-post eller annan text som ska skickas vidare tas fram, ska t
 
 **Ton och formulering i revisionsanteckningar:** Index-filerna är professionella revisionsdokument som ekonomiansvarig (PQe), styrelse och övriga intressenter kan läsa. Anteckningarna ska formuleras som om revisorn kommunicerar direkt och självständigt – aldrig på ett sätt som avslöjar intern arbetsprocess, utkast eller att revisorn valt bland alternativa formuleringar. Skriv inte t.ex. "Kent valde Alternativ 2" eller "Kent svarade med en balanserad formulering". Skriv i stället vad revisorn faktiskt kommunicerade i sak: "Kent klargjorde att... och bad om ett ställningstagande." Samma princip gäller den engelska versionen. Tänk alltid: *kan Daniel eller Cas läsa detta utan att det uppfattas som oprofessionellt?*
 
+**Personnamn får inte förekomma i index-HTML-filerna.** Dessa filer är publikt tillgängliga via GitHub Pages och ska följa GDPR-principen om minimering av personuppgifter. Använd i stället: roller ("PQe", "ekonomiansvarig", "styrelseledamot", "tidigare kuratelsmedlem"), initialer ("DK", "CA") eller befattningsbeteckningar ("PQe 2025", "PQe 2026"). Regeln gäller alla namn – nuvarande och tidigare funktionärer, leverantörskontakter och övriga personer som nämns i revisionsdokumentationen. Vid redigering av befintliga index-filer: kontrollera alltid att inga personnamn finns kvar när ändringar sparas.
+
 ---
 
 ## 10. Revisionsberättelsens struktur (för lekmannarevisor)
@@ -696,4 +698,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.8, 2026-04-18.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 3.9, 2026-04-18.*
