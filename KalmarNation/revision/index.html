@@ -56,6 +56,35 @@
       margin-top: 2.5rem;
       padding-top: 0.75rem;
     }
+    /* ===== Alt A – rubrikrader (steg 1–8) och underrader ===== */
+    .row-group-header td {
+      background: #e8f0fb !important;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-top: 2px solid #4a7ab5;
+      padding: 0.55rem 0.7rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .row-group-header td { background: #1e3258 !important; }
+    }
+    /* Siffran i cirkel för varje steg */
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+    /* Underrad – indragen och något mindre text */
+    .row-sub td:first-child { padding-left: 2.4rem; font-size: 0.86rem; }
+    .row-sub td { font-size: 0.86rem; }
     /* Sammanfattningstabell */
     .sum-table {
       width: 100%;
@@ -97,7 +126,7 @@
     </p>
     <!-- Diskret version- och datumindikator -->
     <p class="page-version">
-      📋 Revision 2025 &nbsp;·&nbsp; Status v1.9 &nbsp;·&nbsp; Senast uppdaterad: 2026-04-18
+      📋 Revision 2025 &nbsp;·&nbsp; Status v2.0 &nbsp;·&nbsp; Senast uppdaterad: 2026-04-18
     </p>
   </header>
 
@@ -162,66 +191,105 @@
 
         <table class="sum-table" aria-label="Status per granskningsmoment">
           <thead>
-            <tr><th>Vad granskas – och varför?</th><th>Status</th></tr>
+            <tr><th>Vad granskas – steg 1–8 speglar <a href="generellt.html" style="color:#fff;text-decoration:underline;">generellt.html</a></th><th>Status</th></tr>
           </thead>
           <tbody>
+
+            <!-- ── Förberedande steg (utanför de 8 i generellt.html) ── -->
             <tr>
               <td>
                 <strong>Riskbedömning inför granskningen</strong>
-                <div class="meta">Finns risker att hålla extra koll på? T.ex. personbyten, kraftiga ekonomiförändringar eller svag intern kontroll.</div>
+                <div class="meta">Finns risker att hålla extra koll på? Personbyte (ny PQe 2025), kraftig intäktsökning (+37 %), en person hanterar hela ekonomiflödet. Stickprovsomfattning anpassad efter identifierade risker.</div>
               </td>
               <td><span class="badge badge-ok">Utförd</span></td>
             </tr>
-            <tr>
+
+            <!-- ── STEG 1 – Bankavstämning ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">1</span>Bankavstämning</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
               <td>
                 <strong>Bankavstämning SEB per 2025-12-31</strong>
-                <div class="meta">Stämmer bankens saldo exakt med vad bokföringen redovisar? Kontrollerat mot bankens engagemangssammanställning.</div>
+                <div class="meta">Stämmer bankens saldo exakt med vad bokföringen redovisar? Kontrollerat mot bankens engagemangssammanställning. Alla sex SEB-konton samt kassa (19 kr) och PayPal (628 kr) stämmer på öret.</div>
               </td>
               <td><span class="badge badge-ok">Godkänd</span></td>
             </tr>
-            <tr>
+
+            <!-- ── STEG 2a – Initial kontroll: resultat = förändring av eget kapital ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">2a</span>Resultat = förändring av eget kapital – initial kontroll</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
               <td>
                 <strong>Balansräkningen balanserar</strong>
                 <div class="meta">En grundläggande kontroll: tillgångar = skulder + eget kapital. Om det inte stämmer finns ett bokföringsfel.</div>
               </td>
               <td><span class="badge badge-ok">Godkänd</span></td>
             </tr>
-            <tr>
+            <tr class="row-sub">
               <td>
-                <strong>Resultat = förändring av eget kapital</strong>
-                <div class="meta">Årets överskott eller underskott ska förklara förändringen i föreningens "sparkapital". En av de viktigaste kontrollerna.</div>
+                <strong>Resultat = förändring av eget kapital (434 975 kr)</strong>
+                <div class="meta">Årets överskott ska förklara förändringen i föreningens "sparkapital". Felaktig bokning Y2 (debet 2099 / kredit 8999, 881 658 kr) identifierad och reverserad 2026-04-13. Korrekt resultat 434 975 kr bekräftat och kontrollerat mot eget kapital.</div>
               </td>
               <td><span class="badge badge-ok">Godkänd</span></td>
             </tr>
-            <tr>
+
+            <!-- ── STEG 2b – Slutgiltig bekräftelse av resultatet ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">2b</span>Slutgiltig bekräftelse av resultatet</td>
+              <td><span class="badge badge-warn">⚠ Inväntar fordringsbeslut</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Resultatet kan behöva omvärderas</strong>
+                <div class="meta">Om Kalmar Nation beslutar att skriva ned kundfordringarna med 10 000 kr avseende tobaksautomaten i källaren (konto 1510) bokas: debet 6351 Konstaterade kundförluster / kredit 1510 Kundfordringar. Effekten är att resultatet minskar från <strong>434 975 kr</strong> till <strong>424 975 kr</strong> och eget kapital minskar i motsvarande grad. Slutligt resultat fastställs när styrelsens beslut mottagits.</div>
+              </td>
+              <td><span class="badge badge-warn">Inväntar beslut</span></td>
+            </tr>
+
+            <!-- ── STEG 3 – Kontinuitetskontroll ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">3</span>Kontinuitetskontroll – UB = IB nästa år</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
               <td>
                 <strong>Kontinuitet UB 2023 = IB 2024</strong>
                 <div class="meta">Förra årets slutvärden ska stämma mot nästa årets startvärden – den ekonomiska tråden är hel.</div>
               </td>
               <td><span class="badge badge-ok">Godkänd</span></td>
             </tr>
-            <tr>
+            <tr class="row-sub">
               <td>
                 <strong>Kontinuitet UB 2024 = IB 2025</strong>
                 <div class="meta">Samma kontroll ett år senare. Inga oförklarade hopp i siffrorna.</div>
               </td>
               <td><span class="badge badge-ok">Godkänd</span></td>
             </tr>
-            <tr>
+            <tr class="row-sub">
               <td>
                 <strong>Kontinuitet UB 2025 = IB 2026 – alla konton</strong>
                 <div class="meta">Ny slutgiltig rapport mottagen 2026-04-08. Alla konton kontrollerade post för post: inventarier, samtliga varulager (1400–1409), kundfordringar, övriga fordringar, finansiella placeringar, samtliga bankkonton och skulder. Alla stämmer på öret. Den tidigare avvikelsen i konto 1407 (pant 33 841 kr) är nu löst.</div>
               </td>
               <td><span class="badge badge-ok">Godkänd – alla konton stämmer</span></td>
             </tr>
-            <tr>
+            <tr class="row-sub">
               <td>
                 <strong>Januarirapporten 2026 – korrekta ingående balanser</strong>
                 <div class="meta">Slutgiltig januarrapport (260408) mottagen och granskad. Alla ingående balanser stämmer mot UB 2025. Konto 2099 (Årets resultat 881 658 kr) stängs korrekt ned till konto 2010 vid årets öppning 2026. Kontinuitet bekräftad för alla kontoslag.</div>
               </td>
               <td><span class="badge badge-ok">Godkänd</span></td>
             </tr>
-            <tr>
+
+            <!-- ── STEG 4 – Stickprov på verifikationer ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">4</span>Stickprov på verifikationer <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
               <td>
                 <strong>Stickprov – leverantörsfakturor (serie A, 452 st)</strong>
                 <span class="badge badge-sample">Verifikationslista</span>
@@ -234,7 +302,7 @@
               </td>
               <td><span class="badge badge-ok">Godkänd – se notering A452</span></td>
             </tr>
-            <tr>
+            <tr class="row-sub">
               <td>
                 <strong>Stickprov – utbetalningar (serie U, ~453 st)</strong>
                 <span class="badge badge-sample">Verifikationslista</span>
@@ -242,7 +310,7 @@
               </td>
               <td><span class="badge badge-ok">Godkänd – mönster konsekvent</span></td>
             </tr>
-            <tr>
+            <tr class="row-sub">
               <td>
                 <strong>Stickprov – eventinbetalningar (serie M, 137 st)</strong>
                 <span class="badge badge-sample">Verifikationslista</span>
@@ -250,7 +318,7 @@
               </td>
               <td><span class="badge badge-ok">Godkänd – inga anmärkningar</span></td>
             </tr>
-            <tr>
+            <tr class="row-sub">
               <td>
                 <strong>Stickprov – konto 5010 (hyra)</strong>
                 <span class="badge badge-sample">Verifikationslista</span>
@@ -258,7 +326,26 @@
               </td>
               <td><span class="badge badge-ok">Godkänd</span></td>
             </tr>
-            <tr>
+
+            <!-- ── STEG 5 – Jämförelseanalys ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">5</span>Jämförelseanalys år för år</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Flerårsanalys 2023–2025</strong>
+                <div class="meta">Hur har intäkter, kostnader och eget kapital utvecklats under tre år? Intäkter +37 % (+1,2 mkr), kostnader +31 % (lägre ökningstakt – positivt), eget kapital ökar för första gången på tre år. Se revisionsanteckningar 2026-03-26 och 2026-03-27.</div>
+              </td>
+              <td><span class="badge badge-ok">Utförd</span></td>
+            </tr>
+
+            <!-- ── STEG 6 – Fordringar ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">6</span>Fordringar – gamla obetalda kundfakturor <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-warn">⚠ Delvis klar</span></td>
+            </tr>
+            <tr class="row-sub">
               <td>
                 <strong>Fordringar – åldersanalys av kundfakturor (serie K, 23 st)</strong>
                 <span class="badge badge-sample">Verifikationslista</span>
@@ -281,7 +368,13 @@
               </td>
               <td><span class="badge badge-warn">Delvis klar – nedskrivning 10 000 kr föreslagen, inväntar svar</span></td>
             </tr>
-            <tr>
+
+            <!-- ── STEG 7 – Bedrägerikontroll ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">7</span>Bedrägerikontroll <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
+            </tr>
+            <tr class="row-sub">
               <td>
                 <strong>Granskning av ovanliga transaktioner och serieöversikt</strong>
                 <span class="badge badge-sample">Verifikationslista</span>
@@ -318,20 +411,21 @@
               </td>
               <td><span class="badge badge-ok">Utförd – inga väsentliga avvikelser</span></td>
             </tr>
-            <tr>
-              <td>
-                <strong>Flerårsanalys 2023–2025</strong>
-                <div class="meta">Hur har intäkter, kostnader och eget kapital utvecklats under tre år? Finns oroande trender?</div>
-              </td>
-              <td><span class="badge badge-ok">Utförd</span></td>
+
+            <!-- ── STEG 8 – Förvaltningsgranskning ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">8</span>Förvaltningsgranskning – styrelsens arbete</td>
+              <td><span class="badge badge-ok">✓ Godkänd</span></td>
             </tr>
-            <tr>
+            <tr class="row-sub">
               <td>
                 <strong>Förvaltningsgranskning &#x2013; baserad på verksamhetsberättelsen</strong>
                 <div class="meta">Verksamhetsberättelse för 2025 mottagen 2026-04-09 och granskad. Verksamheten bedöms ha bedrivits i enlighet med stadgarnas ändamålsbestämmelse. Styrelsemötesprotokoll har inte begärts; granskningen baseras på verksamhetsberättelsen och det övergripande revisionsarbetet. Inga anmärkningar.</div>
               </td>
               <td><span class="badge badge-ok">Utförd &#x2013; inga anmärkningar</span></td>
             </tr>
+
+            <!-- ── Avslutande rad (utanför steg 1–8) ── -->
             <tr>
               <td>
                 <strong>Fullständig revisionsberättelse</strong>
@@ -339,6 +433,7 @@
               </td>
               <td><span class="badge badge-warn">Utkast &ndash; inväntar styrelsebeslut</span></td>
             </tr>
+
           </tbody>
         </table>
       </div>
