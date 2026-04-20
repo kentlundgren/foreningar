@@ -11,6 +11,7 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 |---|---|
 | 2026-04-20 | Fil skapad med generella regler: klickbara länkar, Harvardformat, fråga vid oklarheter, kodkommentarer, versionshantering. |
 | 2026-04-20 | Regel tillagd: klargör alltid vilken CLAUDE.md-fil som uppdateras. |
+| 2026-04-20 | Regel tillagd: skapa alltid README.md med live-länk när nytt projekt/index.html skapas. |
 
 ---
 
@@ -47,6 +48,26 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 ## Fråga vid oklarheter
 
 > **INSTRUKTION TILL CLAUDE:** Om något i en uppgift är oklart – fråga Kent innan arbetet påbörjas. Ställ aldrig mer än en fråga åt gången. Det är bättre att fråga en gång för mycket än att producera fel sak.
+
+---
+
+## README.md med live-länk – alltid när nytt projekt skapas
+
+> **INSTRUKTION TILL CLAUDE:** När ett nytt projekt skapas – d.v.s. när en ny
+> `index.html` (eller motsvarande startsida) skapas i en ny projektmapp – ska
+> en `README.md` alltid skapas i samma mapp. README-filen ska alltid innehålla:
+>
+> 1. **En tydlig länk till live-sidan på GitHub Pages** – så att det alltid
+>    är lätt att hitta den publicerade sidan direkt från repot.
+>    Länkformat: `**https://kentlundgren.github.io/[sökväg]/**`
+> 2. En kort beskrivning av vad projektet gör.
+> 3. En tabell över projektets filer med kortfattade beskrivningar.
+>
+> Syftet är att det alltid ska vara lätt att navigera från GitHub-repot till
+> live-sidan och tillbaka – utan att behöva leta i kod eller inställningar.
+>
+> Om GitHub Pages-URL:n inte är känd vid projektstarten: fråga Kent, eller
+> skriv in en platshållare och påminn om att den ska fyllas i.
 
 ---
 
