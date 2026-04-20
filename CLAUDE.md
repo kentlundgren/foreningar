@@ -14,6 +14,7 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 | 2026-04-20 | Regel tillagd: skapa alltid README.md med live-länk när nytt projekt/index.html skapas. |
 | 2026-04-20 | Regel tillagd: GitHub-länken i sidfoten ska alltid peka på projektets specifika mapp i repot. |
 | 2026-04-20 | Regel uppdaterad: GitHub-knappen ska använda rgba() på bakgrunden, inte opacity på hela elementet (fungerar annars inte mot mörk sidfot). |
+| 2026-04-20 | Regel tillagd: Kent hanterar alltid git commit och push till GitHub själv – Claude ska aldrig committa eller pusha utan explicit uppmaning. |
 
 ---
 
@@ -121,6 +122,12 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 > **Varför:** En besökare ska hamna direkt i projektmappen – inte på profilsidan.
 > Knappen syns alltid oavsett scrollläge. Konventionen är densamma på alla sidor
 > så att man känner igen sig oavsett vilket projekt man besöker.
+
+---
+
+## Git – Kent hanterar commit och push själv
+
+> **INSTRUKTION TILL CLAUDE:** Kent sköter alltid `git commit` och `git push` till GitHub på egen hand, om inte annat uttryckligen sägs. Claude ska **aldrig** committa eller pusha kod utan att Kent explicit ber om det. När kod är klar och redo att laddas upp påminner Claude kort om att filerna kan committats och pushas – men utför det inte själv.
 
 ---
 
