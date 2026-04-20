@@ -131,27 +131,42 @@
         input fields. Fill them in before generating the prompt.
       </p>
 
-      <!-- Explainer box about Step 3 – untaxed reserves -->
+      <!-- Update 2026-04-20: extended explanation of the credit-sign convention -->
+      <!-- Explainer box about Step 3 – sign convention and untaxed reserves -->
       <div class="explainer-box">
         <h4>About Step 3 – "The result must equal the change in equity"</h4>
         <p>
-          In most associations, <strong>the year's result = the change in equity</strong>
-          in the balance sheet. However, associations with
-          <strong>untaxed reserves</strong> (e.g. an investment fund or
-          appropriations reserve) follow an extended formula:
+          In all Swedish accounting systems (Fortnox, Visma, Bokio, etc.),
+          liabilities and equity are credit accounts and are shown with a
+          <strong>negative sign</strong> in exported reports. This means that
+          when equity <em>increases</em> (e.g. after a profit), the figure in
+          the balance sheet becomes a <em>larger negative number</em>.
         </p>
+        <p>
+          We always say in plain language that <em>"a positive result increases
+          equity"</em> – and that is true. But in the exported figures, equity
+          appears to decrease (becomes more negative).
+        </p>
+        <p><strong>There are therefore two formula versions:</strong></p>
         <p class="formula-box">
+          <strong>Normal presentation</strong> (equity shown as a positive number):<br>
           Year's result = Δ Equity + Δ Untaxed reserves
         </p>
-        <p>
-          <strong>Example (Långkatekesen 2025):</strong>
-          The year's result was −SEK&nbsp;14,954. Equity changed by
-          +SEK&nbsp;597 and the investment fund decreased by SEK&nbsp;14,357.
-          597 + 14,357 = 14,954 ✅ – everything checks out, no warning sign.
+        <p class="formula-box">
+          <strong>Credit convention</strong> (equity shown as a negative number – most common in system exports):<br>
+          Year's result = −(Δ Equity + Δ Untaxed reserves)
         </p>
         <p>
-          The generated prompt instructs the AI to always check whether
-          untaxed reserves exist and, if so, apply the extended formula.
+          <strong>Example (Långkatekesen 2025, credit convention):</strong>
+          The year's result was −SEK&nbsp;14,954 (loss).
+          Δ&nbsp;Equity (closing&nbsp;−&nbsp;opening) = +SEK&nbsp;597 and
+          Δ&nbsp;Investment fund (closing&nbsp;−&nbsp;opening) = +SEK&nbsp;14,357.
+          Check: −(597 + 14,357) = −14,954 ✅ – everything checks out.
+        </p>
+        <p>
+          The generated prompt instructs the AI to always identify the sign
+          convention, apply the correct formula, and check whether untaxed
+          reserves exist.
         </p>
       </div>
 

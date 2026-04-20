@@ -131,27 +131,42 @@
         Fyll i dem innan du genererar prompten.
       </p>
 
-      <!-- Förklaringsruta om Steg 3 – obeskattade reserver -->
+      <!-- Uppdatering 2026-04-20: utökad förklaring av teckenkonvention -->
+      <!-- Förklaringsruta om Steg 3 – teckenkonvention och obeskattade reserver -->
       <div class="explainer-box">
         <h4>Om Steg 3 – "Resultat ska stämma med förändringen av eget kapital"</h4>
         <p>
-          I de flesta föreningar gäller att <strong>årets resultat = förändringen
-          av eget kapital</strong> i balansräkningen. Men för föreningar med
-          <strong>obeskattade reserver</strong> (t.ex. en investeringsfond eller
-          periodiseringsfond) gäller en utökad formel:
+          I alla svenska bokföringssystem (Fortnox, Visma, Bokio m.fl.) redovisas
+          skulder och eget kapital med <strong>negativt tecken</strong> i de
+          exporterade rapporterna – de är kreditkonton. Det innebär att när
+          eget kapital <em>ökar</em> (t.ex. vid vinst) så blir beloppet i
+          balansräkningen ett <em>större negativt tal</em>.
         </p>
+        <p>
+          I vanligt tal säger vi alltid att <em>"vid positivt resultat ökar eget
+          kapital"</em> – och det stämmer. Men i siffrorna syns det som att
+          EK-beloppet minskar (blir mer negativt).
+        </p>
+        <p><strong>Det finns därför två formelversioner:</strong></p>
         <p class="formula-box">
+          <strong>Normal presentation</strong> (EK visas som positivt tal):<br>
           Årets resultat = Δ Eget kapital + Δ Obeskattade reserver
         </p>
-        <p>
-          <strong>Exempel (Långkatekesen 2025):</strong>
-          Årets resultat var −14&nbsp;954 kr. Eget kapital förändrades med
-          +597 kr och investeringsfonden minskade med 14&nbsp;357 kr.
-          597 + 14&nbsp;357 = 14&nbsp;954 ✅ – allt stämmer, inget varningstecken.
+        <p class="formula-box">
+          <strong>Kreditkonvention</strong> (EK visas som negativt tal – vanligast i systemexporter):<br>
+          Årets resultat = −(Δ Eget kapital + Δ Obeskattade reserver)
         </p>
         <p>
-          Den genererade prompten instruerar AI:n att alltid kontrollera om
-          obeskattade reserver finns och i så fall använda den utökade formeln.
+          <strong>Exempel (Långkatekesen 2025, kreditkonvention):</strong>
+          Årets resultat var −14&nbsp;954 kr (förlust).
+          Δ&nbsp;Eget kapital (UB&nbsp;−&nbsp;IB) = +597 kr och
+          Δ&nbsp;Investeringsfond (UB&nbsp;−&nbsp;IB) = +14&nbsp;357 kr.
+          Kontroll: −(597 + 14&nbsp;357) = −14&nbsp;954 ✅ – allt stämmer.
+        </p>
+        <p>
+          Den genererade prompten instruerar AI:n att alltid identifiera
+          teckenkonventionen, välja rätt formel, och kontrollera om obeskattade
+          reserver finns.
         </p>
       </div>
 

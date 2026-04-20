@@ -1,6 +1,6 @@
 # CLAUDE.md – Generell revisionsinstruktion för ideella organisationer i Sverige
 
-*Version 1.0 · 2026-04-20*
+*Version 1.1 · 2026-04-20*
 
 Denna fil gäller för projektet **Revisionsverktyg för ideella organisationer**
 och styr hur AI-assistenten ska agera i revisionsrelaterade samtal.
@@ -103,38 +103,73 @@ Referens: https://kentlundgren.github.io/foreningar/KalmarNation/revision/genere
 
 ---
 
-## 4b. Steg 3 i detalj – obeskattade reserver
+## 4b. Steg 3 i detalj – teckenkonvention och obeskattade reserver
 
-Den grundläggande regeln är:
+### Varför teckenkonventionen är avgörande
 
-> **Årets resultat = Förändring av eget kapital + Förändring av obeskattade reserver**
+I alla svenska bokföringssystem (Fortnox, Visma, Bokio m.fl.) gäller att
+**skulder och eget kapital är kreditkonton och redovisas med negativt tecken**
+i de maskinexporterade rapporterna. Det innebär:
 
-**Varför tillkommer obeskattade reserver?**
+- Tillgångar (debitkonton) → **positiva tal**
+- Skulder och eget kapital (kreditkonton) → **negativa tal**
+
+**Viktig konsekvens som AI-modeller ofta missförstår:**
+I vanligt tal säger vi alltid att *"vid positivt resultat ökar eget kapital"*
+– och det stämmer. Men i balansräkningens siffror syns detta som att
+eget kapital **ökar i negativt riktning**, dvs. beloppet blir ett större negativt tal.
+
+| Händelse | Normalt tal (ekonomiskt) | I balansräkningens siffror |
+|----------|--------------------------|---------------------------|
+| Vinst på 10 000 kr | EK ökar med 10 000 | EK går t.ex. från −50 000 → −60 000 |
+| Förlust på 10 000 kr | EK minskar med 10 000 | EK går t.ex. från −50 000 → −40 000 |
+
+Δ EK (UB − IB) vid vinst = −60 000 − (−50 000) = **−10 000** (negativt Δ = EK ökade)  
+Δ EK (UB − IB) vid förlust = −40 000 − (−50 000) = **+10 000** (positivt Δ = EK minskade)
+
+### De två formelversionerna
+
+**Fall A – Normal presentation (EK visas som positivt tal):**
+> Årets resultat = Δ Eget kapital + Δ Obeskattade reserver
+
+**Fall B – Kreditkonvention (EK visas som negativt tal, vanligast i systemexporter):**
+> Årets resultat = −(Δ Eget kapital + Δ Obeskattade reserver)
+
+Minnesregel för kreditkonvention: positivt Δ EK = EK *minskade*; negativt Δ EK = EK *ökade*.
+
+### Varför tillkommer obeskattade reserver?
+
 Vissa föreningar (vanligt i bostadsrättsföreningar och samfälligheter) har
 *obeskattade reserver* – t.ex. en investeringsfond eller periodiseringsfond.
-Dessa visas som en egen sektion i balansräkningen. När föreningen redovisar
-ett underskott kan en del av underskottet täckas via fonden (i stället för att
-enbart belasta eget kapital), och tvärtom – ett överskott kan avsättas till fonden.
+Dessa visas som en egen sektion i balansräkningen och är också kreditkonton
+(negativt tecken i kreditkonvention). När föreningen redovisar ett underskott
+kan en del täckas via fonden (i stället för att enbart belasta eget kapital),
+och tvärtom – ett överskott kan avsättas till fonden.
 
-**Kontrollformel steg för steg:**
+### Kontrollformel steg för steg
+
 1. Hämta årets resultat ur resultaträkningen – raden "Resultat efter skatter"
    (eller motsvarande). Ignorera eventuell avslutande rad "Redovisat resultat"
    som bara nollställer resultatet i systemet.
-2. Hämta förändringen av eget kapital ur balansräkningens förändringkolumn.
-3. Kontrollera om balansräkningen har en sektion "Obeskattade reserver".
-   - **Om ja:** Δ eget kapital + Δ obeskattade reserver = årets resultat
-   - **Om nej:** Δ eget kapital = årets resultat (den enklare formeln)
-4. Om sambandet stämmer → ✅ Ingen avvikelse.
-   Om sambandet inte stämmer → ⚠ Varningstecken – utred vidare.
+2. Identifiera teckenkonventionen: är eget kapital angivet som positivt eller
+   negativt tal i balansräkningen?
+3. Beräkna Δ EK = UB − IB och (om tillämpligt) Δ Obeskattade reserver = UB − IB.
+4. Välj rätt formel:
+   - **Om EK är positivt (Fall A):** Δ EK + Δ Obs.res ska vara lika med årets resultat.
+   - **Om EK är negativt (Fall B):** −(Δ EK + Δ Obs.res) ska vara lika med årets resultat.
+5. Om sambandet stämmer → ✅ Ingen avvikelse.
+   Om det inte stämmer → ⚠ Varningstecken – utred vidare.
 
-**Praktiskt exempel – Långkatekesen 2025:**
+### Praktiskt exempel – Långkatekesen 2025 (kreditkonvention, Fall B)
 
-| Post | Belopp |
-|------|--------|
-| Årets resultat (resultaträkning) | −14 954 kr |
-| Δ Eget kapital (kto 2988, balansräkning) | +597 kr |
-| Δ Investeringsfond (kto 2840, obeskattade reserver) | +14 357 kr |
-| Kontroll: 597 + 14 357 = 14 954 ✅ | Stämmer |
+Balansräkningens export från Fortnox visar EK med negativt tecken.
+
+| Post | Belopp | Förklaring |
+|------|--------|------------|
+| Årets resultat (resultaträkning) | −14 954 kr | Förlust |
+| Δ EK (kto 2988, UB − IB) | +597 kr | EK minskade i absoluta termer (positivt Δ i kreditkonvention) |
+| Δ Investeringsfond (kto 2840, UB − IB) | +14 357 kr | Fonden minskade (täckte del av förlusten) |
+| Kontroll Fall B: −(+597 + 14 357) = −14 954 ✅ | Stämmer | |
 
 Källa: Verifierat i granskning av Långkatekesen, april 2026.
 

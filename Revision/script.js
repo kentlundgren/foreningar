@@ -1,6 +1,6 @@
 /**
  * script.js – Revisionsverktyg för ideella organisationer
- * Version 1.1 · 2026-04-20
+ * Version 1.2 · 2026-04-20
  *
  * Innehåll:
  *   0. Språkdetektering – LANG läses från <html lang="...">
@@ -241,25 +241,56 @@ function buildPromptSv() {
   prompt += '\n━━━ GRANSKNINGSINSTRUKTIONER ━━━\n\n';
 
   // Steg 1 och 3 utförs alltid (ingår i nivå 1)
+  // Uppdatering 2026-04-20: utökad förklaring av teckenkonvention i kreditkonvention
   prompt += 'STEG 3 – Resultat = förändring av eget kapital (utförs alltid)\n';
-  prompt += 'Kontrollera att följande samband stämmer:\n\n';
-  prompt += '  Årets resultat = Δ Eget kapital + Δ Obeskattade reserver\n\n';
-  prompt += 'Gör så här:\n';
-  prompt += '  1. Hämta årets resultat ur resultaträkningen (sista raden, före\n';
-  prompt += '     eventuell "Redovisat resultat"-rad).\n';
-  prompt += '  2. Hämta förändringen av eget kapital ur balansräkningen\n';
-  prompt += '     (kolumnen "Förändring" på raden för eget kapital).\n';
-  prompt += '  3. Kontrollera om balansräkningen har en sektion "Obeskattade\n';
-  prompt += '     reserver" (t.ex. Investeringsfond, Periodiseringsfond).\n';
-  prompt += '     - Om JA: lägg ihop Δ eget kapital + Δ obeskattade reserver.\n';
-  prompt += '       Summan ska stämma med årets resultat.\n';
-  prompt += '     - Om NEJ: Δ eget kapital ska ensam stämma med årets resultat.\n';
-  prompt += '  4. Om siffrorna stämmer: ✅ Inget varningstecken.\n';
-  prompt += '     Om de INTE stämmer: ⚠ Varningstecken – påpeka tydligt och\n';
-  prompt += '     förklara vad avvikelsen kan bero på.\n\n';
+  prompt += '\n';
+  prompt += '⚠ VIKTIG – TECKENKONVENTION I BALANSRÄKNINGEN:\n';
+  prompt += 'I alla svenska bokföringssystem (Fortnox, Visma, Bokio m.fl.) är\n';
+  prompt += 'skulder och eget kapital kreditkonton och visas med NEGATIVT tecken\n';
+  prompt += 'i exporterade rapporter. Det innebär att när eget kapital ÖKAR (t.ex.\n';
+  prompt += 'vid vinst) så blir beloppet i balansräkningen ett STÖRRE negativt tal.\n';
+  prompt += 'Exempel: EK ökar från 50 000 kr → visas som −50 000 → −60 000 kr.\n';
+  prompt += '\n';
+  prompt += 'Identifiera teckenkonventionen FÖRST:\n';
+  prompt += '  – Är eget kapital angivet som ett NEGATIVT tal i balansräkningen?\n';
+  prompt += '    → KREDITKONVENTION (vanligast i systemexporter)\n';
+  prompt += '  – Är eget kapital angivet som ett POSITIVT tal?\n';
+  prompt += '    → NORMAL PRESENTATION\n';
+  prompt += '\n';
+  prompt += 'Välj rätt formel baserat på konventionen:\n';
+  prompt += '\n';
+  prompt += '  FALL A – Normal presentation (EK är positivt):\n';
+  prompt += '    Årets resultat = Δ EK + Δ Obeskattade reserver\n';
+  prompt += '    (Positiv vinst → positivt Δ EK)\n';
+  prompt += '\n';
+  prompt += '  FALL B – Kreditkonvention (EK är negativt, VANLIGAST):\n';
+  prompt += '    Årets resultat = −(Δ EK + Δ Obeskattade reserver)\n';
+  prompt += '    (Positiv vinst → negativt Δ EK, dvs. EK-talet minskar/blir mer negativt)\n';
+  prompt += '    Minnesregel: positivt Δ EK = EK minskade; negativt Δ EK = EK ökade.\n';
+  prompt += '\n';
+  prompt += 'Gör så här steg för steg:\n';
+  prompt += '  1. Hämta årets resultat ur resultaträkningen (sista raden före\n';
+  prompt += '     eventuell "Redovisat resultat"-rad). Positiv = vinst, negativ = förlust.\n';
+  prompt += '  2. Kontrollera om EK-beloppet i balansräkningen är positivt eller negativt.\n';
+  prompt += '  3. Beräkna Δ EK = UB − IB (utgående saldo minus ingående saldo).\n';
+  prompt += '  4. Kontrollera om det finns en sektion "Obeskattade reserver"\n';
+  prompt += '     (t.ex. Investeringsfond, Periodiseringsfond).\n';
+  prompt += '     – Om JA: beräkna också Δ Obeskattade reserver = UB − IB.\n';
+  prompt += '     – Om NEJ: Δ Obeskattade reserver = 0.\n';
+  prompt += '  5. Tillämpa Fall A eller Fall B ovan.\n';
+  prompt += '  6. Om sambandet stämmer: ✅ Inget varningstecken.\n';
+  prompt += '     Om det INTE stämmer: ⚠ Varningstecken – påpeka tydligt och\n';
+  prompt += '     förklara vad avvikelsen kan bero på.\n';
+  prompt += '\n';
+  prompt += 'Verifieringsexempel (kreditkonvention, Fall B):\n';
+  prompt += '  Årets resultat = −14 954 kr (förlust)\n';
+  prompt += '  Δ EK (UB − IB) = +597 kr   ← EK minskade (positivt Δ i kreditkonvention)\n';
+  prompt += '  Δ Investeringsfond (UB − IB) = +14 357 kr ← fonden minskade\n';
+  prompt += '  Kontroll: −(+597 + 14 357) = −14 954 ✅\n';
+  prompt += '\n';
   prompt += 'OBS: Vissa bokföringssystem avslutar resultaträkningen med en rad\n';
-  prompt += '"Redovisat resultat" som nollställer resultatet i systemet. Använd\n';
-  prompt += 'resultatet FÖRE denna rad (t.ex. "Resultat efter skatter").\n\n';
+  prompt += '"Redovisat resultat" som nollställer resultatet. Använd resultatet\n';
+  prompt += 'FÖRE denna rad (t.ex. "Resultat efter skatter").\n\n';
 
   prompt += 'STEG 1 – Riskbedömning (utförs alltid)\n';
   prompt += 'Identifiera 2–3 faktorer som bör granskas extra i en fortsatt revision.\n';
@@ -421,21 +452,55 @@ function buildPromptEng() {
   // -- Review instructions --
   prompt += '\n━━━ REVIEW INSTRUCTIONS ━━━\n\n';
 
+  // Update 2026-04-20: extended explanation of the credit-sign convention
   // Steps 3 and 1 are always performed
   prompt += 'STEP 3 – Result = change in equity (always performed)\n';
-  prompt += 'Verify that the following relationship holds:\n\n';
-  prompt += '  Year\'s result = Δ Equity + Δ Untaxed reserves\n\n';
-  prompt += 'How to check:\n';
+  prompt += '\n';
+  prompt += '⚠ IMPORTANT – SIGN CONVENTION IN THE BALANCE SHEET:\n';
+  prompt += 'In all Swedish accounting systems (Fortnox, Visma, Bokio, etc.),\n';
+  prompt += 'liabilities and equity are credit accounts and are shown with a\n';
+  prompt += 'NEGATIVE sign in exported reports. This means that when equity\n';
+  prompt += 'INCREASES (e.g. after a profit), the figure in the balance sheet\n';
+  prompt += 'becomes a LARGER negative number.\n';
+  prompt += 'Example: equity grows from 50,000 → shown as −50,000 → −60,000.\n';
+  prompt += '\n';
+  prompt += 'First identify the sign convention:\n';
+  prompt += '  – Is equity shown as a NEGATIVE number in the balance sheet?\n';
+  prompt += '    → CREDIT CONVENTION (most common in system exports)\n';
+  prompt += '  – Is equity shown as a POSITIVE number?\n';
+  prompt += '    → NORMAL PRESENTATION\n';
+  prompt += '\n';
+  prompt += 'Apply the correct formula:\n';
+  prompt += '\n';
+  prompt += '  CASE A – Normal presentation (equity is positive):\n';
+  prompt += '    Year\'s result = Δ Equity + Δ Untaxed reserves\n';
+  prompt += '    (Profit → positive Δ equity)\n';
+  prompt += '\n';
+  prompt += '  CASE B – Credit convention (equity is negative, MOST COMMON):\n';
+  prompt += '    Year\'s result = −(Δ Equity + Δ Untaxed reserves)\n';
+  prompt += '    (Profit → negative Δ equity, i.e. the figure decreases / becomes more negative)\n';
+  prompt += '    Memory rule: positive Δ equity = equity decreased; negative Δ equity = equity increased.\n';
+  prompt += '\n';
+  prompt += 'Step-by-step procedure:\n';
   prompt += '  1. Take the year\'s result from the income statement (last line before\n';
-  prompt += '     any "Reported result" closing entry).\n';
-  prompt += '  2. Take the change in equity from the balance sheet change column.\n';
-  prompt += '  3. Check whether the balance sheet has an "Untaxed reserves" section\n';
+  prompt += '     any "Reported result" closing entry). Positive = profit, negative = loss.\n';
+  prompt += '  2. Check whether the equity figure in the balance sheet is positive or negative.\n';
+  prompt += '  3. Calculate Δ equity = closing balance − opening balance.\n';
+  prompt += '  4. Check whether the balance sheet has an "Untaxed reserves" section\n';
   prompt += '     (e.g. Investment fund, Appropriations reserve / periodiseringsfond).\n';
-  prompt += '     - If YES: Δ equity + Δ untaxed reserves must equal the year\'s result.\n';
-  prompt += '     - If NO:  Δ equity alone must equal the year\'s result.\n';
-  prompt += '  4. If the figures match: ✅ No warning sign.\n';
-  prompt += '     If they do NOT match: ⚠ Warning sign – state this clearly and\n';
-  prompt += '     explain what the discrepancy could indicate.\n\n';
+  prompt += '     – If YES: also calculate Δ untaxed reserves = closing − opening.\n';
+  prompt += '     – If NO:  Δ untaxed reserves = 0.\n';
+  prompt += '  5. Apply Case A or Case B above.\n';
+  prompt += '  6. If the relationship holds: ✅ No warning sign.\n';
+  prompt += '     If it does NOT hold: ⚠ Warning sign – state this clearly and\n';
+  prompt += '     explain what the discrepancy could indicate.\n';
+  prompt += '\n';
+  prompt += 'Verification example (credit convention, Case B):\n';
+  prompt += '  Year\'s result = −14,954 (loss)\n';
+  prompt += '  Δ equity (closing − opening) = +597  ← equity decreased (positive Δ in credit convention)\n';
+  prompt += '  Δ investment fund (closing − opening) = +14,357  ← fund decreased\n';
+  prompt += '  Check: −(+597 + 14,357) = −14,954 ✅\n';
+  prompt += '\n';
   prompt += 'NOTE: Some accounting systems close the income statement with a\n';
   prompt += '"Reported result" line that resets the result to zero. Use the result\n';
   prompt += 'BEFORE that line (e.g. "Result after taxes").\n\n';
