@@ -26,10 +26,11 @@
     <!-- Budskapsytan – slides injiceras här av splash.js -->
     <div class="splash-message-area">
       <!-- .splash-slide-element skapas dynamiskt i splash.js -->
-
-      <!-- CTA-knapp – visas bara på sista slide -->
-      <button class="splash-cta" type="button">Kom igång →</button>
     </div>
+
+    <!-- CTA-knapp – flyttad hit, utanför message-area så att
+         absolut-positionerade slides inte blockerar klicket -->
+    <button class="splash-cta" type="button">Kom igång →</button>
 
     <!-- Framstegsindikator (prickar) – fylls av splash.js -->
     <div class="splash-dots" role="tablist" aria-label="Välj budskap"></div>

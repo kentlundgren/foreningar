@@ -73,7 +73,9 @@ function initSplash() {
     el.className = 'splash-slide';
     el.setAttribute('aria-hidden', idx !== 0 ? 'true' : 'false');
     el.innerHTML = `<h2>${slide.heading}</h2><p>${slide.sub}</p>`;
-    messageArea.insertBefore(el, ctaBtn); /* Infogas före CTA-knappen */
+    /* Uppdatering 2026-04-20: ctaBtn ligger nu utanför messageArea –
+       slides läggs direkt till med appendChild istället */
+    messageArea.appendChild(el);
 
     /* Skapa en klickbar prick för varje slide */
     const dot = document.createElement('button');
