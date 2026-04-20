@@ -12,6 +12,7 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 | 2026-04-20 | Fil skapad med generella regler: klickbara länkar, Harvardformat, fråga vid oklarheter, kodkommentarer, versionshantering. |
 | 2026-04-20 | Regel tillagd: klargör alltid vilken CLAUDE.md-fil som uppdateras. |
 | 2026-04-20 | Regel tillagd: skapa alltid README.md med live-länk när nytt projekt/index.html skapas. |
+| 2026-04-20 | Regel tillagd: GitHub-länken i sidfoten ska alltid peka på projektets specifika mapp i repot. |
 
 ---
 
@@ -68,6 +69,50 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 >
 > Om GitHub Pages-URL:n inte är känd vid projektstarten: fråga Kent, eller
 > skriv in en platshållare och påminn om att den ska fyllas i.
+
+---
+
+## GitHub-länk – alltid projektspecifik, fixerad nere till vänster
+
+> **INSTRUKTION TILL CLAUDE:** Alla webbsidor ska ha en diskret GitHub-länk
+> som är **fixerad i nedre vänstra hörnet** på sidan – inte inuti `<footer>`.
+>
+> **Placering och HTML** (placeras precis före `</body>`, efter `<script>`-taggar):
+> ```html
+> <a class="github-link"
+>    href="https://github.com/kentlundgren/[repo]/tree/main/[projektmapp]"
+>    target="_blank" rel="noopener"
+>    aria-label="Visa källkod på GitHub">
+>   { } GitHub
+> </a>
+> ```
+>
+> **CSS** (läggs till i projektets `styles.css`):
+> ```css
+> .github-link {
+>   position: fixed; bottom: 1rem; left: 1rem;
+>   display: inline-flex; align-items: center; gap: 0.3rem;
+>   font-size: 0.75rem; font-weight: 600;
+>   color: var(--color-primary); background: var(--color-surface);
+>   border: 1px solid var(--color-border); border-radius: 6px;
+>   padding: 0.3rem 0.65rem; text-decoration: none;
+>   opacity: 0.55; transition: opacity 0.15s, box-shadow 0.15s; z-index: 50;
+> }
+> .github-link:hover { opacity: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.12); text-decoration: none; }
+> ```
+> *(Anpassa CSS-variabelnamnen till projektets egna variabler om de heter annorlunda.)*
+>
+> **URL-format:** `https://github.com/kentlundgren/[repo]/tree/main/[projektmapp]`
+>
+> **Exempel:**
+> - Revision → `https://github.com/kentlundgren/foreningar/tree/main/Revision`
+> - KalmarNation → `https://github.com/kentlundgren/foreningar/tree/main/KalmarNation`
+>
+> **Länktext:** alltid `{ } GitHub`
+>
+> **Varför:** En besökare ska hamna direkt i projektmappen – inte på profilsidan.
+> Knappen syns alltid oavsett scrollläge. Konventionen är densamma på alla sidor
+> så att man känner igen sig oavsett vilket projekt man besöker.
 
 ---
 
