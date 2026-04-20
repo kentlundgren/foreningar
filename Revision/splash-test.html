@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TESTFIL – Splash-intro | Granska din förening</title>
+
+  <!-- Befintlig CSS för bakgrundssidan -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Ny, fristående splash-CSS (påverkar INTE styles.css) -->
+  <link rel="stylesheet" href="splash.css" />
+</head>
+<body>
+
+  <!-- =====================================================================
+       SPLASH-OVERLAY – introduktionsskärm
+       Visas direkt när sidan laddas.
+       Byggs upp och styrs av splash.js.
+       ===================================================================== -->
+  <div id="splash-overlay" role="dialog" aria-modal="true" aria-label="Introduktion">
+
+    <!-- Avsändare / varumärke -->
+    <span class="splash-brand">Revisionsverktyget · Granska din förening</span>
+
+    <!-- Budskapsytan – slides injiceras här av splash.js -->
+    <div class="splash-message-area">
+      <!-- .splash-slide-element skapas dynamiskt i splash.js -->
+
+      <!-- CTA-knapp – visas bara på sista slide -->
+      <button class="splash-cta" type="button">Kom igång →</button>
+    </div>
+
+    <!-- Framstegsindikator (prickar) – fylls av splash.js -->
+    <div class="splash-dots" role="tablist" aria-label="Välj budskap"></div>
+
+    <!-- Diskret hopp-länk -->
+    <button class="splash-skip" type="button">Hoppa över</button>
+  </div>
+
+
+  <!-- =====================================================================
+       BAKGRUNDSSIDAN – visas när splash stängts
+       (Exakt kopia av index.html-strukturen; för teständamål)
+       ===================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <a class="lang-btn" href="index_eng.html">🇬🇧 In English</a>
+      <h1>Granska din förening</h1>
+      <p class="tagline">
+        Ett revisionsverktyg för ideella organisationer – från enkel AI-föranalys
+        till fullständig lekmannarevision.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section" id="intro">
+      <h2>Vad är en lekmannarevision?</h2>
+      <p>
+        Varje ideell förening, studentnation och bostadsrättsförening behöver
+        en revisor som granskar om ekonomin är rätt skött. Den som utför
+        granskningen kallas <strong>lekmannarevisor</strong> – och behöver inte
+        vara utbildad ekonom, men har ändå ett juridiskt och moraliskt ansvar
+        att granska på ett seriöst sätt.
+      </p>
+      <p style="margin-top: 1rem; color: #888; font-size: 0.9rem;">
+        <em>(Resten av innehållet från index.html visas här efter att splash stängs.)</em>
+      </p>
+    </section>
+  </main>
+
+
+  <!-- =====================================================================
+       Splash-skript – laddas sist för bästa prestanda
+       defer: körs efter HTML har parsats, utan att blockera rendering
+       ===================================================================== -->
+  <script src="splash.js" defer></script>
+
+</body>
+</html>

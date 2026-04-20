@@ -1,0 +1,215 @@
+/* =========================================================================
+   splash.css – Introduktionsskärm ("säljande flash") för Revisionsverktyget
+   Version 1.0 · 2026-04-20
+   Fristående fil – påverkar INTE styles.css eller befintlig layout.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   Overlay – täcker hela sidan när splash-skärmen är aktiv
+   ------------------------------------------------------------------------- */
+#splash-overlay {
+  position: fixed;
+  inset: 0;                          /* top/right/bottom/left = 0 */
+  z-index: 9999;                     /* Ligger ovanpå allt annat */
+
+  /* Gradient: mörkblå (matchar --color-primary) → lite djupare blå */
+  background: linear-gradient(135deg, #1a5276 0%, #0d2f45 60%, #0a1f30 100%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  /* Mjuk uttoningsfas när overlay-n stängs */
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* När JS lägger till klassen .hidden försvinner overlay:n mjukt */
+#splash-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* -------------------------------------------------------------------------
+   Dekorativ, subtil cirkel i bakgrunden – ger djup utan att störa
+   ------------------------------------------------------------------------- */
+#splash-overlay::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(46, 134, 193, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* -------------------------------------------------------------------------
+   Logotyp / avsändartext högst upp
+   ------------------------------------------------------------------------- */
+.splash-brand {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------------
+   Budskapscontainer – här visas ett budskap i taget
+   ------------------------------------------------------------------------- */
+.splash-message-area {
+  text-align: center;
+  max-width: 700px;
+  width: 100%;
+  position: relative;
+  min-height: 160px;               /* Förhindrar hoppning när text byts */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* -------------------------------------------------------------------------
+   Varje enskilt budskap – dolt som standard, visas via JS
+   ------------------------------------------------------------------------- */
+.splash-slide {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+
+/* Aktivt budskap – synligt och i ursprungsläge */
+.splash-slide.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Huvud-rubrik i varje budskap */
+.splash-slide h2 {
+  font-size: clamp(1.6rem, 5vw, 2.8rem);  /* Responsiv storlek */
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+/* Undertitel / förtydligande text */
+.splash-slide p {
+  font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.70);
+  line-height: 1.55;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+/* Accent-färgad markering i rubrik */
+.splash-slide h2 em {
+  font-style: normal;
+  color: #5dade2;                   /* Ljusblå – syns mot mörk bakgrund */
+}
+
+/* -------------------------------------------------------------------------
+   Framstegsindikator – prickar under texten
+   ------------------------------------------------------------------------- */
+.splash-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 3rem;
+}
+
+.splash-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: background 0.4s ease, transform 0.4s ease;
+  cursor: pointer;
+}
+
+.splash-dot.active {
+  background: #5dade2;
+  transform: scale(1.3);
+}
+
+/* -------------------------------------------------------------------------
+   CTA-knapp – visas på sista bilden
+   ------------------------------------------------------------------------- */
+.splash-cta {
+  margin-top: 2.2rem;
+  padding: 0.75rem 2.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a5276;
+  background: #ffffff;
+  border: none;
+  border-radius: 50px;             /* Pill-form – mjuk känsla */
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+  opacity: 0;                      /* Visas först på sista slide via JS */
+  pointer-events: none;
+}
+
+.splash-cta.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.splash-cta:hover {
+  background: #e8f4fb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.30);
+}
+
+.splash-cta:active {
+  transform: translateY(0);
+}
+
+/* -------------------------------------------------------------------------
+   Diskret hopp-länk längst ner
+   ------------------------------------------------------------------------- */
+.splash-skip {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.8rem;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.35);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  transition: color 0.2s ease;
+  letter-spacing: 0.04em;
+}
+
+.splash-skip:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* -------------------------------------------------------------------------
+   Responsivitet – små skärmar
+   ------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .splash-message-area {
+    min-height: 200px;
+  }
+
+  .splash-brand {
+    font-size: 0.75rem;
+  }
+}
