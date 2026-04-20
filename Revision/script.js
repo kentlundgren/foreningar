@@ -132,11 +132,7 @@ document.getElementById('prompt-form').addEventListener('submit', function (even
     document.getElementById('year').focus();
     return;
   }
-  if (!financialData) {
-    alert(msg.financialData);
-    document.getElementById('financial-data').focus();
-    return;
-  }
+  // financialData är valfritt – användaren kan bifoga PDF direkt i Claude
 
   // Bygger prompten och visar resultatrutan
   const prompt = buildPrompt();
@@ -333,7 +329,12 @@ function buildPromptSv() {
 
   // -- Ekonomiska underlag --
   prompt += '━━━ EKONOMISKA UNDERLAG ━━━\n';
-  prompt += financialData;
+  if (financialData) {
+    prompt += financialData;
+  } else {
+    prompt += '(Inga underlag inklistrade – användaren bifogar PDF-filerna\n';
+    prompt += ' direkt i detta Claude-samtal. Granska de bifogade filerna.)\n';
+  }
 
   return prompt;
 }
@@ -508,7 +509,12 @@ function buildPromptEng() {
 
   // -- Financial documents --
   prompt += '━━━ FINANCIAL DOCUMENTS ━━━\n';
-  prompt += financialData;
+  if (financialData) {
+    prompt += financialData;
+  } else {
+    prompt += '(No documents pasted – the user will attach PDF files directly\n';
+    prompt += ' in this Claude conversation. Please review the attached files.)\n';
+  }
 
   return prompt;
 }
