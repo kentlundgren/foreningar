@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Review your association – Audit tool for non-profit organisations</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =====================================================================
+       HEADER
+       ===================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <!-- Language switcher – back to Swedish version -->
+      <a class="lang-btn" href="index.html">🇸🇪 På svenska</a>
+      <h1>Review your association</h1>
+      <p class="tagline">
+        An audit tool for non-profit organisations – from a quick AI pre-analysis
+        to a complete lay audit.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- =================================================================
+         SECTION 1 – INTRODUCTION
+         ================================================================= -->
+    <section class="section" id="intro">
+      <h2>What is a lay audit?</h2>
+      <p>
+        Every non-profit association, student nation and housing cooperative needs
+        an auditor to check that the finances are properly managed. The person who
+        performs the review is called a <strong>lay auditor</strong> – they do not
+        need to be a trained accountant, but still have a legal and moral
+        responsibility to conduct a thorough and independent review.
+      </p>
+      <p>
+        A complete audit of a small organisation consists of
+        <strong>10 review steps</strong>. How deep the analysis can go depends on
+        which documents are available.
+      </p>
+      <a
+        href="https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt_eng.html"
+        class="btn btn-secondary"
+        target="_blank"
+        rel="noopener"
+      >
+        Read the full audit guide (all 10 steps) →
+      </a>
+
+      <!-- Visual overview of the three levels -->
+      <div class="levels-overview">
+        <h3>Three review levels</h3>
+        <div class="levels-grid">
+
+          <div class="level-card level-1">
+            <div class="level-badge">Level 1</div>
+            <h4>Basic analysis</h4>
+            <p class="price">SEK 100</p>
+            <p class="level-desc">
+              Analysis of the current year's income statement and balance sheet.
+            </p>
+            <ul>
+              <li>Step 1 – Risk assessment</li>
+              <li>Step 3 – Result = change in equity (+ any untaxed reserves)</li>
+            </ul>
+            <p class="docs-needed">
+              <strong>Documents needed:</strong> Income statement + balance sheet (year X)
+            </p>
+          </div>
+
+          <div class="level-card level-2">
+            <div class="level-badge">Level 2</div>
+            <h4>Extended analysis</h4>
+            <p class="price">SEK 1,500</p>
+            <p class="level-desc">
+              Deeper review with year-on-year comparison.
+            </p>
+            <ul>
+              <li>Step 2 – Bank reconciliation</li>
+              <li>Step 4 – Continuity check OB/CB</li>
+              <li>Step 6 – Comparative analysis</li>
+              <li>Step 7 – Receivables and liabilities</li>
+              <li>+ all steps from Level 1</li>
+            </ul>
+            <p class="docs-needed">
+              <strong>Documents needed:</strong> Level 1 + previous year's accounts +
+              voucher list + bank statement (31 Dec)
+            </p>
+          </div>
+
+          <div class="level-card level-3">
+            <div class="level-badge">Level 3</div>
+            <h4>Full audit</h4>
+            <p class="price">Price on request</p>
+            <p class="level-desc">
+              Complete lay audit with formal audit report.
+            </p>
+            <ul>
+              <li>All 10 steps</li>
+              <li>Step 9 – Management review</li>
+              <li>Step 10 – Audit report</li>
+            </ul>
+            <p class="docs-needed">
+              <strong>Documents needed:</strong> Level 2 + board minutes +
+              activity report + budget (if available)
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECTION 2 – FREE AI ANALYSIS (SELF-SERVICE)
+         ================================================================= -->
+    <section class="section" id="ai-analys">
+      <h2>Step 1 – Free AI pre-analysis (self-service)</h2>
+      <p>
+        Fill in the form below and click
+        <strong>"Generate audit analysis prompt"</strong>.
+        You will receive a ready-made prompt that you copy and paste into
+        <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+        – together with your financial documents.
+      </p>
+      <p class="info-box">
+        Fields with a <span class="yellow-indicator">yellow background</span> are
+        input fields. Fill them in before generating the prompt.
+      </p>
+
+      <!-- Explainer box about Step 3 – untaxed reserves -->
+      <div class="explainer-box">
+        <h4>About Step 3 – "The result must equal the change in equity"</h4>
+        <p>
+          In most associations, <strong>the year's result = the change in equity</strong>
+          in the balance sheet. However, associations with
+          <strong>untaxed reserves</strong> (e.g. an investment fund or
+          appropriations reserve) follow an extended formula:
+        </p>
+        <p class="formula-box">
+          Year's result = Δ Equity + Δ Untaxed reserves
+        </p>
+        <p>
+          <strong>Example (Långkatekesen 2025):</strong>
+          The year's result was −SEK&nbsp;14,954. Equity changed by
+          +SEK&nbsp;597 and the investment fund decreased by SEK&nbsp;14,357.
+          597 + 14,357 = 14,954 ✅ – everything checks out, no warning sign.
+        </p>
+        <p>
+          The generated prompt instructs the AI to always check whether
+          untaxed reserves exist and, if so, apply the extended formula.
+        </p>
+      </div>
+
+      <!-- Form – same element IDs as index.html so script.js works for both -->
+      <form id="prompt-form" novalidate>
+
+        <!-- Basic organisation details -->
+        <fieldset>
+          <legend>Basic details about the organisation</legend>
+
+          <div class="form-group">
+            <label for="org-name">Organisation name <span class="required">*</span></label>
+            <input
+              type="text"
+              id="org-name"
+              name="org-name"
+              placeholder="e.g. Kalmar Nation in Uppsala"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="year">Financial year <span class="required">*</span></label>
+              <input
+                type="text"
+                id="year"
+                name="year"
+                placeholder="e.g. 2025"
+                maxlength="4"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="accounting-system">Accounting system</label>
+              <select id="accounting-system" name="accounting-system">
+                <option value="unknown">Unknown / Not sure</option>
+                <option value="Fortnox">Fortnox</option>
+                <option value="Visma eEkonomi">Visma eEkonomi</option>
+                <option value="Bokio">Bokio</option>
+                <option value="Excel">Excel</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="treasurer-changed">
+              Has the treasurer / financial officer been replaced in the past year?
+            </label>
+            <select id="treasurer-changed" name="treasurer-changed">
+              <option value="vet-ej">Not sure</option>
+              <option value="nej">No</option>
+              <option value="ja">Yes – the financial officer has been replaced</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="budget">
+              Was a budget approved for the financial year?
+            </label>
+            <select id="budget" name="budget">
+              <option value="vet-ej">Not sure</option>
+              <option value="nej">No</option>
+              <option value="ja">Yes</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <!-- Available documents -->
+        <fieldset>
+          <legend>Available documents – tick what you will attach in Claude</legend>
+          <p class="fieldset-hint">
+            The more documents you attach, the deeper the analysis possible.
+          </p>
+
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-result-current" name="docs" value="resultat-innevarande" checked />
+              Income statement – current year (year X)
+              <span class="doc-tag tag-niva1">Level 1</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-balance-current" name="docs" value="balans-innevarande" checked />
+              Balance sheet – current year (year X)
+              <span class="doc-tag tag-niva1">Level 1</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-result-prev" name="docs" value="resultat-forra" />
+              Income statement – previous year (year X−1)
+              <span class="doc-tag tag-niva2">Enables Step 6</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-balance-prev" name="docs" value="balans-forra" />
+              Balance sheet – previous year (year X−1)
+              <span class="doc-tag tag-niva2">Enables Step 4</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-verification" name="docs" value="verifikationslista" />
+              Voucher list (exported from the accounting system)
+              <span class="doc-tag tag-niva2">Enables Step 7</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-bank" name="docs" value="kontoutdrag" />
+              Bank statement as of 31 December year X
+              <span class="doc-tag tag-niva2">Enables Step 2</span>
+            </label>
+          </div>
+
+          <!-- Dynamic level indicator – updated by JavaScript -->
+          <div id="level-indicator" class="level-indicator">
+            <span id="level-text">Level 1 – Basic analysis possible</span>
+          </div>
+        </fieldset>
+
+        <!-- Paste financial documents -->
+        <fieldset>
+          <legend>Paste your financial documents</legend>
+          <p class="fieldset-hint">
+            Copy the figures from Excel or PDF and paste them below.
+            You can also attach PDF files directly in Claude after copying
+            the prompt – that works just as well.
+          </p>
+
+          <div class="form-group">
+            <label for="financial-data">
+              Income statement and balance sheet
+              <span class="required">*</span>
+            </label>
+            <textarea
+              id="financial-data"
+              name="financial-data"
+              rows="14"
+              placeholder="Paste your figures here – e.g.:
+
+INCOME STATEMENT 2025
+Revenue
+  Membership fees          120,000 SEK
+  Bar/café revenue         850,000 SEK
+  ...
+
+BALANCE SHEET 2025-12-31
+Assets
+  Cash and bank            230,000 SEK
+  Accounts receivable       45,000 SEK
+  ...
+
+(Or attach PDF files directly in Claude – that works just as well.)"
+              required
+            ></textarea>
+          </div>
+        </fieldset>
+
+        <!-- Submit button -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="generate-btn">
+            Generate audit analysis prompt
+          </button>
+        </div>
+      </form>
+
+      <!-- Result box – shown after the prompt has been generated -->
+      <div id="result-section" class="result-section hidden">
+        <h3>Your audit analysis prompt is ready</h3>
+        <p>
+          Copy the prompt below and paste it into
+          <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+          (New conversation). Feel free to attach your PDF files directly in
+          Claude if you have them.
+        </p>
+
+        <div class="prompt-output-wrapper">
+          <textarea id="prompt-output" class="prompt-output" readonly rows="20"></textarea>
+          <button class="btn btn-copy" id="copy-btn">
+            Copy prompt
+          </button>
+          <span id="copy-confirm" class="copy-confirm hidden">Copied!</span>
+        </div>
+
+        <div class="next-steps">
+          <h4>Next steps after the AI analysis</h4>
+          <ol>
+            <li>
+              Open <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+              and start a new conversation.
+            </li>
+            <li>Paste the prompt (and attach your PDF files if you have them).</li>
+            <li>Read through the AI analysis.</li>
+            <li>
+              Would you like a professional manual audit as a follow-up?
+              See the order section below.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SECTION 3 – ORDER A PROFESSIONAL AUDIT
+         ================================================================= -->
+    <section class="section" id="bestallning">
+      <h2>Step 2 – Order a professional audit</h2>
+      <p>
+        The AI analysis gives a good picture of whether the figures add up –
+        but a complete audit requires human review of documents such as
+        voucher lists, bank statements and board minutes.
+      </p>
+      <p>
+        <strong>Kent Lundgren</strong> offers professional lay audits for
+        non-profit organisations. The process takes place via email and follows
+        the 10 steps described in the audit guide.
+      </p>
+
+      <!-- Price table -->
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Documents required</th>
+            <th>What is reviewed</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Level 1 – Basic analysis</strong></td>
+            <td>Income statement + balance sheet (year X)</td>
+            <td>Step 1 (risk assessment) + Step 3 (result = change in equity)</td>
+            <td class="price-cell">SEK 100</td>
+          </tr>
+          <tr>
+            <td><strong>Level 2 – Extended analysis</strong></td>
+            <td>
+              Level 1 + previous year's accounts (year X−1) +
+              voucher list + bank statement (31 Dec year X)
+            </td>
+            <td>
+              + Step 2 (bank reconciliation), Step 4 (continuity check),
+              Step 6 (comparative analysis), Step 7 (receivables)
+            </td>
+            <td class="price-cell">SEK 1,500</td>
+          </tr>
+          <tr>
+            <td><strong>Level 3 – Full audit</strong></td>
+            <td>
+              Level 2 + board minutes + activity report +
+              budget (if available)
+            </td>
+            <td>All 10 steps incl. management review and formal audit report</td>
+            <td class="price-cell">Price on request</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Order instructions -->
+      <div class="order-box">
+        <h3>How to order</h3>
+        <ol>
+          <li>
+            Send an email to
+            <a href="mailto:kent@kentlundgren.se?subject=Audit%20request&body=Hi%20Kent%2C%0A%0AI%20would%20like%20to%20order%20an%20audit%20of%20[ORGANISATION%20NAME]%2C%20financial%20year%20[YEAR].%0A%0ARequested%20level%3A%20Level%20[1%2F2%2F3]%0A%0AAccounting%20system%3A%20[SYSTEM]%0A%0AI%20am%20attaching%3A%0A-%20Income%20statement%20year%20X%0A-%20Balance%20sheet%20year%20X%0A%0AKind%20regards%2C%0A[YOUR%20NAME]">
+              kent@kentlundgren.se
+            </a>
+          </li>
+          <li>
+            Attach your documents as <strong>separate PDF files</strong>
+            (one file per document – e.g. one file for the balance sheet and
+            one for the income statement).
+          </li>
+          <li>
+            State in the email: the organisation's name, financial year,
+            accounting system and which review level you would like.
+          </li>
+          <li>
+            Kent will confirm the engagement and send payment information
+            before work begins.
+          </li>
+        </ol>
+
+        <div class="contact-actions">
+          <a
+            href="mailto:kent@kentlundgren.se?subject=Audit%20request&body=Hi%20Kent%2C%0A%0AI%20would%20like%20to%20order%20an%20audit%20of%20[ORGANISATION%20NAME]%2C%20financial%20year%20[YEAR].%0A%0ARequested%20level%3A%20Level%20[1%2F2%2F3]%0A%0AAccounting%20system%3A%20[SYSTEM]%0A%0AI%20am%20attaching%3A%0A-%20Income%20statement%20year%20X%0A-%20Balance%20sheet%20year%20X%0A%0AKind%20regards%2C%0A[YOUR%20NAME]"
+            class="btn btn-primary"
+          >
+            Send order by email
+          </a>
+          <p class="x-note">
+            Feel free to tag
+            <a href="https://x.com/kentlundgren" target="_blank" rel="noopener">@kentlundgren</a>
+            on X as well – for a faster response.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       FOOTER
+       ===================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        Audit tool for non-profit organisations · Created by
+        <a href="https://kentlundgren.se" target="_blank" rel="noopener">Kent Lundgren</a>
+      </p>
+      <p>
+        Audit guide:
+        <a
+          href="https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt_eng.html"
+          target="_blank"
+          rel="noopener"
+        >
+          How does auditing work? – A guide for everyone
+        </a>
+      </p>
+      <p>
+        <a
+          href="https://github.com/kentlundgren"
+          target="_blank"
+          rel="noopener"
+        >
+          { } GitHub
+        </a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

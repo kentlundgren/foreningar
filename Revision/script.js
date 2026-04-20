@@ -1,17 +1,28 @@
 /**
  * script.js – Revisionsverktyg för ideella organisationer
- * Version 1.0 · 2026-04-20
+ * Version 1.1 · 2026-04-20
  *
  * Innehåll:
+ *   0. Språkdetektering – LANG läses från <html lang="...">
  *   1. Nivåindikator – uppdateras dynamiskt när underlag kryssas i/ur
  *   2. Formulärhantering – validering och promptgenerering
  *   3. Promptbyggare – bygger den fullständiga AI-prompten från formulärdata
+ *      (genererar svenska prompt vid lang="sv", engelsk prompt vid lang="en")
  *   4. Kopieringsknapp – kopierar prompten till urklipp
  *   5. [FAS 2] Formspree-integration (utkommenterad, klar att aktivera)
  *   6. [FAS 2] Zapier/X DM-notifiering (utkommenterad, klar att aktivera)
  */
 
 'use strict';
+
+/* =========================================================================
+   0. SPRÅKDETEKTERING
+   Läser HTML-elementets lang-attribut. Används för att välja rätt text i
+   nivåindikatorn, valideringsmeddelanden och den genererade prompten.
+   lang="sv" → svenska (index.html)
+   lang="en" → engelska (index_eng.html)
+   ========================================================================= */
+const LANG = document.documentElement.lang || 'sv';
 
 /* =========================================================================
    1. NIVÅINDIKATOR
@@ -41,23 +52,39 @@ function calculateLevel() {
 
 /**
  * Uppdaterar nivåindikatorns text och färg baserat på aktuell nivå.
+ * Texten väljs baserat på LANG (sv/en).
  */
 function updateLevelIndicator() {
   const indicator = document.getElementById('level-indicator');
   const levelText = document.getElementById('level-text');
   const level     = calculateLevel();
 
-  // Tar bort alla nivåfärger och sätter rätt
   indicator.style.background = '';
 
+  // Textsträngarna för svenska och engelska
+  const texts = {
+    sv: {
+      0: 'Välj minst resultat- och balansräkning för innevarande år',
+      1: 'Nivå 1 – Grundanalys möjlig (Steg 1 + 3)',
+      2: 'Nivå 2 – Utökad analys möjlig (Steg 1–4, 6, 7)'
+    },
+    en: {
+      0: 'Select at least the income statement and balance sheet for the current year',
+      1: 'Level 1 – Basic analysis possible (Steps 1 + 3)',
+      2: 'Level 2 – Extended analysis possible (Steps 1–4, 6, 7)'
+    }
+  };
+
+  const t = texts[LANG] || texts['sv'];
+
   if (level === 0) {
-    levelText.textContent    = 'Välj minst resultat- och balansräkning för innevarande år';
+    levelText.textContent      = t[0];
     indicator.style.background = '#7f8c8d';
   } else if (level === 1) {
-    levelText.textContent    = 'Nivå 1 – Grundanalys möjlig (Steg 1 + 3)';
+    levelText.textContent      = t[1];
     indicator.style.background = '#1e8449';
   } else if (level === 2) {
-    levelText.textContent    = 'Nivå 2 – Utökad analys möjlig (Steg 1–4, 6, 7)';
+    levelText.textContent      = t[2];
     indicator.style.background = '#d68910';
   }
 }
@@ -83,19 +110,30 @@ document.getElementById('prompt-form').addEventListener('submit', function (even
   const year         = document.getElementById('year').value.trim();
   const financialData = document.getElementById('financial-data').value.trim();
 
+  // Valideringsmeddelanden på rätt språk
+  const msg = LANG === 'en' ? {
+    orgName:       'Please enter the organisation name.',
+    year:          'Please enter a valid financial year (four digits, e.g. 2025).',
+    financialData: 'Please paste your financial documents in the text field.'
+  } : {
+    orgName:       'Ange organisationens namn.',
+    year:          'Ange ett giltigt räkenskapsår (fyra siffror, t.ex. 2025).',
+    financialData: 'Klistra in dina ekonomiska underlag i textfältet.'
+  };
+
   // Enkel validering – alla obligatoriska fält måste vara ifyllda
   if (!orgName) {
-    alert('Ange organisationens namn.');
+    alert(msg.orgName);
     document.getElementById('org-name').focus();
     return;
   }
   if (!year || !/^\d{4}$/.test(year)) {
-    alert('Ange ett giltigt räkenskapsår (fyra siffror, t.ex. 2025).');
+    alert(msg.year);
     document.getElementById('year').focus();
     return;
   }
   if (!financialData) {
-    alert('Klistra in dina ekonomiska underlag i textfältet.');
+    alert(msg.financialData);
     document.getElementById('financial-data').focus();
     return;
   }
@@ -114,9 +152,20 @@ document.getElementById('prompt-form').addEventListener('submit', function (even
 
 /**
  * Läser formulärets värden och bygger en komplett prompt.
+ * Väljer svenska eller engelska beroende på LANG-konstanten.
  * @returns {string} Den färdiga prompttexten
  */
 function buildPrompt() {
+  // Delegera till rätt språkversion
+  if (LANG === 'en') return buildPromptEng();
+  return buildPromptSv();
+}
+
+/**
+ * Bygger den svenska prompten.
+ * @returns {string}
+ */
+function buildPromptSv() {
   // Läser formulärdata
   const orgName           = document.getElementById('org-name').value.trim();
   const year              = document.getElementById('year').value.trim();
@@ -284,6 +333,181 @@ function buildPrompt() {
 
   // -- Ekonomiska underlag --
   prompt += '━━━ EKONOMISKA UNDERLAG ━━━\n';
+  prompt += financialData;
+
+  return prompt;
+}
+
+
+/**
+ * Builds the English version of the audit analysis prompt.
+ * Called automatically by buildPrompt() when LANG === 'en'.
+ * @returns {string}
+ */
+function buildPromptEng() {
+  // Read form data
+  const orgName           = document.getElementById('org-name').value.trim();
+  const year              = document.getElementById('year').value.trim();
+  const accountingSystem  = document.getElementById('accounting-system').value;
+  const treasurerChanged  = document.getElementById('treasurer-changed').value;
+  const budgetAvailable   = document.getElementById('budget').value;
+  const financialData     = document.getElementById('financial-data').value.trim();
+
+  // Available documents
+  const hasResultCurrent  = document.getElementById('doc-result-current').checked;
+  const hasBalanceCurrent = document.getElementById('doc-balance-current').checked;
+  const hasResultPrev     = document.getElementById('doc-result-prev').checked;
+  const hasBalancePrev    = document.getElementById('doc-balance-prev').checked;
+  const hasVerification   = document.getElementById('doc-verification').checked;
+  const hasBank           = document.getElementById('doc-bank').checked;
+
+  const level = calculateLevel();
+
+  // Build document list for the prompt
+  const docList = [];
+  if (hasResultCurrent)  docList.push('Income statement year ' + year);
+  if (hasBalanceCurrent) docList.push('Balance sheet year ' + year);
+  if (hasResultPrev)     docList.push('Income statement year ' + (parseInt(year) - 1));
+  if (hasBalancePrev)    docList.push('Balance sheet year ' + (parseInt(year) - 1));
+  if (hasVerification)   docList.push('Voucher list year ' + year);
+  if (hasBank)           docList.push('Bank statement as of 31 December ' + year);
+
+  let prompt = '';
+
+  // -- Role and context --
+  prompt += 'You are acting as an auditor and financial reviewer of a small non-profit\n';
+  prompt += 'organisation in Sweden. You are knowledgeable but pedagogical – you always\n';
+  prompt += 'explain terms in a way that is understandable without an accounting background.\n\n';
+
+  prompt += 'The framework you follow:\n';
+  prompt += 'https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt_eng.html\n\n';
+
+  // -- Organisation details --
+  prompt += '━━━ ORGANISATION DETAILS ━━━\n';
+  prompt += 'Organisation:       ' + orgName + '\n';
+  prompt += 'Financial year:     ' + year + '\n';
+  prompt += 'Accounting system:  ' + accountingSystem + '\n';
+
+  // Warning if treasurer has changed
+  if (treasurerChanged === 'ja') {
+    prompt += '\n⚠ NOTE: The treasurer / financial officer has been replaced in the past year.\n';
+    prompt += '  Risk: knowledge and context may have been lost during the handover.\n';
+    prompt += '  Request documents for AT LEAST TWO YEARS BACK to ensure continuity.\n';
+  }
+
+  // Budget
+  if (budgetAvailable === 'ja') {
+    prompt += '\nA budget for the financial year exists – compare actual figures against budget in Step 6.\n';
+  } else if (budgetAvailable === 'nej') {
+    prompt += '\nNo approved budget exists for the financial year.\n';
+  }
+
+  // -- Available documents and review level --
+  prompt += '\n━━━ AVAILABLE DOCUMENTS (Review Level ' + level + ') ━━━\n';
+  docList.forEach(function (doc) {
+    prompt += '  ✓ ' + doc + '\n';
+  });
+
+  if (level === 1) {
+    prompt += '\nLevel 1 – Basic analysis: perform Step 1 (risk assessment) and Step 3\n';
+    prompt += '(result = change in equity). Clearly state what cannot be analysed\n';
+    prompt += 'and what additional documents would enable.\n';
+  } else if (level === 2) {
+    prompt += '\nLevel 2 – Extended analysis: perform Steps 1, 2, 3, 4, 6 and 7.\n';
+    prompt += 'State what remains for a complete Level 3 audit.\n';
+  }
+
+  // -- Review instructions --
+  prompt += '\n━━━ REVIEW INSTRUCTIONS ━━━\n\n';
+
+  // Steps 3 and 1 are always performed
+  prompt += 'STEP 3 – Result = change in equity (always performed)\n';
+  prompt += 'Verify that the following relationship holds:\n\n';
+  prompt += '  Year\'s result = Δ Equity + Δ Untaxed reserves\n\n';
+  prompt += 'How to check:\n';
+  prompt += '  1. Take the year\'s result from the income statement (last line before\n';
+  prompt += '     any "Reported result" closing entry).\n';
+  prompt += '  2. Take the change in equity from the balance sheet change column.\n';
+  prompt += '  3. Check whether the balance sheet has an "Untaxed reserves" section\n';
+  prompt += '     (e.g. Investment fund, Appropriations reserve / periodiseringsfond).\n';
+  prompt += '     - If YES: Δ equity + Δ untaxed reserves must equal the year\'s result.\n';
+  prompt += '     - If NO:  Δ equity alone must equal the year\'s result.\n';
+  prompt += '  4. If the figures match: ✅ No warning sign.\n';
+  prompt += '     If they do NOT match: ⚠ Warning sign – state this clearly and\n';
+  prompt += '     explain what the discrepancy could indicate.\n\n';
+  prompt += 'NOTE: Some accounting systems close the income statement with a\n';
+  prompt += '"Reported result" line that resets the result to zero. Use the result\n';
+  prompt += 'BEFORE that line (e.g. "Result after taxes").\n\n';
+
+  prompt += 'STEP 1 – Risk assessment (always performed)\n';
+  prompt += 'Identify 2–3 factors that warrant extra scrutiny in a continued audit.\n';
+  prompt += 'Assess the overall risk level: low / moderate / high – and justify.\n\n';
+
+  // Level 2 steps – only if documents are available
+  if (hasBank) {
+    prompt += 'STEP 2 – Bank reconciliation (bank statement available)\n';
+    prompt += 'Compare the bank balance as of 31 December ' + year + ' with the\n';
+    prompt += 'balance shown in the accounts. They must match exactly.\n\n';
+  } else {
+    prompt += 'STEP 2 – Bank reconciliation (CANNOT BE PERFORMED – bank statement missing)\n';
+    prompt += 'Explain what bank reconciliation is and why it matters.\n\n';
+  }
+
+  if (hasBalancePrev) {
+    prompt += 'STEP 4 – Continuity check (previous year\'s balance sheet available)\n';
+    prompt += 'Verify that the opening balance (OB) of ' + year + ' equals the closing\n';
+    prompt += 'balance (CB) of ' + (parseInt(year) - 1) + ' for all accounts.\n';
+    prompt += 'Any discrepancy means figures may have been changed without a trace.\n\n';
+  } else {
+    prompt += 'STEP 4 – Continuity check (CANNOT BE PERFORMED – previous balance sheet missing)\n';
+    prompt += 'Explain what the continuity check means and why it is needed.\n\n';
+  }
+
+  if (hasResultPrev) {
+    prompt += 'STEP 6 – Comparative analysis (previous year\'s income statement available)\n';
+    prompt += 'Compare revenue and costs in ' + year + ' against ' + (parseInt(year) - 1) + '.\n';
+    prompt += 'Which items changed most? Are there unexplained variances?\n';
+    if (budgetAvailable === 'ja') {
+      prompt += 'A budget exists – also compare actual figures against budget.\n';
+    }
+    prompt += '\n';
+  } else {
+    prompt += 'STEP 6 – Comparative analysis (LIMITED – previous income statement missing)\n';
+    prompt += 'Comment on the current year only. Note that year-on-year comparison\n';
+    prompt += 'is not possible without the previous year\'s income statement.\n\n';
+  }
+
+  if (hasVerification) {
+    prompt += 'STEP 7 – Receivables and liabilities (voucher list available)\n';
+    prompt += 'Review accounts receivable in detail:\n';
+    prompt += '  - Match customer invoices against payment entries via invoice number\n';
+    prompt += '  - Identify invoices older than 6 months\n';
+    prompt += '  - Verify: CB acc. receivable = (OB − payments of prior invoices) + unpaid current invoices\n\n';
+  } else {
+    prompt += 'STEP 7 – Receivables and liabilities (LIMITED – voucher list missing)\n';
+    prompt += 'Comment only on the size of receivables and liabilities in the balance sheet.\n';
+    prompt += 'Note that a detailed analysis requires the voucher list.\n\n';
+  }
+
+  // -- What remains for a full audit --
+  prompt += '━━━ MISSING FOR A COMPLETE AUDIT (LEVEL 3) ━━━\n';
+  prompt += 'Always conclude by stating what is needed for a complete audit:\n';
+  prompt += '  - Step 5: Voucher list + individual receipts/invoices (sample checks)\n';
+  prompt += '  - Step 8: Voucher list (fraud check)\n';
+  prompt += '  - Step 9: Board minutes + activity report (management review)\n';
+  prompt += '  - Step 10: Formal audit report (signed by auditor)\n\n';
+
+  // -- Summary --
+  prompt += '━━━ SUMMARY ━━━\n';
+  prompt += 'Conclude with a brief summary (max 10 sentences) aimed at a person\n';
+  prompt += 'without an accounting background:\n';
+  prompt += '  1. Which review level was performed and why?\n';
+  prompt += '  2. Is the financial position fundamentally sound?\n';
+  prompt += '  3. Most important findings (positive and negative)\n';
+  prompt += '  4. The three most important next steps\n\n';
+
+  // -- Financial documents --
+  prompt += '━━━ FINANCIAL DOCUMENTS ━━━\n';
   prompt += financialData;
 
   return prompt;
