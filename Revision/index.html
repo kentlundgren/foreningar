@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Granska din förening – Revisionsverktyg för ideella organisationer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =====================================================================
+       SIDHUVUD
+       ===================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <h1>Granska din förening</h1>
+      <p class="tagline">
+        Ett revisionsverktyg för ideella organisationer – från enkel AI-föranalys
+        till fullständig lekmannarevision.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- =================================================================
+         SEKTION 1 – INTRODUKTION
+         ================================================================= -->
+    <section class="section" id="intro">
+      <h2>Vad är en lekmannarevision?</h2>
+      <p>
+        Varje ideell förening, studentnation och bostadsrättsförening behöver
+        en revisor som granskar om ekonomin är rätt skött. Den som utför
+        granskningen kallas <strong>lekmannarevisor</strong> – och behöver inte
+        vara utbildad ekonom, men har ändå ett juridiskt och moraliskt ansvar
+        att granska på ett seriöst sätt.
+      </p>
+      <p>
+        Det finns <strong>10 granskningssteg</strong> i en fullständig revision
+        av en liten organisation. Hur djupt man kan granska beror på vilka
+        underlag som finns tillgängliga.
+      </p>
+      <a
+        href="https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt.html"
+        class="btn btn-secondary"
+        target="_blank"
+        rel="noopener"
+      >
+        Läs den fullständiga revisionsguiden (alla 10 steg) →
+      </a>
+
+      <!-- Visuell översikt av de tre nivåerna -->
+      <div class="levels-overview">
+        <h3>Tre granskningsnivåer</h3>
+        <div class="levels-grid">
+
+          <div class="level-card level-1">
+            <div class="level-badge">Nivå 1</div>
+            <h4>Grundanalys</h4>
+            <p class="price">100 kr</p>
+            <p class="level-desc">
+              Analys av innevarande års balans- och resultaträkning.
+            </p>
+            <ul>
+              <li>Steg 1 – Riskbedömning</li>
+              <li>Steg 3 – Resultat = EK-förändring</li>
+            </ul>
+            <p class="docs-needed">
+              <strong>Underlag:</strong> Resultaträkning + balansräkning (år X)
+            </p>
+          </div>
+
+          <div class="level-card level-2">
+            <div class="level-badge">Nivå 2</div>
+            <h4>Utökad analys</h4>
+            <p class="price">1 500 kr</p>
+            <p class="level-desc">
+              Djupare granskning med jämförelse mot föregående år.
+            </p>
+            <ul>
+              <li>Steg 2 – Bankavstämning</li>
+              <li>Steg 4 – Kontinuitetskontroll IB/UB</li>
+              <li>Steg 6 – Jämförelseanalys</li>
+              <li>Steg 7 – Fordringar och skulder</li>
+              <li>+ alla steg från Nivå 1</li>
+            </ul>
+            <p class="docs-needed">
+              <strong>Underlag:</strong> Nivå 1 + föregående års bokslut +
+              verifikationslista + kontoutdrag (31 dec)
+            </p>
+          </div>
+
+          <div class="level-card level-3">
+            <div class="level-badge">Nivå 3</div>
+            <h4>Fullständig revision</h4>
+            <p class="price">Pris på begäran</p>
+            <p class="level-desc">
+              Komplett lekmannarevision med revisionsberättelse.
+            </p>
+            <ul>
+              <li>Alla 10 steg</li>
+              <li>Steg 9 – Förvaltningsgranskning</li>
+              <li>Steg 10 – Revisionsberättelse</li>
+            </ul>
+            <p class="docs-needed">
+              <strong>Underlag:</strong> Nivå 2 + styrelseprotokoll +
+              verksamhetsberättelse + eventuell budget
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SEKTION 2 – GRATIS AI-ANALYS (SJÄLVBETJÄNING)
+         ================================================================= -->
+    <section class="section" id="ai-analys">
+      <h2>Steg 1 – Gratis AI-föranalys (självbetjäning)</h2>
+      <p>
+        Fyll i formuläret nedan och klicka på
+        <strong>"Generera revisionsanalys-prompt"</strong>.
+        Du får en färdig prompt som du kopierar och klistrar in i
+        <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+        – tillsammans med dina ekonomiska underlag.
+      </p>
+      <p class="info-box">
+        Fält med <span class="yellow-indicator">gul bakgrund</span> är inmatningsfält.
+        Fyll i dem innan du genererar prompten.
+      </p>
+
+      <!-- Formulär -->
+      <form id="prompt-form" novalidate>
+
+        <!-- Grunduppgifter -->
+        <fieldset>
+          <legend>Grunduppgifter om organisationen</legend>
+
+          <div class="form-group">
+            <label for="org-name">Organisationens namn <span class="required">*</span></label>
+            <input
+              type="text"
+              id="org-name"
+              name="org-name"
+              placeholder="t.ex. Kalmar Nation i Uppsala"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="year">Räkenskapsår <span class="required">*</span></label>
+              <input
+                type="text"
+                id="year"
+                name="year"
+                placeholder="t.ex. 2025"
+                maxlength="4"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="accounting-system">Bokföringssystem</label>
+              <select id="accounting-system" name="accounting-system">
+                <option value="okänt">Okänt / Vet ej</option>
+                <option value="Fortnox">Fortnox</option>
+                <option value="Visma eEkonomi">Visma eEkonomi</option>
+                <option value="Bokio">Bokio</option>
+                <option value="Excel">Excel</option>
+                <option value="annat">Annat</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="treasurer-changed">
+              Har ekonomiansvarig/kassör bytts det senaste året?
+            </label>
+            <select id="treasurer-changed" name="treasurer-changed">
+              <option value="vet-ej">Vet ej</option>
+              <option value="nej">Nej</option>
+              <option value="ja">Ja – ekonomiansvarig har bytts</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="budget">
+              Finns en fastställd budget för räkenskapsåret?
+            </label>
+            <select id="budget" name="budget">
+              <option value="vet-ej">Vet ej</option>
+              <option value="nej">Nej</option>
+              <option value="ja">Ja</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <!-- Tillgängliga underlag -->
+        <fieldset>
+          <legend>Tillgängliga underlag – markera vad du bifogar i Claude</legend>
+          <p class="fieldset-hint">
+            Ju fler underlag du bifogar, desto djupare analys är möjlig.
+          </p>
+
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-result-current" name="docs" value="resultat-innevarande" checked />
+              Resultaträkning – innevarande år (år X)
+              <span class="doc-tag tag-niva1">Nivå 1</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-balance-current" name="docs" value="balans-innevarande" checked />
+              Balansräkning – innevarande år (år X)
+              <span class="doc-tag tag-niva1">Nivå 1</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-result-prev" name="docs" value="resultat-forra" />
+              Resultaträkning – föregående år (år X−1)
+              <span class="doc-tag tag-niva2">Möjliggör Steg 6</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-balance-prev" name="docs" value="balans-forra" />
+              Balansräkning – föregående år (år X−1)
+              <span class="doc-tag tag-niva2">Möjliggör Steg 4</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-verification" name="docs" value="verifikationslista" />
+              Verifikationslista (exporterad ur bokföringssystemet)
+              <span class="doc-tag tag-niva2">Möjliggör Steg 7</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="doc-bank" name="docs" value="kontoutdrag" />
+              Kontoutdrag från banken per 31 december år X
+              <span class="doc-tag tag-niva2">Möjliggör Steg 2</span>
+            </label>
+          </div>
+
+          <!-- Dynamisk nivåindikator – uppdateras via JavaScript -->
+          <div id="level-indicator" class="level-indicator">
+            <span id="level-text">Nivå 1 – Grundanalys möjlig</span>
+          </div>
+        </fieldset>
+
+        <!-- Inklistrade ekonomiska underlag -->
+        <fieldset>
+          <legend>Klistra in dina ekonomiska underlag</legend>
+          <p class="fieldset-hint">
+            Kopiera siffrorna från Excel eller PDF och klistra in nedan.
+            Du kan också välja att bifoga PDF-filerna direkt i Claude efter att
+            du kopierat prompten – det fungerar lika bra.
+          </p>
+
+          <div class="form-group">
+            <label for="financial-data">
+              Resultaträkning och balansräkning
+              <span class="required">*</span>
+            </label>
+            <textarea
+              id="financial-data"
+              name="financial-data"
+              rows="14"
+              placeholder="Klistra in dina siffror här – t.ex.:
+
+RESULTATRÄKNING 2025
+Intäkter
+  Medlemsavgifter          120 000 kr
+  Serveringsintäkter       850 000 kr
+  ...
+
+BALANSRÄKNING 2025-12-31
+Tillgångar
+  Kassa och bank           230 000 kr
+  Kundfordringar            45 000 kr
+  ...
+
+(Eller bifoga PDF-filerna direkt i Claude – det fungerar lika bra.)"
+              required
+            ></textarea>
+          </div>
+        </fieldset>
+
+        <!-- Skicka-knapp -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="generate-btn">
+            Generera revisionsanalys-prompt
+          </button>
+        </div>
+      </form>
+
+      <!-- Resultatruta – visas efter att prompten genererats -->
+      <div id="result-section" class="result-section hidden">
+        <h3>Din revisionsanalys-prompt är klar</h3>
+        <p>
+          Kopiera prompten nedan och klistra in den i
+          <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+          (Nytt samtal). Bifoga gärna dina PDF-filer direkt i Claude om du har dem.
+        </p>
+
+        <div class="prompt-output-wrapper">
+          <textarea id="prompt-output" class="prompt-output" readonly rows="20"></textarea>
+          <button class="btn btn-copy" id="copy-btn">
+            Kopiera prompt
+          </button>
+          <span id="copy-confirm" class="copy-confirm hidden">Kopierad!</span>
+        </div>
+
+        <div class="next-steps">
+          <h4>Nästa steg efter AI-analysen</h4>
+          <ol>
+            <li>
+              Öppna <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+              och starta ett nytt samtal.
+            </li>
+            <li>Klistra in prompten (och bifoga dina PDF-filer om du har dem).</li>
+            <li>Läs igenom AI-analysen.</li>
+            <li>
+              Vill du ha en professionell manuell revision som uppföljning?
+              Se beställningsformuläret nedan.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         SEKTION 3 – BESTÄLL PROFESSIONELL REVISION
+         ================================================================= -->
+    <section class="section" id="bestallning">
+      <h2>Steg 2 – Beställ professionell revision</h2>
+      <p>
+        AI-analysen ger en bra bild av om siffrorna hänger ihop – men en
+        fullständig revision kräver mänsklig granskning av underlag som
+        verifikationslistor, bankutdrag och styrelseprotokoll.
+      </p>
+      <p>
+        <strong>Kent Lundgren</strong> erbjuder professionell lekmannarevision
+        för ideella organisationer. Processen sker via e-post och följer
+        de 10 stegen som beskrivs i revisionsguiden.
+      </p>
+
+      <!-- Pristabell -->
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Tjänst</th>
+            <th>Underlag som krävs</th>
+            <th>Vad som granskas</th>
+            <th>Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Nivå 1 – Grundanalys</strong></td>
+            <td>Resultat- och balansräkning (år X)</td>
+            <td>Steg 1 (riskbedömning) + Steg 3 (resultat = EK-förändring)</td>
+            <td class="price-cell">100 kr</td>
+          </tr>
+          <tr>
+            <td><strong>Nivå 2 – Utökad analys</strong></td>
+            <td>
+              Nivå 1 + föregående års bokslut (år X−1) +
+              verifikationslista + kontoutdrag (31 dec år X)
+            </td>
+            <td>
+              + Steg 2 (bankavstämning), Steg 4 (kontinuitetskontroll),
+              Steg 6 (jämförelseanalys), Steg 7 (fordringar)
+            </td>
+            <td class="price-cell">1 500 kr</td>
+          </tr>
+          <tr>
+            <td><strong>Nivå 3 – Fullständig revision</strong></td>
+            <td>
+              Nivå 2 + styrelseprotokoll + verksamhetsberättelse +
+              eventuell budget
+            </td>
+            <td>Alla 10 steg inkl. förvaltningsgranskning och revisionsberättelse</td>
+            <td class="price-cell">Pris på begäran</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Beställningsinstruktion -->
+      <div class="order-box">
+        <h3>Så här beställer du</h3>
+        <ol>
+          <li>
+            Skicka ett e-postmeddelande till
+            <a href="mailto:kent@kentlundgren.se?subject=Beställning%20av%20revision&body=Hej%20Kent%2C%0A%0AJag%20vill%20beställa%20en%20revision%20av%20[ORGANISATIONENS%20NAMN]%2C%20räkenskapsår%20[ÅR].%0A%0AJag%20önskar%3A%20Nivå%20[1%2F2%2F3]%0A%0ABokföringssystem%3A%20[SYSTEM]%0A%0AJag%20bifogar%3A%0A-%20Resultaträkning%20år%20X%0A-%20Balansräkning%20år%20X%0A%0AMed%20vänliga%20hälsningar%2C%0A[DITT%20NAMN]">
+              kent@kentlundgren.se
+            </a>
+          </li>
+          <li>
+            Bifoga dina underlag som <strong>separata PDF-filer</strong>
+            (en fil per dokument – t.ex. en fil för balansräkning och en för
+            resultaträkning).
+          </li>
+          <li>
+            Ange i mejlet: organisationens namn, räkenskapsår, bokföringssystem
+            och vilken analysnivå du önskar.
+          </li>
+          <li>
+            Kent bekräftar uppdraget och skickar betalningsinformation innan
+            arbetet påbörjas.
+          </li>
+        </ol>
+
+        <div class="contact-actions">
+          <a
+            href="mailto:kent@kentlundgren.se?subject=Beställning%20av%20revision&body=Hej%20Kent%2C%0A%0AJag%20vill%20beställa%20en%20revision%20av%20[ORGANISATIONENS%20NAMN]%2C%20räkenskapsår%20[ÅR].%0A%0AJag%20önskar%3A%20Nivå%20[1%2F2%2F3]%0A%0ABokföringssystem%3A%20[SYSTEM]%0A%0AJag%20bifogar%3A%0A-%20Resultaträkning%20år%20X%0A-%20Balansräkning%20år%20X%0A%0AMed%20vänliga%20hälsningar%2C%0A[DITT%20NAMN]"
+            class="btn btn-primary"
+          >
+            Skicka beställning via e-post
+          </a>
+          <p class="x-note">
+            Tipsa gärna
+            <a href="https://x.com/kentlundgren" target="_blank" rel="noopener">@kentlundgren</a>
+            på X också – för snabbare svar.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       SIDFOT
+       ===================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        Revisionsverktyg för ideella organisationer · Skapad av
+        <a href="https://kentlundgren.se" target="_blank" rel="noopener">Kent Lundgren</a>
+      </p>
+      <p>
+        Revisionsguide:
+        <a
+          href="https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt.html"
+          target="_blank"
+          rel="noopener"
+        >
+          Hur fungerar revision? – En guide för alla
+        </a>
+      </p>
+      <p>
+        <a
+          href="https://github.com/kentlundgren"
+          target="_blank"
+          rel="noopener"
+        >
+          { } GitHub
+        </a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,615 @@
+/* =========================================================================
+   Revisionsverktyg för ideella organisationer – styles.css
+   Version 1.0 · 2026-04-20
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   CSS-variabler – färgpalett och typsnitt
+   ------------------------------------------------------------------------- */
+:root {
+  --color-primary:      #1a5276;   /* Mörkblå – rubriker och knappar */
+  --color-primary-dark: #154360;   /* Mörkare blå – hover */
+  --color-accent:       #2e86c1;   /* Mellanblå – nivå 2-märken */
+  --color-level-1:      #1e8449;   /* Grön – Nivå 1 */
+  --color-level-2:      #d68910;   /* Amber – Nivå 2 */
+  --color-level-3:      #7d3c98;   /* Lila – Nivå 3 */
+
+  --color-input-bg:     #fffde7;   /* Gul bakgrund för inmatningsfält (regel 18) */
+  --color-input-border: #f9a825;   /* Gul kant för inmatningsfält */
+
+  --color-bg:           #f8f9fa;   /* Sidans bakgrund */
+  --color-surface:      #ffffff;   /* Kortbakgrund */
+  --color-text:         #212529;   /* Brödtext */
+  --color-muted:        #6c757d;   /* Nedtonad text */
+  --color-border:       #dee2e6;   /* Generell kant */
+
+  --font-body:    'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono:    'Consolas', 'Courier New', monospace;
+
+  --radius:       6px;
+  --shadow:       0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-card:  0 4px 16px rgba(0, 0, 0, 0.10);
+  --max-width:    900px;
+}
+
+/* -------------------------------------------------------------------------
+   Reset och bas
+   ------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+ul, ol {
+  padding-left: 1.4rem;
+}
+
+li {
+  margin-bottom: 0.3rem;
+}
+
+/* -------------------------------------------------------------------------
+   Layout – container och sektioner
+   ------------------------------------------------------------------------- */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.section {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem 2.25rem;
+  margin: 2rem 0;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.section h3 {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  margin: 1.5rem 0 0.75rem;
+}
+
+.section p {
+  margin-bottom: 0.9rem;
+}
+
+/* -------------------------------------------------------------------------
+   Sidhuvud
+   ------------------------------------------------------------------------- */
+.site-header {
+  background: var(--color-primary);
+  color: #ffffff;
+  padding: 2.5rem 0 2rem;
+  margin-bottom: 0;
+}
+
+.site-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.site-header .tagline {
+  font-size: 1.05rem;
+  opacity: 0.88;
+  max-width: 600px;
+  margin-bottom: 0;
+}
+
+/* -------------------------------------------------------------------------
+   Knappar
+   ------------------------------------------------------------------------- */
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.97rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s, transform 0.12s;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  margin-top: 0.75rem;
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn-copy {
+  background: var(--color-accent);
+  color: #ffffff;
+  margin-top: 0.6rem;
+}
+
+.btn-copy:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+/* -------------------------------------------------------------------------
+   De tre nivåkorten – översikt i Sektion 1
+   ------------------------------------------------------------------------- */
+.levels-overview {
+  margin-top: 2rem;
+}
+
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.level-card {
+  border-radius: var(--radius);
+  padding: 1.25rem 1.1rem;
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.level-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+
+.level-card .price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.level-card .level-desc {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin-bottom: 0.6rem;
+}
+
+.level-card ul {
+  font-size: 0.88rem;
+  margin-bottom: 0.75rem;
+}
+
+.level-card .docs-needed {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 0.6rem;
+  margin-bottom: 0;
+}
+
+.level-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  color: #fff;
+  margin-bottom: 0.6rem;
+}
+
+.level-1 { background: #e8f5e9; border: 2px solid var(--color-level-1); }
+.level-1 .level-badge { background: var(--color-level-1); }
+.level-1 .price { color: var(--color-level-1); }
+
+.level-2 { background: #fff8e1; border: 2px solid var(--color-level-2); }
+.level-2 .level-badge { background: var(--color-level-2); }
+.level-2 .price { color: var(--color-level-2); }
+
+.level-3 { background: #f3e5f5; border: 2px solid var(--color-level-3); }
+.level-3 .level-badge { background: var(--color-level-3); }
+.level-3 .price { color: var(--color-level-3); }
+
+/* -------------------------------------------------------------------------
+   Formulär – inmatningsfält med gul bakgrund (per användarregel 18)
+   ------------------------------------------------------------------------- */
+fieldset {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+legend {
+  font-weight: 600;
+  color: var(--color-primary);
+  padding: 0 0.4rem;
+  font-size: 1rem;
+}
+
+.fieldset-hint {
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  margin-bottom: 0.75rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
+}
+
+/* Gul bakgrund för alla inmatningsfält – tydlig indikation på indata */
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: var(--color-input-bg);
+  border: 2px solid var(--color-input-border);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.97rem;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.15);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 180px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.required {
+  color: #c0392b;
+}
+
+/* -------------------------------------------------------------------------
+   Kryssrutor för underlagval
+   ------------------------------------------------------------------------- */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* Märken som visar vilken nivå varje underlag möjliggör */
+.doc-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 20px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.tag-niva1 { background: var(--color-level-1); }
+.tag-niva2 { background: var(--color-level-2); }
+
+/* -------------------------------------------------------------------------
+   Nivåindikator – uppdateras dynamiskt av JavaScript
+   ------------------------------------------------------------------------- */
+.level-indicator {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: var(--color-level-1);
+  color: #fff;
+  transition: background 0.25s;
+}
+
+/* -------------------------------------------------------------------------
+   Info-ruta
+   ------------------------------------------------------------------------- */
+.info-box {
+  background: #e3f2fd;
+  border-left: 4px solid var(--color-accent);
+  padding: 0.65rem 1rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.92rem;
+  margin-bottom: 1.25rem;
+}
+
+.yellow-indicator {
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------------
+   Knappraden under formuläret
+   ------------------------------------------------------------------------- */
+.form-actions {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.form-actions .btn-primary {
+  font-size: 1.05rem;
+  padding: 0.8rem 2rem;
+}
+
+/* -------------------------------------------------------------------------
+   Resultatruta – prompten som genererats
+   ------------------------------------------------------------------------- */
+.result-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f0f7ff;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius);
+}
+
+.result-section h3 {
+  margin-top: 0;
+  color: var(--color-primary);
+}
+
+.prompt-output-wrapper {
+  position: relative;
+  margin-top: 1rem;
+}
+
+/* Prompten visas med monospacetypsnitt i ett skrivskyddat textarea */
+.prompt-output {
+  width: 100%;
+  background: #1e2a3a;
+  color: #e0e0e0;
+  border: none;
+  border-radius: var(--radius);
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.copy-confirm {
+  display: inline-block;
+  margin-left: 0.75rem;
+  color: var(--color-level-1);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* -------------------------------------------------------------------------
+   Nästa steg-ruta
+   ------------------------------------------------------------------------- */
+.next-steps {
+  margin-top: 1.25rem;
+  background: #fff8e1;
+  border-left: 4px solid var(--color-level-2);
+  padding: 0.75rem 1.1rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.next-steps h4 {
+  color: var(--color-primary);
+  margin-bottom: 0.4rem;
+}
+
+/* -------------------------------------------------------------------------
+   Pristabell
+   ------------------------------------------------------------------------- */
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.92rem;
+}
+
+.price-table th {
+  background: var(--color-primary);
+  color: #fff;
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  font-weight: 600;
+}
+
+.price-table td {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.price-table tr:last-child td {
+  border-bottom: none;
+}
+
+.price-table tr:nth-child(even) td {
+  background: #f8f9fa;
+}
+
+.price-cell {
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------------
+   Beställningsruta
+   ------------------------------------------------------------------------- */
+.order-box {
+  background: #f0f7ff;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  margin-top: 1.5rem;
+}
+
+.order-box h3 {
+  margin-top: 0;
+  color: var(--color-primary);
+}
+
+.order-box ol {
+  margin-bottom: 1.25rem;
+}
+
+.order-box li {
+  margin-bottom: 0.55rem;
+}
+
+.contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.x-note {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin-bottom: 0;
+}
+
+/* -------------------------------------------------------------------------
+   Sidfot
+   ------------------------------------------------------------------------- */
+.site-footer {
+  background: var(--color-primary);
+  color: rgba(255, 255, 255, 0.82);
+  padding: 2rem 0;
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.site-footer p {
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.site-footer a {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.site-footer a:hover {
+  color: #ffffff;
+}
+
+/* -------------------------------------------------------------------------
+   Hjälpklass – döljer element
+   ------------------------------------------------------------------------- */
+.hidden {
+  display: none !important;
+}
+
+/* -------------------------------------------------------------------------
+   Responsiv design – anpassning för mindre skärmar
+   ------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .site-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .section {
+    padding: 1.25rem 1rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .levels-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .price-table {
+    font-size: 0.82rem;
+  }
+
+  .price-table th,
+  .price-table td {
+    padding: 0.5rem 0.6rem;
+  }
+
+  .contact-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
