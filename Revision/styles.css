@@ -120,6 +120,29 @@ li {
   position: relative;
 }
 
+/* Uppdatering 2026-04-20: flex-rad med logotyp till vänster och titel till höger */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin-top: 0.5rem;
+}
+
+/* Logotypen – rund, vit bakgrund syns tydligt mot mörk header */
+.header-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 50%;          /* Behåller den cirkulära formen */
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.30));
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
 .site-header h1 {
   font-size: 2rem;
   font-weight: 700;
@@ -709,6 +732,12 @@ legend {
    Responsiv design – anpassning för mindre skärmar
    ------------------------------------------------------------------------- */
 @media (max-width: 640px) {
+  /* Uppdatering 2026-04-20: mindre logo på mobil */
+  .header-logo {
+    width: 56px;
+    height: 56px;
+  }
+
   .site-header h1 {
     font-size: 1.5rem;
   }

@@ -16,6 +16,8 @@
        Styrs av splash.js (fristående fil – påverkar inte script.js).
        ===================================================================== -->
   <div id="splash-overlay" role="dialog" aria-modal="true" aria-label="Introduktion">
+    <!-- Uppdatering 2026-04-20: KL-analys logotyp i splash -->
+    <img src="kl-analys-logo.png" alt="KL-analys" class="splash-logo" />
     <span class="splash-brand">Revisionsverktyget · Granska din förening</span>
     <div class="splash-message-area">
       <!-- .splash-slide-element skapas dynamiskt av splash.js -->
@@ -35,11 +37,22 @@
     <div class="container">
       <!-- Språkväxlare – diskret knapp uppe till höger -->
       <a class="lang-btn" href="index_eng.html">🇬🇧 In English</a>
-      <h1>Granska din förening</h1>
-      <p class="tagline">
-        Ett revisionsverktyg för ideella organisationer – från enkel AI-föranalys
-        till fullständig lekmannarevision.
-      </p>
+
+      <!-- Uppdatering 2026-04-20: KL-analys logotyp + titeln i flex-rad -->
+      <div class="header-brand">
+        <img
+          src="kl-analys-logo.png"
+          alt="KL-analys logotyp"
+          class="header-logo"
+        />
+        <div class="header-text">
+          <h1>Granska din förening</h1>
+          <p class="tagline">
+            Ett revisionsverktyg för ideella organisationer – från enkel AI-föranalys
+            till fullständig lekmannarevision.
+          </p>
+        </div>
+      </div>
     </div>
   </header>
 
