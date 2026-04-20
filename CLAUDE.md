@@ -13,6 +13,7 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 | 2026-04-20 | Regel tillagd: klargör alltid vilken CLAUDE.md-fil som uppdateras. |
 | 2026-04-20 | Regel tillagd: skapa alltid README.md med live-länk när nytt projekt/index.html skapas. |
 | 2026-04-20 | Regel tillagd: GitHub-länken i sidfoten ska alltid peka på projektets specifika mapp i repot. |
+| 2026-04-20 | Regel uppdaterad: GitHub-knappen ska använda rgba() på bakgrunden, inte opacity på hela elementet (fungerar annars inte mot mörk sidfot). |
 
 ---
 
@@ -93,14 +94,21 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 >   position: fixed; bottom: 1rem; left: 1rem;
 >   display: inline-flex; align-items: center; gap: 0.3rem;
 >   font-size: 0.75rem; font-weight: 600;
->   color: var(--color-primary); background: var(--color-surface);
+>   color: var(--color-primary);
+>   background: rgba(255, 255, 255, 0.82);  /* rgba, INTE opacity på hela elementet */
 >   border: 1px solid var(--color-border); border-radius: 6px;
 >   padding: 0.3rem 0.65rem; text-decoration: none;
->   opacity: 0.55; transition: opacity 0.15s, box-shadow 0.15s; z-index: 50;
+>   transition: background 0.15s, box-shadow 0.15s; z-index: 50;
 > }
-> .github-link:hover { opacity: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.12); text-decoration: none; }
+> .github-link:hover { background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.15); text-decoration: none; }
 > ```
 > *(Anpassa CSS-variabelnamnen till projektets egna variabler om de heter annorlunda.)*
+>
+> **⚠ Använd INTE `opacity` på hela elementet.** `opacity` gör hela knappen
+> halvtransparent – bakgrund, text och kant – och mot en mörk sidfot lyser
+> bakgrundsfärgen igenom så att knappen ser ut som vanlig länktext. Använd
+> istället `rgba()` på `background` så är bakgrunden alltid täckande och
+> knappen ser likadan ut oavsett underliggande färg.
 >
 > **URL-format:** `https://github.com/kentlundgren/[repo]/tree/main/[projektmapp]`
 >
