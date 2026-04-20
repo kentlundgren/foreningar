@@ -1,26 +1,39 @@
 # Revisionsanalys-prompt för ideella organisationer
 
-**Version 1.0 · 2026-04-20**
+**Version 1.1 · 2026-04-20**
 
 Denna prompt är avsedd att kopieras och klistras in i Claude (claude.ai) eller
-ChatGPT, tillsammans med din resultat- och balansräkning.
+ChatGPT, tillsammans med dina ekonomiska underlag.
 
 Ramverket bygger på de 10 granskningssteg som beskrivs för lekmannarevisorer:
 https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt.html
 
 ---
 
-## Hur du använder prompten
+## Tre analysnivåer – välj efter tillgängliga underlag
+
+Vad du kan få analyserat beror på vilka underlag du kan lämna in.
+Ju fler underlag, desto djupare och mer tillförlitlig analys.
+
+| Nivå | Underlag som krävs | Vad som analyseras | Pris (professionell revision) |
+|------|-------------------|-------------------|-------------------------------|
+| **Nivå 1 – Grundanalys** | Resultaträkning + balansräkning (innevarande år) | Steg 1 (riskbedömning), Steg 3 (resultat = EK-förändring) | 100 kr |
+| **Nivå 2 – Utökad analys** | Nivå 1 + föregående års bokslut + verifikationslista + kontoutdrag (31 dec) | Även Steg 2, 4, 6, 7 | 1 500 kr |
+| **Nivå 3 – Fullständig revision** | Nivå 2 + styrelseprotokoll + verksamhetsberättelse (+ ev. budget) | Alla 10 steg inkl. förvaltningsgranskning och revisionsberättelse | Pris på begäran |
+
+> **Kontakt för professionell revision:** kent@kentlundgren.se
+> Bifoga dina underlag och ange vilken nivå du önskar.
+
+---
+
+## Hur du använder prompten (självbetjäning med AI)
 
 1. Kopiera allt nedan (från "--- PROMPT START ---" till "--- PROMPT SLUT ---")
 2. Öppna [claude.ai](https://claude.ai) och starta ett nytt samtal
 3. Klistra in prompten
-4. Lägg till dina siffror under rubriken "EKONOMISKA UNDERLAG" – antingen
-   som inklistrad text från Excel/PDF, eller bifoga PDF-filerna direkt i Claude
+4. Fyll i dina uppgifter och lägg till dina siffror under "EKONOMISKA UNDERLAG"
+   – klistra in text från Excel/PDF, eller bifoga PDF-filerna direkt i Claude
 5. Skicka och få din analys
-
-Vill du ha en professionell manuell revision som uppföljning?
-Kontakta: kent@kentlundgren.se
 
 ---
 
@@ -34,112 +47,141 @@ slutsatser på ett sätt som är begripligt för en person utan ekonomisk utbild
 Ramverket du följer bygger på de 10 granskningssteg som beskrivs här:
 https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt.html
 
+Börja med att läsa igenom vilka underlag som bifogats/klistrats in nedan.
+Avgör sedan vilken analysnivå som är möjlig – och informera användaren
+tydligt om vad som kan och inte kan analyseras med de tillgängliga underlagen.
+
 ---
 
 ## Del 1 – Inledande frågor
 
-Innan du granskar siffrorna, kontrollera att följande information framgår
-av underlaget. Om något saknas – fråga innan du fortsätter:
+Kontrollera att följande information framgår. Om något saknas – fråga:
 
 1. Vilket år avser räkenskaperna?
 2. Vad heter organisationen och vad är dess verksamhet?
-3. Vilket bokföringssystem används (t.ex. Fortnox, Visma, Bokio, Excel)?
+3. Vilket bokföringssystem används (Fortnox, Visma, Bokio, Excel, annat)?
 4. Har ekonomiansvarig/kassör bytts det senaste året?
-   (Om ja: ⚠ Begär underlag för minst två år bakåt – risk för informationsförlust
-   vid personbyte är en av de vanligaste riskfaktorerna i en liten organisation.)
-5. Finns en fastställd budget för granskningsåret – och hur stämde utfallet?
+   (Om ja: ⚠ Risk för informationsförlust vid personbyte – notera detta.)
+5. Finns en fastställd budget för granskningsåret?
 
 ---
 
-## Del 2 – Granskning av resultat- och balansräkning
+## Del 2 – Nivå 1: Grundanalys (kräver enbart innevarande års bokslut)
 
-Utför följande kontroller baserade på de inlämnade underlagen:
+Utför alltid dessa steg om resultat- och balansräkning för granskningsåret finns:
 
 ### Steg 3 – Resultat = förändring av eget kapital
 Kontrollera att årets resultat i resultaträkningen stämmer exakt med
 förändringen av eget kapital i balansräkningen.
-- Överskott på X kr ska ge en ökning av eget kapital med exakt X kr.
-- Underskott på X kr ska ge en minskning med exakt X kr.
+- Överskott på X kr → eget kapital ska ha ökat med exakt X kr.
+- Underskott på X kr → eget kapital ska ha minskat med exakt X kr.
 - Om detta inte stämmer: påpeka det tydligt som ett varningstecken.
 
-### Steg 4 – Kontinuitetskontroll (IB = UB föregående år)
-Om jämförelsetal för föregående år finns i rapporterna:
-- Kontrollera att ingående balans (IB) detta år stämmer med utgående
-  balans (UB) förra året för alla konton.
-- Avvikelse innebär att siffror kan ha ändrats utan spårbarhet – en allvarlig brist.
-
-### Steg 6 – Jämförelseanalys (år för år)
-Jämför intäkter och kostnader år för år (om jämförelsekolumn finns):
-- Vilka poster har förändrats mest i kronor och procent?
-- Finns det poster som ökat eller minskat dramatiskt utan uppenbar förklaring?
-- Ger det samlade resultatet anledning till oro, eller är ekonomin stabil?
-- Om budget finns: jämför utfall mot budget. Var större avvikelser väntade?
-
-### Steg 7 – Fordringar och skulder
-Titta på balansräkningens tillgångar och skulder:
-- Finns kundfordringar (konto 1510 eller liknande)? Hur stora är de i förhållande
-  till organisationens omsättning? Gamla obetalda fordringar är en riskpost.
-- Finns skulder som verkar ovanligt stora eller oförklarade?
-- Notera: en djupanalys av fordringar kräver kundreskontra (lista över
-  enskilda fakturor) – det kan inte avgöras enbart från balansräkningens summor.
-
-### Steg 1 – Riskbedömning
+### Steg 1 – Riskbedömning utifrån tillgängliga siffror
 Baserat på siffrorna och svaren på inledningsfrågorna:
-- Identifiera 2–3 faktorer som bör granskas extra noga i en fullständig revision.
+- Identifiera 2–3 faktorer som bör granskas extra noga vid en fortsatt revision.
 - Förklara varför varje faktor utgör en risk.
-- Bedöm om riskbilden är låg, måttlig eller hög – och motivera.
+- Bedöm om den samlade riskbilden är låg, måttlig eller hög – och motivera.
 
 ---
 
-## Del 3 – Vad som INTE kan bedömas utan ytterligare underlag
+## Del 3 – Nivå 2: Utökad analys (kräver ytterligare underlag)
 
-Avsluta alltid med en tydlig lista över vad en fullständig revision också kräver,
-men som inte framgår av enbart resultat- och balansräkning:
+Utför dessa steg ENDAST om motsvarande underlag finns bifogat/inklistrat.
+Om underlaget saknas: informera tydligt om vad som fattas och vad det
+skulle tillföra analysen.
 
-| Steg | Vad som behövs | Varför det saknas nu |
-|------|---------------|----------------------|
-| Steg 2 – Bankavstämning | Bankens kontoutdrag per 31 december | Ingår inte i resultat-/balansräkning |
-| Steg 5 – Stickprov på verifikationer | Verifikationslista (exporteras ur bokföringssystemet) | Kräver access till bokföringssystemet |
-| Steg 8 – Bedrägerikontroll | Verifikationslista (hela året) | Kräver access till bokföringssystemet |
-| Steg 9 – Förvaltningsgranskning | Styrelseprotokoll + verksamhetsberättelse | Separata dokument |
-| Steg 10 – Revisionsberättelse | Alla ovanstående + signatur av revisor | Formellt slutdokument |
+### Steg 4 – Kontinuitetskontroll (kräver: föregående års balansräkning)
+Kontrollera att ingående balans (IB) detta år stämmer med utgående balans (UB)
+förra året för alla konton.
+- Avvikelse innebär att siffror kan ha ändrats utan spårbarhet – en allvarlig brist.
+- Utan föregående års balansräkning KAN DETTA STEG INTE UTFÖRAS.
+  Notera detta tydligt och förklara vad det innebär.
 
-Förklara för användaren vad dessa steg innebär och hur de kan gå vidare
-för en fullständig revision.
+### Steg 6 – Jämförelseanalys år för år (kräver: föregående års resultaträkning)
+Jämför intäkter och kostnader år för år:
+- Vilka poster har förändrats mest i kronor och procent?
+- Finns dramatiska förändringar utan uppenbar förklaring?
+- Ger det samlade resultatet anledning till oro, eller är ekonomin stabil?
+- Om budget finns: jämför utfall mot budget.
+- Utan föregående års resultaträkning KAN DETTA STEG INTE UTFÖRAS FULLSTÄNDIGT.
+  En begränsad analys av enbart innevarande år är möjlig, men ange tydligt
+  att jämförelse saknas.
+
+### Steg 7 – Fordringar och skulder (kräver: verifikationslista)
+En fordringsanalys från enbart balansräkningens summor är ytlig – den visar
+om fordringar finns, men inte om de är gamla eller riskabla.
+En fullständig analys kräver verifikationslista (kundreskontra):
+- Matcha K-fakturor (kundfakturor) mot I-poster (inbetalningar) via fakturanummer
+- Identifiera fakturor äldre än 6 månader som riskerar att aldrig betalas
+- Utan verifikationslista: kommentera bara att fordringar finns och ange storleken,
+  men påpeka att djupanalys kräver ytterligare underlag.
+
+### Steg 2 – Bankavstämning (kräver: kontoutdrag per 31 december)
+Jämför bankens kontoutdrag med vad bokföringen visar som banksaldo.
+De ska stämma exakt.
+- Utan kontoutdrag KAN DETTA STEG INTE UTFÖRAS.
+  Notera detta och förklara varför bankavstämning är viktig.
 
 ---
 
-## Del 4 – Sammanfattning
+## Del 4 – Vad som kvarstår för en fullständig revision (Nivå 3)
+
+Informera alltid om vad som inte kan utföras ens med Nivå 2-underlag,
+och vad Nivå 3 (fullständig revision) skulle kräva:
+
+| Steg | Ytterligare underlag som krävs |
+|------|-------------------------------|
+| Steg 5 – Stickprov på verifikationer | Verifikationslista + enskilda kvitton/fakturor |
+| Steg 8 – Bedrägerikontroll | Verifikationslista (hela året) |
+| Steg 9 – Förvaltningsgranskning | Styrelseprotokoll + verksamhetsberättelse |
+| Steg 10 – Revisionsberättelse | Alla ovanstående + signatur av revisor |
+
+---
+
+## Del 5 – Sammanfattning
 
 Avsluta med en kort sammanfattning (max 10 meningar) riktad till en person
 utan ekonomisk bakgrund:
+- Vilken analysnivå genomfördes, och varför?
 - Vad visade granskningen? Är ekonomin i grunden sund?
 - Vilka är de viktigaste fynden (positiva och negativa)?
-- Vad är de tre viktigaste nästa stegen?
+- Vad är de tre viktigaste nästa stegen för att komma vidare?
 
 ---
 
 ## EKONOMISKA UNDERLAG
 
-Klistra in eller bifoga dina dokument nedan:
+Ange vilka underlag du bifogar, och klistra in eller bifoga dem nedan:
 
 **Organisation:** [ange namn]
 **Räkenskapsår:** [ange år, t.ex. 2025]
 **Bokföringssystem:** [t.ex. Fortnox, Visma, Bokio, Excel eller Okänt]
 **Har ekonomiansvarig bytts?** [Ja / Nej / Vet ej]
 
-**Resultaträkning:**
-[Klistra in här – eller bifoga PDF-filen direkt i Claude]
+**Underlag som bifogas (markera med X):**
+- [ ] Resultaträkning innevarande år     → Nivå 1 möjlig
+- [ ] Balansräkning innevarande år       → Nivå 1 möjlig
+- [ ] Resultaträkning föregående år      → Möjliggör Steg 6
+- [ ] Balansräkning föregående år        → Möjliggör Steg 4
+- [ ] Verifikationslista                 → Möjliggör Steg 7
+- [ ] Kontoutdrag (31 dec granskningsår) → Möjliggör Steg 2
 
-**Balansräkning:**
-[Klistra in här – eller bifoga PDF-filen direkt i Claude]
+**Resultaträkning (innevarande år):**
+[Klistra in här – eller bifoga PDF direkt i Claude]
+
+**Balansräkning (innevarande år):**
+[Klistra in här – eller bifoga PDF direkt i Claude]
+
+**Övriga underlag (om Nivå 2):**
+[Klistra in eller bifoga här]
 
 --- PROMPT SLUT ---
 
 ---
 
 *Denna prompt är skapad av Kent Lundgren och bygger på revisionsramverket för
-ideella organisationer som beskrivs på:
+ideella organisationer:
 https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt.html*
 
 *Kontakt för professionell revision: kent@kentlundgren.se*
