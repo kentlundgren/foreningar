@@ -63,7 +63,7 @@
             </p>
             <ul>
               <li>Steg 1 – Riskbedömning</li>
-              <li>Steg 3 – Resultat = EK-förändring</li>
+              <li>Steg 3 – Resultat = EK-förändring (+ ev. obeskattade reserver)</li>
             </ul>
             <p class="docs-needed">
               <strong>Underlag:</strong> Resultaträkning + balansräkning (år X)
@@ -128,6 +128,30 @@
         Fält med <span class="yellow-indicator">gul bakgrund</span> är inmatningsfält.
         Fyll i dem innan du genererar prompten.
       </p>
+
+      <!-- Förklaringsruta om Steg 3 – obeskattade reserver -->
+      <div class="explainer-box">
+        <h4>Om Steg 3 – "Resultat ska stämma med förändringen av eget kapital"</h4>
+        <p>
+          I de flesta föreningar gäller att <strong>årets resultat = förändringen
+          av eget kapital</strong> i balansräkningen. Men för föreningar med
+          <strong>obeskattade reserver</strong> (t.ex. en investeringsfond eller
+          periodiseringsfond) gäller en utökad formel:
+        </p>
+        <p class="formula-box">
+          Årets resultat = Δ Eget kapital + Δ Obeskattade reserver
+        </p>
+        <p>
+          <strong>Exempel (Långkatekesen 2025):</strong>
+          Årets resultat var −14&nbsp;954 kr. Eget kapital förändrades med
+          +597 kr och investeringsfonden minskade med 14&nbsp;357 kr.
+          597 + 14&nbsp;357 = 14&nbsp;954 ✅ – allt stämmer, inget varningstecken.
+        </p>
+        <p>
+          Den genererade prompten instruerar AI:n att alltid kontrollera om
+          obeskattade reserver finns och i så fall använda den utökade formeln.
+        </p>
+      </div>
 
       <!-- Formulär -->
       <form id="prompt-form" novalidate>

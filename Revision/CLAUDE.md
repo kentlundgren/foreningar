@@ -92,7 +92,7 @@ Referens: https://kentlundgren.github.io/foreningar/KalmarNation/revision/genere
 |------|------|--------|
 | 1 | Riskbedömning inför granskning | Grunduppgifter om organisationen |
 | 2 | Bankavstämning | Kontoutdrag per 31 december |
-| 3 | Resultat = förändring av eget kapital | Resultat- och balansräkning (år X) |
+| 3 | Resultat = Δ eget kapital (+ Δ obeskattade reserver) | Resultat- och balansräkning (år X) |
 | 4 | Kontinuitetskontroll (UB = IB nästa år) | Balansräkning föregående år |
 | 5 | Stickprov på verifikationer | Verifikationslista + enskilda underlag |
 | 6 | Jämförelseanalys (år för år) + budgetgranskning | Resultaträkning föregående år |
@@ -100,6 +100,43 @@ Referens: https://kentlundgren.github.io/foreningar/KalmarNation/revision/genere
 | 8 | Bedrägerikontroll | Verifikationslista (hela året) |
 | 9 | Förvaltningsgranskning – styrelsens arbete | Styrelseprotokoll + verksamhetsberättelse |
 | 10 | Revisionsberättelse | Alla ovanstående + revisorns signatur |
+
+---
+
+## 4b. Steg 3 i detalj – obeskattade reserver
+
+Den grundläggande regeln är:
+
+> **Årets resultat = Förändring av eget kapital + Förändring av obeskattade reserver**
+
+**Varför tillkommer obeskattade reserver?**
+Vissa föreningar (vanligt i bostadsrättsföreningar och samfälligheter) har
+*obeskattade reserver* – t.ex. en investeringsfond eller periodiseringsfond.
+Dessa visas som en egen sektion i balansräkningen. När föreningen redovisar
+ett underskott kan en del av underskottet täckas via fonden (i stället för att
+enbart belasta eget kapital), och tvärtom – ett överskott kan avsättas till fonden.
+
+**Kontrollformel steg för steg:**
+1. Hämta årets resultat ur resultaträkningen – raden "Resultat efter skatter"
+   (eller motsvarande). Ignorera eventuell avslutande rad "Redovisat resultat"
+   som bara nollställer resultatet i systemet.
+2. Hämta förändringen av eget kapital ur balansräkningens förändringkolumn.
+3. Kontrollera om balansräkningen har en sektion "Obeskattade reserver".
+   - **Om ja:** Δ eget kapital + Δ obeskattade reserver = årets resultat
+   - **Om nej:** Δ eget kapital = årets resultat (den enklare formeln)
+4. Om sambandet stämmer → ✅ Ingen avvikelse.
+   Om sambandet inte stämmer → ⚠ Varningstecken – utred vidare.
+
+**Praktiskt exempel – Långkatekesen 2025:**
+
+| Post | Belopp |
+|------|--------|
+| Årets resultat (resultaträkning) | −14 954 kr |
+| Δ Eget kapital (kto 2988, balansräkning) | +597 kr |
+| Δ Investeringsfond (kto 2840, obeskattade reserver) | +14 357 kr |
+| Kontroll: 597 + 14 357 = 14 954 ✅ | Stämmer |
+
+Källa: Verifierat i granskning av Långkatekesen, april 2026.
 
 ---
 

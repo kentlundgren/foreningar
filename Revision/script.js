@@ -197,8 +197,24 @@ function buildPrompt() {
 
   // Steg 1 och 3 utförs alltid (ingår i nivå 1)
   prompt += 'STEG 3 – Resultat = förändring av eget kapital (utförs alltid)\n';
-  prompt += 'Kontrollera att årets resultat stämmer exakt med förändringen av\n';
-  prompt += 'eget kapital i balansräkningen. Avvikelse = varningstecken.\n\n';
+  prompt += 'Kontrollera att följande samband stämmer:\n\n';
+  prompt += '  Årets resultat = Δ Eget kapital + Δ Obeskattade reserver\n\n';
+  prompt += 'Gör så här:\n';
+  prompt += '  1. Hämta årets resultat ur resultaträkningen (sista raden, före\n';
+  prompt += '     eventuell "Redovisat resultat"-rad).\n';
+  prompt += '  2. Hämta förändringen av eget kapital ur balansräkningen\n';
+  prompt += '     (kolumnen "Förändring" på raden för eget kapital).\n';
+  prompt += '  3. Kontrollera om balansräkningen har en sektion "Obeskattade\n';
+  prompt += '     reserver" (t.ex. Investeringsfond, Periodiseringsfond).\n';
+  prompt += '     - Om JA: lägg ihop Δ eget kapital + Δ obeskattade reserver.\n';
+  prompt += '       Summan ska stämma med årets resultat.\n';
+  prompt += '     - Om NEJ: Δ eget kapital ska ensam stämma med årets resultat.\n';
+  prompt += '  4. Om siffrorna stämmer: ✅ Inget varningstecken.\n';
+  prompt += '     Om de INTE stämmer: ⚠ Varningstecken – påpeka tydligt och\n';
+  prompt += '     förklara vad avvikelsen kan bero på.\n\n';
+  prompt += 'OBS: Vissa bokföringssystem avslutar resultaträkningen med en rad\n';
+  prompt += '"Redovisat resultat" som nollställer resultatet i systemet. Använd\n';
+  prompt += 'resultatet FÖRE denna rad (t.ex. "Resultat efter skatter").\n\n';
 
   prompt += 'STEG 1 – Riskbedömning (utförs alltid)\n';
   prompt += 'Identifiera 2–3 faktorer som bör granskas extra i en fortsatt revision.\n';

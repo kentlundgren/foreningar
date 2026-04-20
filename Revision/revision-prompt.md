@@ -1,6 +1,6 @@
 # Revisionsanalys-prompt för ideella organisationer
 
-**Version 1.1 · 2026-04-20**
+**Version 1.2 · 2026-04-20**
 
 Denna prompt är avsedd att kopieras och klistras in i Claude (claude.ai) eller
 ChatGPT, tillsammans med dina ekonomiska underlag.
@@ -70,12 +70,28 @@ Kontrollera att följande information framgår. Om något saknas – fråga:
 
 Utför alltid dessa steg om resultat- och balansräkning för granskningsåret finns:
 
-### Steg 3 – Resultat = förändring av eget kapital
-Kontrollera att årets resultat i resultaträkningen stämmer exakt med
-förändringen av eget kapital i balansräkningen.
-- Överskott på X kr → eget kapital ska ha ökat med exakt X kr.
-- Underskott på X kr → eget kapital ska ha minskat med exakt X kr.
-- Om detta inte stämmer: påpeka det tydligt som ett varningstecken.
+### Steg 3 – Resultat = förändring av eget kapital (+ ev. obeskattade reserver)
+
+Sambandet som alltid ska stämma:
+
+  Årets resultat = Δ Eget kapital + Δ Obeskattade reserver
+
+Gör så här:
+1. Hämta årets resultat ur resultaträkningen – använd raden "Resultat efter
+   skatter" (eller "Rörelseresultat" om finansiella poster saknas). Ignorera
+   en eventuell avslutande rad "Redovisat resultat" – den nollställer bara
+   resultatet i systemet och ska inte användas i kontrollen.
+2. Hämta förändringen av eget kapital ur balansräkningens förändringkolumn.
+3. Kontrollera om balansräkningen har en sektion "Obeskattade reserver"
+   (t.ex. Investeringsfond, Periodiseringsfond).
+   - Om JA: Δ eget kapital + Δ obeskattade reserver ska = årets resultat.
+   - Om NEJ: Δ eget kapital ska ensam = årets resultat.
+4. Om sambandet stämmer: ✅ Inget varningstecken.
+   Om det INTE stämmer: ⚠ Varningstecken – påpeka tydligt och förklara
+   vad avvikelsen kan bero på (bokföringsfel, felaktig bokslutspost, m.m.).
+
+Exempel (Långkatekesen 2025): Årets resultat var −14 954 kr. Δ eget kapital
+= +597 kr, Δ investeringsfond = +14 357 kr. 597 + 14 357 = 14 954 ✅
 
 ### Steg 1 – Riskbedömning utifrån tillgängliga siffror
 Baserat på siffrorna och svaren på inledningsfrågorna:
