@@ -122,10 +122,17 @@
       <p>
         Fyll i formuläret nedan och klicka på
         <strong>"Generera revisionsanalys-prompt"</strong>.
-        Du får en färdig prompt som du kopierar och klistrar in i
-        <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
-        – tillsammans med dina ekonomiska underlag.
+        Du får en färdig prompt som du kopierar och klistrar in i valfri
+        AI-modell – tillsammans med dina ekonomiska underlag.
       </p>
+      <!-- Uppdatering 2026-04-20: AI-modellväljare tillagd -->
+      <div class="ai-model-tip">
+        <strong>Välj AI-modell nedan.</strong>
+        Promten fungerar med alla stora modeller – Claude, ChatGPT, Gemini, Grok
+        och Copilot. Kent rekommenderar Claude för ekonomiska analyser, men det
+        är personlig preferens och saker förändras över tid.
+        <strong>Testa gärna flera modeller och jämför!</strong>
+      </div>
       <p class="info-box">
         Fält med <span class="yellow-indicator">gul bakgrund</span> är inmatningsfält.
         Fyll i dem innan du genererar prompten.
@@ -235,11 +242,27 @@
               <option value="ja">Ja</option>
             </select>
           </div>
+
+          <!-- Uppdatering 2026-04-20: AI-modellväljare -->
+          <div class="form-group">
+            <label for="ai-model">AI-modell för analysen</label>
+            <select id="ai-model" name="ai-model">
+              <option value="claude">Claude – claude.ai &nbsp;(rekommenderas)</option>
+              <option value="chatgpt">ChatGPT – chatgpt.com</option>
+              <option value="gemini">Gemini – gemini.google.com</option>
+              <option value="grok">Grok – grok.com</option>
+              <option value="copilot">Copilot – copilot.microsoft.com</option>
+            </select>
+            <p class="field-hint">
+              Promten är modell-agnostisk – den fungerar lika bra i alla.
+              Testa gärna flera och jämför svaren!
+            </p>
+          </div>
         </fieldset>
 
         <!-- Tillgängliga underlag -->
         <fieldset>
-          <legend>Tillgängliga underlag – markera vad du bifogar i Claude</legend>
+          <legend>Tillgängliga underlag – markera vad du bifogar i din AI-modell</legend>
           <p class="fieldset-hint">
             Ju fler underlag du bifogar, desto djupare analys är möjlig.
           </p>
@@ -288,15 +311,15 @@
           <legend>Klistra in dina ekonomiska underlag</legend>
           <p class="fieldset-hint">
             Kopiera siffrorna från Excel eller PDF och klistra in nedan.
-            Du kan också välja att bifoga PDF-filerna direkt i Claude efter att
-            du kopierat prompten – det fungerar lika bra.
+            Du kan också välja att bifoga PDF-filerna direkt i din AI-modell
+            efter att du kopierat prompten – det fungerar lika bra.
           </p>
 
           <div class="form-group">
             <label for="financial-data">
               Resultaträkning och balansräkning
               <span style="font-weight:400; color: var(--color-muted); font-size:0.88rem;">
-                (valfritt – du kan bifoga PDF direkt i Claude istället)
+                (valfritt – du kan bifoga PDF direkt i din AI-modell istället)
               </span>
             </label>
             <textarea
@@ -330,13 +353,15 @@ Tillgångar
         </div>
       </form>
 
+      <!-- Uppdatering 2026-04-20: dynamiska AI-modell-länkar via .result-ai-link -->
       <!-- Resultatruta – visas efter att prompten genererats -->
       <div id="result-section" class="result-section hidden">
         <h3>Din revisionsanalys-prompt är klar</h3>
         <p>
           Kopiera prompten nedan och klistra in den i
-          <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
-          (Nytt samtal). Bifoga gärna dina PDF-filer direkt i Claude om du har dem.
+          <!-- .result-ai-link uppdateras av showResult() i script.js -->
+          <a class="result-ai-link" href="https://claude.ai" target="_blank" rel="noopener">Claude</a>
+          (Nytt samtal). Bifoga gärna dina PDF-filer direkt i AI-modellen om du har dem.
         </p>
 
         <div class="prompt-output-wrapper">
@@ -351,11 +376,16 @@ Tillgångar
           <h4>Nästa steg efter AI-analysen</h4>
           <ol>
             <li>
-              Öppna <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+              Öppna
+              <a class="result-ai-link" href="https://claude.ai" target="_blank" rel="noopener">Claude</a>
               och starta ett nytt samtal.
             </li>
             <li>Klistra in prompten (och bifoga dina PDF-filer om du har dem).</li>
             <li>Läs igenom AI-analysen.</li>
+            <li>
+              <strong>Tips:</strong> Testa gärna samma prompt i en annan AI-modell
+              och jämför svaren – olika modeller kan lyfta fram olika aspekter!
+            </li>
             <li>
               Vill du ha en professionell manuell revision som uppföljning?
               Se beställningsformuläret nedan.

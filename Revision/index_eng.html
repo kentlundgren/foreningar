@@ -123,9 +123,16 @@
         Fill in the form below and click
         <strong>"Generate audit analysis prompt"</strong>.
         You will receive a ready-made prompt that you copy and paste into
-        <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
-        – together with your financial documents.
+        any AI model – together with your financial documents.
       </p>
+      <!-- Update 2026-04-20: AI model selector added -->
+      <div class="ai-model-tip">
+        <strong>Choose your AI model below.</strong>
+        The prompt works with all major models – Claude, ChatGPT, Gemini, Grok
+        and Copilot. Kent recommends Claude for financial analyses, but that is
+        personal preference and things change over time.
+        <strong>Feel free to try several models and compare the results!</strong>
+      </div>
       <p class="info-box">
         Fields with a <span class="yellow-indicator">yellow background</span> are
         input fields. Fill them in before generating the prompt.
@@ -235,11 +242,27 @@
               <option value="ja">Yes</option>
             </select>
           </div>
+
+          <!-- Update 2026-04-20: AI model selector -->
+          <div class="form-group">
+            <label for="ai-model">AI model for the analysis</label>
+            <select id="ai-model" name="ai-model">
+              <option value="claude">Claude – claude.ai &nbsp;(recommended)</option>
+              <option value="chatgpt">ChatGPT – chatgpt.com</option>
+              <option value="gemini">Gemini – gemini.google.com</option>
+              <option value="grok">Grok – grok.com</option>
+              <option value="copilot">Copilot – copilot.microsoft.com</option>
+            </select>
+            <p class="field-hint">
+              The prompt is model-agnostic – it works equally well in all of them.
+              Try several and compare the results!
+            </p>
+          </div>
         </fieldset>
 
         <!-- Available documents -->
         <fieldset>
-          <legend>Available documents – tick what you will attach in Claude</legend>
+          <legend>Available documents – tick what you will attach in your AI model</legend>
           <p class="fieldset-hint">
             The more documents you attach, the deeper the analysis possible.
           </p>
@@ -288,7 +311,7 @@
           <legend>Paste your financial documents</legend>
           <p class="fieldset-hint">
             Copy the figures from Excel or PDF and paste them below.
-            You can also attach PDF files directly in Claude after copying
+            You can also attach PDF files directly in your AI model after copying
             the prompt – that works just as well.
           </p>
 
@@ -296,7 +319,7 @@
             <label for="financial-data">
               Income statement and balance sheet
               <span style="font-weight:400; color: var(--color-muted); font-size:0.88rem;">
-                (optional – you can attach PDFs directly in Claude instead)
+                (optional – you can attach PDFs directly in your AI model instead)
               </span>
             </label>
             <textarea
@@ -330,14 +353,16 @@ Assets
         </div>
       </form>
 
+      <!-- Update 2026-04-20: dynamic AI model links via .result-ai-link -->
       <!-- Result box – shown after the prompt has been generated -->
       <div id="result-section" class="result-section hidden">
         <h3>Your audit analysis prompt is ready</h3>
         <p>
           Copy the prompt below and paste it into
-          <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+          <!-- .result-ai-link is updated by showResult() in script.js -->
+          <a class="result-ai-link" href="https://claude.ai" target="_blank" rel="noopener">Claude</a>
           (New conversation). Feel free to attach your PDF files directly in
-          Claude if you have them.
+          the AI model if you have them.
         </p>
 
         <div class="prompt-output-wrapper">
@@ -352,11 +377,16 @@ Assets
           <h4>Next steps after the AI analysis</h4>
           <ol>
             <li>
-              Open <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+              Open
+              <a class="result-ai-link" href="https://claude.ai" target="_blank" rel="noopener">Claude</a>
               and start a new conversation.
             </li>
             <li>Paste the prompt (and attach your PDF files if you have them).</li>
             <li>Read through the AI analysis.</li>
+            <li>
+              <strong>Tip:</strong> Try the same prompt in another AI model and
+              compare the results – different models may highlight different aspects!
+            </li>
             <li>
               Would you like a professional manual audit as a follow-up?
               See the order section below.

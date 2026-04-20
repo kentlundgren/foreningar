@@ -1,6 +1,6 @@
 /**
  * script.js – Revisionsverktyg för ideella organisationer
- * Version 1.2 · 2026-04-20
+ * Version 1.3 · 2026-04-20
  *
  * Innehåll:
  *   0. Språkdetektering – LANG läses från <html lang="...">
@@ -23,6 +23,30 @@
    lang="en" → engelska (index_eng.html)
    ========================================================================= */
 const LANG = document.documentElement.lang || 'sv';
+
+/* =========================================================================
+   AI-MODELLER
+   Lookup-tabell med namn och URL för varje stödd AI-modell.
+   Används i promptrubriken, resultatrutan och "nästa steg"-listan.
+   ========================================================================= */
+const AI_MODELS = {
+  claude:  { name: 'Claude',  url: 'https://claude.ai' },
+  chatgpt: { name: 'ChatGPT', url: 'https://chatgpt.com' },
+  gemini:  { name: 'Gemini',  url: 'https://gemini.google.com' },
+  grok:    { name: 'Grok',    url: 'https://grok.com' },
+  copilot: { name: 'Copilot', url: 'https://copilot.microsoft.com' }
+};
+
+/**
+ * Returnerar vald AI-modell från formulärets rullgardinsmeny.
+ * Faller tillbaka på Claude om elementet saknas.
+ * @returns {{ name: string, url: string }}
+ */
+function getSelectedModel() {
+  const sel = document.getElementById('ai-model');
+  const key = sel ? sel.value : 'claude';
+  return AI_MODELS[key] || AI_MODELS['claude'];
+}
 
 /* =========================================================================
    1. NIVÅINDIKATOR
@@ -169,6 +193,7 @@ function buildPromptSv() {
   const treasurerChanged  = document.getElementById('treasurer-changed').value;
   const budgetAvailable   = document.getElementById('budget').value;
   const financialData     = document.getElementById('financial-data').value.trim();
+  const model             = getSelectedModel();
 
   // Läser av tillgängliga underlag
   const hasResultCurrent  = document.getElementById('doc-result-current').checked;
@@ -194,7 +219,12 @@ function buildPromptSv() {
   // -----------------------------------------------------------------------
   let prompt = '';
 
-  // -- Rollsättning och kontext --
+  // -- Modellinfo och rollsättning --
+  prompt += '━━━ AI-MODELL FÖR DENNA ANALYS ━━━\n';
+  prompt += model.name + ' (' + model.url + ')\n';
+  prompt += 'Tips: Promten fungerar med alla stora AI-modeller. Testa gärna fler\n';
+  prompt += 'och jämför svaren – olika modeller kan lyfta fram olika aspekter!\n\n';
+
   prompt += 'Du agerar som revisor och ekonomisk granskare av en liten ideell\n';
   prompt += 'organisation i Sverige. Du är kunnig men pedagogisk – du förklarar\n';
   prompt += 'alltid termer på ett sätt som är begripligt utan ekonomisk utbildning.\n\n';
@@ -364,7 +394,7 @@ function buildPromptSv() {
     prompt += financialData;
   } else {
     prompt += '(Inga underlag inklistrade – användaren bifogar PDF-filerna\n';
-    prompt += ' direkt i detta Claude-samtal. Granska de bifogade filerna.)\n';
+    prompt += ' direkt i detta ' + model.name + '-samtal. Granska de bifogade filerna.)\n';
   }
 
   return prompt;
@@ -384,6 +414,7 @@ function buildPromptEng() {
   const treasurerChanged  = document.getElementById('treasurer-changed').value;
   const budgetAvailable   = document.getElementById('budget').value;
   const financialData     = document.getElementById('financial-data').value.trim();
+  const model             = getSelectedModel();
 
   // Available documents
   const hasResultCurrent  = document.getElementById('doc-result-current').checked;
@@ -406,7 +437,12 @@ function buildPromptEng() {
 
   let prompt = '';
 
-  // -- Role and context --
+  // -- AI model info and role --
+  prompt += '━━━ AI MODEL FOR THIS ANALYSIS ━━━\n';
+  prompt += model.name + ' (' + model.url + ')\n';
+  prompt += 'Tip: This prompt works with all major AI models. Feel free to try several\n';
+  prompt += 'and compare the results – different models may highlight different aspects!\n\n';
+
   prompt += 'You are acting as an auditor and financial reviewer of a small non-profit\n';
   prompt += 'organisation in Sweden. You are knowledgeable but pedagogical – you always\n';
   prompt += 'explain terms in a way that is understandable without an accounting background.\n\n';
@@ -578,7 +614,7 @@ function buildPromptEng() {
     prompt += financialData;
   } else {
     prompt += '(No documents pasted – the user will attach PDF files directly\n';
-    prompt += ' in this Claude conversation. Please review the attached files.)\n';
+    prompt += ' in this ' + model.name + ' conversation. Please review the attached files.)\n';
   }
 
   return prompt;
@@ -600,6 +636,13 @@ function showResult(prompt) {
   // Lägger prompten i textarea och visar rutan
   promptOutput.value = prompt;
   resultSection.classList.remove('hidden');
+
+  // Uppdatering 2026-04-20: uppdaterar dynamiska AI-modell-länkar i resultatrutan
+  const model = getSelectedModel();
+  document.querySelectorAll('.result-ai-link').forEach(function (el) {
+    el.href        = model.url;
+    el.textContent = model.name;
+  });
 
   // Scrollar ned till resultatet så användaren ser det
   resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });

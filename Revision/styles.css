@@ -1,6 +1,6 @@
 /* =========================================================================
    Revisionsverktyg för ideella organisationer – styles.css
-   Version 1.0 · 2026-04-20
+   Version 1.1 · 2026-04-20
    ========================================================================= */
 
 /* -------------------------------------------------------------------------
@@ -640,6 +640,30 @@ legend {
 
 .site-footer a:hover {
   color: #ffffff;
+}
+
+/* -------------------------------------------------------------------------
+   Uppdatering 2026-04-20: AI-modellväljare – tips-ruta och fälttips
+   ------------------------------------------------------------------------- */
+
+/* Blå informationsruta ovanför formuläret – uppmuntrar att testa flera modeller */
+.ai-model-tip {
+  background: #eaf4fb;
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+/* Liten hjälptext under ett formulärfält */
+.field-hint {
+  font-size: 0.84rem;
+  color: var(--color-muted);
+  margin-top: 0.35rem;
+  margin-bottom: 0;
 }
 
 /* -------------------------------------------------------------------------
