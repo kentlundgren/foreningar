@@ -3,18 +3,23 @@
 Ett interaktivt verktyg för lekmannarevisorer och föreningar som vill granska
 sin ekonomi – från enkel AI-föranalys till fullständig manuell revision.
 
-## Live-sida
+## Live-sidor
 
-**https://kentlundgren.github.io/foreningar/Revision/**
+Verktyget finns på **två språk**. Man växlar språk med en knapp uppe till höger på sidan.
+
+| Språk | URL |
+|-------|-----|
+| 🇸🇪 **Svenska** | **https://kentlundgren.github.io/foreningar/Revision/** |
+| 🇬🇧 **English** | **https://kentlundgren.github.io/foreningar/Revision/index_eng.html** |
 
 ## Vad sidan gör
 
 Sidan har ett tvåstegsflöde:
 
 1. **Gratis AI-analys (självbetjäning)** – besökaren fyller i ett formulär med
-   organisationsnamn, räkenskapsår, bokföringssystem och tillgängliga underlag.
-   Sidan genererar en färdig revisionsanalys-prompt som kopieras till
-   [claude.ai](https://claude.ai) för analys.
+   organisationsnamn, räkenskapsår, bokföringssystem, tillgängliga underlag och
+   önskad AI-modell. Sidan genererar en färdig revisionsanalys-prompt som kopieras
+   till valfri AI-modell (Claude, ChatGPT, Gemini, Grok eller Copilot) för analys.
 
 2. **Professionell revision (betalt)** – besökaren beställer en manuell revision
    av Kent Lundgren via e-post (kent@kentlundgren.se) med priser på tre nivåer.
@@ -34,9 +39,11 @@ https://kentlundgren.github.io/foreningar/KalmarNation/revision/generellt.html
 
 | Fil | Beskrivning |
 |-----|-------------|
-| `index.html` | Webbsidans struktur – tre sektioner |
+| `index.html` | 🇸🇪 Svenska sidan – tre sektioner, språkknapp uppe till höger |
+| `index_eng.html` | 🇬🇧 Engelsk version – samma struktur, delar `script.js` och `styles.css` |
 | `styles.css` | Responsiv design med gula inmatningsfält |
-| `script.js` | Promptgenerator, kopieringsknapp, förberedd Zapier/Formspree-kod |
+| `script.js` | Promptgenerator (sv + en), AI-modellväljare, kopieringsknapp |
+| `CLAUDE.md` | Instruktionsfil för AI-assistenten (revisionsinstruktioner) |
 | `revision-prompt.md` | Ren prompttext för direktanvändning utan webbsida |
 | `README.md` | Denna fil |
 
