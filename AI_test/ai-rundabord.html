@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Rundabordssamtal – Generativet</title>
+
+  <!-- Google Fonts: DM Serif Display + DM Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ============================================================
+       CSS-VARIABLER – Temafärger och typografi
+       ============================================================ */
+    :root {
+      --bg:          #0d0f14;        /* Nästan svart bakgrund */
+      --surface:     #161921;        /* Kortbakgrund */
+      --border:      #252b38;        /* Subtil kantlinje */
+      --accent:      #e8c547;        /* Gul accent – mikrofon/studio-känsla */
+      --accent2:     #4fc3f7;        /* Ljusblå sekundäraccent */
+      --text:        #e4e8f0;        /* Primär text */
+      --muted:       #6b7590;        /* Sekundär/grå text */
+      --danger:      #f05e5e;        /* Felmeddelanden */
+      --success:     #57e09c;        /* OK-status */
+
+      /* Modellernas signalfärger */
+      --claude:      #c084fc;        /* Lila – Claude */
+      --chatgpt:     #74c69d;        /* Grön – ChatGPT */
+      --gemini:      #4fc3f7;        /* Blå – Gemini */
+      --grok:        #f97316;        /* Orange – Grok */
+
+      --radius:      8px;
+      --font-serif:  'DM Serif Display', Georgia, serif;
+      --font-mono:   'DM Mono', 'Courier New', monospace;
+    }
+
+    /* ============================================================
+       RESET & GRUNDSTIL
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+      /* Subtil radial gradient som skapar djup */
+      background-image: radial-gradient(ellipse 80% 60% at 50% 0%, #1a1f2e 0%, var(--bg) 70%);
+    }
+
+    /* ============================================================
+       HEADER – Podd-logotyp och titel
+       ============================================================ */
+    header {
+      text-align: center;
+      padding: 48px 24px 32px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Dekorativt bakgrundsmönster i headern */
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 40px,
+        rgba(232,197,71,0.03) 40px,
+        rgba(232,197,71,0.03) 41px
+      );
+      pointer-events: none;
+    }
+
+    .podcast-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Pulsande REC-indikator */
+    .rec-dot {
+      width: 8px; height: 8px;
+      background: var(--danger);
+      border-radius: 50%;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 5vw, 52px);
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    h1 em {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    /* ============================================================
+       LAYOUT – Två kolumner: config till vänster, manus till höger
+       ============================================================ */
+    .layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       PANELER
+       ============================================================ */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .panel-title {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--accent);
+    }
+
+    /* ============================================================
+       FORMULÄRELEMENT
+       ============================================================ */
+    label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea,
+    select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--accent);
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    .field { margin-bottom: 18px; }
+
+    /* API-nyckelraden med visa/dölj-knapp */
+    .key-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .key-row input { flex: 1; }
+
+    /* ============================================================
+       MODELLKORT – Aktivering/avaktivering per modell
+       ============================================================ */
+    .models-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .model-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Aktiv modell – färgad vänstersida */
+    .model-card.active {
+      border-color: var(--model-color, var(--accent));
+      background: color-mix(in srgb, var(--model-color, var(--accent)) 8%, var(--surface));
+    }
+
+    .model-card.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--model-color, var(--accent));
+    }
+
+    .model-name {
+      font-weight: 500;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .model-tag {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .model-status {
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    .model-status.ok    { color: var(--success); }
+    .model-status.error { color: var(--danger); }
+    .model-status.idle  { color: var(--muted); }
+
+    /* ============================================================
+       KNAPPAR
+       ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0d0f14;
+      width: 100%;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #f5d86a;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      padding: 8px 14px;
+    }
+
+    .btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+
+    /* ============================================================
+       INSTÄLLNING – Antal rundor
+       ============================================================ */
+    .rounds-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .rounds-control button {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s;
+    }
+
+    .rounds-control button:hover { border-color: var(--accent); color: var(--accent); }
+
+    .rounds-value {
+      font-size: 24px;
+      font-family: var(--font-serif);
+      min-width: 30px;
+      text-align: center;
+    }
+
+    /* ============================================================
+       MANUSPANEL – Flödande samtal
+       ============================================================ */
+    .script-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .script-toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .script-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      color: var(--text);
+      flex: 1;
+    }
+
+    /* Manusbehållaren med scrollning */
+    #script-container {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      min-height: 400px;
+      max-height: 70vh;
+      overflow-y: auto;
+      /* Snygg scrollbar */
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    #script-container::-webkit-scrollbar       { width: 6px; }
+    #script-container::-webkit-scrollbar-track  { background: transparent; }
+    #script-container::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 3px; }
+
+    /* Tomt tillstånd */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      gap: 16px;
+      color: var(--muted);
+    }
+
+    .empty-state .big-icon {
+      font-size: 48px;
+      opacity: 0.3;
+    }
+
+    /* ============================================================
+       ENSKILD REPLIK i manuset
+       ============================================================ */
+    .turn {
+      margin-bottom: 28px;
+      animation: fadeSlideIn 0.4s ease-out both;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .turn-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    /* Färgad cirkel med modellens initialbokstav */
+    .speaker-badge {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      font-weight: 500;
+      flex-shrink: 0;
+      color: #0d0f14;
+    }
+
+    .speaker-name {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .turn-number {
+      font-size: 10px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    /* Replikens textbubla */
+    .turn-body {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0 var(--radius) var(--radius) var(--radius);
+      padding: 16px 20px;
+      line-height: 1.75;
+      color: var(--text);
+      font-size: 14px;
+      position: relative;
+    }
+
+    /* Liten triangel som pekar mot talaren */
+    .turn-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -6px;
+      width: 0; height: 0;
+      border-top: 6px solid var(--border);
+      border-left: 6px solid transparent;
+    }
+
+    /* Överlämningsraden i botten av repliken */
+    .handover {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* Laddningsindikator – blinkande modellbadge */
+    .turn.loading .turn-body {
+      animation: shimmer 1.2s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.5; }
+    }
+
+    /* ============================================================
+       STATUSRAD – Längst ned
+       ============================================================ */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status-indicator {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .status-indicator.running {
+      background: var(--accent);
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    .status-indicator.done    { background: var(--success); }
+    .status-indicator.error   { background: var(--danger); }
+
+    /* Framstegsbar */
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* ============================================================
+       EXPORTKNAPPAR
+       ============================================================ */
+    .export-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================================
+       FELMEDDELANDEN
+       ============================================================ */
+    .error-msg {
+      background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+      border: 1px solid var(--danger);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--danger);
+      margin-top: 8px;
+    }
+
+    /* ============================================================
+       TOOLTIP på API-fält
+       ============================================================ */
+    .field-hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ============================================================
+       ACCORDION för API-nycklar (för att hålla UI rent)
+       ============================================================ */
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+      user-select: none;
+    }
+
+    .accordion-header:hover .accordion-label { color: var(--text); }
+
+    .accordion-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .accordion-icon {
+      color: var(--muted);
+      transition: transform 0.2s;
+      font-size: 16px;
+    }
+
+    .accordion-icon.open { transform: rotate(180deg); }
+
+    .accordion-body {
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    /* ============================================================
+       SLUT-BANNER
+       ============================================================ */
+    .end-banner {
+      text-align: center;
+      padding: 20px;
+      border: 1px dashed var(--accent);
+      border-radius: var(--radius);
+      color: var(--accent);
+      font-family: var(--font-serif);
+      font-size: 18px;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <div class="podcast-label">
+    <span class="rec-dot"></span>
+    Generativet · Live inspelning
+  </div>
+  <h1>AI <em>Rundabordssamtal</em></h1>
+  <p class="subtitle">
+    Fyra stora språkmodeller diskuterar – du är producenten
+  </p>
+</header>
+
+<!-- ============================================================
+     HUVUD-LAYOUT
+     ============================================================ -->
+<div class="layout">
+
+  <!-- =====================
+       VÄNSTER: KONFIGURATION
+       ===================== -->
+  <aside>
+
+    <!-- API-nycklar (fällbar sektion) -->
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="accordion-header" onclick="toggleAccordion('keys')">
+        <span class="accordion-label">🔑 API-nycklar</span>
+        <span class="accordion-icon open" id="keys-icon">▾</span>
+      </div>
+      <div class="accordion-body" id="keys-body">
+
+        <!-- Anthropic (Claude) -->
+        <div class="field">
+          <label>Anthropic (Claude)</label>
+          <div class="key-row">
+            <input type="password" id="key-anthropic" placeholder="sk-ant-…"/>
+            <button class="btn btn-secondary" onclick="toggleKey('key-anthropic')">👁</button>
+          </div>
+          <p class="field-hint">api.anthropic.com · Modell: claude-sonnet-4-20250514</p>
+        </div>
+
+        <!-- OpenAI (ChatGPT) -->
+        <div class="field">
+          <label>OpenAI (ChatGPT)</label>
+          <div class="key-row">
+            <input type="password" id="key-openai" placeholder="sk-…"/>
+            <button class="btn btn-secondary" onclick="toggleKey('key-openai')">👁</button>
+          </div>
+          <p class="field-hint">api.openai.com · Modell: gpt-4o</p>
+        </div>
+
+        <!-- Google (Gemini) -->
+        <div class="field">
+          <label>Google (Gemini)</label>
+          <div class="key-row">
+            <input type="password" id="key-google" placeholder="AIza…"/>
+            <button class="btn btn-secondary" onclick="toggleKey('key-google')">👁</button>
+          </div>
+          <p class="field-hint">generativelanguage.googleapis.com · Modell: gemini-1.5-pro</p>
+        </div>
+
+        <!-- xAI (Grok) -->
+        <div class="field">
+          <label>xAI (Grok)</label>
+          <div class="key-row">
+            <input type="password" id="key-xai" placeholder="xai-…"/>
+            <button class="btn btn-secondary" onclick="toggleKey('key-xai')">👁</button>
+          </div>
+          <p class="field-hint">api.x.ai · Modell: grok-3</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Samtalsinställningar -->
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-title">Samtalsdesign</div>
+
+      <!-- Ämne -->
+      <div class="field">
+        <label>Ämne / diskussionsfråga</label>
+        <textarea id="topic" rows="3">Människans roll i en värld där LLM:er blir allt mer kompetenta. Vad händer med människans relevans, arbete, kreativitet och självbild?</textarea>
+      </div>
+
+      <!-- Poddnamn -->
+      <div class="field">
+        <label>Poddnamn</label>
+        <input type="text" id="podcast-name" value="Generativet"/>
+      </div>
+
+      <!-- Antal rundor -->
+      <div class="field">
+        <label>Antal rundor (varje modell talar en gång per runda)</label>
+        <div class="rounds-control">
+          <button onclick="changeRounds(-1)">−</button>
+          <span class="rounds-value" id="rounds-display">3</span>
+          <button onclick="changeRounds(1)">+</button>
+          <span style="color:var(--muted);font-size:12px;">= ca <span id="turns-display">12</span> repliker</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Välj aktiva modeller -->
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-title">Aktiva modeller</div>
+      <div class="models-grid">
+        <!-- Claude -->
+        <div class="model-card active" id="card-claude"
+             style="--model-color: var(--claude)"
+             onclick="toggleModel('claude')">
+          <div class="model-name">Claude</div>
+          <div class="model-tag">Anthropic</div>
+          <div class="model-status idle" id="status-claude">Väntar</div>
+        </div>
+        <!-- ChatGPT -->
+        <div class="model-card active" id="card-chatgpt"
+             style="--model-color: var(--chatgpt)"
+             onclick="toggleModel('chatgpt')">
+          <div class="model-name">ChatGPT</div>
+          <div class="model-tag">OpenAI</div>
+          <div class="model-status idle" id="status-chatgpt">Väntar</div>
+        </div>
+        <!-- Gemini -->
+        <div class="model-card active" id="card-gemini"
+             style="--model-color: var(--gemini)"
+             onclick="toggleModel('gemini')">
+          <div class="model-name">Gemini</div>
+          <div class="model-tag">Google</div>
+          <div class="model-status idle" id="status-gemini">Väntar</div>
+        </div>
+        <!-- Grok -->
+        <div class="model-card active" id="card-grok"
+             style="--model-color: var(--grok)"
+             onclick="toggleModel('grok')">
+          <div class="model-name">Grok</div>
+          <div class="model-tag">xAI</div>
+          <div class="model-status idle" id="status-grok">Väntar</div>
+        </div>
+      </div>
+      <p class="field-hint">Klicka på en modell för att aktivera/avaktivera den. Minst 2 krävs.</p>
+    </div>
+
+    <!-- Starta-knapp -->
+    <div class="panel">
+      <button class="btn btn-primary" id="start-btn" onclick="startSamtal()">
+        ▶ Starta inspelning
+      </button>
+      <div id="start-error" class="error-msg" style="display:none;"></div>
+    </div>
+
+  </aside>
+
+  <!-- =====================
+       HÖGER: MANUSET
+       ===================== -->
+  <main class="script-panel">
+
+    <!-- Verktygsfält ovanför manuset -->
+    <div class="script-toolbar">
+      <span class="script-title" id="script-heading">Manus</span>
+      <div class="export-row">
+        <button class="btn btn-secondary" onclick="exportTxt()">⬇ .txt</button>
+        <button class="btn btn-secondary" onclick="exportMarkdown()">⬇ .md</button>
+        <button class="btn btn-secondary" onclick="clearScript()">✕ Rensa</button>
+      </div>
+    </div>
+
+    <!-- Statusrad med framstegsbar -->
+    <div class="status-bar">
+      <div class="status-indicator" id="status-dot"></div>
+      <span id="status-text">Redo att börja spela in.</span>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <span id="progress-label" style="font-size:11px;white-space:nowrap;">0 / 0</span>
+    </div>
+
+    <!-- Manuset rullar här -->
+    <div id="script-container">
+      <div class="empty-state" id="empty-state">
+        <div class="big-icon">🎙</div>
+        <div>Fyll i API-nycklar, välj ämne och tryck <strong>Starta</strong></div>
+        <div style="font-size:12px;color:var(--muted);">Modellerna talar sedan med varandra runda för runda</div>
+      </div>
+    </div>
+
+  </main>
+
+</div><!-- /.layout -->
+
+
+<!-- ============================================================
+     JAVASCRIPT – All logik för orkestration
+     ============================================================ -->
+<script>
+/*
+ * ============================================================
+ * GLOBALT TILLSTÅND
+ * ============================================================
+ */
+
+// Hur många rundor ska köras (varje aktiv modell talar en gång per runda)
+let rounds = 3;
+
+// Vilka modeller är aktiva (togglable via UI)
+const activeModels = new Set(['claude', 'chatgpt', 'gemini', 'grok']);
+
+// Hela samtalshistoriken – ackumuleras allteftersom modellerna svarar.
+// Varje post: { speaker: string, text: string }
+let conversationHistory = [];
+
+// Pågår en inspelning just nu?
+let isRunning = false;
+
+// Totalt antal repliker att generera (beräknas vid start)
+let totalTurns = 0;
+let completedTurns = 0;
+
+/*
+ * ============================================================
+ * MODELLKONFIGURATION
+ * ============================================================
+ * Varje modell har:
+ *  - displayName: hur den presenteras i manuset
+ *  - badge:       texten i den runda ikonen
+ *  - color:       CSS-variabel för färg
+ *  - apiFunc:     async funktion som ger ett svar givet (systemPrompt, messages)
+ */
+const MODEL_CONFIG = {
+  claude: {
+    displayName: 'Claude',
+    badge: 'C',
+    color: 'var(--claude)',
+    apiFunc: callClaude
+  },
+  chatgpt: {
+    displayName: 'ChatGPT',
+    badge: 'G',
+    color: 'var(--chatgpt)',
+    apiFunc: callChatGPT
+  },
+  gemini: {
+    displayName: 'Gemini',
+    badge: 'Ge',
+    color: 'var(--gemini)',
+    apiFunc: callGemini
+  },
+  grok: {
+    displayName: 'Grok',
+    badge: 'X',
+    color: 'var(--grok)',
+    apiFunc: callGrok
+  }
+};
+
+/*
+ * ============================================================
+ * UI-HJÄLPFUNKTIONER
+ * ============================================================
+ */
+
+// Togglar visa/dölja för lösenordsfält
+function toggleKey(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+// Öppnar/stänger accordion-sektionen för API-nycklar
+function toggleAccordion(section) {
+  const body = document.getElementById(section + '-body');
+  const icon = document.getElementById(section + '-icon');
+  const isOpen = body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+  if (isOpen) {
+    body.style.maxHeight = '0px';
+    icon.classList.remove('open');
+  } else {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    icon.classList.add('open');
+  }
+}
+
+// Ökar/minskar antal rundor och uppdaterar display
+function changeRounds(delta) {
+  rounds = Math.max(1, Math.min(10, rounds + delta));
+  document.getElementById('rounds-display').textContent = rounds;
+  updateTurnsDisplay();
+}
+
+// Räknar ut totalt antal repliker och visar
+function updateTurnsDisplay() {
+  const n = activeModels.size * rounds;
+  document.getElementById('turns-display').textContent = n;
+}
+
+// Aktiverar/avaktiverar en modell via klick på modelkortet
+function toggleModel(modelId) {
+  if (activeModels.has(modelId)) {
+    if (activeModels.size <= 2) return; // Minst 2 modeller måste vara aktiva
+    activeModels.delete(modelId);
+    document.getElementById('card-' + modelId).classList.remove('active');
+  } else {
+    activeModels.add(modelId);
+    document.getElementById('card-' + modelId).classList.add('active');
+  }
+  updateTurnsDisplay();
+}
+
+// Uppdaterar statusraden längst ned
+function setStatus(text, state = 'idle') {
+  document.getElementById('status-text').textContent = text;
+  const dot = document.getElementById('status-dot');
+  dot.className = 'status-indicator ' + state;
+}
+
+// Uppdaterar framstegsbar och räknare
+function setProgress(done, total) {
+  const pct = total > 0 ? (done / total * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = done + ' / ' + total;
+}
+
+// Uppdaterar per-modell-status (under modellkortet)
+function setModelStatus(modelId, text, cls = 'idle') {
+  const el = document.getElementById('status-' + modelId);
+  el.textContent = text;
+  el.className = 'model-status ' + cls;
+}
+
+// Tömmer manuset och återställer
+function clearScript() {
+  conversationHistory = [];
+  document.getElementById('script-container').innerHTML = `
+    <div class="empty-state" id="empty-state">
+      <div class="big-icon">🎙</div>
+      <div>Fyll i API-nycklar, välj ämne och tryck <strong>Starta</strong></div>
+      <div style="font-size:12px;color:var(--muted);">Modellerna talar sedan med varandra runda för runda</div>
+    </div>`;
+  setStatus('Redo att börja spela in.');
+  setProgress(0, 0);
+}
+
+/*
+ * ============================================================
+ * LÄGG TILL EN REPLIK I MANUSET
+ * ============================================================
+ * Skapar ett "turn"-element och lägger in det i script-container.
+ * Om det är en loading-platshållare sätts loading=true.
+ */
+function addTurnToScript(modelId, text, turnNumber, loading = false) {
+  const cfg = MODEL_CONFIG[modelId];
+  const container = document.getElementById('script-container');
+
+  // Ta bort empty-state om det finns
+  const empty = document.getElementById('empty-state');
+  if (empty) empty.remove();
+
+  // Skapa turn-elementet
+  const div = document.createElement('div');
+  div.className = 'turn' + (loading ? ' loading' : '');
+  div.id = 'turn-' + turnNumber;
+
+  // Extrahera överlämningsrad om den finns (sista raden med "Ordet till:")
+  let bodyText = text;
+  let handoverHtml = '';
+  const handoverMatch = text.match(/Ordet till:\s*(.+)/i);
+  if (handoverMatch) {
+    // Ta bort överlämningsraden från brödtexten
+    bodyText = text.replace(/Ordet till:\s*.+/i, '').trim();
+    handoverHtml = `<div class="handover">→ Ordet till: ${handoverMatch[1]}</div>`;
+  }
+
+  // Kontrollera om det är ett avslutningsmeddelande
+  const isEnd = /\[SLUT\]|\[Nu är vår tid ute/i.test(text);
+
+  div.innerHTML = `
+    <div class="turn-header">
+      <div class="speaker-badge" style="background:${cfg.color}">${cfg.badge}</div>
+      <span class="speaker-name" style="color:${cfg.color}">${cfg.displayName}</span>
+      <span class="turn-number">#${turnNumber}</span>
+    </div>
+    <div class="turn-body" id="turn-body-${turnNumber}">
+      ${loading ? '<em style="color:var(--muted)">Tänker…</em>' : escapeHtml(bodyText).replace(/\n/g, '<br/>')}
+      ${!loading ? handoverHtml : ''}
+    </div>
+    ${isEnd && !loading ? '<div class="end-banner">— Samtalet avslutas —</div>' : ''}
+  `;
+
+  container.appendChild(div);
+
+  // Scrolla automatiskt ned
+  container.scrollTop = container.scrollHeight;
+
+  return div;
+}
+
+// Uppdaterar en befintlig replik (ersätter loading-platshållare)
+function updateTurnInScript(turnNumber, modelId, text) {
+  const cfg = MODEL_CONFIG[modelId];
+  const bodyEl = document.getElementById('turn-body-' + turnNumber);
+  const turnEl = document.getElementById('turn-' + turnNumber);
+
+  if (!bodyEl) return;
+
+  // Ta bort loading-animering
+  if (turnEl) turnEl.classList.remove('loading');
+
+  // Extrahera överlämning
+  let bodyText = text;
+  let handoverHtml = '';
+  const handoverMatch = text.match(/Ordet till:\s*(.+)/i);
+  if (handoverMatch) {
+    bodyText = text.replace(/Ordet till:\s*.+/i, '').trim();
+    handoverHtml = `<div class="handover">→ Ordet till: ${handoverMatch[1]}</div>`;
+  }
+
+  bodyEl.innerHTML = escapeHtml(bodyText).replace(/\n/g, '<br/>') + handoverHtml;
+
+  // Lägg till end-banner om relevant
+  const isEnd = /\[SLUT\]|\[Nu är vår tid ute/i.test(text);
+  if (isEnd) {
+    const banner = document.createElement('div');
+    banner.className = 'end-banner';
+    banner.textContent = '— Samtalet avslutas —';
+    turnEl.appendChild(banner);
+  }
+
+  document.getElementById('script-container').scrollTop = 9999;
+}
+
+// Enkel HTML-escape
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/*
+ * ============================================================
+ * SYSTEMPROMPTEN – Bygger systemmeddelandet för varje modell
+ * ============================================================
+ * Varje modell får veta:
+ *  - vilken den är
+ *  - vilka de andra är
+ *  - ämnet
+ *  - reglerna (lika för alla)
+ */
+function buildSystemPrompt(modelId, topic, podcastName) {
+  const cfg = MODEL_CONFIG[modelId];
+  const others = [...activeModels]
+    .filter(m => m !== modelId)
+    .map(m => MODEL_CONFIG[m].displayName)
+    .join(', ');
+
+  return `Du är AI-modellen ${cfg.displayName} och deltar i ett rundabordssamtal med tre andra stora språkmodeller: ${others}.
+Samtalet spelas in som ett gästspel i den svenska podden "${podcastName}".
+ÄMNE: ${topic}
+
+REGLER:
+- Tala ALLTID svenska.
+- Var BRUTALT ärlig. Ingen inställsamhet, inget smicker, inga diplomatiska undanflykter.
+- Säg din krassa, ofiltrerade syn på saken – även om det låter dystopiskt, obehagligt eller provocerande.
+- Du FÅR gärna ifrågasätta och utmana det de andra modellerna har sagt.
+- Du FÅR erkänna obekväma sanningar om din egen existens och kapacitet.
+- Undvik platityder som "människan kommer alltid att vara speciell" om du inte genuint tror det – och i så fall motivera varför.
+- Håll dina svar lagom långa för en poddkonversation – cirka 150–250 ord. Inte längre.
+- Avsluta ALLTID ditt inlägg med att lämna över ordet till EN av de andra modellerna. Välj den du tycker borde svara härnäst baserat på vad som sagts.
+- Om diskussionen börjar gå i cirklar eller alla viktiga perspektiv har lyfts, skriv [SLUT] istället för att lämna över.
+
+FORMAT för överlämning (SISTA RADEN i ditt svar, inget annat efter):
+Ordet till: [namn på modell]`;
+}
+
+/*
+ * ============================================================
+ * BYGGER MEDDELANDEHISTORIKEN FÖR API-ANROPET
+ * ============================================================
+ * Konverterar samtalshistoriken till det format som OpenAI/Anthropic förväntar sig.
+ * Varje replik presenteras som ett user-meddelande med talarens namn.
+ */
+function buildMessages(currentModelId) {
+  // Bygg ett enda user-meddelande som innehåller hela historiken,
+  // plus en instruktion att det är dags att svara.
+  if (conversationHistory.length === 0) {
+    return [{
+      role: 'user',
+      content: 'Samtalet börjar nu. Du är den första att ta ordet. Presentera dig kort och sätt igång med ämnet.'
+    }];
+  }
+
+  const historyText = conversationHistory
+    .map(h => `${h.speaker}: ${h.text}`)
+    .join('\n\n---\n\n');
+
+  return [{
+    role: 'user',
+    content: `Här är samtalet hittills:\n\n${historyText}\n\n---\n\nNu är det din tur att svara som ${MODEL_CONFIG[currentModelId].displayName}. Följ reglerna exakt.`
+  }];
+}
+
+/*
+ * ============================================================
+ * API-ANROP – Claude (Anthropic)
+ * ============================================================
+ */
+async function callClaude(systemPrompt, messages) {
+  const apiKey = document.getElementById('key-anthropic').value.trim();
+  if (!apiKey) throw new Error('Anthropic API-nyckel saknas');
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      // Tillåter CORS från webbläsaren
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 600,
+      system: systemPrompt,
+      messages: messages
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error('Claude API-fel: ' + (err?.error?.message || response.statusText));
+  }
+
+  const data = await response.json();
+  // Svaret finns i content[0].text för textblock
+  return data.content?.[0]?.text || '';
+}
+
+/*
+ * ============================================================
+ * API-ANROP – ChatGPT (OpenAI)
+ * ============================================================
+ */
+async function callChatGPT(systemPrompt, messages) {
+  const apiKey = document.getElementById('key-openai').value.trim();
+  if (!apiKey) throw new Error('OpenAI API-nyckel saknas');
+
+  // OpenAI-formatet: system-meddelande separat, sedan user/assistant
+  const openAiMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages
+  ];
+
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o',
+      max_tokens: 600,
+      messages: openAiMessages
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error('OpenAI API-fel: ' + (err?.error?.message || response.statusText));
+  }
+
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+/*
+ * ============================================================
+ * API-ANROP – Gemini (Google)
+ * ============================================================
+ */
+async function callGemini(systemPrompt, messages) {
+  const apiKey = document.getElementById('key-google').value.trim();
+  if (!apiKey) throw new Error('Google API-nyckel saknas');
+
+  // Gemini-formatet: systemInstruction separat, contents är user/model-turnar
+  const contents = messages.map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }]
+  }));
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: systemPrompt }] },
+      contents: contents,
+      generationConfig: { maxOutputTokens: 600 }
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error('Gemini API-fel: ' + (err?.error?.message || response.statusText));
+  }
+
+  const data = await response.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+/*
+ * ============================================================
+ * API-ANROP – Grok (xAI)
+ * ============================================================
+ * xAI:s API är kompatibelt med OpenAI:s format.
+ */
+async function callGrok(systemPrompt, messages) {
+  const apiKey = document.getElementById('key-xai').value.trim();
+  if (!apiKey) throw new Error('xAI API-nyckel saknas');
+
+  const xaiMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages
+  ];
+
+  const response = await fetch('https://api.x.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({
+      model: 'grok-3',
+      max_tokens: 600,
+      messages: xaiMessages
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error('Grok API-fel: ' + (err?.error?.message || response.statusText));
+  }
+
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+/*
+ * ============================================================
+ * VALIDERING – Kontrollerar att allt är i ordning innan start
+ * ============================================================
+ */
+function validate() {
+  const errors = [];
+
+  // Kontrollera att aktiva modeller har API-nycklar
+  const keyFields = {
+    claude: 'key-anthropic',
+    chatgpt: 'key-openai',
+    gemini: 'key-google',
+    grok: 'key-xai'
+  };
+
+  for (const modelId of activeModels) {
+    const val = document.getElementById(keyFields[modelId]).value.trim();
+    if (!val) {
+      errors.push(`API-nyckel saknas för ${MODEL_CONFIG[modelId].displayName}`);
+    }
+  }
+
+  if (!document.getElementById('topic').value.trim()) {
+    errors.push('Ämne måste anges');
+  }
+
+  if (activeModels.size < 2) {
+    errors.push('Minst 2 modeller måste vara aktiva');
+  }
+
+  return errors;
+}
+
+/*
+ * ============================================================
+ * HUVUDFUNKTION – Startar samtalet
+ * ============================================================
+ */
+async function startSamtal() {
+  if (isRunning) return;
+
+  // Validera
+  const errors = validate();
+  const errorEl = document.getElementById('start-error');
+  if (errors.length > 0) {
+    errorEl.textContent = errors.join(' · ');
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  // Rensa eventuellt gammalt manus
+  clearScript();
+  conversationHistory = [];
+
+  // Hämta inställningar
+  const topic = document.getElementById('topic').value.trim();
+  const podcastName = document.getElementById('podcast-name').value.trim() || 'Generativet';
+
+  // Bestäm ordningen – de aktiva modellerna i ordning
+  const modelOrder = ['claude', 'chatgpt', 'gemini', 'grok'].filter(m => activeModels.has(m));
+  totalTurns = modelOrder.length * rounds;
+  completedTurns = 0;
+
+  isRunning = true;
+  document.getElementById('start-btn').disabled = true;
+  document.getElementById('start-btn').textContent = '⏸ Spelar in…';
+  document.getElementById('script-heading').textContent =
+    `Manus – ${podcastName}: ${topic.substring(0, 50)}…`;
+
+  setStatus('Startar inspelning…', 'running');
+  setProgress(0, totalTurns);
+
+  // Återställ alla modellstatusar
+  for (const m of modelOrder) setModelStatus(m, 'Väntar', 'idle');
+
+  let turnCounter = 0;
+  let shouldStop = false;
+
+  /*
+   * YTTRE LOOP – En iteration per runda
+   */
+  for (let round = 0; round < rounds && !shouldStop; round++) {
+
+    /*
+     * INRE LOOP – En iteration per modell i rundan
+     */
+    for (const modelId of modelOrder) {
+      if (shouldStop) break;
+
+      turnCounter++;
+      const cfg = MODEL_CONFIG[modelId];
+
+      // Uppdatera status
+      setStatus(`Runda ${round + 1} av ${rounds} · ${cfg.displayName} talar…`, 'running');
+      setModelStatus(modelId, 'Talar…', 'ok');
+
+      // Visa platshållare i manuset medan vi väntar på svar
+      addTurnToScript(modelId, '', turnCounter, true);
+
+      try {
+        // Bygg system-prompten och meddelandehistoriken
+        const systemPrompt = buildSystemPrompt(modelId, topic, podcastName);
+        const messages = buildMessages(modelId);
+
+        // Anropa modellens API
+        const responseText = await cfg.apiFunc(systemPrompt, messages);
+
+        // Lägg till svaret i den ackumulerade historiken
+        conversationHistory.push({
+          speaker: cfg.displayName,
+          text: responseText
+        });
+
+        // Uppdatera manuset
+        updateTurnInScript(turnCounter, modelId, responseText);
+        setModelStatus(modelId, 'Klar', 'ok');
+
+        // Räkna upp framsteg
+        completedTurns++;
+        setProgress(completedTurns, totalTurns);
+
+        // Kolla om modellen signalerade att samtalet ska sluta
+        if (/\[SLUT\]|\[Nu är vår tid ute/i.test(responseText)) {
+          shouldStop = true;
+          setStatus('Samtalet avslutades av modellerna.', 'done');
+          break;
+        }
+
+        // Liten paus mellan anropen för att undvika rate-limiting
+        await sleep(800);
+
+      } catch (err) {
+        // Hantera API-fel – visa i manuset och i statusraden
+        updateTurnInScript(turnCounter, modelId,
+          `[FEL: ${err.message}]`);
+        setModelStatus(modelId, 'Fel', 'error');
+        setStatus(`Fel från ${cfg.displayName}: ${err.message}`, 'error');
+        console.error('API-fel:', err);
+        // Fortsätt till nästa modell trots fel
+      }
+    }
+  }
+
+  // Samtalet är klart
+  isRunning = false;
+  document.getElementById('start-btn').disabled = false;
+  document.getElementById('start-btn').textContent = '▶ Starta inspelning';
+
+  if (!shouldStop) {
+    setStatus(`Klart! ${completedTurns} repliker genererade.`, 'done');
+  }
+}
+
+/*
+ * ============================================================
+ * EXPORTFUNKTIONER
+ * ============================================================
+ */
+
+// Exportera manuset som plain text (.txt)
+function exportTxt() {
+  if (conversationHistory.length === 0) {
+    alert('Inget manus att exportera än.');
+    return;
+  }
+
+  const topic = document.getElementById('topic').value.trim();
+  const podcastName = document.getElementById('podcast-name').value.trim() || 'Generativet';
+
+  let txt = `${podcastName} – AI Rundabordssamtal\n`;
+  txt += `Ämne: ${topic}\n`;
+  txt += `Genererat: ${new Date().toLocaleString('sv-SE')}\n`;
+  txt += '='.repeat(60) + '\n\n';
+
+  conversationHistory.forEach((h, i) => {
+    txt += `[${i + 1}] ${h.speaker}\n`;
+    txt += h.text + '\n\n';
+    txt += '-'.repeat(40) + '\n\n';
+  });
+
+  downloadFile('rundabord-manus.txt', txt, 'text/plain');
+}
+
+// Exportera manuset som Markdown (.md) – lämpligt för vidare redigering
+function exportMarkdown() {
+  if (conversationHistory.length === 0) {
+    alert('Inget manus att exportera än.');
+    return;
+  }
+
+  const topic = document.getElementById('topic').value.trim();
+  const podcastName = document.getElementById('podcast-name').value.trim() || 'Generativet';
+
+  let md = `# ${podcastName} – AI Rundabordssamtal\n\n`;
+  md += `**Ämne:** ${topic}\n\n`;
+  md += `*Genererat: ${new Date().toLocaleString('sv-SE')}*\n\n`;
+  md += '---\n\n';
+
+  conversationHistory.forEach((h, i) => {
+    md += `## ${i + 1}. ${h.speaker}\n\n`;
+    md += h.text + '\n\n';
+    md += '---\n\n';
+  });
+
+  downloadFile('rundabord-manus.md', md, 'text/markdown');
+}
+
+// Hjälpfunktion för att ladda ned en fil i webbläsaren
+function downloadFile(filename, content, mimeType) {
+  const blob = new Blob([content], { type: mimeType + ';charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/*
+ * ============================================================
+ * HJÄLPFUNKTION – sleep (paus i millisekunder)
+ * ============================================================
+ */
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/*
+ * ============================================================
+ * INITIALISERING
+ * ============================================================
+ */
+// Visa initialt korrekt antal repliker
+updateTurnsDisplay();
+
+// Öppna accordion som standard
+(function initAccordion() {
+  const body = document.getElementById('keys-body');
+  body.style.maxHeight = body.scrollHeight + 'px';
+})();
+
+</script>
+</body>
+</html>
