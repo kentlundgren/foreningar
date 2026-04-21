@@ -614,6 +614,28 @@
       font-style: italic;
     }
 
+
+    /* ============================================================
+       GITHUB-KNAPP – fixerad i nedre vänstra hörnet (enligt CLAUDE.md)
+       Använder rgba() på background, INTE opacity på hela elementet,
+       så att knappen ser likadan ut oavsett underliggande färg.
+       ============================================================ */
+    .github-link {
+      position: fixed; bottom: 1rem; left: 1rem;
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--accent);
+      background: rgba(22, 25, 33, 0.88); /* Anpassad till --surface med transparens */
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.3rem 0.65rem; text-decoration: none;
+      transition: background 0.15s, box-shadow 0.15s; z-index: 50;
+    }
+    .github-link:hover {
+      background: var(--surface);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      text-decoration: none;
+    }
+
   </style>
 </head>
 <body>
@@ -1511,5 +1533,15 @@ updateTurnsDisplay();
 })();
 
 </script>
+
+<!-- GitHub-länk fixerad i nedre vänstra hörnet (enligt CLAUDE.md).
+     Pekar direkt på projektmappen i repot – inte på profilsidan. -->
+<a class="github-link"
+   href="https://github.com/kentlundgren/foreningar/tree/main/AI_test"
+   target="_blank" rel="noopener"
+   aria-label="Visa källkod på GitHub">
+  { } GitHub
+</a>
+
 </body>
 </html>
