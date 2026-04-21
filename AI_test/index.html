@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Rundabordssamtal – Generativet</title>
+  <title>AI Rundabordssamtal – AIpodd</title>
 
   <!-- Google Fonts: DM Serif Display + DM Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -731,7 +731,7 @@
 <header>
   <div class="podcast-label">
     <span class="rec-dot"></span>
-    Generativet · Live inspelning
+    AIpodd · Live inspelning
   </div>
   <h1>AI <em>Rundabordssamtal</em></h1>
   <p class="subtitle">
@@ -813,7 +813,7 @@
       <!-- Poddnamn -->
       <div class="field">
         <label>Poddnamn</label>
-        <input type="text" id="podcast-name" value="Generativet"/>
+        <input type="text" id="podcast-name" value="AIpodd"/>
       </div>
 
       <!-- Antal rundor -->
@@ -1432,7 +1432,7 @@ async function startSamtal() {
 
   // Hämta inställningar
   const topic = document.getElementById('topic').value.trim();
-  const podcastName = document.getElementById('podcast-name').value.trim() || 'Generativet';
+  const podcastName = document.getElementById('podcast-name').value.trim() || 'AIpodd';
 
   // Bestäm ordningen – de aktiva modellerna i ordning
   const modelOrder = ['claude', 'chatgpt', 'gemini', 'grok'].filter(m => activeModels.has(m));
@@ -1543,7 +1543,7 @@ function exportTxt() {
   }
 
   const topic = document.getElementById('topic').value.trim();
-  const podcastName = document.getElementById('podcast-name').value.trim() || 'Generativet';
+  const podcastName = document.getElementById('podcast-name').value.trim() || 'AIpodd';
 
   let txt = `${podcastName} – AI Rundabordssamtal\n`;
   txt += `Ämne: ${topic}\n`;
@@ -1567,7 +1567,7 @@ function exportMarkdown() {
   }
 
   const topic = document.getElementById('topic').value.trim();
-  const podcastName = document.getElementById('podcast-name').value.trim() || 'Generativet';
+  const podcastName = document.getElementById('podcast-name').value.trim() || 'AIpodd';
 
   let md = `# ${podcastName} – AI Rundabordssamtal\n\n`;
   md += `**Ämne:** ${topic}\n\n`;
@@ -1658,12 +1658,14 @@ updateTurnsDisplay();
 
     <h2 id="modalTitle">Anders Bjarbys prompt</h2>
     <p class="modal-meta">
-      Idén till applikationen kommer från podden
+      Applikationen är anpassad för
+      <a href="https://open.spotify.com/show/5haU3OgZTLS2d18XySVdq0?si=c68c7eb525e74746"
+         target="_blank" rel="noopener">AIpodd – AI genererad podd om lärande, generativ AI, miljö och ekonomi</a>
+      (Kent Lundgren &amp; Google NotebookLM).<br>
+      Prompten är ursprungligen skapad av <strong>Anders Bjarby</strong> för podden
       <a href="https://open.spotify.com/episode/0XDqzpWxEs26jHRIZaDAkZ?si=g3l5z1FUT-a5N27U09AZCA"
          target="_blank" rel="noopener">Generativet, avsnitt #98</a>
-      – "Vi är den slutgiltiga likgiltigheten".<br>
-      Prompt utformad av <strong>Anders Bjarby</strong>
-      (för att få AI-modeller prata om oss människor…!):
+      – "Vi är den slutgiltiga likgiltigheten" – och återges här ordagrant som inspiration:
     </p>
 
     <!-- Den ursprungliga prompten – visas ordagrant -->

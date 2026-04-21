@@ -1,4 +1,4 @@
-# AI Rundabordssamtal – Generativet
+# AI Rundabordssamtal – AIpodd
 
 ## Live-sida (GitHub Pages)
 
@@ -27,14 +27,22 @@ Applikationen stöder konfigurerbara antal repliker och valbara modellkombinatio
 
 ---
 
-## Inspiration
+## Podden
 
-Idén till applikationen kommer från podden **Generativet**, avsnitt #98:
+Applikationen är anpassad för:
+**[AIpodd – AI genererad podd om lärande, generativ AI, miljö och ekonomi](https://open.spotify.com/show/5haU3OgZTLS2d18XySVdq0?si=c68c7eb525e74746)**
+*(Kent Lundgren & Google NotebookLM)*
+
+> En AI-genererad podd framtagen med Googles NotebookLM, där en man och en kvinna diskuterar lärande, generativ AI, miljö och ekonomi.
+
+---
+
+## Ursprung och inspiration
+
+Konceptet är inspirerat av podden **Generativet**, avsnitt #98:
 [**"Vi är den slutgiltiga likgiltigheten"** (Spotify)](https://open.spotify.com/episode/0XDqzpWxEs26jHRIZaDAkZ?si=g3l5z1FUT-a5N27U09AZCA)
 
-> Ett brutalt ärligt AI-rundabord där fyra modeller bråkar om huruvida vi blir ersatta, domesticerade eller bara bekvämt bedövade.
-
-Den ursprungliga prompten är skapad av **Anders Bjarby**.
+Den ursprungliga prompten som driver rundabordssamtalet är skapad av **Anders Bjarby** (för Generativet) och återges ordagrant i applikationens teknik-modal.
 
 ---
 
