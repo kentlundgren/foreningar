@@ -27,6 +27,17 @@ Applikationen stöder konfigurerbara antal repliker och valbara modellkombinatio
 
 ---
 
+## Inspiration
+
+Idén till applikationen kommer från podden **Generativet**, avsnitt #98:
+[**"Vi är den slutgiltiga likgiltigheten"** (Spotify)](https://open.spotify.com/episode/0XDqzpWxEs26jHRIZaDAkZ?si=g3l5z1FUT-a5N27U09AZCA)
+
+> Ett brutalt ärligt AI-rundabord där fyra modeller bråkar om huruvida vi blir ersatta, domesticerade eller bara bekvämt bedövade.
+
+Den ursprungliga prompten är skapad av **Anders Bjarby**.
+
+---
+
 ## GitHub-källkod
 
 Källkoden finns på:

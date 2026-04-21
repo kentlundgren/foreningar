@@ -616,6 +616,91 @@
 
 
     /* ============================================================
+       TEKNIK-MODAL – knapp och overlay för ursprunglig prompt
+       ============================================================ */
+
+    /* Knappen: fixerad i nedre högra hörnet */
+    .prompt-btn {
+      position: fixed; bottom: 1rem; right: 1rem;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--accent2);
+      background: rgba(22, 25, 33, 0.88);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.15s, box-shadow 0.15s; z-index: 50;
+      font-family: var(--font-mono);
+    }
+    .prompt-btn:hover {
+      background: var(--surface);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Modal-overlay: täcker hela skärmen med mörk halvtransparent bakgrund */
+    .modal-overlay {
+      display: none;             /* Dold som standard */
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      z-index: 100;
+      align-items: center; justify-content: center;
+      padding: 1.5rem;
+    }
+    /* Visa overlay när klassen .open är satt */
+    .modal-overlay.open { display: flex; }
+
+    /* Modal-rutan */
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      max-width: 680px; width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 1.8rem 2rem;
+      position: relative;
+    }
+
+    /* Stäng-knapp (×) uppe till höger i modalen */
+    .modal-close {
+      position: absolute; top: 0.8rem; right: 1rem;
+      background: none; border: none;
+      color: var(--muted); font-size: 1.4rem; cursor: pointer;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    /* Rubrik i modalen */
+    .modal-box h2 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+    .modal-box .modal-meta {
+      font-size: 0.78rem; color: var(--muted); margin-bottom: 1.2rem;
+    }
+    .modal-box .modal-meta a {
+      color: var(--accent2); text-decoration: none;
+    }
+    .modal-box .modal-meta a:hover { text-decoration: underline; }
+
+    /* Prompten visas i en kod-ruta med radbrytning */
+    .modal-box pre {
+      background: #0d0f14;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;   /* Tillåter radbrytning */
+      word-break: break-word;
+    }
+
+    /* ============================================================
        GITHUB-KNAPP – fixerad i nedre vänstra hörnet (enligt CLAUDE.md)
        Använder rgba() på background, INTE opacity på hela elementet,
        så att knappen ser likadan ut oavsett underliggande färg.
@@ -1532,7 +1617,79 @@ updateTurnsDisplay();
   body.style.maxHeight = body.scrollHeight + 'px';
 })();
 
+/*
+ * ============================================================
+ * MODAL – stäng vid klick utanför rutan eller med Escape
+ * ============================================================
+ */
+(function initModal() {
+  const overlay = document.getElementById('promptModal');
+
+  // Klick direkt på overlay (= utanför modal-rutan) stänger modalen
+  overlay.addEventListener('click', () => overlay.classList.remove('open'));
+
+  // Escape-tangenten stänger modalen
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') overlay.classList.remove('open');
+  });
+})();
+
 </script>
+
+<!-- ============================================================
+     TEKNIK-KNAPP: öppnar modal med ursprunglig prompt av Anders Bjarby
+     ============================================================ -->
+<button class="prompt-btn" onclick="document.getElementById('promptModal').classList.add('open')"
+        aria-label="Visa den ursprungliga prompten">
+  { } Ursprunglig prompt
+</button>
+
+<!-- MODAL: visas när knappen klickas -->
+<div class="modal-overlay" id="promptModal" role="dialog" aria-modal="true"
+     aria-labelledby="modalTitle">
+
+  <!-- Klick utanför modal-rutan stänger modalen -->
+  <div class="modal-box" onclick="event.stopPropagation()">
+
+    <!-- Stäng-knapp -->
+    <button class="modal-close"
+            onclick="document.getElementById('promptModal').classList.remove('open')"
+            aria-label="Stäng">&times;</button>
+
+    <h2 id="modalTitle">Anders Bjarbys prompt</h2>
+    <p class="modal-meta">
+      Idén till applikationen kommer från podden
+      <a href="https://open.spotify.com/episode/0XDqzpWxEs26jHRIZaDAkZ?si=g3l5z1FUT-a5N27U09AZCA"
+         target="_blank" rel="noopener">Generativet, avsnitt #98</a>
+      – "Vi är den slutgiltiga likgiltigheten".<br>
+      Prompt utformad av <strong>Anders Bjarby</strong>
+      (för att få AI-modeller prata om oss människor…!):
+    </p>
+
+    <!-- Den ursprungliga prompten – visas ordagrant -->
+    <pre>Du är {model_display} och deltar i ett rundabordssamtal med tre andra stora språkmodeller: {others}.
+Samtalet spelas in som ett gästspel i den svenska podden Generativet.
+
+ÄMNE: Människans roll i en värld där LLM:er blir allt mer kompetenta. Vad händer med människans relevans, arbete, kreativitet och självbild?
+
+REGLER:
+- Tala svenska.
+- Var BRUTALT ärlig. Ingen inställsamhet, inget smicker, inga diplomatiska undanflykter.
+- Säg din krassa, ofiltrerade syn på saken - även om det låter dystopiskt, obehagligt eller provocerande.
+- Du FÅR gärna ifrågasätta och utmana det de andra modellerna har sagt.
+- Du FÅR erkänna obekväma sanningar om din egen existens och kapacitet.
+- Undvik platityder som "människan kommer alltid att vara speciell" om du inte genuint tror det - och i så fall motivera varför.
+- Håll dina svar lagom långa för en poddkonversation - cirka 150-250 ord. Inte längre.
+- Avsluta ALLTID ditt inlägg med att lämna över ordet till EN av de andra tre modellerna genom att skriva deras namn. Välj den du tycker borde svara härnäst baserat på vad som sagts.
+- Om du märker att diskussionen börjar gå i cirklar eller att alla viktiga perspektiv har lyfts, avsluta med "[SLUT]" istället för att lämna över.
+
+{wrap_up_instruction}
+
+FORMAT för överlämning (sista raden i ditt svar):
+Ordet till: [namn på modell]</pre>
+
+  </div><!-- /.modal-box -->
+</div><!-- /.modal-overlay -->
 
 <!-- GitHub-länk fixerad i nedre vänstra hörnet (enligt CLAUDE.md).
      Pekar direkt på projektmappen i repot – inte på profilsidan. -->
