@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Revisionsberättelse 2025 – Kalmar Nation (enkel)</title>
+  <style>
+    /* ===== Grundlayout – A4-liknande, utskriftsvänlig ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: Calibri, "Segoe UI", Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 2rem 1rem;
+    }
+
+    /* Dokumentsida */
+    .page {
+      background: #fff;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 2rem;
+      padding: 25mm 25mm 30mm;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    /* ===== Toppsektion ===== */
+    .doc-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .doc-title {
+      text-align: right;
+      font-size: 13pt;
+      font-weight: 700;
+      margin: 0 0 0.2rem;
+    }
+
+    .doc-org {
+      text-align: center;
+      font-size: 12pt;
+      font-weight: 600;
+      margin: 0 0 0.2rem;
+      letter-spacing: 0.01em;
+    }
+
+    .doc-recipient {
+      text-align: right;
+      font-size: 10.5pt;
+      color: #444;
+      margin: 0 0 1.4rem;
+      font-style: italic;
+    }
+
+    .doc-auditor {
+      font-size: 11pt;
+      margin: 0 0 0.15rem;
+    }
+
+    .doc-auditor-role {
+      font-size: 10.5pt;
+      color: #555;
+      margin: 0 0 1.8rem;
+    }
+
+    /* Horisontell separator */
+    hr.section-sep {
+      border: none;
+      border-top: 1px solid #c0c0c0;
+      margin: 1.6rem 0;
+    }
+
+    /* ===== Brödtext ===== */
+    p {
+      margin: 0 0 0.85rem;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    /* ===== Signatursektion ===== */
+    .signature-section {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid #c0c0c0;
+    }
+
+    .signature-date {
+      margin-bottom: 2.5rem;
+      font-size: 10.5pt;
+    }
+
+    .sig-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .sig-table td {
+      width: 50%;
+      vertical-align: top;
+      padding: 0;
+    }
+
+    .sig-line {
+      border-top: 1px solid #1a1a1a;
+      max-width: 200px;
+      margin-top: 2.8rem;
+      padding-top: 0.3rem;
+      font-size: 10pt;
+    }
+
+    .sig-role {
+      font-size: 9.5pt;
+      color: #555;
+      margin-top: 0.1rem;
+    }
+
+    /* ===== Utskriftsstil ===== */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page {
+        box-shadow: none;
+        margin: 0;
+        padding: 20mm 20mm 25mm;
+        width: 100%;
+        min-height: auto;
+      }
+      .no-print { display: none; }
+    }
+
+    /* ===== Navigeringslänkar (döljs vid utskrift) ===== */
+    .nav-links {
+      width: 210mm;
+      margin: 0 auto 1rem;
+      font-size: 0.85rem;
+    }
+    .nav-links a { margin-right: 1.2rem; color: #2b4a8b; }
+
+    /* Print-knapp */
+    .print-btn {
+      display: inline-block;
+      margin: 0 auto 1.2rem;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      background: #2b4a8b;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .print-btn:hover { background: #1a3060; }
+
+    .top-bar {
+      width: 210mm;
+      margin: 0 auto 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation (döljs vid utskrift) -->
+  <div class="top-bar no-print">
+    <a class="nav-links" href="index.html">← Tillbaka till projektöversikten</a>
+    <button class="print-btn" onclick="window.print()">🖨 Skriv ut / Spara som PDF</button>
+    <a class="nav-links" href="revisionsberattelse_standard_2.html">Variant 2 – med konkreta punkter →</a>
+  </div>
+
+  <!-- ===== DOKUMENTSIDA ===== -->
+  <div class="page">
+
+    <!-- Rubrik och mottagare -->
+    <div class="doc-header">
+      <p class="doc-title">Revisionsberättelse 2025</p>
+      <p class="doc-org">Kalmar nation vid Lunds Universitet</p>
+      <p class="doc-recipient">The Seniors Board</p>
+      <p class="doc-auditor">Kent Lundgren</p>
+      <p class="doc-auditor-role">Revisor</p>
+    </div>
+
+    <hr class="section-sep" />
+
+    <!-- Inledning -->
+    <p>
+      Som revisor för Kalmar Nation vid Lunds Universitet har jag granskat organisationens
+      redovisning, ekonomiska förvaltning och tillhörande dokumentation för verksamhetsåret
+      2025 (perioden 2025-01-01 till 2025-12-31). Målet med granskningen är att säkerställa
+      att nationens ekonomiska redovisning är korrekt utförd och i enlighet med tillämpliga
+      regelverk samt att nationens tillgångar har hanterats ansvarsfullt och ändamålsenligt.
+    </p>
+
+    <p>
+      Granskningen omfattar en kontroll av bokföring, lager, inventarier, protokoll och
+      interna rutiner. Vidare har fokus lagts på att identifiera förbättringsområden för att
+      stärka organisationens ekonomiska stabilitet och efterlevnad av stadgar och regler.
+    </p>
+
+    <!-- Granskningsresultat -->
+    <p>
+      Under granskningen har bokföring, bankavstämning, lager, inventarier och tillhörande
+      verifikationer kontrollerats. Inga väsentliga avvikelser som påverkar nationens
+      ekonomiska redovisning har identifierats. Vi anser att redovisningen ger en rättvisande
+      bild av nationens ekonomiska ställning och resultat för verksamhetsåret 2025.
+    </p>
+
+    <!-- Tillstyrkan -->
+    <p>
+      Utifrån den genomförda granskningen rekommenderar jag att Kalmar Nations bokslut
+      för verksamhetsåret 2025 godkänns av nationens nationsmöte och att styrelsen
+      beviljas ansvarsfrihet för det gångna verksamhetsåret.
+    </p>
+
+    <!-- Signatur -->
+    <div class="signature-section">
+      <p class="signature-date">Lund, 2026-04-23</p>
+      <table class="sig-table">
+        <tr>
+          <td>
+            <div class="sig-line">
+              Kent Lundgren
+              <div class="sig-role">Revisor 2025</div>
+            </div>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+  </div><!-- .page -->
+
+</body>
+</html>
