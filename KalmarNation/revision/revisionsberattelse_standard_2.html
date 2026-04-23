@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Revisionsberättelse 2025 – Kalmar Nation (med konkreta punkter)</title>
+  <title>Revisionsberättelse 2025 – Kalmar Nation (med iakttagelser)</title>
   <style>
     /* ===== Grundlayout – A4-liknande, utskriftsvänlig ===== */
     *, *::before, *::after { box-sizing: border-box; }
@@ -29,9 +29,7 @@
     }
 
     /* ===== Toppsektion ===== */
-    .doc-header {
-      margin-bottom: 2.5rem;
-    }
+    .doc-header { margin-bottom: 2.5rem; }
 
     .doc-title {
       text-align: right;
@@ -56,59 +54,31 @@
       font-style: italic;
     }
 
-    .doc-auditor {
-      font-size: 11pt;
-      margin: 0 0 0.15rem;
-    }
+    .doc-auditor       { font-size: 11pt; margin: 0 0 0.15rem; }
+    .doc-auditor-role  { font-size: 10.5pt; color: #555; margin: 0 0 1.8rem; }
 
-    .doc-auditor-role {
-      font-size: 10.5pt;
-      color: #555;
-      margin: 0 0 1.8rem;
-    }
-
-    /* Horisontell separator */
+    /* Separator */
     hr.section-sep {
       border: none;
       border-top: 1px solid #c0c0c0;
       margin: 1.6rem 0;
     }
 
-    /* ===== Rubriker (speglar Word-mallens Heading 4 / Heading 5) ===== */
-    h2 {
-      /* Heading 4 – huvudsektion */
-      font-size: 11.5pt;
-      font-weight: 700;
-      margin: 1.6rem 0 0.4rem;
-      border-bottom: 1px solid #d0d0d0;
-      padding-bottom: 0.2rem;
-      color: #1a1a1a;
-    }
-
-    h3 {
-      /* Heading 5 – undersektion */
-      font-size: 11pt;
-      font-weight: 700;
-      font-style: italic;
-      margin: 1rem 0 0.25rem;
-      color: #1a1a1a;
-    }
-
-    /* ===== Brödtext ===== */
+    /* Brödtext – VÄNSTERMARGINERAD (ej justified) */
     p {
-      margin: 0 0 0.75rem;
-      text-align: justify;
-      hyphens: auto;
+      margin: 0 0 0.85rem;
+      text-align: left;
     }
 
+    /* Skydda datum och kortare fraser från radbrytning */
+    .nowrap { white-space: nowrap; }
+
+    /* Iakttagelselista */
     ul {
-      margin: 0.2rem 0 0.8rem 1.5rem;
+      margin: 0.3rem 0 0.9rem 1.5rem;
       padding: 0;
     }
-
-    ul li {
-      margin-bottom: 0.3rem;
-    }
+    ul li { margin-bottom: 0.45rem; }
 
     /* ===== Signatursektion ===== */
     .signature-section {
@@ -116,22 +86,10 @@
       padding-top: 1.2rem;
       border-top: 1px solid #c0c0c0;
     }
+    .signature-date { margin-bottom: 2.5rem; font-size: 10.5pt; }
 
-    .signature-date {
-      margin-bottom: 2.5rem;
-      font-size: 10.5pt;
-    }
-
-    .sig-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .sig-table td {
-      width: 50%;
-      vertical-align: top;
-      padding: 0;
-    }
+    .sig-table { width: 100%; border-collapse: collapse; }
+    .sig-table td { width: 50%; vertical-align: top; padding: 0; }
 
     .sig-line {
       border-top: 1px solid #1a1a1a;
@@ -140,14 +98,9 @@
       padding-top: 0.3rem;
       font-size: 10pt;
     }
+    .sig-role { font-size: 9.5pt; color: #555; margin-top: 0.1rem; }
 
-    .sig-role {
-      font-size: 9.5pt;
-      color: #555;
-      margin-top: 0.1rem;
-    }
-
-    /* ===== Utskriftsstil ===== */
+    /* ===== Utskrift ===== */
     @media print {
       body { background: #fff; padding: 0; }
       .page {
@@ -158,11 +111,9 @@
         min-height: auto;
       }
       .no-print { display: none; }
-      h2 { page-break-after: avoid; }
-      h3 { page-break-after: avoid; }
     }
 
-    /* ===== Navigering (döljs vid utskrift) ===== */
+    /* Navigering */
     .top-bar {
       width: 210mm;
       margin: 0 auto 0.75rem;
@@ -171,8 +122,8 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
-    .nav-links { font-size: 0.85rem; color: #2b4a8b; text-decoration: none; }
-    .print-btn {
+    .nav-links  { font-size: 0.85rem; color: #2b4a8b; text-decoration: none; }
+    .print-btn  {
       display: inline-block;
       padding: 0.4rem 1rem;
       font-size: 0.85rem;
@@ -213,136 +164,45 @@
     <p>
       Som revisor för Kalmar Nation vid Lunds Universitet har jag granskat organisationens
       redovisning, ekonomiska förvaltning och tillhörande dokumentation för verksamhetsåret
-      2025 (perioden 2025-01-01 till 2025-12-31). Målet med granskningen är att säkerställa
-      att nationens ekonomiska redovisning är korrekt utförd och i enlighet med tillämpliga
-      regelverk samt att nationens tillgångar har hanterats ansvarsfullt och ändamålsenligt.
+      2025 (perioden <span class="nowrap">2025-01-01</span> till <span class="nowrap">2025-12-31</span>).
+      Målet med granskningen är att säkerställa att nationens ekonomiska redovisning är korrekt
+      utförd och i enlighet med tillämpliga regelverk samt att nationens tillgångar har hanterats
+      ansvarsfullt och ändamålsenligt.
     </p>
 
     <p>
-      Granskningen omfattar en kontroll av bokföring, lager, inventarier, protokoll och
-      interna rutiner. Vidare har fokus lagts på att identifiera förbättringsområden för att
-      stärka organisationens ekonomiska stabilitet och efterlevnad av stadgar och regler.
+      Granskningen omfattar en kontroll av bokföring, lager, inventarier, protokoll och interna
+      rutiner. Vidare har fokus lagts på att identifiera förbättringsområden för att stärka
+      organisationens ekonomiska stabilitet och efterlevnad av stadgar och regler.
     </p>
 
+    <!-- Iakttagelser -->
     <p>
-      Denna rapport redogör för de viktigaste punkterna samt rekommendationer för framtida
-      förbättringar.
+      Under granskningen identifierades och åtgärdades följande punkter:
     </p>
 
-    <!-- ===== SEKTION: Ekonomisk redovisning ===== -->
-    <h2>Ekonomisk redovisning</h2>
-
-    <h3>Avskrivningar på inventarier</h3>
-    <p>
-      Under året minskade det bokförda värdet av inventarier med 12 763 kr till följd av
-      planmässiga avskrivningar (konto 7832). Inventariernas nettovärde uppgår till 16 100 kr
-      per 2025-12-31, jämfört med 28 863 kr vid årets ingång. Avskrivningarna bedöms vara
-      korrekt beräknade och redovisade.
-    </p>
-
-    <h3>Lageruppdatering</h3>
-    <p>
-      Lagren för mat, dryck, gästkort och profilprodukter inventerades vid årets slut.
-      Det totala lagervärdet korrigerades efter fysisk inventering från 423 708 kr till
-      298 714 kr. En äldre kundfordran avseende en tobaksautomat i källaren (10 000 kr),
-      som inte längre är i bruk, bedömdes som osannolik att erhålla och skrevs ned som
-      konstaterad kundförlust (konto 6351) i samråd med nuvarande ekonomiansvarig.
-      Konto 1510 Kundfordringar uppgår till 76 386 kr per 2025-12-31.
-    </p>
-
-    <h3>Finansiella värdepapper</h3>
-    <p>
-      Förändringar i organisationens finansiella värdepapper bidrog med ett finansnetto om
-      383 743 kr för verksamhetsåret. Beloppet innefattar avkastning på förvaltade fonder
-      och placeringar samt stipendieutbetalningar. Nationens finansiella ställning bedöms
-      som stabil.
-    </p>
-
-    <h3>Skillnader i banksaldon</h3>
-    <p>
-      Vid en jämförelse mellan bokföringens saldon och verkliga banksaldon per 2025-12-31
-      noterades inga avvikelser. Samtliga sex SEB-konton, kassa (19 kr) och PayPal (628 kr)
-      stämde exakt mot bankens engagemangssammanställning. Bankavstämningen godkänns utan
-      anmärkning.
-    </p>
-
-    <h3>Bokföring av lagerkostnader</h3>
-    <p>
-      Vid inköp av alkohol och andra lagervaror har lagerförändringar och nedskrivningar
-      hanterats korrekt i bokföringssystemet Fortnox. Under granskningen identifierades
-      en felaktig manuell bokslutsverifikation (Y2) som cirkulärt bokförde årets resultat
-      som en ny intäkt. Felet identifierades, förklarades för ekonomiansvarig och
-      reverserades korrekt. Det slutliga resultatet är därmed korrekt beräknat.
-    </p>
-
-    <h3>Verifikationer</h3>
-    <p>
-      Vid granskningen av bokföringen för verksamhetsåret 2025 granskades stickprov ur
-      leverantörsfakturor (serie A):
-    </p>
-    <ul>
-      <li><strong>A1</strong> – Siemens Financial Services, 8 026 kr (kopiatorleasing). Inga anmärkningar.</li>
-      <li><strong>A22</strong> – Martin &amp; Servera, 119 693 kr (mat och dryck). Inga anmärkningar.</li>
-      <li><strong>A452</strong> – Lundgrens i Gräfsnäs, 103 kr (guldmedalj, påminnelse). Inga väsentliga anmärkningar.</li>
-    </ul>
-    <p>
-      Samtliga granskade fakturor stämde mot verifikationslistan och underlagen. Inga
-      väsentliga avvikelser noterades.
-    </p>
-
-    <h3>Åtgärder och rekommendationer</h3>
     <ul>
       <li>
-        Nedskrivning av kundfordran avseende tobaksautomat (10 000 kr) är genomförd och
-        bokförd 2026-04-22.
+        <strong>Felaktig bokslutsverifikation – identifierad och reverserad.</strong>
+        En manuell verifikation (Y2) bokförde årets resultat cirkulärt som en ny intäkt, vilket
+        tillfälligt blåste upp det redovisade överskottet med 881 658 kr. Felet identifierades
+        under revisionens gång, förklarades för ekonomiansvarig och reverserades korrekt.
+        Det slutliga resultatet är 424 975 kr.
       </li>
       <li>
-        Övriga äldre kundfordringar (42 961 kr från åren 2022–2024) bör följas upp och,
-        om indrivning bedöms omöjlig, skrivas ned successivt under 2026.
-      </li>
-      <li>
-        Ekonomiansvarig rekommenderas att säkerställa att bokslutsverifikationer alltid har
-        ett externt eller dokumenterat underlag, för att undvika cirkulära bokningar.
+        <strong>Äldre kundfordran nedskriven.</strong>
+        En fordran avseende tobaksautomaten i källaren (10 000 kr), från föregående räkenskapsår,
+        bedömdes av ekonomiansvarig som osannolik att erhålla och skrevs ned som konstaterad
+        kundförlust. Övriga äldre fordringar om 42 961 kr (avseende åren 2022–2024) följs upp
+        under 2026.
       </li>
     </ul>
 
-    <!-- ===== SEKTION: Protokollhantering ===== -->
-    <h2>Protokollhantering</h2>
-
-    <p>Vid granskning av seniorsprotokollen för verksamhetsåret 2025 framkom följande:</p>
-    <ul>
-      <li>
-        Seniorskollegiet sammanträdde elva gånger under 2025 (jan, feb, mar, apr, maj,
-        jun, aug, sep, okt, nov, dec). Mötesfrekvensen bedöms som tillfredsställande.
-      </li>
-      <li>
-        Nationsmötet sammanträdde sex gånger. Nya stadgar röstades igenom under hösten 2025.
-      </li>
-      <li>
-        Verksamhetsberättelse för 2025 har upprättats och granskats. Den ger en rättvisande
-        bild av styrelsens förvaltning och nationens verksamhet under året.
-      </li>
-    </ul>
-
-    <!-- ===== SEKTION: Interna kontroller och processer ===== -->
-    <h2>Interna kontroller och processer</h2>
-
+    <!-- Granskningsresultat och tillstyrkan -->
     <p>
-      Under granskningen konstaterades att ekonomihanteringen för Kalmar Nation sköts av
-      en person (ekonomiansvarig, PQe), vilket innebär en viss koncentrationsrisk avseende
-      intern kontroll. Bokföringen genomförs i Fortnox. Lagerinventering genomförs vid
-      årets slut. Nationen rekommenderas att kontinuerligt säkerställa att rutiner för
-      attestering och uppföljning av utestående fordringar är väldefinierade.
-    </p>
-
-    <!-- ===== SEKTION: Sammanfattande slutsats ===== -->
-    <h2>Sammanfattande slutsats</h2>
-
-    <p>
-      Sammanfattningsvis bedöms Kalmar Nations ekonomiska redovisning och protokollhantering
-      för verksamhetsåret 2025 vara korrekt utförd och i enlighet med tillämpliga regelverk.
-      De identifierade bristerna har åtgärdats under revisionens gång. Årets överskott
-      uppgår till 424 975 kr. Eget kapital per 2025-12-31 uppgår till 9 932 668 kr.
+      I övrigt har bokföring, bankavstämning och kontinuitet mellan räkenskapsåren granskats
+      utan anmärkning. Vi anser att redovisningen ger en rättvisande bild av nationens
+      ekonomiska ställning och resultat för verksamhetsåret 2025.
     </p>
 
     <p>
