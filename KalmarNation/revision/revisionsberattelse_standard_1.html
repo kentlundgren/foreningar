@@ -154,6 +154,22 @@
     }
     .print-btn:hover { background: #1a3060; }
 
+    /* Språkväxlare – uppe till höger i dokumentet */
+    .lang-btn {
+      position: absolute;
+      top: 10mm;
+      right: 10mm;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid #4a7ab5;
+      border-radius: 4px;
+      color: #2b4a8b;
+      text-decoration: none;
+      background: rgba(240,244,250,0.85);
+    }
+    .lang-btn:hover { background: #dce8f7; }
+
     .top-bar {
       width: 210mm;
       margin: 0 auto 0.75rem;
@@ -173,7 +189,11 @@
   </div>
 
   <!-- ===== DOKUMENTSIDA ===== -->
-  <div class="page">
+  <div class="page" style="position:relative;">
+
+    <!-- Språkväxlare -->
+    <a class="lang-btn no-print" href="revisionsberattelse_standard_1_eng.html">🇬🇧 In English</a>
+
 
     <!-- Rubrik och mottagare -->
     <div class="doc-header">
