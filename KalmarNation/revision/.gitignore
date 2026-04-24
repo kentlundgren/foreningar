@@ -13,6 +13,8 @@ $RECYCLE.BIN/
 # Word-dokument – lagras enbart lokalt, ska ej versionshanteras på GitHub
 *.docx
 *.doc
+# Undantag: revisionsberättelsen (Variant 2) ska följa med till GitHub
+!revisionsberattelse_standard_2.docx
 
 # Word skapar tillfälliga låsfiler när ett dokument är öppet
 ~$*.docx

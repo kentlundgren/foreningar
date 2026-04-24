@@ -151,6 +151,20 @@
       text-decoration: none;
     }
     .print-btn:hover { background: #1a3060; }
+
+    /* Word-knapp */
+    .word-btn {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      background: #1d6f42;   /* Word-grön */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .word-btn:hover { background: #155232; }
   </style>
 </head>
 <body>
@@ -159,6 +173,9 @@
   <div class="top-bar no-print">
     <a class="nav-links" href="index.html">← Tillbaka till projektöversikten</a>
     <button class="print-btn" onclick="window.print()">🖨 Skriv ut / Spara som PDF</button>
+    <a class="word-btn" href="revisionsberattelse_standard_2.docx" download>
+      📄 Ladda ned som Word (.docx)
+    </a>
     <a class="nav-links" href="revisionsberattelse_standard_1.html">← Variant 1 – enkel</a>
   </div>
 
