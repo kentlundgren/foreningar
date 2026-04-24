@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 4.1, 2026-04-24 – ersätter version 4.0*
+*Version 4.2, 2026-04-24 – ersätter version 4.1*
 
 ---
 
@@ -598,6 +598,10 @@ När förslag på e-post eller annan text som ska skickas vidare tas fram, ska t
 
 **Konvention för index-HTML-filer (generellt.html och index.html):** Alla granskningsöversikter – oavsett organisation – ska följa en enhetlig **10-stegsstruktur**. Stegen är numrerade 1–10 och speglar varandra mellan den allmänna guiden (generellt.html) och den organisationsspecifika statusöversikten (index.html). Stegen är: 1. Förutsättningar och riskbedömning (stadgegranskning + riskbedömning), 2. Bankavstämning, 3. Resultat = Δ eget kapital (kan delas i 3a initial/3b slutgiltig), 4. Kontinuitetskontroll, 5. Stickprov, 6. Jämförelseanalys, 7. Fordringar, 8. Bedrägerikontroll, 9. Förvaltningsgranskning, 10. Revisionsberättelse. Denna struktur ska användas för alla nya organisationer som granskas.
 
+> ⚠️ **Viktigt – alltid exakt 10 huvud­steg i `generellt.html` och `generellt_eng.html`:** Listan `<ol class="step-list">` ska alltid innehålla **exakt 10 direkta `<li>`-element** – ett per steg. Om ett steg behöver delas upp (t.ex. steg 1 med delarna 1a, 1b, 1c) ska dessa vara **underrubriker inuti samma `<li>`** (t.ex. med en nästlad `<ul>`), aldrig egna extra `<li>`-element i huvud­listan. En extra `<li>` i huvud­listan ger 11 steg, ett borttaget ger 9 – båda är fel.
+>
+> **CSS-varning:** CSS-selektorn i `<style>`-blocket måste vara `.step-list > li` (med `>`-operatorn för direkta barn), **inte** `.step-list li`. Utan `>` räknas även nästlade `<li>`-element i underlistorna in i counter­kön, vilket förstör numreringen (steg 2 kan då visas som steg 5, osv.). Kontrollera alltid att `>` finns kvar efter redigeringar.
+
 **Revisionsanteckningar i index-HTML-filer – automatisk uppdatering:** När viktiga händelser inträffar under revisionen – t.ex. svar från ekonomiansvarig, nya fynd, beslut om nedskrivning, genomförda stickprov, mottagna underlag – ska en **ny datumstämplad revisionsanteckning** läggas till i index.html (och index_eng.html) *utan att Kent explicit behöver begära det*. Anteckningen läggs alltid till som en ny `<section>` med rubrik `Revisionsanteckningar per ÅÅÅÅ-MM-DD` (resp. `Review notes as of YYYY-MM-DD`), direkt före `.ai-note`-stycket. Versionsnumret räknas upp i båda filerna. Anteckningen ska vara kortfattad men fullständig: vad hände, vad innebär det för revisionen, och vilket är nästa steg.
 
 **Ton och formulering i revisionsanteckningar:** Index-filerna är professionella revisionsdokument som ekonomiansvarig (PQe), styrelse och övriga intressenter kan läsa. Anteckningarna ska formuleras som om revisorn kommunicerar direkt och självständigt – aldrig på ett sätt som avslöjar intern arbetsprocess, utkast eller att revisorn valt bland alternativa formuleringar. Skriv inte t.ex. "Kent valde Alternativ 2" eller "Kent svarade med en balanserad formulering". Skriv i stället vad revisorn faktiskt kommunicerade i sak: "Kent klargjorde att... och bad om ett ställningstagande." Samma princip gäller den engelska versionen. Tänk alltid: *kan Daniel eller Cas läsa detta utan att det uppfattas som oprofessionellt?*
@@ -712,4 +716,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.1, 2026-04-24.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.2, 2026-04-24.*
