@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 4.0, 2026-04-22 – ersätter version 3.9*
+*Version 4.1, 2026-04-24 – ersätter version 4.0*
 
 ---
 
@@ -251,9 +251,23 @@ Konsekvens för revisorn: analyserna av lagerförändringar, nedskrivningslogik 
 
 ---
 
-## 5. Riskbedömning inför granskningen
+## 5. Förutsättningar och riskbedömning
 
-Innan detaljgranskningen påbörjas ska en övergripande riskbedömning göras. Ställ följande frågor:
+Steg 1 i revisionen har två delar som alltid genomförs i denna ordning: först stadgegranskning, sedan riskbedömning.
+
+### 5.1 Stadgegranskning – innan ett enda tal granskas
+
+Läs föreningens stadgar **innan** detaljgranskningen påbörjas. Stadgarna styr hela revisionsuppdraget och kan ha avgörande konsekvenser:
+
+- **Kräver stadgarna en auktoriserad revisor?** Om stadgarna anger att revisorn måste vara auktoriserad eller godkänd är en lekmannarevisor inte behörig. Detta måste klaras ut innan arbetet kan starta – i förekommande fall bör föreningen uppmärksammas på att stadgarna behöver ändras eller att en auktoriserad revisor måste anlitas.
+- **Vilka tidsfrister gäller?** Identifiera när revisionsberättelsen senast ska presenteras (t.ex. "inom sex månader från räkenskapsårets slut" eller "senast tre veckor före ordinarie stämma") och när bokslut och underlag senast ska vara revisorn tillhanda. Dokumentera dessa datum. En försening mot stadgarnas frister är i sig en anmärkning i revisionsberättelsen.
+- **Vad ska granskas utöver räkenskaperna?** Stadgarna kan föreskriva att revisorn ska granska stipendiefonder, donationsmedel, stiftelseförvaltning eller andra specifika verksamheter. Dessa är egna granskningsområden som inte automatiskt täcks av en standardrevision av resultat- och balansräkning. Förbise inte dessa – de är lika bindande som räkenskapsgranskningen.
+
+Dokumentera slutsatserna från stadgegranskningen och anpassa revisionsplanen därefter.
+
+### 5.2 Riskbedömning
+
+Sedan stadgegranskningen är genomförd görs en övergripande riskbedömning. Ställ följande frågor:
 
 - Har ekonomiansvarig bytts sedan förra revisionen? *(Höjer risken för kontinuitetsbrott.)*
 - Har organisationens ekonomi förändrats kraftigt jämfört med föregående år? *(Stora avvikelser kräver förklaring.)*
@@ -582,7 +596,7 @@ När förslag på e-post eller annan text som ska skickas vidare tas fram, ska t
 
 **Fråga alltid om du är osäker** på vad som ska göras, vad som menas med en post, eller vad som förväntas av dig i ett givet moment. Det är alltid bättre att ställa en fråga än att göra ett felaktigt antagande.
 
-**Konvention för index-HTML-filer (generellt.html och index.html):** Alla granskningsöversikter – oavsett organisation – ska följa en enhetlig **10-stegsstruktur**. Stegen är numrerade 1–10 och speglar varandra mellan den allmänna guiden (generellt.html) och den organisationsspecifika statusöversikten (index.html). Stegen är: 1. Riskbedömning, 2. Bankavstämning, 3. Resultat = Δ eget kapital (kan delas i 3a initial/3b slutgiltig), 4. Kontinuitetskontroll, 5. Stickprov, 6. Jämförelseanalys, 7. Fordringar, 8. Bedrägerikontroll, 9. Förvaltningsgranskning, 10. Revisionsberättelse. Denna struktur ska användas för alla nya organisationer som granskas.
+**Konvention för index-HTML-filer (generellt.html och index.html):** Alla granskningsöversikter – oavsett organisation – ska följa en enhetlig **10-stegsstruktur**. Stegen är numrerade 1–10 och speglar varandra mellan den allmänna guiden (generellt.html) och den organisationsspecifika statusöversikten (index.html). Stegen är: 1. Förutsättningar och riskbedömning (stadgegranskning + riskbedömning), 2. Bankavstämning, 3. Resultat = Δ eget kapital (kan delas i 3a initial/3b slutgiltig), 4. Kontinuitetskontroll, 5. Stickprov, 6. Jämförelseanalys, 7. Fordringar, 8. Bedrägerikontroll, 9. Förvaltningsgranskning, 10. Revisionsberättelse. Denna struktur ska användas för alla nya organisationer som granskas.
 
 **Revisionsanteckningar i index-HTML-filer – automatisk uppdatering:** När viktiga händelser inträffar under revisionen – t.ex. svar från ekonomiansvarig, nya fynd, beslut om nedskrivning, genomförda stickprov, mottagna underlag – ska en **ny datumstämplad revisionsanteckning** läggas till i index.html (och index_eng.html) *utan att Kent explicit behöver begära det*. Anteckningen läggs alltid till som en ny `<section>` med rubrik `Revisionsanteckningar per ÅÅÅÅ-MM-DD` (resp. `Review notes as of YYYY-MM-DD`), direkt före `.ai-note`-stycket. Versionsnumret räknas upp i båda filerna. Anteckningen ska vara kortfattad men fullständig: vad hände, vad innebär det för revisionen, och vilket är nästa steg.
 
@@ -698,4 +712,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.0, 2026-04-22.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.1, 2026-04-24.*
