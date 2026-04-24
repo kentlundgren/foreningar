@@ -1,6 +1,6 @@
 # CLAUDE.md – Generell revisionsinstruktion för ideella organisationer i Sverige
 
-*Version 1.1 · 2026-04-20*
+*Version 1.2 · 2026-04-24*
 
 Denna fil gäller för projektet **Revisionsverktyg för ideella organisationer**
 och styr hur AI-assistenten ska agera i revisionsrelaterade samtal.
@@ -202,7 +202,22 @@ alltid underlag för **minst två år bakåt**.
 
 ---
 
-## 7. Synkronisering av index-filer
+## 7. Versionsnumrering
+
+**Versionsnumret ska alltid räknas upp och datumet uppdateras när en fil
+ändras.** Regeln gäller för alla filer i projektet som har ett versionshuvud:
+`styles.css`, `script.js`, `index.html`, `index_eng.html`, `splash.css`,
+`splash.js` och denna `CLAUDE.md`.
+
+Format: `Version X.Y · ÅÅÅÅ-MM-DD` – öka Y vid mindre tillägg eller
+korrigeringar, öka X vid större omstruktureringar.
+
+Om flera filer uppdateras i samma session räcker det att räkna upp med ett
+steg per fil – men **alla berörda filer ska uppdateras innan sessionen avslutas**.
+
+---
+
+## 8. Synkronisering av index-filer
 
 **index.html och index_eng.html ska alltid uppdateras tillsammans.** Varje gång en
 ändring görs i den svenska `index.html` ska en motsvarande ändring – korrekt
@@ -214,7 +229,7 @@ uppdaterade kommentarer, versionsnummer och revisionsanteckningar.
 
 ---
 
-## 8. Kontakt
+## 9. Kontakt
 
 **Kent Lundgren** erbjuder professionell lekmannarevision för ideella
 organisationer. Kontakt: kent@kentlundgren.se · [@kentlundgren](https://x.com/kentlundgren)
