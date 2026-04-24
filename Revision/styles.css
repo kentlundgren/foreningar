@@ -157,31 +157,37 @@ li {
 }
 
 /* -------------------------------------------------------------------------
-   Språkväxlarknapp – diskret pill-knapp uppe till höger i headern
+   Uppdatering 2026-04-24: Språkväxlarknapp – fixerad uppe till höger
+   Ändrad från position: absolute (försvann vid scrollning) till position: fixed
+   så att knappen alltid är synlig, precis som GitHub-knappen nere till vänster.
+   Färgerna anpassade för att synas mot både mörk header och ljust sidinnehåll.
    Används i både index.html (→ In English) och index_eng.html (→ På svenska)
    ------------------------------------------------------------------------- */
 .lang-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
   font-size: 0.82rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.90);
+  border: 1.5px solid var(--color-border);
   border-radius: 99px;
   padding: 0.25rem 0.75rem;
   text-decoration: none;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
   white-space: nowrap;
+  z-index: 50;
 }
 
 .lang-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.9);
-  color: #ffffff;
+  background: #ffffff;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   text-decoration: none;
 }
 
