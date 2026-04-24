@@ -202,7 +202,19 @@ alltid underlag för **minst två år bakåt**.
 
 ---
 
-## 7. Kontakt
+## 7. Synkronisering av index-filer
+
+**index.html och index_eng.html ska alltid uppdateras tillsammans.** Varje gång en
+ändring görs i den svenska `index.html` ska en motsvarande ändring – korrekt
+översatt och anpassad till engelska – göras i `index_eng.html`. Detsamma gäller
+omvänt. Ingen av filerna ska vara mer uppdaterad än den andra.
+
+Regeln gäller för alla typer av ändringar: nytt innehåll, korrigeringar,
+uppdaterade kommentarer, versionsnummer och revisionsanteckningar.
+
+---
+
+## 8. Kontakt
 
 **Kent Lundgren** erbjuder professionell lekmannarevision för ideella
 organisationer. Kontakt: kent@kentlundgren.se · [@kentlundgren](https://x.com/kentlundgren)
