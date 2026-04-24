@@ -27,14 +27,16 @@
       padding: 0;
       counter-reset: steps;
     }
-    .step-list li {
+    /* Update: > li (direct children only) prevents nested <li> elements
+       from being counted in the counter queue and breaking the 10-step numbering */
+    .step-list > li {
       counter-increment: steps;
       display: flex;
       gap: 1rem;
       margin-bottom: 1.25rem;
       align-items: flex-start;
     }
-    .step-list li::before {
+    .step-list > li::before {
       content: counter(steps);
       flex-shrink: 0;
       width: 2rem;

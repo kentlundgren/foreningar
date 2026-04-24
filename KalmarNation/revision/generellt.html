@@ -27,14 +27,16 @@
       padding: 0;
       counter-reset: steps;
     }
-    .step-list li {
+    /* Uppdatering: > li (direkta barn) förhindrar att nästlade <li>-element
+       räknas med i counterkön och förstör numreringen av de 10 stegen */
+    .step-list > li {
       counter-increment: steps;
       display: flex;
       gap: 1rem;
       margin-bottom: 1.25rem;
       align-items: flex-start;
     }
-    .step-list li::before {
+    .step-list > li::before {
       content: counter(steps);
       flex-shrink: 0;
       width: 2rem;
