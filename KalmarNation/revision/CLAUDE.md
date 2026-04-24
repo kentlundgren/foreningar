@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 4.3, 2026-04-24 – ersätter version 4.2*
+*Version 4.4, 2026-04-24 – ersätter version 4.3*
 
 ---
 
@@ -546,6 +546,26 @@ Styrelsen föreslår normalt att årets överskott balanseras i ny räkning (öv
 
 > **Praktiskt exempel (Kalmar Nation 2025):** PQe bokförde vernr Y2 – Debet 2099 / Kredit 8999 med 881 657 kr – i tron att årets resultat måste aktiveras manuellt. Effekten blev en cirkulär intäkt. Y2 reverserats 2026-04-13. Organiskt resultat + lagerförändringar = 434 975 kr. Därefter skrevs en kundfordran avseende tobaksautomat (10 000 kr) ned som konstaterad kundförlust (kto 6351, genomförd 2026-04-22). **Slutligt bekräftat resultat: 424 975 kr.** Disposition sker i 2026 års böcker efter nationsmötets beslut (2026-05-27): Debet 2099 / Kredit 2010 = 424 975 kr. Revisionsberättelse: PQe 2025 bekräftade 2026-04-24 att **Variant 2** (med notering om nedskrivning av tobaksfordran 10 000 kr) är att föredra. Word-version (`revisionsberattelse_standard_2.docx`) framtagen och publicerad. Inväntar Daniel/Cas beslut om templateformat och underskriftsförfarande inför nationsmötet 2026-05-27.
 
+### 6.9 Granskning av finansiella placeringar – försäljning av värdepapper (konto 8220)
+
+Organisationer med fondplaceringar eller andra finansiella värdepapper (konton 1300, 1385, 1941, 1942) kan under ett räkenskapsår sälja eller lösa in värdepapper. En realiserad vinst eller förlust vid en sådan transaktion ska bokföras på **konto 8220 – Resultat vid försäljning av finansiella värdepapper**. Om detta konto inte används när det borde, saknas en post i resultaträkningen och det redovisade resultatet är felaktigt.
+
+**Proaktiv kontroll – gör detta alltid tidigt i granskningen:**
+
+Kontrollera i balansräkning och verifikationslista om konto 8220 (och besläktade konton 8210, 8230, 8270, 8430) har använts under granskningsåret. Jämför med föregående år (år X−1):
+
+- **Om konto 8220 användes år X−1 men inte år X:** Detta är en tydlig varningssignal. Fråga omedelbart ekonomiansvarig om inga värdepapper såldes eller löstes in under år X. Det är möjligt att transaktioner har bokförts felaktigt – t.ex. enbart som balansrörelser på 1941/1942 utan resultatpåverkan – och att 8220 borde ha använts.
+
+- **Typfall som INTE kräver 8220:** Omklassificeringar av värdepapper från ett konto till ett annat (t.ex. 1300 → 1941 eller 1385 → 1942) till exakt bokfört värde är rena balansrörelser – ingen vinst eller förlust uppstår och 8220 ska inte användas. Löpande utdelningar och distributioner (8210, 8230) samt förvaltningsavgifter (8430) är heller inte försäljningar.
+
+- **Typfall som KRÄVER 8220:** Om en fondandel eller ett värdepapper säljs eller löses in till ett belopp som skiljer sig från det bokförda värdet, uppstår en realiserad vinst eller förlust. Denna skillnad ska bokföras på 8220. Banken eller fondförvaltaren utfärdar i dessa fall en **avräkningsnota** – ett separat underlag (skilt från det vanliga kontoutdraget) som visar kvantitet, pris och realiserat resultat. Om inga avräkningsnotor finns är det starkt indicium på att inga försäljningar har ägt rum.
+
+**Praktiskt exempel (Kalmar Nation 2025 vs 2024):**
+
+Under 2024 användes konto 8220 med 314 523 kr (realiserad vinst) och konto 8270 med 243 719 kr (nedskrivning av finansiella placeringar). Under 2025 var båda kontona noll. Granskningen av verifikationslistan 2025 visade att samtliga transaktioner på konto 1941 (Placeringar) och 1942 (Stiftelse) utgjordes av löpande utdelningar/distributioner (8210/8230), förvaltningsavgifter (8430), stipendieutbetalningar (8420) och omklassificeringar till bokfört värde (1300/1385 → 1941/1942). Inget värdepapper såldes till extern part under 2025. Konto 8220 var därmed korrekt oanvänt, och resultatet påverkades inte.
+
+> *Slutsats för revisorn:* Frånvaron av 8220 år X, när det användes år X−1, ska alltid föranleda en direkt fråga till ekonomiansvarig. Be ekonomiansvarig bekräfta från minnet om värdepapper sålts, och kontrollera parallellt att inga avräkningsnotor saknas bland underlagen.
+
 ---
 
 ## 7. Bedrägeri och oegentligheter
@@ -716,4 +736,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.3, 2026-04-24.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.4, 2026-04-24.*

@@ -1,6 +1,6 @@
 # CLAUDE.md – Generell revisionsinstruktion för ideella organisationer i Sverige
 
-*Version 1.2 · 2026-04-24*
+*Version 1.3 · 2026-04-24*
 
 Denna fil gäller för projektet **Revisionsverktyg för ideella organisationer**
 och styr hur AI-assistenten ska agera i revisionsrelaterade samtal.
@@ -199,6 +199,38 @@ vara medveten om och anpassa stickprovet efter.
 
 Om ekonomiansvarig byts varje år (vanligt i studentorganisationer): begär
 alltid underlag för **minst två år bakåt**.
+
+---
+
+## 6b. Finansiella placeringar – proaktiv kontroll av konto 8220
+
+Organisationer med fondplaceringar eller andra finansiella värdepapper (typiskt konton 1300, 1385, 1941, 1942) kan under ett räkenskapsår sälja eller lösa in värdepapper. En realiserad vinst eller förlust vid en sådan transaktion ska bokföras på **konto 8220 – Resultat vid försäljning av finansiella värdepapper**. Om detta konto inte används när det borde, saknas en post i resultaträkningen och det redovisade resultatet är felaktigt.
+
+### Proaktiv kontroll – gör detta tidigt i granskningen
+
+Kontrollera i balansräkning och verifikationslista om konto 8220 (och besläktade konton 8210, 8230, 8270, 8430) har använts under granskningsåret. Jämför alltid med föregående år (år X−1):
+
+- **Om konto 8220 användes år X−1 men inte år X** är det en tydlig varningssignal. Fråga omedelbart ekonomiansvarig om inga värdepapper såldes eller löstes in under år X. Transaktioner kan ha bokförts felaktigt – t.ex. enbart som balansrörelser på 1941/1942 utan resultatpåverkan – och 8220 kan ha missats.
+- **Om konto 8220 varken användes år X−1 eller år X** och organisationen saknar värdepappersplaceringar: ingen åtgärd behövs.
+
+### Typfall som INTE kräver konto 8220
+
+- **Omklassificeringar** av värdepapper från ett konto till ett annat (t.ex. 1300 → 1941 eller 1385 → 1942) till **exakt bokfört värde** – rena balansrörelser utan vinst eller förlust.
+- **Löpande utdelningar och distributioner** (8210, 8230) – inkomst av innehav, inte försäljning.
+- **Förvaltningsavgifter** (8430) – kostnad för innehav, inte försäljning.
+
+### Typfall som KRÄVER konto 8220
+
+Om en fondandel eller ett värdepapper säljs eller löses in till ett belopp som **skiljer sig från det bokförda värdet**, uppstår en realiserad vinst eller förlust. Denna ska bokföras på 8220. Banken eller fondförvaltaren utfärdar då en **avräkningsnota** – ett separat dokument (skilt från vanligt kontoutdrag) med kvantitet, pris och realiserat resultat. Saknas avräkningsnotor är det starkt indicium på att inga försäljningar ägt rum.
+
+### Hur revisorn bör agera
+
+1. Kontrollera om 8220 användes år X−1 – och om det är tomt år X, ställ direkt frågan till ekonomiansvarig.
+2. Be ekonomiansvarig bekräfta från minnet om värdepapper sålts eller lösts in under granskningsåret.
+3. Kontrollera parallellt att inga avräkningsnotor saknas bland underlagen.
+4. Om omklassificeringar förekommer: verifiera att debet- och kreditbeloppen är identiska (dvs. bokfört värde används, inte marknadsvärde).
+
+> **Skattefrågan:** Ideella föreningar är i normalfallet skattebefriade på kapitalvinster från värdepapper, förutsatt att placeringsverksamheten faller inom föreningens allmännyttiga ändamål. Kontrollera ändå om föreningen har bekräftat sin skattebefriade status – om osäkerhet råder bör skattefrågan lyftas.
 
 ---
 
