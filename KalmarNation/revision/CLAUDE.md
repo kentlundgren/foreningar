@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 4.4, 2026-04-24 – ersätter version 4.3*
+*Version 4.5, 2026-04-27 – ersätter version 4.4*
 
 ---
 
@@ -562,9 +562,55 @@ Kontrollera i balansräkning och verifikationslista om konto 8220 (och besläkta
 
 **Praktiskt exempel (Kalmar Nation 2025 vs 2024):**
 
-Under 2024 användes konto 8220 med 314 523 kr (realiserad vinst) och konto 8270 med 243 719 kr (nedskrivning av finansiella placeringar). Under 2025 var båda kontona noll. Granskningen av verifikationslistan 2025 visade att samtliga transaktioner på konto 1941 (Placeringar) och 1942 (Stiftelse) utgjordes av löpande utdelningar/distributioner (8210/8230), förvaltningsavgifter (8430), stipendieutbetalningar (8420) och omklassificeringar till bokfört värde (1300/1385 → 1941/1942). Inget värdepapper såldes till extern part under 2025. Konto 8220 var därmed korrekt oanvänt, och resultatet påverkades inte.
+Under 2024 användes konto 8220 med 314 523 kr (realiserad vinst) och konto 8270 med 243 719 kr (nedskrivning av finansiella placeringar). Vid inledningen av 2025 års revision framstod konto 8220 som noll – men revisorns direkta fråga till ekonomiansvarig ledde till att ett fel identifierades och korrigerades 2026-04-27: verifikationerna B580–591 (avseende värdepappersförsäljningar i mars, juni och juli 2025) hade ursprungligen bokförts med hela försäljningslikviden som kredit på 1300/1385 (till försäljningspris i stället för anskaffningsvärde). Efter rättelse uppgår konto 8220 till **220 288 kr** (netto), fördelat på tio verifikationer varav tre redovisar förlust. Konto 8270 är korrekt noll (inga nedskrivningar behövdes). Det slutliga preliminära beräknade resultatet uppgår till **645 263 kr**. Verifikationerna B580–591 ska styrkas mot SEB:s arvärdespappers­förteckning och/eller avräkningsnotor från fondförvaltaren.
 
-> *Slutsats för revisorn:* Frånvaron av 8220 år X, när det användes år X−1, ska alltid föranleda en direkt fråga till ekonomiansvarig. Be ekonomiansvarig bekräfta från minnet om värdepapper sålts, och kontrollera parallellt att inga avräkningsnotor saknas bland underlagen.
+> *Slutsats för revisorn:* Frånvaron av 8220 år X, när det användes år X−1, ska alltid föranleda en direkt fråga till ekonomiansvarig. Be ekonomiansvarig bekräfta från minnet om värdepapper sålts, och kontrollera parallellt att inga avräkningsnotor saknas bland underlagen. Observera att bokföringssystemet kan ha krediterat 1300/1385 till försäljningspris (fel) i stället för anskaffningsvärde (rätt) – se avsnitt 6.10 för hur marknadsvärdesanalys kan avslöja sådana systematiska fel.
+
+### 6.10 Analys av marknadsvärde kontra bokfört värde – finansiella placeringar
+
+Organisationer med värdepapper, fondandelar eller andra finansiella placeringar (konton 1300, 1385 och liknande) bokför dessa till **anskaffningsvärde** (vad man betalade). Det verkliga **marknadsvärdet** (vad tillgångarna är värda idag) framgår i stället av bankens eller fondförvaltarens portföljöversikt – vanligtvis ett dokument som kallas *depåkontoutdrag*, *arvärdespappers­förteckning* eller *portföljsammanställning*. De två siffrorna sammanfaller sällan.
+
+**Varför revisorn alltid ska begära och analysera detta dokument:**
+
+Kvoten marknadsvärde / bokfört värde ger direkt information om portföljens hälsa och avslöjar systematiska bokföringsfel.
+
+| Kvot | Innebör | Revisorns åtgärd |
+|---|---|---|
+| Kvot > 1,0 | Orealiserade vinster (portföljen har stigit sedan köp) | Dokumentera – inga krav på bokning (K2-principen) |
+| Kvot ≈ 1,0 | Marknadsvärde ≈ bokfört värde | Dokumentera – rimligt |
+| Kvot < 1,0 (men > 0,8) | Orealiserad förlust – bedöm om nedskrivning krävs | Fråga ekonomiansvarig; överväg 8270 |
+| Kvot < 0,8 | Väsentlig orealiserad förlust | Troligen nedskrivningskrav (kto 8270) – se BFNAR 2017:3 |
+
+**K2-principen (BFNAR 2017:3):** Orealiserade *vinster* bokförs aldrig i resultaträkningen – de syns enbart i portföljöversikten och är en tyst reserv. Orealiserade *förluster* av bestående karaktär ska däremot skrivas ned (kto 8270 debet, kto 1300/1385 kredit). Revisorn ska alltid bedöma om en nedskrivning krävs.
+
+**Kvoten som indirekt verifikation av bokföringen:**
+
+Om kvoten är orimlig – t.ex. att marknadsvärdet är *lägre* än bokfört värde trots stark börsutveckling, eller att portföljens bokförda värde plötsligt ökat utan förklaring – kan det indikera att köp bokförts till fel belopp, att försäljningar krediterats till försäljningspris i stället för anskaffningsvärde (se avsnitt 6.9), eller att transaktioner helt saknas.
+
+**Uppdelning per underkonto:**
+
+Portföljsammanställningen visar ofta det *kombinerade* marknadsvärdet för alla depåkonton. För att se uppdelningen mellan t.ex. konto 1300 (Placeringar) och 1385 (Stiftelsevärdepapper) behövs separata utdrag per underliggande bankkonto (t.ex. ett för Placeringar-kontot och ett för Stiftelse-kontot).
+
+**Gör analysen vid två tillfällen:**
+
+1. **Inledningsvis** – begär portföljsammanställning per bokslutsdag (31 december). Beräkna kvoten och dokumentera den i revisionsanteckningarna. Bedöm om nedskrivning kan krävas.
+2. **Så fort bokfört värde förändras** – t.ex. om ekonomiansvarig korrigerar hur försäljningar bokförts (vilket ändrar 1300/1385) – räkna om kvoten och verifiera att de nya bokförda värdena fortfarande är lägre än marknadsvärdet (annars är tillgångarna övervärdeade).
+
+**Jämförelse av SEB-dokumentets kapitalvinst/-förlust mot konto 8220:**
+
+SEB:s portföljsammanställning redovisar ofta "Kapitalvinst fondandelar" och "Kapitalförlust fondandelar" för kalenderåret. Dessa siffror ska jämföras med det bokförda nettot på konto 8220. En avvikelse kan bero på (a) att SEB-dokumentet enbart täcker fondandelar och inte direktägda värdepapper, (b) valutaomräkning, eller (c) ett bokföringsfel. Alla avvikelser > 5 000 kr ska alltid kommenteras.
+
+**Praktiskt exempel (Kalmar Nation 2025):**
+
+SEB:s *Arvärdespappers­förteckning* (perioden 2025-01-01–2025-12-31, utskriven 2026-01-18) visar:
+- Marknadsvärde totalt för depån: **12 536 278 kr** (kombinerat för Placeringar och Stiftelse)
+- Bokfört värde kto 1300 + kto 1385: **9 297 220 kr** (anskaffningsvärde per 31 december 2025)
+- **Kvot: 1,35** – portföljen är 34,8 % mer värd än vad den är bokförd till
+- Orealiserad vinst (ej i boksluten): **3 239 058 kr**
+
+SEB-dokumentet redovisar dessutom kapitalvinst fondandelar 218 646 kr och kapitalförlust fondandelar 5 128 kr, netto **213 518 kr**. Konto 8220 i Fortnox uppgår till **220 288 kr**. Skillnaden (6 770 kr) är ännu inte förklarad och ska följas upp – möjliga skäl är att SEB-dokumentet enbart täcker fondandelar (ej ETF:er eller direktaktier), valutaeffekter, eller periodiseringsskillnader.
+
+Kvoten 1,35 är god – portföljens orealiserade vinster är stora och positiva, vilket innebär att nedskrivningsfrågan (kto 8270) inte är aktuell för 2025.
 
 ---
 
@@ -736,4 +782,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.4, 2026-04-24.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.5, 2026-04-27.*
