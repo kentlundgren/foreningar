@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 4.5, 2026-04-27 – ersätter version 4.4*
+*Version 4.6, 2026-04-29 – ersätter version 4.5*
 
 ---
 
@@ -83,6 +83,7 @@ Vid en revision ska följande underlag alltid begäras in. Fråga organisationen
 - Protokoll från styrelsemöten där ekonomiska beslut av vikt har fattats (t.ex. större inköp, lån, bidrag)
 - Verksamhetsberättelse eller förvaltningsberättelse för granskningsåret (se avsnitt 4 för skillnaden mellan dessa)
 - Kontrollera att resultatrapport och balansrapport är utskrivna vid **samma tidpunkt och med samma senaste verifikationsnummer** – om rapporterna är utskrivna vid olika tillfällen kan de visa olika saldon om bokföring skett däremellan
+- **Hur organisationen väljer att redovisa förändring av eget kapital och årets resultat** – Fråga *tidigt* om föreningen planerar att ha en tabell för "Förändring i eget kapital" i förvaltningsberättelsen, ett "Förslag till vinstdisposition", eller båda. Klargör detta innan bokslutet färdigställs – annars riskerar tabellen att utelämna årets resultat eller att formaten blir motstridiga. Se avsnitt 6.8 för vad som är korrekt och vilka alternativa utformningar som finns.
 
 ---
 
@@ -262,6 +263,7 @@ Läs föreningens stadgar **innan** detaljgranskningen påbörjas. Stadgarna sty
 - **Kräver stadgarna en auktoriserad revisor?** Om stadgarna anger att revisorn måste vara auktoriserad eller godkänd är en lekmannarevisor inte behörig. Detta måste klaras ut innan arbetet kan starta – i förekommande fall bör föreningen uppmärksammas på att stadgarna behöver ändras eller att en auktoriserad revisor måste anlitas.
 - **Vilka tidsfrister gäller?** Identifiera när revisionsberättelsen senast ska presenteras (t.ex. "inom sex månader från räkenskapsårets slut" eller "senast tre veckor före ordinarie stämma") och när bokslut och underlag senast ska vara revisorn tillhanda. Dokumentera dessa datum. En försening mot stadgarnas frister är i sig en anmärkning i revisionsberättelsen.
 - **Vad ska granskas utöver räkenskaperna?** Stadgarna kan föreskriva att revisorn ska granska stipendiefonder, donationsmedel, stiftelseförvaltning eller andra specifika verksamheter. Dessa är egna granskningsområden som inte automatiskt täcks av en standardrevision av resultat- och balansräkning. Förbise inte dessa – de är lika bindande som räkenskapsgranskningen.
+- **Kontrollera att bokslutet tituleras korrekt – tidigt i processen.** Termen *årsredovisning* är primärt förknippad med aktiebolag och andra juridiska personer som är årsredovisningspliktiga enligt ÅRL. En ideell förening av Kalmar Nations storlek (nettoomsättning > 3 mkr men ej "större förening") ska upprätta ett *Årsbokslut* (BFNAR 2017:3) – inte en *årsredovisning*. Att kalla dokumentet "årsredovisning" vilseleder läsaren om vilket regelverk som tillämpas. Påpeka detta för ekonomiansvarig *innan* det slutliga dokumentet skickas på underskrift – det är lättare att ändra en titel i ett utkast än i ett undertecknat dokument.
 
 Dokumentera slutsatserna från stadgegranskningen och anpassa revisionsplanen därefter.
 
@@ -782,4 +784,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.5, 2026-04-27.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.6, 2026-04-29.*
