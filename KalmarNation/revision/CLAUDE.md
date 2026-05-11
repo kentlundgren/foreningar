@@ -1,6 +1,6 @@
 # CLAUDE.md – Revisionsinstruktion för mindre organisationer i Sverige
 
-*Version 4.8, 2026-04-30 – ersätter version 4.7*
+*Version 4.9, 2026-05-11 – ersätter version 4.8*
 
 ---
 
@@ -547,7 +547,7 @@ Styrelsen föreslår normalt att årets överskott balanseras i ny räkning (öv
 
 **Varningssignal:** Om en ekonomiansvarig under räkenskapsåret manuellt debiterar konto 2099 och krediterar ett intäktskonto (t.ex. 8xxx) – utan att det finns en faktisk betalning eller ett externt beslut som underlag – är det sannolikt ett misstag. Effekten är att resultatet ökar med det bokförda beloppet, vilket skapar en cirkulär konstruktion (resultatet inkluderar sin egen bokning). Kontrollera alltid sambandet resultat = Δ eget kapital som ett första steg (se avsnitt 6.7).
 
-> **Praktiskt exempel (Kalmar Nation 2025):** PQe bokförde vernr Y2 – Debet 2099 / Kredit 8999 med 881 657 kr – i tron att årets resultat måste aktiveras manuellt. Effekten blev en cirkulär intäkt. Y2 reverserats 2026-04-13. Nedskrivning tobaksautomat (10 000 kr, kto 6351) genomförd 2026-04-22. Konto 8220 korrigerat 2026-04-27 (verifikationerna B580–591, värdepappersförsäljningar mars/juni/juli 2025): konto 8220 netto 220 288 kr. **Slutligt bekräftat resultat: 645 263 kr.** Disposition sker i 2026 års böcker efter nationsmötets beslut (2026-05-27): Debet 2099 / Kredit 2010 = 645 263 kr. Revisionsberättelse: PQe 2025 bekräftade 2026-04-24 att **Variant 2** (med notering om nedskrivning av tobaksfordran 10 000 kr) är att föredra. Word-version (`revisionsberattelse_standard_2.docx`) framtagen och publicerad. Underskriftsförfarande klarlagt 2026-04-30: notarie Love Källman använder tjänsten **Verified** (digital signering via BankID); deadline **6 maj 2026**. Kent föreslog ett sammanhållet dokument – revisionsberättelsen bifogas som sista sidor i "Bokslut 2025 Final" PDF (i linje med Kalmar Nations 1990 års bokslut). Kents namn saknas på s. 7 (UNDERSKRIFTER); frågan om revisorns placering på den sidan avvaktar svar från Daniel/Cas.
+> **Praktiskt exempel (Kalmar Nation 2025):** PQe bokförde vernr Y2 – Debet 2099 / Kredit 8999 med 881 657 kr – i tron att årets resultat måste aktiveras manuellt. Effekten blev en cirkulär intäkt. Y2 reverserats 2026-04-13. Nedskrivning tobaksautomat (10 000 kr, kto 6351) genomförd 2026-04-22. Konto 8220 korrigerat 2026-04-27 (verifikationerna B580–591, värdepappersförsäljningar mars/juni/juli 2025): konto 8220 netto 220 288 kr. **Slutligt bekräftat resultat: 645 263 kr.** Disposition sker i 2026 års böcker efter nationsmötets beslut (2026-05-27): Debet 2099 / Kredit 2010 = 645 263 kr. Revisionsberättelse: PQe 2025 bekräftade 2026-04-24 att **Variant 2** (med notering om nedskrivning av tobaksfordran 10 000 kr) är att föredra. Word-version (`revisionsberattelse_standard_2.docx`) framtagen och publicerad. Underskriftsförfarande klarlagt 2026-04-30: notarie Love Källman använder tjänsten **Verified** (digital signering via BankID); deadline **6 maj 2026**. Kent föreslog ett sammanhållet dokument – revisionsberättelsen bifogas som sista sidor i "Bokslut 2025 Final" PDF (i linje med Kalmar Nations 1990 års bokslut). Kents namn saknas på s. 7 (UNDERSKRIFTER); frågan om revisorns placering på den sidan avvaktar svar från Daniel/Cas. **Notariens svar 2026-05-11:** Notarien bekräftade att han avser lösa de två återstående punkterna "i post" (administrativt, utan nytt signeringsförfarande).
 
 ### 6.9 Granskning av finansiella placeringar – försäljning av värdepapper (konto 8220)
 
@@ -785,4 +785,4 @@ Revisionen utgår från god revisionssed i Sverige. Nedan anges relevanta källo
 
 ---
 
-*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.8, 2026-04-30.*
+*Denna instruktion är generell och ska alltid anpassas till den specifika organisation, det specifika räkenskapsår och den specifika person som granskas. Version 4.9, 2026-05-11.*
