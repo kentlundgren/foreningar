@@ -15,6 +15,7 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 | 2026-04-20 | Regel tillagd: GitHub-länken i sidfoten ska alltid peka på projektets specifika mapp i repot. |
 | 2026-04-20 | Regel uppdaterad: GitHub-knappen ska använda rgba() på bakgrunden, inte opacity på hela elementet (fungerar annars inte mot mörk sidfot). |
 | 2026-04-20 | Regel tillagd: Kent hanterar alltid git commit och push till GitHub själv – Claude ska aldrig committa eller pusha utan explicit uppmaning. |
+| 2026-05-11 | Regel tillagd: Claude ska alltid kontrollera att Kent befinner sig i rätt projekt och rätt mapp innan CLAUDE.md eller projektfiler uppdateras. |
 
 ---
 
