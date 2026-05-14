@@ -10,17 +10,20 @@
     Bjerreds Saltsjöbad
 
     English translation of skylt.html.
-    Works in any browser and can be printed on A4.
+    Works in any browser and can be printed on A4 or A5.
+    Page format is set dynamically by printSign() before window.print() is called.
   -->
 
   <style>
     /* ============================================================
-       PRINT SETTINGS
-       Preserves background colours and hides the page grey frame.
+       PRINT – base rules
+       Page size (A4/A5) is injected dynamically by printSign().
        ============================================================ */
-    @page { margin: 0.8cm; size: A4; }
+    @page { margin: 0.8cm; }   /* Size is set by JS – see printSign() */
 
     @media print {
+      /* Hide the print bar – it should never appear on paper */
+      .print-bar { display: none !important; }
       body { background: white !important; padding: 0; }
       .sign { box-shadow: none !important; border: 1px solid #bbb !important; }
       a { color: inherit !important; text-decoration: none; }
@@ -35,18 +38,57 @@
 
     body {
       font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
-      background: #d8d8d8;   /* Simulates a wall/board around the sign */
+      background: #d8d8d8;
       min-height: 100vh;
       display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 1.5rem 1rem;
+      flex-direction: column;   /* Print bar above, sign below */
+      align-items: center;
+      padding: 1.2rem 1rem 2rem;
       color: #1a1a1a;
     }
 
     /* ============================================================
+       PRINT BAR – visible on screen only
+       ============================================================ */
+    .print-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      margin-bottom: 0.9rem;
+      font-size: 0.82rem;
+      color: #444;
+      width: 100%;
+      max-width: 440px;       /* Same width as the sign */
+    }
+    .print-bar .print-label {
+      margin-right: 0.25rem;
+      white-space: nowrap;
+    }
+    /* A4 and A5 buttons */
+    .print-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: #fff;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      padding: 0.28rem 0.7rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+      white-space: nowrap;
+    }
+    .print-btn:hover  { background: #3a3a3a; color: #fff; border-color: #3a3a3a; }
+    .print-btn:active { background: #222; }
+
+    /* ============================================================
        SIGN OUTER FRAME
-       Matches the physical sign's aluminium/plastic frame
        ============================================================ */
     .sign {
       width: 100%;
@@ -59,7 +101,7 @@
     }
 
     /* ============================================================
-       HEADER (dark grey, white text – mirrors top row of original)
+       HEADER
        ============================================================ */
     .sign-header {
       background: #3a3a3a;
@@ -67,7 +109,7 @@
       text-align: center;
       padding: 0.9rem 1rem;
       border-bottom: 2px solid #555;
-      position: relative; /* Required to position the language button absolutely inside the header */
+      position: relative;
     }
     .sign-header h1 {
       font-size: 1.15rem;
@@ -83,7 +125,7 @@
     }
 
     /* ============================================================
-       SECTION HEADER (grey bar with method name + price)
+       SECTION HEADER
        ============================================================ */
     .section { border-bottom: 1px solid #c5c5c5; }
 
@@ -112,7 +154,6 @@
       white-space: nowrap;
     }
 
-    /* Wondr – cheapest, recommended option (dark green shade) */
     .section.wondr .section-header { background: #445f40; }
 
     .best-tag {
@@ -134,7 +175,6 @@
       padding: 0.7rem 1rem 0.75rem;
     }
 
-    /* Numbered steps */
     .steps { list-style: none; }
     .steps li {
       display: flex;
@@ -162,7 +202,6 @@
     }
     .section.wondr .step-num { background: #445f40; }
 
-    /* Highlighted code/ID */
     .code {
       font-family: 'Consolas', 'Courier New', monospace;
       font-weight: 700;
@@ -173,13 +212,8 @@
       font-size: 0.9em;
     }
 
-    /* Link */
-    .link {
-      color: #2a5fa0;
-      word-break: break-all;
-    }
+    .link { color: #2a5fa0; word-break: break-all; }
 
-    /* Small footnote below the steps */
     .section-note {
       font-size: 0.77rem;
       color: #666;
@@ -190,7 +224,7 @@
     }
 
     /* ============================================================
-       CONTACT SECTION (yellow – as on the physical sign)
+       CONTACT SECTION
        ============================================================ */
     .contact-section {
       background: #fffacd;
@@ -239,7 +273,7 @@
     }
 
     /* ============================================================
-       LANGUAGE TOGGLE – button in the top right of the header
+       LANGUAGE TOGGLE
        ============================================================ */
     .lang-btn {
       position: absolute;
@@ -263,158 +297,189 @@
 </head>
 <body>
 
-<div class="sign">
-
   <!-- ============================================================
-       HEADER
+       PRINT BAR – visible on screen only, hidden when printing
        ============================================================ -->
-  <div class="sign-header">
-    <!-- Language button – switches to the Swedish version of the sign -->
-    <a class="lang-btn" href="skylt.html">🇸🇪 Svenska</a>
-    <h1>Bjerreds Saltsjöbad</h1>
-    <div class="tagline">Pay with your mobile phone</div>
+  <div class="print-bar">
+    <span class="print-label">🖨 Print:</span>
+
+    <!-- A4 button: calls printSign with format 'A4' -->
+    <button class="print-btn" onclick="printSign('A4')">
+      A4 <span style="font-weight:400;opacity:0.7">(210×297 mm)</span>
+    </button>
+
+    <!-- A5 button: calls printSign with format 'A5' -->
+    <button class="print-btn" onclick="printSign('A5')">
+      A5 <span style="font-weight:400;opacity:0.7">(148×210 mm)</span>
+    </button>
   </div>
 
   <!-- ============================================================
-       WONDR APP – cheapest option, shown first
+       THE SIGN
        ============================================================ -->
-  <div class="section wondr">
-    <div class="section-header">
-      <span class="method-name">Wondr App<span class="best-tag">★ BEST PRICE</span></span>
-      <span class="price-badge">100 kr</span>
-    </div>
-    <div class="section-body">
-      <ol class="steps">
-        <li>
-          <span class="step-num">1</span>
-          <span>Register <em>(one time only)</em> at
-            <a class="link" href="https://bjerredssaltsjobad.wondr.se/register"
-               target="_blank" rel="noopener">bjerredssaltsjobad.wondr.se</a>
-          </span>
-        </li>
-        <li>
-          <span class="step-num">2</span>
-          <span>Download the <strong>Wondr</strong> app from the App Store or Google Play</span>
-        </li>
-        <li>
-          <span class="step-num">3</span>
-          <span>Open the app and select <strong>Single Entry</strong> – the gate opens</span>
-        </li>
-      </ol>
-      <p class="section-note">
-        Next visit you only need the app – no need to register again.
-      </p>
-    </div>
-  </div>
+  <div class="sign">
 
-  <!-- ============================================================
-       SMS
-       ============================================================ -->
-  <div class="section">
-    <div class="section-header">
-      <span class="method-name">SMS</span>
-      <span class="price-badge">120 kr</span>
+    <div class="sign-header">
+      <a class="lang-btn" href="skylt.html">🇸🇪 Svenska</a>
+      <h1>Bjerreds Saltsjöbad</h1>
+      <div class="tagline">Pay with your mobile phone</div>
     </div>
-    <div class="section-body">
-      <ol class="steps">
-        <li>
-          <span class="step-num">1</span>
-          <span>Send an SMS with <span class="code">ccasvo</span> to <span class="code">72456</span></span>
-        </li>
-        <li>
-          <span class="step-num">2</span>
-          <span>You will receive a code on your phone</span>
-        </li>
-        <li>
-          <span class="step-num">3</span>
-          <span>Enter the code on the keypad at the gate</span>
-        </li>
-      </ol>
-    </div>
-  </div>
 
-  <!-- ============================================================
-       SWISH / CARD
-       ============================================================ -->
-  <div class="section">
-    <div class="section-header">
-      <span class="method-name">Swish / Card</span>
-      <span class="price-badge">120 kr</span>
-    </div>
-    <div class="section-body">
-      <ol class="steps">
-        <li>
-          <span class="step-num">1</span>
-          <span>Go to <a class="link" href="https://cckod.se"
-               target="_blank" rel="noopener">cckod.se</a> on your phone</span>
-        </li>
-        <li>
-          <span class="step-num">2</span>
-          <span>Enter terminal ID: <span class="code">ASVO</span></span>
-        </li>
-        <li>
-          <span class="step-num">3</span>
-          <span>Pay and enter the code you receive on the keypad at the gate</span>
-        </li>
-      </ol>
-    </div>
-  </div>
-
-  <!-- ============================================================
-       COINCODE APP
-       ============================================================ -->
-  <div class="section">
-    <div class="section-header">
-      <span class="method-name">Coincode App</span>
-      <span class="price-badge">120 kr</span>
-    </div>
-    <div class="section-body">
-      <ol class="steps">
-        <li>
-          <span class="step-num">1</span>
-          <span>Search for <strong>Coincode</strong> in the App Store <em>(iPhone)</em>
-            or Google Play <em>(Android)</em></span>
-        </li>
-        <li>
-          <span class="step-num">2</span>
-          <span>Pay in the app and enter the code at the gate</span>
-        </li>
-      </ol>
-      <p class="section-note">
-        More information: <a class="link" href="https://www.coincode.se"
-          target="_blank" rel="noopener">www.coincode.se</a>
-      </p>
-    </div>
-  </div>
-
-  <!-- ============================================================
-       CONTACT – yellow row, as on the physical sign
-       ============================================================ -->
-  <div class="contact-section">
-    <h3>Problem with the gate?</h3>
-    <div class="contact-grid">
-      <div class="contact-item">
-        <span class="contact-name">Björn</span>
-        <span class="contact-tel">0723 288 916</span>
+    <div class="section wondr">
+      <div class="section-header">
+        <span class="method-name">Wondr App<span class="best-tag">★ BEST PRICE</span></span>
+        <span class="price-badge">100 kr</span>
       </div>
-      <div class="contact-item">
-        <span class="contact-name">Kent</span>
-        <span class="contact-tel">0706 069 876</span>
-      </div>
-      <div class="contact-item">
-        <span class="contact-name">Kristin</span>
-        <span class="contact-tel">0730 959 540</span>
-      </div>
-      <div class="contact-item">
-        <span class="contact-name">Minna</span>
-        <span class="contact-tel">0704 610 501</span>
+      <div class="section-body">
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <span>Register <em>(one time only)</em> at
+              <a class="link" href="https://bjerredssaltsjobad.wondr.se/register"
+                 target="_blank" rel="noopener">bjerredssaltsjobad.wondr.se</a>
+            </span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span>Download the <strong>Wondr</strong> app from the App Store or Google Play</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span>Open the app and select <strong>Single Entry</strong> – the gate opens</span>
+          </li>
+        </ol>
+        <p class="section-note">Next visit you only need the app – no need to register again.</p>
       </div>
     </div>
-    <div class="contact-email">Report a fault: felanmalan@kallbadhus.se</div>
-  </div>
 
-  <div class="sign-footer">bjerredskallbadhus.se</div>
+    <div class="section">
+      <div class="section-header">
+        <span class="method-name">SMS</span>
+        <span class="price-badge">120 kr</span>
+      </div>
+      <div class="section-body">
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <span>Send an SMS with <span class="code">ccasvo</span> to <span class="code">72456</span></span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span>You will receive a code on your phone</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span>Enter the code on the keypad at the gate</span>
+          </li>
+        </ol>
+      </div>
+    </div>
 
-</div>
+    <div class="section">
+      <div class="section-header">
+        <span class="method-name">Swish / Card</span>
+        <span class="price-badge">120 kr</span>
+      </div>
+      <div class="section-body">
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <span>Go to <a class="link" href="https://cckod.se"
+                 target="_blank" rel="noopener">cckod.se</a> on your phone</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span>Enter terminal ID: <span class="code">ASVO</span></span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span>Pay and enter the code you receive on the keypad at the gate</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="method-name">Coincode App</span>
+        <span class="price-badge">120 kr</span>
+      </div>
+      <div class="section-body">
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <span>Search for <strong>Coincode</strong> in the App Store <em>(iPhone)</em>
+              or Google Play <em>(Android)</em></span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span>Pay in the app and enter the code at the gate</span>
+          </li>
+        </ol>
+        <p class="section-note">
+          More information: <a class="link" href="https://www.coincode.se"
+            target="_blank" rel="noopener">www.coincode.se</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="contact-section">
+      <h3>Problem with the gate?</h3>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <span class="contact-name">Björn</span>
+          <span class="contact-tel">0723 288 916</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-name">Kent</span>
+          <span class="contact-tel">0706 069 876</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-name">Kristin</span>
+          <span class="contact-tel">0730 959 540</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-name">Minna</span>
+          <span class="contact-tel">0704 610 501</span>
+        </div>
+      </div>
+      <div class="contact-email">Report a fault: felanmalan@kallbadhus.se</div>
+    </div>
+
+    <div class="sign-footer">bjerredskallbadhus.se</div>
+
+  </div><!-- /.sign -->
+
+  <!-- ============================================================
+       JAVASCRIPT – print function
+       Injects a <style> tag with the correct @page size just
+       before window.print() is called. The tag is removed after
+       printing so the next call starts with a clean state.
+       ============================================================ -->
+  <script>
+    function printSign(format) {
+      // Remove any previous dynamic page-size style
+      const old = document.getElementById('dynamic-page-style');
+      if (old) old.remove();
+
+      // Create a new <style> tag and set the @page size
+      const style = document.createElement('style');
+      style.id = 'dynamic-page-style';
+      // This @page rule overrides the static @page { margin: 0.8cm } above
+      style.textContent = `@page { size: ${format}; margin: 0.8cm; }`;
+      document.head.appendChild(style);
+
+      // Open the print dialog
+      window.print();
+
+      // Clean up the dynamic style after the dialog has been handled
+      // (setTimeout 0 runs after the print dialog is processed)
+      setTimeout(() => {
+        const remaining = document.getElementById('dynamic-page-style');
+        if (remaining) remaining.remove();
+      }, 0);
+    }
+  </script>
+
 </body>
 </html>
