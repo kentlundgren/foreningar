@@ -67,6 +67,7 @@
       text-align: center;
       padding: 0.9rem 1rem;
       border-bottom: 2px solid #555;
+      position: relative; /* Behövs för att placera språkknappen absolut inuti headern */
     }
     .sign-header h1 {
       font-size: 1.15rem;
@@ -238,16 +239,26 @@
     }
 
     /* ============================================================
-       LÄNK TILL ENGELSK VERSION
+       SPRÅKVÄXLARE – knapp uppe till höger i headern
        ============================================================ */
-    .lang-link {
-      text-align: right;
-      padding: 0.4rem 0.8rem;
-      font-size: 0.77rem;
-      background: #ececec;
-      border-top: 1px solid #ccc;
+    .lang-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.7rem;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.18rem 0.55rem;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.15s;
     }
-    .lang-link a { color: #444; }
+    .lang-btn:hover { background: rgba(255,255,255,0.28); }
   </style>
 </head>
 <body>
@@ -258,6 +269,8 @@
        SIDHUVUD
        ============================================================ -->
   <div class="sign-header">
+    <!-- Språkknapp – växlar till den engelska versionen av skylten -->
+    <a class="lang-btn" href="skylt_eng.html">🇬🇧 English</a>
     <h1>Bjerreds Saltsjöbad</h1>
     <div class="tagline">Betala med mobilen</div>
   </div>
@@ -398,11 +411,6 @@
       </div>
     </div>
     <div class="contact-email">Felanmälan: felanmalan@kallbadhus.se</div>
-  </div>
-
-  <!-- Länk till engelsk version -->
-  <div class="lang-link">
-    🇬🇧 <a href="skylt_eng.html">English version</a>
   </div>
 
   <div class="sign-footer">bjerredskallbadhus.se</div>
