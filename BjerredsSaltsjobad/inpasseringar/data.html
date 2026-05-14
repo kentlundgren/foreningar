@@ -441,59 +441,48 @@
      ============================================================ -->
 <div class="info-panel" id="infoPanel">
   <div class="info-panel-header" onclick="toggleInfo()" role="button" aria-expanded="false">
-    <h3>ℹ️ Hur fungerar datainmatning och uppdatering?</h3>
+    <h3>ℹ️ Hur fungerar det – vem kan ändra vad?</h3>
     <span class="info-chevron">▼</span>
   </div>
   <div class="info-body">
 
     <h4>Vad händer när du skriver in ett värde här?</h4>
     <p>
-      Värdet sparas i webbläsarens lokala minne (<code>localStorage</code>) på
-      <em>din</em> dator. Det syns bara för dig i din webbläsare – ingen annan ser
-      förändringen. Stänger du webbläsaren och öppnar sidan igen finns värdet kvar
-      (på den datorn), men om du öppnar sidan på en annan dator eller i en annan
-      webbläsare syns det inte.
+      Det du skriver in sparas bara på <strong>din dator</strong>, i din webbläsare.
+      Ingen annan ser det. Stänger du webbläsaren och öppnar sidan igen finns värdet kvar
+      – men bara på den datorn. Öppnar du sidan på en annan dator syns ingenting av det du skrivit.
     </p>
 
-    <h4>Hur gör en vän i föreningen för att lämna data?</h4>
+    <h4>Hur skickar en vän in sina siffror?</h4>
     <p>
-      Det enklaste är att de skickar siffrorna till dig via mail eller SMS.
-      Du lägger sedan in dem permanent i källkoden (se nedan). Det är alltså
-      <strong>bara du</strong> som uppdaterar den publicerade sidan.
+      Vännen skickar siffrorna till <strong>Kent</strong> via mail eller SMS.
+      Kent lägger sedan in dem så att de syns på sidan för alla.
+      Det är bara Kent som kan uppdatera sidan permanent.
     </p>
 
-    <h4>Hur görs en ändring permanent (hårdkodas)?</h4>
+    <h4>Hur gör Kent för att lägga in siffror permanent?</h4>
     <ol>
-      <li>Öppna filen <code>inpasseringar/data.html</code> (eller <code>index.html</code>) i <strong>Cursor</strong>.</li>
-      <li>Hitta objektet <code>BASE_DATA</code> i <code>&lt;script&gt;</code>-blocket.</li>
-      <li>Ändra rätt värde: <code>BASE_DATA[2026]['Restaurangen/badbiljetter'][3]</code> = april (index 3 = april).</li>
-      <li>Ersätt <code>null</code> med det korrekta talet, t.ex. <code>680</code>.</li>
-      <li>Spara → committa i Cursor → pusha till GitHub → sidan uppdateras live.</li>
+      <li>Kent får siffrorna av någon i föreningen (mail/SMS).</li>
+      <li>Kent ber Claude Cowork: <em>"Uppdatera april 2026, Restaurangen till 680"</em> – eller redigerar filen direkt i Cursor.</li>
+      <li>Kent sparar och publicerar – sidan uppdateras och alla ser de nya siffrorna.</li>
     </ol>
+
+    <h4>Hur tar jag bort ett felaktigt värde och gör cellen gul igen?</h4>
     <p>
-      Du kan också be Claude Cowork att göra det: <em>"Uppdatera april 2026,
-      Restaurangen till 680"</em> – då redigerar Claude BASE_DATA åt dig.
+      Klicka på cellen med det felaktiga värdet → radera siffran i rutan →
+      tryck <strong>Enter</strong>. Cellen blir gul igen och visas som okänd.
     </p>
 
-    <h4>Hur tar jag bort ett felaktigt testvärde och gör cellen gul igen?</h4>
+    <h4>Kan jag se om någon annan skrivit in data?</h4>
     <p>
-      Klicka på cellen med det felaktiga värdet → radera siffran i rutan → tryck
-      <strong>Enter</strong>. Cellen blir gul (saknas) igen. Det raderar det lokalt
-      sparade värdet och faller tillbaka på <code>BASE_DATA</code>, som har
-      <code>null</code> (= saknas) för den månaden.
-    </p>
-
-    <h4>Kan jag se om någon annan lagt in data?</h4>
-    <p>
-      Nej – det finns ingen server bakom den här sidan (den körs på GitHub Pages).
-      All kommunikation sker utanför sidan, t.ex. via mail. När du fått in
-      korrekta siffror uppdaterar du <code>BASE_DATA</code> permanent.
+      Nej – den här sidan har ingen koppling till internet när du skriver.
+      Det som en vän skriver på sin dator stannar hos dem.
+      Kontakt sker utanför sidan, exempelvis via mail till Kent.
     </p>
 
     <div class="warn">
-      ⚠️ <strong>Kom ihåg:</strong> lokalt inmatad data försvinner om du
-      rensar webbläsarens data/cache, eller om du öppnar sidan i ett privat/inkognito-fönster.
-      Permanent data måste alltid hårdkodas in i <code>BASE_DATA</code> via Cursor + Git.
+      ⚠️ <strong>Kom ihåg:</strong> det du skriver in här är tillfälligt och syns bara för dig.
+      För att siffrorna ska visas för alla och finnas kvar måste Kent lägga in dem permanent.
     </div>
 
   </div>
@@ -840,10 +829,10 @@ function buildYearSection(data, year) {
   const hint       = document.createElement('div');
   hint.className   = 'edit-hint';
   hint.innerHTML =
-    '💡 <strong>Klicka på en cell</strong> för att redigera. ' +
-    'Skriv nytt värde + Enter för att spara. ' +
-    '<strong>Töm fältet + Enter</strong> = markera som saknas (gult). ' +
-    'OBS: värden sparas bara lokalt i din webbläsare – se ℹ️ ovan för permanent uppdatering.';
+    '💡 <strong>Klicka på en cell</strong> för att skriva in ett värde. ' +
+    'Tryck <strong>Enter</strong> för att spara. ' +
+    'Vill du göra cellen gul igen (okänd)? Radera siffran och tryck Enter. ' +
+    'Det du skriver syns bara för dig – se ℹ️ ovan för mer information.';
 
   wrap.appendChild(table);
   section.appendChild(wrap);
