@@ -200,31 +200,21 @@
     /* ============================================================
        MEDLEMSKAPSRUTA
        ============================================================ */
+    /* Minimalt medlemskapsband – bara en länk */
     .member-section {
       background: var(--primary);
-      color: #fff;
       border-radius: 10px;
-      padding: 1.6rem;
+      padding: 0.85rem 1.4rem;
       margin-bottom: 1rem;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .member-section h2 { font-size: 1.05rem; margin-bottom: 0.6rem; }
-    .member-section p  { font-size: 0.87rem; opacity: 0.88; margin-bottom: 1rem; }
-
-    .price-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.9rem;
-      margin-bottom: 1rem;
+    .member-section a {
+      color: #aed6f1;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
     }
-    .price-box {
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 1rem 1.2rem;
-    }
-    .price-box .amount { font-size: 1.5rem; font-weight: 800; }
-    .price-box .price-label { font-size: 0.78rem; opacity: 0.8; margin-top: 0.2rem; }
-    .member-section a { color: #aed6f1; }
+    .member-section a:hover { text-decoration: underline; }
 
     /* Header-knappar (flex-wrapper + navigeringslänk) */
     .header-actions {
@@ -245,12 +235,6 @@
       transition: background 0.18s;
     }
     .btn-nav:hover { background: rgba(255,255,255,0.28); }
-
-    /* Liten not-paragraf under prisgrid i members-sektionen */
-    .member-note {
-      font-size: 0.82rem;
-      opacity: 0.82;
-    }
 
     /* Formulärgrupper som är dolda vid sidladdning
        (visas/döljs av JavaScript via classList) */
@@ -477,29 +461,9 @@
        MEDLEMSKAPSINFO – hämtat från bjerredskallbadhus.se
        ============================================================ -->
   <div class="member-section">
-    <h2>🏊 Bli medlem i Bjerreds Saltsjöbad</h2>
-    <p>
-      Medlemskap ger dig tillgång till badavdelningen och bastun i princip hur ofta du vill,
-      alla dagar kl 06–22 till ett fast pris. Sedan <strong>juli 2025</strong> används
-      appen <strong>Wondr</strong> för digital inpassering – armbanden fasades ut 1 februari 2026.
-    </p>
-    <div class="price-grid">
-      <div class="price-box">
-        <div class="amount">1 500 kr/år</div>
-        <div class="price-label">Singel-medlemskap (12 månader)</div>
-      </div>
-      <div class="price-box">
-        <div class="amount">2 400 kr/år</div>
-        <div class="price-label">Familjemedlemskap – 2 vuxna + hemmaboende barn 7–20 år</div>
-      </div>
-    </div>
-    <p class="member-note">
-      Registrera konto på
-      <a href="https://bjerredssaltsjobad.wondr.se/register" target="_blank" rel="noopener">bjerredssaltsjobad.wondr.se</a>
-      · Ladda sedan ned <strong>Wondr-appen</strong> ·
-      Frågor: <a href="mailto:info@kallbadhus.se">info@kallbadhus.se</a> ·
-      <a href="https://bjerredskallbadhus.se/bli-medlem/" target="_blank" rel="noopener">Mer info på hemsidan →</a>
-    </p>
+    <a href="https://bjerredskallbadhus.se/bli-medlem/" target="_blank" rel="noopener">
+      🏊 Bli medlem i Bjerreds Saltsjöbad →
+    </a>
   </div>
 
   <!-- Fotnot + återställningsknapp -->
