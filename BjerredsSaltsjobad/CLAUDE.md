@@ -4,22 +4,24 @@ Denna fil beskriver projektet och dess arbetssätt för Claude (Cowork) och Curs
 
 ## Projektbeskrivning
 
-Webbsida som visualiserar inpasseringsstatistik för **Bjerreds Saltsjöbad** (kallbadhus och bastu i Bjärred utanför Lund).  
-Webbplats: https://bjerredskallbadhus.se
+Webbsida med entréskylt och inpasseringsstatistik för **Bjerreds Saltsjöbad** (kallbadhus och bastu i Bjärred utanför Lund).  
+Webbplats: https://bjerredskallbadhus.se  
+GitHub Pages: https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/
 
-## Mappar
+## Mappstruktur
 
 ```
 BjerredsSaltsjobad/
 ├── CLAUDE.md              ← denna fil
 ├── README.md
-├── index.html             ← landningssida (rot, publiceras via GitHub Pages)
+├── index.html             ← nav-sida / landningssida (rot)
 ├── inpassering/           ← digitala entrésyltar
-│   ├── skylt.html         ← digital entréskylt, svenska
-│   ├── skylt_eng.html     ← digital entréskylt, engelska
+│   ├── index.html         ← skylt-sida (gamla skylten + knappar till digitala)
+│   ├── skylt.html         ← digital entréskylt, svenska (A4/A5-utskrift)
+│   ├── skylt_eng.html     ← digital entréskylt, engelska (A4/A5-utskrift)
 │   └── gammal_skylt.jpg   ← foto på den gamla fysiska skylten
 └── inpasseringar/         ← inpasseringsstatistik (orörd)
-    ├── index.html         ← statistik med diagram
+    ├── index.html         ← statistik med diagram (Chart.js)
     └── data.html          ← redigerbar datatabell
 ```
 
@@ -42,6 +44,14 @@ Cursor är kopplat till **Git och GitHub**. Filer som skapas i Cowork committtas
 - Undvik temporära scratch-filer i projektmappen – de hamnar i Git-historiken.
 - Kommentarer och variabelnamn skrivs på **svenska** (eller engelska om teknisk term saknas på svenska).
 
+## Entréskylt – inpassering/skylt.html + skylt_eng.html
+
+- Tre betalmetoder visas: **Wondr-appen** (100 kr), **SMS** (120 kr), **Swish/Kort** (120 kr)
+- **Coincode-appen är borttagen** – fungerar ej enligt Björn (föreningens inpasseringsansvarig), borttagen 2026-05-14
+- Språkknapp uppe till höger i headern växlar mellan svenska och engelska
+- Utskriftsrad ovanför skylten med knappar för **A4** och **A5** – format sätts dynamiskt via JS (`printSign(format)`) och döljs vid utskrift
+- `inpassering/index.html` visar den gamla fysiska skylten (foto) + knappar till de digitala versionerna
+
 ## Teknikstack – inpasseringar/index.html
 
 - **Chart.js 4.4** (cdnjs) – linjediagram och stapeldiagram
@@ -60,7 +70,7 @@ Cursor är kopplat till **Git och GitHub**. Filer som skapas i Cowork committtas
 ## Uppdatera data
 
 ### Snabbast (tillfälligt, via webbläsaren):
-Öppna `index.html` → klicka **"+ Lägg till / uppdatera data"** → fyll i formuläret. Sparas i `localStorage`.
+Öppna `inpasseringar/index.html` → klicka **"+ Lägg till / uppdatera data"** → fyll i formuläret. Sparas i `localStorage`.
 
 ### Permanent (för Git-commit):
 Öppna `inpasseringar/index.html` i Cursor och redigera `BASE_DATA`-objektet i `<script>`-blocket.  
