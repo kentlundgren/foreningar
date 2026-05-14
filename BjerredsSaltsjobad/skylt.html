@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Betala entrén – Bjerreds Saltsjöbad</title>
+
+  <!--
+    skylt.html – Digital entréskylt, svenska
+    Bjerreds Saltsjöbad
+
+    Inspirerad av den fysiska skylten vid grinden.
+    Fungerar i webbläsare och kan skrivas ut (A4).
+  -->
+
+  <style>
+    /* ============================================================
+       UTSKRIFTSFORMAT
+       Bevarar bakgrundsfärger och gömmer sidans grå ram.
+       ============================================================ */
+    @page { margin: 0.8cm; size: A4; }
+
+    @media print {
+      body { background: white !important; padding: 0; }
+      .sign { box-shadow: none !important; border: 1px solid #bbb !important; }
+      a { color: inherit !important; text-decoration: none; }
+      /* Bevara bakgrundsfärger vid utskrift */
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* ============================================================
+       GRUNDINSTÄLLNINGAR
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+      background: #d8d8d8;   /* Simulerar en vägg/tavla runt skylten */
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      color: #1a1a1a;
+    }
+
+    /* ============================================================
+       SKYLTENS YTTRE RAM
+       Matchar den fysiska skyltens aluminium-/plastram
+       ============================================================ */
+    .sign {
+      width: 100%;
+      max-width: 440px;
+      background: #ececec;
+      border: 3px solid #a0a0a0;
+      border-radius: 5px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.30), inset 0 0 0 1px rgba(255,255,255,0.4);
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       SIDHUVUD (mörkgrå, vit text – som originalets översta rad)
+       ============================================================ */
+    .sign-header {
+      background: #3a3a3a;
+      color: #fff;
+      text-align: center;
+      padding: 0.9rem 1rem;
+      border-bottom: 2px solid #555;
+    }
+    .sign-header h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .sign-header .tagline {
+      font-size: 0.82rem;
+      opacity: 0.75;
+      margin-top: 0.2rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================================
+       SEKTIONSRUBRIK (grå rem med metod + pris)
+       ============================================================ */
+    .section { border-bottom: 1px solid #c5c5c5; }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      background: #6e6e6e;
+      color: #fff;
+      gap: 0.5rem;
+    }
+    .method-name {
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .price-badge {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.30);
+      border-radius: 14px;
+      padding: 0.15rem 0.65rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Wondr – billigaste, uppmuntrat alternativ (mörkgrön nyans) */
+    .section.wondr .section-header { background: #445f40; }
+
+    .best-tag {
+      font-size: 0.67rem;
+      background: rgba(255,255,255,0.22);
+      border-radius: 8px;
+      padding: 0.1rem 0.45rem;
+      letter-spacing: 0.03em;
+      vertical-align: middle;
+      margin-left: 0.3rem;
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       SEKTIONSINNEHÅLL
+       ============================================================ */
+    .section-body {
+      background: #fff;
+      padding: 0.7rem 1rem 0.75rem;
+    }
+
+    /* Numrerade steg */
+    .steps { list-style: none; }
+    .steps li {
+      display: flex;
+      gap: 0.55rem;
+      align-items: flex-start;
+      margin-bottom: 0.42rem;
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+    .steps li:last-child { margin-bottom: 0; }
+
+    .step-num {
+      background: #6e6e6e;
+      color: #fff;
+      border-radius: 50%;
+      min-width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .section.wondr .step-num { background: #445f40; }
+
+    /* Framhävd kod/ID */
+    .code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-weight: 700;
+      background: #efefef;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 0 4px;
+      font-size: 0.9em;
+    }
+
+    /* Länk */
+    .link {
+      color: #2a5fa0;
+      word-break: break-all;
+    }
+
+    /* Liten fotnot under stegen */
+    .section-note {
+      font-size: 0.77rem;
+      color: #666;
+      margin-top: 0.45rem;
+      font-style: italic;
+      border-top: 1px dashed #ddd;
+      padding-top: 0.35rem;
+    }
+
+    /* ============================================================
+       KONTAKTSEKTION (gul – som på den fysiska skylten)
+       ============================================================ */
+    .contact-section {
+      background: #fffacd;
+      border-top: 2px solid #c8b800;
+      padding: 0.65rem 1rem 0.7rem;
+    }
+    .contact-section h3 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #3a3a00;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.18rem 0.5rem;
+    }
+    .contact-item {
+      font-size: 0.84rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.4rem;
+    }
+    .contact-name { font-weight: 700; color: #1a1a00; }
+    .contact-tel  { color: #333; letter-spacing: 0.02em; }
+    .contact-email {
+      font-size: 0.77rem;
+      color: #555;
+      margin-top: 0.35rem;
+      border-top: 1px dotted #bba800;
+      padding-top: 0.3rem;
+    }
+
+    /* ============================================================
+       SIDFOT
+       ============================================================ */
+    .sign-footer {
+      background: #3a3a3a;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      font-size: 0.72rem;
+      padding: 0.35rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================================
+       LÄNK TILL ENGELSK VERSION
+       ============================================================ */
+    .lang-link {
+      text-align: right;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.77rem;
+      background: #ececec;
+      border-top: 1px solid #ccc;
+    }
+    .lang-link a { color: #444; }
+  </style>
+</head>
+<body>
+
+<div class="sign">
+
+  <!-- ============================================================
+       SIDHUVUD
+       ============================================================ -->
+  <div class="sign-header">
+    <h1>Bjerreds Saltsjöbad</h1>
+    <div class="tagline">Betala med mobilen</div>
+  </div>
+
+  <!-- ============================================================
+       WONDR-APPEN – billigaste alternativet, visas först
+       ============================================================ -->
+  <div class="section wondr">
+    <div class="section-header">
+      <span class="method-name">Wondr-appen<span class="best-tag">★ BÄSTA PRISET</span></span>
+      <span class="price-badge">100 kr</span>
+    </div>
+    <div class="section-body">
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <span>Registrera dig <em>(görs bara en gång)</em> på
+            <a class="link" href="https://bjerredssaltsjobad.wondr.se/register"
+               target="_blank" rel="noopener">bjerredssaltsjobad.wondr.se</a>
+          </span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span>Ladda ned appen <strong>Wondr</strong> i App Store eller Google Play</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span>Öppna appen och välj <strong>Engångsinträde</strong> – dörren öppnas</span>
+        </li>
+      </ol>
+      <p class="section-note">
+        Nästa besök räcker det med appen – inget mer att registrera.
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SMS
+       ============================================================ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="method-name">SMS</span>
+      <span class="price-badge">120 kr</span>
+    </div>
+    <div class="section-body">
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <span>SMS:a <span class="code">ccasvo</span> till telefonnummer <span class="code">72456</span></span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span>Du får en kod skickad till din mobil</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span>Slå in koden på koddosan vid grinden</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SWISH / KORT
+       ============================================================ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="method-name">Swish / Kort</span>
+      <span class="price-badge">120 kr</span>
+    </div>
+    <div class="section-body">
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <span>Surfa till <a class="link" href="https://cckod.se"
+               target="_blank" rel="noopener">cckod.se</a> på din mobil</span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span>Ange terminal-ID: <span class="code">ASVO</span></span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span>Betala och slå in koden du får på kodlåset vid grinden</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       COINCODE-APPEN
+       ============================================================ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="method-name">Coincode-appen</span>
+      <span class="price-badge">120 kr</span>
+    </div>
+    <div class="section-body">
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <span>Sök efter <strong>Coincode</strong> i App Store <em>(iPhone)</em>
+            eller Google Play <em>(Android)</em></span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span>Betala i appen och ange koden vid grinden</span>
+        </li>
+      </ol>
+      <p class="section-note">
+        Mer information: <a class="link" href="https://www.coincode.se"
+          target="_blank" rel="noopener">www.coincode.se</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       KONTAKT – gul rad, som på den fysiska skylten
+       ============================================================ -->
+  <div class="contact-section">
+    <h3>Problem med grinden?</h3>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <span class="contact-name">Björn</span>
+        <span class="contact-tel">0723 288 916</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-name">Kent</span>
+        <span class="contact-tel">0706 069 876</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-name">Kristin</span>
+        <span class="contact-tel">0730 959 540</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-name">Minna</span>
+        <span class="contact-tel">0704 610 501</span>
+      </div>
+    </div>
+    <div class="contact-email">Felanmälan: felanmalan@kallbadhus.se</div>
+  </div>
+
+  <!-- Länk till engelsk version -->
+  <div class="lang-link">
+    🇬🇧 <a href="skylt_eng.html">English version</a>
+  </div>
+
+  <div class="sign-footer">bjerredskallbadhus.se</div>
+
+</div>
+</body>
+</html>
