@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inpasseringsdata – Bjerreds Saltsjöbad</title>
+
+  <!--
+    ================================================================
+    data.html – Tabellvy för inpasseringsstatistik
+    Bjerreds Saltsjöbad
+
+    Funktioner:
+    - Excel-liknande tabell per år med alla kategorier och månader
+    - Gult = data saknas (null), Ljusgrå = bekräftat noll (stängd)
+    - Klicka på valfri cell för att redigera värdet inline
+    - Tab/Enter navigerar till nästa cell
+    - Ändringar sparas i localStorage (samma nyckel som index.html)
+    - Knapp för att gå tillbaka till index.html
+    ================================================================
+  -->
+
+  <style>
+    /* ============================================================
+       DESIGNVARIABLER – matchar index.html
+       ============================================================ */
+    :root {
+      --primary:    #1a5276;
+      --secondary:  #2e86c1;
+      --accent:     #e67e22;
+      --bg:         #f4f6f9;
+      --card:       #ffffff;
+      --text:       #2c3e50;
+      --muted:      #7f8c8d;
+      --border:     #dde1e7;
+
+      /* Cellfärger */
+      --cell-null:     #fef08a;   /* Gul  – data saknas   */
+      --cell-null-txt: #a0860a;   /* Mörkgul text i null-cell */
+      --cell-zero:     #e8ecf0;   /* Grå  – bekräftat noll */
+      --cell-tot-bg:   #d6eaf8;   /* Blå  – totalkolumn   */
+      --row-tot-bg:    #ebf5fb;   /* Blå  – totalrad      */
+      --row-tot-part:  #fef3cd;   /* Gul  – ofullständig totalrad */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       SIDHUVUD (klistrat överst vid scroll)
+       ============================================================ */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 { font-size: 1.3rem; font-weight: 700; }
+    header p  { font-size: 0.8rem; opacity: 0.75; margin-top: 0.1rem; }
+
+    /* Tillbaka-knapp */
+    .btn-back {
+      background: rgba(255,255,255,0.13);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: background 0.18s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.25); }
+
+    /* ============================================================
+       FÄRGFÖRKLARING
+       ============================================================ */
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      padding: 0.75rem 2rem;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.81rem;
+      flex-wrap: wrap;
+      color: var(--text);
+    }
+    .legend strong { color: var(--primary); }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .legend-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.12);
+      flex-shrink: 0;
+    }
+    /* Specifika swatchfärger – ersätter inline-stilar */
+    .swatch-normal  { background: #fff; }
+    .swatch-null    { background: #fef08a; border-color: #c9a800; }
+    .swatch-zero    { background: #e8ecf0; }
+    .swatch-total   { background: #d6eaf8; }
+    .swatch-partial { background: #fef3cd; border-color: #e6b800; }
+
+    /* ============================================================
+       HUVUDINNEHÅLL
+       ============================================================ */
+    main {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* ============================================================
+       ÅRSSEKTION
+       ============================================================ */
+    .year-section {
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+
+    .year-header {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.75rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .year-header h2  { font-size: 1.05rem; font-weight: 700; }
+    .year-header .yr-total { font-size: 0.85rem; opacity: 0.82; }
+
+    /* Scroll-wrapper så tabellen inte spränger layouten */
+    .table-wrap { overflow-x: auto; }
+
+    /* ============================================================
+       TABELL
+       ============================================================ */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 750px;
+      font-size: 0.84rem;
+    }
+
+    /* Kolumnrubriker */
+    thead th {
+      background: var(--cell-tot-bg);
+      color: var(--primary);
+      font-weight: 600;
+      text-align: center;
+      padding: 0.5rem 0.4rem;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      -webkit-user-select: none; /* Safari 3+ / iOS 3+ */
+      user-select: none;
+    }
+    thead th:first-child {
+      text-align: left;
+      padding-left: 0.9rem;
+      min-width: 190px;
+    }
+    thead th.col-tot {
+      background: #aed6f1;
+    }
+
+    /* Datarader */
+    tbody tr:hover { background: #f0f7fd; }
+
+    tbody td {
+      border: 1px solid var(--border);
+      padding: 0.42rem 0.55rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    /* Kategorinamn – vänsterkolumnen */
+    tbody td:first-child {
+      text-align: left;
+      padding-left: 0.9rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      background: #f8f9fa !important;
+      color: var(--text);
+      cursor: default;
+    }
+
+    /* Normal datafält – redigerbar */
+    td.cell-data {
+      cursor: pointer;
+    }
+    td.cell-data:hover {
+      background: #e8f4fb;
+      outline: 1px solid var(--secondary);
+      outline-offset: -1px;
+    }
+
+    /* Saknas (null) */
+    td.cell-null {
+      background: var(--cell-null);
+      cursor: pointer;
+      color: var(--cell-null-txt);
+      font-style: italic;
+      text-align: center;
+    }
+    td.cell-null:hover {
+      background: #fce97a;
+      outline: 1px solid #c9a800;
+      outline-offset: -1px;
+    }
+
+    /* Bekräftat noll (t.ex. bastun stängd) */
+    td.cell-zero {
+      background: var(--cell-zero);
+      color: var(--muted);
+      cursor: pointer;
+    }
+    td.cell-zero:hover {
+      background: #d8e4ee;
+      outline: 1px solid var(--secondary);
+      outline-offset: -1px;
+    }
+
+    /* Totalkolumn (TOT år) */
+    td.cell-row-tot {
+      background: var(--cell-tot-bg);
+      font-weight: 700;
+      color: var(--primary);
+      cursor: default;
+    }
+
+    /* Totalrad (TOTALT per månad) */
+    tfoot td {
+      background: var(--row-tot-bg);
+      font-weight: 700;
+      border: 1px solid var(--border);
+      text-align: right;
+      padding: 0.48rem 0.55rem;
+      color: var(--primary);
+    }
+    tfoot td:first-child {
+      text-align: left;
+      padding-left: 0.9rem;
+    }
+
+    /* Ofullständig kolumntotal (saknar data i någon kategori) */
+    td.cell-col-tot-partial {
+      background: var(--row-tot-part);
+      color: #7d4e00;
+    }
+
+    /* ============================================================
+       REDIGERINGS-OVERLAY
+       Placeras exakt ovanpå den klickade cellen.
+       ============================================================ */
+    #edit-overlay {
+      position: absolute;   /* Absolut mot document */
+      z-index: 500;
+      background: #fff;
+      border: 2px solid var(--secondary);
+      border-radius: 4px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+      display: none;
+    }
+    #edit-input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.88rem;
+      font-family: inherit;
+      text-align: right;
+      background: transparent;
+      color: var(--text);
+    }
+
+    /* ============================================================
+       REDIGERINGSHINT (under varje tabell)
+       ============================================================ */
+    .edit-hint {
+      font-size: 0.77rem;
+      color: var(--muted);
+      text-align: right;
+      padding: 0.4rem 0.9rem;
+      border-top: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    /* ============================================================
+       TOAST
+       ============================================================ */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2c3e50;
+      color: #fff;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.87rem;
+      z-index: 1000;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    #toast.visible { opacity: 1; }
+
+    /* ============================================================
+       RESPONSIVT
+       ============================================================ */
+    @media (max-width: 700px) {
+      header  { flex-direction: column; align-items: flex-start; }
+      main    { padding: 0.8rem; }
+      .legend { padding: 0.6rem 1rem; gap: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SIDHUVUD
+     ============================================================ -->
+<header>
+  <div>
+    <h1>🌊 Bjerreds Saltsjöbad</h1>
+    <p>Inpasseringsdata – tabellvy</p>
+  </div>
+  <!-- Navigering tillbaka till grafsidan -->
+  <a class="btn-back" href="index.html">← Tillbaka till grafer</a>
+</header>
+
+<!-- Färgförklaring -->
+<div class="legend">
+  <strong>Färgförklaring:</strong>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-normal"></div>
+    <span>Inpasserad data – klicka för att redigera</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-null"></div>
+    <span>Saknas – klicka för att fylla i</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-zero"></div>
+    <span>Bekräftat noll (t.ex. bastun stängd)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-total"></div>
+    <span>Totalt</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-partial"></div>
+    <span>⚠ Ofullständig kolumntotal</span>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<!-- Redigerings-overlay – positioneras dynamiskt av JavaScript -->
+<div id="edit-overlay">
+  <input type="number" id="edit-input" min="0" step="1" />
+</div>
+
+<div id="toast"></div>
+
+
+<script>
+/* ================================================================
+   INPASSERINGSDATA – Bjerreds Saltsjöbad
+   OBS: BASE_DATA är identisk med samma variabel i index.html.
+        Uppdatera BÅDA filerna om basdata ändras permanent.
+        Löpande ändringar sparas i localStorage och delas
+        automatiskt mellan de två filerna (samma ursprung).
+   ================================================================
+   Månadsindex: 0=Jan … 11=Dec
+   null  = data saknas
+   0     = bekräftat noll (t.ex. stängd)
+   tal   = faktisk inpassering
+   ================================================================ */
+
+const BASE_DATA = {
+
+  /* ---- 2024 -------------------------------------------------- */
+  2024: {
+    'Restaurangen':         [754, 696, 772, 656, 841,  654, 696, 678, 725, 607, 795, 620],
+    'SMS-biljetter':        [557, 458, 484, 331, 265,  184, 143, 197, 240, 484, 593, 827],
+    'Medlemmar – armband': [2949,2788,3096,2251,3388, 3130,3581,3362,4210,3146,3299,3255]
+  },
+
+  /* ---- 2025 -------------------------------------------------- */
+  /* 0-värden mars–juli = ombyggnad av bastun                     */
+  2025: {
+    'Restaurangen/badbiljetter': [ 737, 764,   0,   0,   0,   0,  344,  891,  991,  667,  794,  621],
+    'SMS/Swish-biljett':         [ 801, 619,   0,   0,   0,   0,    4,  140,  285,  726, 1052, 1373],
+    'Medlemmar – armband':       [3231,2555,   0,   0,   0,   0, 1524, 2134, 2339, 1552, 1400, 1000],
+    'Medlemmar – Wonder':        [   0,   0,   0,   0,   0,   0,  120, 1359, 1729, 1993, 2443, 2513]
+  },
+
+  /* ---- 2026 -------------------------------------------------- */
+  /* null = saknas (gulmarkerat i ursprungstabellen)              */
+  2026: {
+    'Restaurangen/badbiljetter': [ 643,  665,  600, null, null, null, null, null, null, null, null, null],
+    'SMS/Swish-biljetter':       [1114,  751, 1006,  913, null, null, null, null, null, null, null, null],
+    'Medlemmar – armband':       [ 492,  119,   95, null, null, null, null, null, null, null, null, null],
+    'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, null, null, null, null, null, null, null, null]
+  }
+};
+
+/* Månadsnamn */
+const MONTHS      = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
+const MONTHS_FULL = ['Januari','Februari','Mars','April','Maj','Juni',
+                     'Juli','Augusti','September','Oktober','November','December'];
+
+/* ================================================================
+   DATA-HANTERING
+   Speglar index.html – läser/skriver via samma localStorage-nycklar
+   ================================================================ */
+
+/**
+ * Returnerar fullständig data – BASE_DATA sammanslaget med
+ * eventuella lokalt sparade ändringar.
+ */
+function loadData() {
+  const data = JSON.parse(JSON.stringify(BASE_DATA)); /* djup kopia */
+  const raw  = localStorage.getItem('bjerred_overrides');
+  if (!raw) return data;
+
+  const overrides = JSON.parse(raw);
+  for (const [year, cats] of Object.entries(overrides)) {
+    if (!data[year]) data[year] = {};
+    for (const [cat, monthMap] of Object.entries(cats)) {
+      if (!data[year][cat]) data[year][cat] = new Array(12).fill(null);
+      for (const [idx, val] of Object.entries(monthMap)) {
+        /* val kan vara null (explicit saknas) eller ett tal */
+        data[year][cat][parseInt(idx)] = val;
+      }
+    }
+  }
+  return data;
+}
+
+/**
+ * Sparar ett nytt värde (tal) i localStorage.
+ * @param {number} year
+ * @param {string} category
+ * @param {number} monthIndex  0–11
+ * @param {number} value
+ */
+function saveOverride(year, category, monthIndex, value) {
+  const raw      = localStorage.getItem('bjerred_overrides');
+  const overrides = raw ? JSON.parse(raw) : {};
+  if (!overrides[year])           overrides[year] = {};
+  if (!overrides[year][category]) overrides[year][category] = {};
+  overrides[year][category][monthIndex] = value;
+  localStorage.setItem('bjerred_overrides',    JSON.stringify(overrides));
+  localStorage.setItem('bjerred_last_updated', new Date().toLocaleDateString('sv-SE'));
+}
+
+/**
+ * Sätter en cell till null (data saknas) i localStorage.
+ * Om BASE_DATA redan har null tas override-posten bort.
+ * Om BASE_DATA har ett tal sparas explicit null för att
+ * skugga basvärdet.
+ *
+ * @param {number} year
+ * @param {string} category
+ * @param {number} monthIndex
+ */
+function clearOverride(year, category, monthIndex) {
+  const baseVal   = BASE_DATA[year]?.[category]?.[monthIndex] ?? null;
+  const raw       = localStorage.getItem('bjerred_overrides');
+  const overrides = raw ? JSON.parse(raw) : {};
+
+  if (baseVal !== null) {
+    /* Basdata har ett värde – vi måste spara explicit null */
+    if (!overrides[year])           overrides[year] = {};
+    if (!overrides[year][category]) overrides[year][category] = {};
+    overrides[year][category][monthIndex] = null;
+  } else {
+    /* Basdata har redan null – ta bort eventuell override */
+    if (overrides[year]?.[category]?.[monthIndex] !== undefined) {
+      delete overrides[year][category][monthIndex];
+      /* Rensa tomma objekt */
+      if (!Object.keys(overrides[year][category]).length) delete overrides[year][category];
+      if (!Object.keys(overrides[year]  || {}).length)   delete overrides[year];
+    }
+  }
+
+  localStorage.setItem('bjerred_overrides',    JSON.stringify(overrides));
+  localStorage.setItem('bjerred_last_updated', new Date().toLocaleDateString('sv-SE'));
+}
+
+/* ================================================================
+   TABELLRENDERING
+   Byggs dynamiskt av JavaScript för att alltid spegla
+   den senaste datan (inklusive localStorage-ändringar).
+   ================================================================ */
+
+/**
+ * Renderar om alla årsavsnitt i <main>.
+ */
+function renderAll() {
+  const data = loadData();
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  for (const year of Object.keys(data).map(Number).sort()) {
+    main.appendChild(buildYearSection(data, year));
+  }
+}
+
+/**
+ * Bygger ett komplett årsavsnitt med rubrik + tabell.
+ * @param {Object} data  - Fullständig datauppsättning
+ * @param {number} year
+ * @returns {HTMLElement}
+ */
+function buildYearSection(data, year) {
+  const yearData = data[year] || {};
+  const cats     = Object.keys(yearData);
+
+  /* Räkna totalt för hela året (exkl. null) */
+  let grandTotal = 0;
+  for (const vals of Object.values(yearData)) {
+    vals.forEach(v => { if (v !== null) grandTotal += v; });
+  }
+
+  /* ---- Årssektion-wrapper ---- */
+  const section   = document.createElement('div');
+  section.className = 'year-section';
+
+  /* ---- Årsrubrik ---- */
+  const header = document.createElement('div');
+  header.className = 'year-header';
+  header.innerHTML = `
+    <h2>Inpasseringar ${year}</h2>
+    <span class="yr-total">Totalt: ${grandTotal.toLocaleString('sv-SE')}</span>`;
+  section.appendChild(header);
+
+  /* ---- Scroll-wrapper ---- */
+  const wrap = document.createElement('div');
+  wrap.className = 'table-wrap';
+
+  /* ---- Tabell ---- */
+  const table = document.createElement('table');
+
+  /* -- Kolumnrubriker -- */
+  const thead   = document.createElement('thead');
+  const headRow = document.createElement('tr');
+  headRow.innerHTML =
+    `<th>Kategori</th>` +
+    MONTHS.map(m => `<th>${m}</th>`).join('') +
+    `<th class="col-tot">TOT ${year}</th>`;
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  /* -- Datarader -- */
+  const tbody   = document.createElement('tbody');
+
+  /* Håll koll på kolumnsummor för totalraden */
+  const colSums    = new Array(12).fill(0);
+  const colHasVal  = new Array(12).fill(false);  /* Om >=1 kategori har ett värde */
+  const colPartial = new Array(12).fill(false);  /* Om >=1 kategori saknar värde */
+
+  for (const cat of cats) {
+    const vals = yearData[cat];
+    const row  = document.createElement('tr');
+
+    /* Kategorinamncell (ej redigerbar) */
+    const catTd       = document.createElement('td');
+    catTd.textContent = cat;
+    row.appendChild(catTd);
+
+    let rowTotal = 0;
+
+    for (let m = 0; m < 12; m++) {
+      const val = vals[m];
+      const td  = document.createElement('td');
+
+      /* Spara metadata som data-attribut för redigeringsfunktionen */
+      td.dataset.year  = year;
+      td.dataset.cat   = cat;
+      td.dataset.month = m;
+      td.dataset.value = (val === null) ? 'null' : String(val);
+
+      if (val === null) {
+        /* ---- Saknas ---- */
+        td.className   = 'cell-null';
+        td.textContent = '–';
+        colPartial[m]  = true;
+
+      } else if (val === 0) {
+        /* ---- Bekräftat noll ---- */
+        td.className   = 'cell-zero';
+        td.textContent = '0';
+        colHasVal[m]   = true;
+        colSums[m]    += 0;
+
+      } else {
+        /* ---- Normalt värde ---- */
+        td.className   = 'cell-data';
+        td.textContent = val.toLocaleString('sv-SE');
+        rowTotal      += val;
+        colHasVal[m]   = true;
+        colSums[m]    += val;
+      }
+
+      /* Klickhändelse öppnar redigeringsoverlay */
+      td.addEventListener('click', () => startEdit(td));
+      row.appendChild(td);
+    }
+
+    /* Radtotal (TOT kolumnen) */
+    const totTd       = document.createElement('td');
+    totTd.className   = 'cell-row-tot';
+    totTd.textContent = rowTotal > 0 ? rowTotal.toLocaleString('sv-SE') : '–';
+    row.appendChild(totTd);
+
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(tbody);
+
+  /* -- Totalrad (TOTALT per månad) -- */
+  const tfoot  = document.createElement('tfoot');
+  const totRow = document.createElement('tr');
+
+  const totLabel       = document.createElement('td');
+  totLabel.textContent = 'TOTALT';
+  totRow.appendChild(totLabel);
+
+  let colGrandTotal = 0;
+
+  for (let m = 0; m < 12; m++) {
+    const td        = document.createElement('td');
+    const isPartial = colPartial[m] && colHasVal[m]; /* Har lite data men inte all */
+    const isEmpty   = !colHasVal[m] && !colPartial[m];
+
+    if (isEmpty) {
+      /* Inga kategorier har data alls – visa noll istm.  */
+      td.textContent = colSums[m] > 0 ? colSums[m].toLocaleString('sv-SE') : '0';
+    } else if (!colHasVal[m]) {
+      /* Alla kategorier saknas → null-visning */
+      td.className   = 'cell-null';
+      td.textContent = '–';
+    } else if (isPartial) {
+      /* Partiell data – visa summan med ⚠-markering */
+      td.className   = 'cell-col-tot-partial';
+      td.textContent = colSums[m].toLocaleString('sv-SE') + ' ⚠';
+      td.title       = 'Ofullständig total – data saknas för minst en kategori';
+    } else {
+      /* Komplett data */
+      td.textContent = colSums[m].toLocaleString('sv-SE');
+    }
+
+    colGrandTotal += colSums[m];
+    totRow.appendChild(td);
+  }
+
+  /* Högerkolumnen: grand total för hela året */
+  const grandTd       = document.createElement('td');
+  grandTd.className   = 'cell-row-tot';
+  grandTd.textContent = colGrandTotal.toLocaleString('sv-SE');
+  totRow.appendChild(grandTd);
+
+  tfoot.appendChild(totRow);
+  table.appendChild(tfoot);
+
+  /* Redigeringshint */
+  const hint       = document.createElement('div');
+  hint.className   = 'edit-hint';
+  hint.textContent =
+    '💡 Klicka på en cell för att redigera. Töm fältet och tryck Enter för att markera som saknas (gult).';
+
+  wrap.appendChild(table);
+  section.appendChild(wrap);
+  section.appendChild(hint);
+
+  return section;
+}
+
+/* ================================================================
+   INLINE-REDIGERING
+   En <div id="edit-overlay"> med ett <input> placeras exakt
+   ovanpå den klickade cellen med position: absolute.
+   ================================================================ */
+
+let activeCell = null; /* Den cell som redigeras just nu */
+
+/**
+ * Öppnar redigeringsoverlayen ovanpå en td-cell.
+ * @param {HTMLTableCellElement} td
+ */
+function startEdit(td) {
+  activeCell = td;
+
+  const overlay = document.getElementById('edit-overlay');
+  const input   = document.getElementById('edit-input');
+
+  /* Beräkna cellens position relativt till dokumentet */
+  const rect     = td.getBoundingClientRect();
+  const scrollY  = window.scrollY || document.documentElement.scrollTop;
+  const scrollX  = window.scrollX || document.documentElement.scrollLeft;
+
+  overlay.style.top    = `${rect.top  + scrollY}px`;
+  overlay.style.left   = `${rect.left + scrollX}px`;
+  overlay.style.width  = `${Math.max(rect.width,  80)}px`;
+  overlay.style.height = `${Math.max(rect.height, 32)}px`;
+  overlay.style.display = 'block';
+
+  /* Fyll in nuvarande värde (tomt om null) */
+  const cur  = td.dataset.value;
+  input.value = (cur === 'null') ? '' : cur;
+  input.focus();
+  input.select();
+
+  /* Spara vid blur (fokus lämnar fältet) */
+  input.onblur = () => commitEdit();
+
+  /* Tangentbordsnavigering */
+  input.onkeydown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      input.onblur = null;           /* Undvik dubbel-commit vid blur efter blur() */
+      commitEdit();
+      moveToNextCell(td, 1);         /* Flytta höger/ned */
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      input.onblur = null;
+      commitEdit();
+      moveToNextCell(td, e.shiftKey ? -1 : 1);
+    } else if (e.key === 'Escape') {
+      input.onblur = null;
+      overlay.style.display = 'none';
+      activeCell = null;
+    }
+  };
+}
+
+/**
+ * Sparar inmatat värde och renderar om tabellerna.
+ * Tomt fält → null (saknas), "0" → 0, tal → det talet.
+ */
+function commitEdit() {
+  const overlay = document.getElementById('edit-overlay');
+  const input   = document.getElementById('edit-input');
+  overlay.style.display = 'none';
+
+  if (!activeCell) return;
+
+  const td      = activeCell;
+  const year    = parseInt(td.dataset.year);
+  const cat     = td.dataset.cat;
+  const month   = parseInt(td.dataset.month);
+  const oldStr  = td.dataset.value;
+  const trimmed = input.value.trim();
+
+  activeCell = null;
+
+  let newVal;
+  if (trimmed === '') {
+    newVal = null;                      /* Tomt fält = data saknas */
+  } else {
+    const parsed = parseInt(trimmed, 10);
+    if (isNaN(parsed) || parsed < 0) return; /* Ogiltigt – avbryt tyst */
+    newVal = parsed;
+  }
+
+  /* Kontrollera om värdet faktiskt ändrades */
+  const oldVal = (oldStr === 'null') ? null : parseInt(oldStr, 10);
+  if (newVal === oldVal) return;
+
+  /* Spara i localStorage */
+  if (newVal === null) {
+    clearOverride(year, cat, month);
+  } else {
+    saveOverride(year, cat, month, newVal);
+  }
+
+  /* Rendera om och visa bekräftelse */
+  renderAll();
+
+  const label = (newVal === null)
+    ? `${MONTHS_FULL[month]} ${year} / ${cat} markerad som saknas`
+    : `${MONTHS_FULL[month]} ${year} / ${cat} = ${newVal.toLocaleString('sv-SE')}`;
+  showToast(`✓ ${label}`);
+}
+
+/**
+ * Flyttar redigeringsfokus till nästa (dir=+1) eller
+ * föregående (dir=-1) redigerbara cell i dokumentet.
+ * @param {HTMLTableCellElement} currentTd
+ * @param {number} dir  +1 eller -1
+ */
+function moveToNextCell(currentTd, dir) {
+  const cells = [...document.querySelectorAll(
+    'td.cell-data, td.cell-null, td.cell-zero'
+  )];
+  const idx  = cells.indexOf(currentTd);
+  const next = cells[idx + dir];
+  if (next) {
+    next.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    startEdit(next);
+  }
+}
+
+/* ================================================================
+   STÄNG OVERLAY VID KLICK UTANFÖR CELLEN
+   ================================================================ */
+document.addEventListener('mousedown', e => {
+  const overlay = document.getElementById('edit-overlay');
+  if (
+    overlay.style.display !== 'none' &&
+    !overlay.contains(e.target) &&
+    e.target !== activeCell
+  ) {
+    /* blur() triggar commitEdit() via onblur */
+    document.getElementById('edit-input').blur();
+  }
+});
+
+/* ================================================================
+   TOAST-NOTIFIERING
+   ================================================================ */
+let toastTimer = null;
+
+/**
+ * Visar ett kortvarigt bekräftelsemeddelande längst ned på sidan.
+ * @param {string} msg
+ */
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('visible'), 3000);
+}
+
+/* ================================================================
+   INITIERING – kör direkt
+   ================================================================ */
+renderAll();
+</script>
+</body>
+</html>

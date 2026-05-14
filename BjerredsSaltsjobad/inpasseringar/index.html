@@ -226,6 +226,36 @@
     .price-box .price-label { font-size: 0.78rem; opacity: 0.8; margin-top: 0.2rem; }
     .member-section a { color: #aed6f1; }
 
+    /* Header-knappar (flex-wrapper + navigeringslänk) */
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .btn-nav {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.6rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.18s;
+    }
+    .btn-nav:hover { background: rgba(255,255,255,0.28); }
+
+    /* Liten not-paragraf under prisgrid i members-sektionen */
+    .member-note {
+      font-size: 0.82rem;
+      opacity: 0.82;
+    }
+
+    /* Formulärgrupper som är dolda vid sidladdning
+       (visas/döljs av JavaScript via classList) */
+    .form-hidden { display: none; }
+
     /* Fotnot & återställningsknapp */
     .footer-row {
       display: flex;
@@ -373,8 +403,13 @@
     <h1>🌊 Bjerreds Saltsjöbad</h1>
     <p>Inpasseringsstatistik – uppdateras löpande</p>
   </div>
-  <!-- Knapp som öppnar inmatningsmodalen -->
-  <button class="btn-primary" onclick="openModal()">+ Lägg till / uppdatera data</button>
+  <!-- Knappar i header -->
+  <div class="header-actions">
+    <!-- Navigering till datatabellen -->
+    <a href="data.html" class="btn-nav">📊 Visa data</a>
+    <!-- Öppnar inmatningsmodalen -->
+    <button class="btn-primary" onclick="openModal()">+ Lägg till / uppdatera data</button>
+  </div>
 </header>
 
 <main>
@@ -768,18 +803,53 @@ function initMainChart(data) {
  */
 function buildMainDatasets(data) {
   return Object.keys(data).map(year => {
-    const col = YEAR_COLORS[year] || { border: '#999', fill: 'rgba(150,150,150,0.08)' };
+    const col    = YEAR_COLORS[year] || { border: '#999', fill: 'rgba(150,150,150,0.08)' };
+    const totals = monthlyTotals(data, year);
+
+    /* Beräkna vilka månader som har OFULLSTÄNDIG data
+       (minst en kategori har data, men minst en saknar) */
+    const incompleteMonths = new Set();
+    const yearData = data[year] || {};
+    for (let m = 0; m < 12; m++) {
+      const vals    = Object.values(yearData).map(v => v[m]);
+      const hasData = vals.some(v => v !== null);
+      const hasNull = vals.some(v => v === null);
+      if (hasData && hasNull) incompleteMonths.add(m);
+    }
+
     return {
-      label:              `År ${year}`,
-      data:               monthlyTotals(data, year),
-      borderColor:        col.border,
-      backgroundColor:    col.fill,
-      fill:               true,
-      tension:            0.35,           /* Mjuk kurva */
-      pointRadius:        5,
-      pointHoverRadius:   8,
+      label:               `År ${year}`,
+      data:                totals,
+      borderColor:         col.border,
+      backgroundColor:     col.fill,
+      fill:                true,
+      tension:             0.35,
+      pointRadius:         5,
+      pointHoverRadius:    8,
       pointBackgroundColor: col.border,
-      spanGaps:           false           /* Visa INTE linje över null-gap */
+      spanGaps:            false,
+
+      /* Streckad linje för segment som LEDER TILL en ofullständig månad.
+         ctx.p1DataIndex = index för segmentets slutpunkt. */
+      segment: incompleteMonths.size > 0 ? {
+        borderDash: ctx =>
+          incompleteMonths.has(ctx.p1DataIndex) ? [7, 4] : undefined,
+        borderColor: ctx =>
+          incompleteMonths.has(ctx.p1DataIndex)
+            ? 'rgba(230,126,34,0.85)'   /* Orange för ofullständig */
+            : col.border
+      } : undefined,
+
+      /* Visa ofullständiga datapunkter med annorlunda markör */
+      pointBackgroundColor: totals.map((_, i) =>
+        incompleteMonths.has(i) ? '#e67e22' : col.border
+      ),
+      pointBorderColor: totals.map((_, i) =>
+        incompleteMonths.has(i) ? '#e67e22' : col.border
+      ),
+      pointRadius: totals.map((v, i) =>
+        v !== null && incompleteMonths.has(i) ? 7 : 5
+      )
     };
   });
 }
@@ -1118,7 +1188,6 @@ const closurePlugin = {
     /* Bakgrundsruta med rundade hörn */
     ctx.fillStyle = 'rgba(254, 249, 231, 0.92)';
     ctx.beginPath();
-    /* ctx.roundRect är tillgänglig i moderna webbläsare (Chrome 99+, FF 112+) */
     if (ctx.roundRect) {
       ctx.roundRect(midX - w / 2, labelY, w, h, 5);
     } else {
@@ -1129,15 +1198,158 @@ const closurePlugin = {
     ctx.lineWidth   = 1;
     ctx.stroke();
 
-    /* Text */
-    ctx.fillStyle   = '#7d6608';
-    ctx.textAlign   = 'center';
+    ctx.fillStyle    = '#7d6608';
+    ctx.textAlign    = 'center';
     ctx.textBaseline = 'top';
     ctx.fillText(line1, midX, labelY + 5);
     ctx.fillText(line2, midX, labelY + 19);
     ctx.restore();
+
+    /* ================================================================
+       ANNOTATION: OFULLSTÄNDIGA MÅNADER
+       Sök igenom alla datasets efter månader där totalen är
+       beräknad på partiell data, och rita en textbubbla med pil.
+       ================================================================ */
+
+    /* Hitta ofullständiga månader dynamiskt ur den laddade datan */
+    const currentData = loadData();
+    const incompletePoints = []; /* { year, monthIdx, px, py } */
+
+    chart.data.datasets.forEach((dataset, dsIdx) => {
+      /* Extrahera årtalet ur dataset-etiketten ("År 2026" → 2026) */
+      const yearMatch = dataset.label?.match(/\d{4}/);
+      if (!yearMatch) return;
+      const yr       = parseInt(yearMatch[0]);
+      const yearData = currentData[yr] || {};
+
+      for (let m = 0; m < 12; m++) {
+        const vals    = Object.values(yearData).map(v => v[m]);
+        const hasData = vals.some(v => v !== null);
+        const hasNull = vals.some(v => v === null);
+        if (!hasData || !hasNull) continue; /* Ej ofullständig */
+
+        /* Hämta pixelposition för datapunkten */
+        const meta  = chart.getDatasetMeta(dsIdx);
+        const point = meta?.data?.[m];
+        if (!point) continue;
+
+        incompletePoints.push({
+          year:     yr,
+          monthIdx: m,
+          px:       point.x,
+          py:       point.y
+        });
+      }
+    });
+
+    /* Rita en bubbla + pil per ofullständig datapunkt */
+    incompletePoints.forEach(pt => {
+      drawIncompleteAnnotation(ctx, pt.px, pt.py, pt.year, pt.monthIdx, chartArea);
+    });
   }
 };
+
+/* ----------------------------------------------------------------
+   Hjälpfunktion: ritar textbubbla med pil mot en datapunkt.
+   ---------------------------------------------------------------- */
+
+/**
+ * Ritar en orange varningsbubbla med pil mot koordinaten (px, py).
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} px          - X-pixel för datapunkten
+ * @param {number} py          - Y-pixel för datapunkten
+ * @param {number} year        - t.ex. 2026
+ * @param {number} monthIdx    - 0–11
+ * @param {Object} chartArea   - Chart.js chartArea-objekt
+ */
+function drawIncompleteAnnotation(ctx, px, py, year, monthIdx, chartArea) {
+  const monthName = MONTHS_FULL ? MONTHS_FULL[monthIdx] : MONTHS[monthIdx];
+
+  /* Bubbeltext */
+  const txt1 = `${monthName} ${year}`;
+  const txt2 = 'ej komplett –';
+  const txt3 = 'data saknas';
+
+  ctx.save();
+  ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+
+  const lineH  = 14;
+  const padX   = 10;
+  const padY   = 6;
+  const bW     = Math.max(
+    ctx.measureText(txt1).width,
+    ctx.measureText(txt2).width,
+    ctx.measureText(txt3).width
+  ) + padX * 2;
+  const bH = lineH * 3 + padY * 2;
+
+  /* Placera bubblan ovanför och till höger om punkten.
+     Klipp in i chartArea om bubblan hamnar utanför. */
+  let bX = px + 14;
+  let bY = py - bH - 14;
+  if (bX + bW > chartArea.right  - 5) bX = px - bW - 14;
+  if (bY < chartArea.top + 5)         bY = py + 18;
+
+  /* ---- Bakgrundsruta ---- */
+  ctx.fillStyle   = 'rgba(255, 251, 240, 0.97)';
+  ctx.shadowColor = 'rgba(0,0,0,0.10)';
+  ctx.shadowBlur  = 6;
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(bX, bY, bW, bH, 5);
+  } else {
+    ctx.rect(bX, bY, bW, bH);
+  }
+  ctx.fill();
+  ctx.shadowBlur  = 0;
+  ctx.strokeStyle = '#e67e22';
+  ctx.lineWidth   = 1.5;
+  ctx.stroke();
+
+  /* ---- Pil från bubbla mot datapunkten ---- */
+  /* Utgångspunkt: närmaste kant på bubblan mot punkten */
+  const arrowStartX = bX + bW / 2;
+  const arrowStartY = (py < bY) ? bY : bY + bH;
+  const arrowEndX   = px;
+  const arrowEndY   = py;
+
+  /* Beräkna vinkel för pilspetsen */
+  const angle   = Math.atan2(arrowEndY - arrowStartY, arrowEndX - arrowStartX);
+  const headLen = 9;
+
+  ctx.strokeStyle = '#e67e22';
+  ctx.lineWidth   = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(arrowStartX, arrowStartY);
+  ctx.lineTo(arrowEndX, arrowEndY);
+  ctx.stroke();
+
+  /* Pilspets */
+  ctx.fillStyle = '#e67e22';
+  ctx.beginPath();
+  ctx.moveTo(arrowEndX, arrowEndY);
+  ctx.lineTo(
+    arrowEndX - headLen * Math.cos(angle - Math.PI / 6),
+    arrowEndY - headLen * Math.sin(angle - Math.PI / 6)
+  );
+  ctx.lineTo(
+    arrowEndX - headLen * Math.cos(angle + Math.PI / 6),
+    arrowEndY - headLen * Math.sin(angle + Math.PI / 6)
+  );
+  ctx.closePath();
+  ctx.fill();
+
+  /* ---- Text i bubblan ---- */
+  ctx.fillStyle    = '#7d4e00';
+  ctx.textAlign    = 'center';
+  ctx.textBaseline = 'top';
+  const textX = bX + bW / 2;
+  ctx.fillText(txt1, textX, bY + padY);
+  ctx.fillText(txt2, textX, bY + padY + lineH);
+  ctx.fillText(txt3, textX, bY + padY + lineH * 2);
+
+  ctx.restore();
+}
 
 /* Registrera pluginet globalt – Chart.js anropar det automatiskt */
 Chart.register(closurePlugin);
