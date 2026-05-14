@@ -182,16 +182,24 @@
     }
 
     /* ============================================================
-       TILLBAKA-LÄNK
+       BREADCRUMB – navigationslinje i toppen
        ============================================================ */
-    .back-link {
-      display: inline-block;
-      margin-top: 1.2rem;
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
       font-size: 0.8rem;
       color: var(--muted);
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .breadcrumb a {
+      color: var(--blue);
       text-decoration: none;
     }
-    .back-link:hover { color: var(--dark); }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb .sep { opacity: 0.5; }
+    .breadcrumb .current { color: var(--dark); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -202,6 +210,13 @@
 </header>
 
 <div class="content">
+
+  <!-- Breadcrumb: visar var man befinner sig och låter man navigera uppåt -->
+  <nav class="breadcrumb">
+    <a href="../">🏠 Bjerreds Saltsjöbad</a>
+    <span class="sep">›</span>
+    <span class="current">Entréskylt</span>
+  </nav>
 
   <div class="sign-card">
 
@@ -239,8 +254,6 @@
 
   </div>
 
-  <!-- Tillbaka till startsidan -->
-  <a class="back-link" href="../">← Tillbaka till startsidan</a>
 
 </div>
 </body>
