@@ -273,6 +273,82 @@
     }
 
     /* ============================================================
+       MODAL – lightbox för Wondr-skärmbild
+       ============================================================ */
+
+    /* Mörk bakgrund som täcker hela skärmen */
+    .modal-overlay {
+      display: none;              /* Dold som standard */
+      position: fixed;
+      inset: 0;                   /* top/right/bottom/left = 0 */
+      background: rgba(0,0,0,0.72);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    /* Visa modalen när den har klassen 'open' */
+    .modal-overlay.open { display: flex; }
+
+    /* Den vita rutan med bild och stängknapp */
+    .modal-box {
+      background: #fff;
+      border-radius: 10px;
+      max-width: 380px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .modal-box img {
+      width: 100%;
+      display: block;
+    }
+    /* Rubrik ovanför bilden */
+    .modal-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #333;
+      padding: 0.6rem 1rem 0.4rem;
+      background: #f7f7f7;
+      border-bottom: 1px solid #ddd;
+    }
+    /* Stängknapp (×) uppe till höger */
+    .modal-close {
+      position: absolute;
+      top: 0.3rem;
+      right: 0.5rem;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      line-height: 1;
+      color: #666;
+      cursor: pointer;
+      padding: 0.1rem 0.3rem;
+    }
+    .modal-close:hover { color: #000; }
+
+    /* Länken som öppnar modalen – visas inlineat i texten */
+    .modal-trigger {
+      color: #445f40;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline dotted;
+      white-space: nowrap;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+    }
+    .modal-trigger:hover { color: #2d4029; }
+
+    @media print {
+      /* Modalen ska aldrig synas vid utskrift */
+      .modal-overlay { display: none !important; }
+    }
+
+    /* ============================================================
        SPRÅKVÄXLARE
        ============================================================ */
     .lang-btn {
@@ -348,7 +424,10 @@
           </li>
           <li>
             <span class="step-num">3</span>
-            <span>Öppna appen och välj <strong>Engångsinträde</strong> – dörren öppnas</span>
+            <span>Öppna appen och välj <strong>Engångsinträde</strong> – betala 100 kr med kort eller Swish – dörren öppnas
+              <!-- Klickbar länk som öppnar modal med skärmbild från Wondr-appen -->
+              <button class="modal-trigger" onclick="oppnaModal()" aria-label="Visa hur det ser ut i appen">📱 Visa i appen</button>
+            </span>
           </li>
         </ol>
         <p class="section-note">Nästa besök räcker det med appen – inget mer att registrera. Tips: registrera dig och ladda ned appen hemma innan du kommer!</p>
