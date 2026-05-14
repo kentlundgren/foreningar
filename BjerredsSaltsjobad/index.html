@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bjerreds Saltsjöbad</title>
+
+  <!--
+    index.html – Landningssida för Bjerreds Saltsjöbad
+    Visar den gamla entréskylt och erbjuder länkar till
+    uppdaterade digitala skyltar (svenska och engelska)
+    samt inpasseringsstatistik.
+  -->
+
+  <style>
+    /* ============================================================
+       GRUNDINSTÄLLNINGAR
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* CSS-variabler för färgtemat */
+    :root {
+      --sand:    #f5f0e8;
+      --dark:    #2c2c2c;
+      --muted:   #666;
+      --border:  #d4cfc6;
+      --green:   #445f40;
+      --blue:    #2a5fa0;
+      --yellow:  #fffacd;
+      --yellow-border: #c8b800;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+      background: var(--sand);
+      color: var(--dark);
+      min-height: 100vh;
+      padding: 2rem 1rem 3rem;
+    }
+
+    /* ============================================================
+       SIDHUVUD
+       ============================================================ */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    header h1 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+    header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 0.3rem;
+    }
+
+    /* ============================================================
+       HUVUDINNEHÅLL – centrerad kolumn
+       ============================================================ */
+    .content {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ============================================================
+       SKYLT-SEKTION – visar gamla skylten + knappar till nya
+       ============================================================ */
+    .sign-section {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* Rubrik med bakgrundsfärg */
+    .sign-section-header {
+      background: var(--dark);
+      color: #fff;
+      padding: 0.75rem 1.1rem;
+    }
+    .sign-section-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .sign-section-header p {
+      font-size: 0.78rem;
+      opacity: 0.7;
+      margin-top: 0.2rem;
+    }
+
+    /* Gamla skylten – foto */
+    .old-sign-wrapper {
+      padding: 1rem 1rem 0.5rem;
+      text-align: center;
+      background: #f0ece4;
+      border-bottom: 1px dashed var(--border);
+    }
+    .old-sign-wrapper img {
+      max-width: 100%;
+      max-height: 340px;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .old-sign-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.45rem;
+      font-style: italic;
+      padding-bottom: 0.8rem;
+    }
+
+    /* Pil + text som leder till nya skyltar */
+    .arrow-hint {
+      text-align: center;
+      padding: 0.9rem 1rem 0.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .arrow-hint .arrow {
+      display: block;
+      font-size: 1.4rem;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .arrow-hint strong {
+      color: var(--dark);
+    }
+
+    /* Knapp-rad för de nya skyltarna */
+    .new-sign-buttons {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.6rem 1rem 1.1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Gemensam knappstil */
+    .btn {
+      flex: 1;
+      min-width: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      padding: 0.75rem 0.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+      border: 2px solid transparent;
+      transition: filter 0.15s, transform 0.1s;
+    }
+    .btn:hover  { filter: brightness(1.06); transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-sv {
+      background: var(--green);
+      color: #fff;
+      border-color: #354c32;
+    }
+    .btn-en {
+      background: var(--blue);
+      color: #fff;
+      border-color: #1e4a80;
+    }
+
+    .btn .flag    { font-size: 1.4rem; line-height: 1; }
+    .btn .btn-sub { font-size: 0.72rem; font-weight: 400; opacity: 0.85; }
+
+    /* Ny-märkning */
+    .new-badge {
+      display: inline-block;
+      background: #e8f0d8;
+      color: var(--green);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      border-radius: 8px;
+      padding: 0.1rem 0.45rem;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+      border: 1px solid #c4d8a8;
+    }
+    .btn-en .new-badge {
+      background: #dce8f5;
+      color: var(--blue);
+      border-color: #aac4e0;
+    }
+
+    /* ============================================================
+       LÄNK TILL STATISTIKSIDAN
+       ============================================================ */
+    .stats-link {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      text-decoration: none;
+      color: var(--dark);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: box-shadow 0.15s, transform 0.1s;
+      margin-bottom: 1.5rem;
+    }
+    .stats-link:hover  { box-shadow: 0 4px 14px rgba(0,0,0,0.12); transform: translateY(-1px); }
+    .stats-link:active { transform: translateY(0); }
+
+    .stats-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .stats-text strong {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .stats-text span {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .stats-arrow {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       SIDFOT
+       ============================================================ */
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Bjerreds Saltsjöbad</h1>
+  <p>Kallbadhus &amp; bastu i Bjärred</p>
+</header>
+
+<div class="content">
+
+  <!-- ============================================================
+       ENTRÉSKYLT – gamla fotot + knappar till digitala versioner
+       ============================================================ -->
+  <div class="sign-section">
+
+    <div class="sign-section-header">
+      <h2>Entréskylt – betala &amp; kom in</h2>
+      <p>Nedan ser du skylten vid grinden – klicka för en uppdaterad digital version</p>
+    </div>
+
+    <!-- Foto på den gamla/nuvarande fysiska skylten -->
+    <div class="old-sign-wrapper">
+      <img src="inpasseringar/gammal_skylt.jpg"
+           alt="Nuvarande entréskylt vid grinden till Bjerreds Saltsjöbad" />
+      <p class="old-sign-label">Nuvarande skylt vid grinden</p>
+    </div>
+
+    <!-- Pil och uppmaning -->
+    <div class="arrow-hint">
+      <span class="arrow">↓</span>
+      <strong>Uppdaterade digitala versioner</strong> – samma info, korrekta priser &amp; ny betalmetod
+    </div>
+
+    <!-- Knappar till de digitala skyltarna -->
+    <div class="new-sign-buttons">
+
+      <!-- Svenska skylten -->
+      <a class="btn btn-sv" href="skylt.html">
+        <span class="flag">🇸🇪</span>
+        <span>Svensk skylt<span class="new-badge">NY</span></span>
+        <span class="btn-sub">skylt.html</span>
+      </a>
+
+      <!-- Engelska skylten -->
+      <a class="btn btn-en" href="skylt_eng.html">
+        <span class="flag">🇬🇧</span>
+        <span>English sign<span class="new-badge">NY</span></span>
+        <span class="btn-sub">skylt_eng.html</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       LÄNK TILL INPASSERINGSSTATISTIK
+       ============================================================ -->
+  <a class="stats-link" href="inpasseringar/index.html">
+    <span class="stats-icon">📊</span>
+    <span class="stats-text">
+      <strong>Inpasseringsstatistik</strong>
+      <span>Månadsvis statistik med diagram och tabeller</span>
+    </span>
+    <span class="stats-arrow">›</span>
+  </a>
+
+</div><!-- /.content -->
+
+<footer>
+  <a href="https://bjerredskallbadhus.se" target="_blank" rel="noopener">bjerredskallbadhus.se</a>
+</footer>
+
+</body>
+</html>
