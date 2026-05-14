@@ -336,10 +336,88 @@
     /* ============================================================
        RESPONSIVT
        ============================================================ */
+    /* ============================================================
+       INFORMATIONSPANEL – dataflöde och arbetsätt
+       ============================================================ */
+    .info-panel {
+      background: #eaf4fb;
+      border-left: 4px solid #2e86c1;
+      border-radius: 0 8px 8px 0;
+      padding: 0 1.2rem;
+      margin: 1rem 1.5rem 0;
+      max-width: 1160px;
+      margin-left: auto;
+      margin-right: auto;
+      overflow: hidden;
+    }
+
+    /* Klickbar rubrikrad som togglar panelen */
+    .info-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      gap: 0.5rem;
+    }
+    .info-panel-header h3 {
+      font-size: 0.9rem;
+      color: #1a5276;
+      font-weight: 600;
+    }
+    .info-chevron {
+      font-size: 0.75rem;
+      color: #2e86c1;
+      transition: transform 0.2s;
+    }
+    .info-panel.open .info-chevron { transform: rotate(180deg); }
+
+    /* Innehållet – dolt tills panelen öppnas */
+    .info-body {
+      display: none;
+      padding-bottom: 1rem;
+      font-size: 0.84rem;
+      color: #2c3e50;
+      line-height: 1.65;
+    }
+    .info-panel.open .info-body { display: block; }
+
+    .info-body h4 {
+      font-size: 0.83rem;
+      color: #1a5276;
+      margin: 0.9rem 0 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .info-body p  { margin-bottom: 0.5rem; }
+    .info-body code {
+      background: #d6eaf8;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-size: 0.82rem;
+      font-family: 'Consolas', monospace;
+    }
+    .info-body ol {
+      padding-left: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .info-body li { margin-bottom: 0.25rem; }
+    .info-body .warn {
+      background: #fef3cd;
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      margin-top: 0.6rem;
+      font-size: 0.82rem;
+      color: #7d4e00;
+    }
+
     @media (max-width: 700px) {
       header  { flex-direction: column; align-items: flex-start; }
       main    { padding: 0.8rem; }
       .legend { padding: 0.6rem 1rem; gap: 0.8rem; }
+      .info-panel { margin: 0.8rem; }
     }
   </style>
 </head>
@@ -356,6 +434,70 @@
   <!-- Navigering tillbaka till grafsidan -->
   <a class="btn-back" href="index.html">← Tillbaka till grafer</a>
 </header>
+
+<!-- ============================================================
+     INFORMATIONSPANEL – förklarar hur datauppdatering fungerar
+     Öppnas/stängs med klick på rubriken.
+     ============================================================ -->
+<div class="info-panel" id="infoPanel">
+  <div class="info-panel-header" onclick="toggleInfo()" role="button" aria-expanded="false">
+    <h3>ℹ️ Hur fungerar datainmatning och uppdatering?</h3>
+    <span class="info-chevron">▼</span>
+  </div>
+  <div class="info-body">
+
+    <h4>Vad händer när du skriver in ett värde här?</h4>
+    <p>
+      Värdet sparas i webbläsarens lokala minne (<code>localStorage</code>) på
+      <em>din</em> dator. Det syns bara för dig i din webbläsare – ingen annan ser
+      förändringen. Stänger du webbläsaren och öppnar sidan igen finns värdet kvar
+      (på den datorn), men om du öppnar sidan på en annan dator eller i en annan
+      webbläsare syns det inte.
+    </p>
+
+    <h4>Hur gör en vän i föreningen för att lämna data?</h4>
+    <p>
+      Det enklaste är att de skickar siffrorna till dig via mail eller SMS.
+      Du lägger sedan in dem permanent i källkoden (se nedan). Det är alltså
+      <strong>bara du</strong> som uppdaterar den publicerade sidan.
+    </p>
+
+    <h4>Hur görs en ändring permanent (hårdkodas)?</h4>
+    <ol>
+      <li>Öppna filen <code>inpasseringar/data.html</code> (eller <code>index.html</code>) i <strong>Cursor</strong>.</li>
+      <li>Hitta objektet <code>BASE_DATA</code> i <code>&lt;script&gt;</code>-blocket.</li>
+      <li>Ändra rätt värde: <code>BASE_DATA[2026]['Restaurangen/badbiljetter'][3]</code> = april (index 3 = april).</li>
+      <li>Ersätt <code>null</code> med det korrekta talet, t.ex. <code>680</code>.</li>
+      <li>Spara → committa i Cursor → pusha till GitHub → sidan uppdateras live.</li>
+    </ol>
+    <p>
+      Du kan också be Claude Cowork att göra det: <em>"Uppdatera april 2026,
+      Restaurangen till 680"</em> – då redigerar Claude BASE_DATA åt dig.
+    </p>
+
+    <h4>Hur tar jag bort ett felaktigt testvärde och gör cellen gul igen?</h4>
+    <p>
+      Klicka på cellen med det felaktiga värdet → radera siffran i rutan → tryck
+      <strong>Enter</strong>. Cellen blir gul (saknas) igen. Det raderar det lokalt
+      sparade värdet och faller tillbaka på <code>BASE_DATA</code>, som har
+      <code>null</code> (= saknas) för den månaden.
+    </p>
+
+    <h4>Kan jag se om någon annan lagt in data?</h4>
+    <p>
+      Nej – det finns ingen server bakom den här sidan (den körs på GitHub Pages).
+      All kommunikation sker utanför sidan, t.ex. via mail. När du fått in
+      korrekta siffror uppdaterar du <code>BASE_DATA</code> permanent.
+    </p>
+
+    <div class="warn">
+      ⚠️ <strong>Kom ihåg:</strong> lokalt inmatad data försvinner om du
+      rensar webbläsarens data/cache, eller om du öppnar sidan i ett privat/inkognito-fönster.
+      Permanent data måste alltid hårdkodas in i <code>BASE_DATA</code> via Cursor + Git.
+    </div>
+
+  </div>
+</div>
 
 <!-- Färgförklaring -->
 <div class="legend">
@@ -697,8 +839,11 @@ function buildYearSection(data, year) {
   /* Redigeringshint */
   const hint       = document.createElement('div');
   hint.className   = 'edit-hint';
-  hint.textContent =
-    '💡 Klicka på en cell för att redigera. Töm fältet och tryck Enter för att markera som saknas (gult).';
+  hint.innerHTML =
+    '💡 <strong>Klicka på en cell</strong> för att redigera. ' +
+    'Skriv nytt värde + Enter för att spara. ' +
+    '<strong>Töm fältet + Enter</strong> = markera som saknas (gult). ' +
+    'OBS: värden sparas bara lokalt i din webbläsare – se ℹ️ ovan för permanent uppdatering.';
 
   wrap.appendChild(table);
   section.appendChild(wrap);
@@ -862,6 +1007,21 @@ function showToast(msg) {
   el.classList.add('visible');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('visible'), 3000);
+}
+
+/* ================================================================
+   INFORMATIONSPANEL – öppna/stäng
+   ================================================================ */
+
+/**
+ * Togglar informationspanelen öppen/stängd.
+ * Uppdaterar aria-expanded för tillgänglighet.
+ */
+function toggleInfo() {
+  const panel  = document.getElementById('infoPanel');
+  const header = panel.querySelector('.info-panel-header');
+  const isOpen = panel.classList.toggle('open');
+  header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 }
 
 /* ================================================================
