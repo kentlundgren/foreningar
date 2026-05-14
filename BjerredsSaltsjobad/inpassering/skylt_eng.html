@@ -273,6 +273,81 @@
     }
 
     /* ============================================================
+       MODAL – lightbox for Wondr app screenshot
+       ============================================================ */
+
+    /* Dark overlay covering the full screen */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    /* White box containing the image and close button */
+    .modal-box {
+      background: #fff;
+      border-radius: 10px;
+      max-width: 380px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .modal-box img {
+      width: 100%;
+      display: block;
+    }
+    /* Title bar above the image */
+    .modal-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #333;
+      padding: 0.6rem 1rem 0.4rem;
+      background: #f7f7f7;
+      border-bottom: 1px solid #ddd;
+    }
+    /* Close button (×) top right */
+    .modal-close {
+      position: absolute;
+      top: 0.3rem;
+      right: 0.5rem;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      line-height: 1;
+      color: #666;
+      cursor: pointer;
+      padding: 0.1rem 0.3rem;
+    }
+    .modal-close:hover { color: #000; }
+
+    /* Inline link that opens the modal */
+    .modal-trigger {
+      color: #445f40;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline dotted;
+      white-space: nowrap;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+    }
+    .modal-trigger:hover { color: #2d4029; }
+
+    @media print {
+      /* Modal must never appear when printing */
+      .modal-overlay { display: none !important; }
+    }
+
+    /* ============================================================
        LANGUAGE TOGGLE
        ============================================================ */
     .lang-btn {
@@ -348,7 +423,10 @@
           </li>
           <li>
             <span class="step-num">3</span>
-            <span>Open the app and select <strong>Single Entry</strong> – the gate opens</span>
+            <span>Open the app and select <strong>Single Entry</strong> – pay 100 kr by card or Swish – the gate opens
+              <!-- Clickable button that opens a modal with a screenshot from the Wondr app -->
+              <button class="modal-trigger" onclick="openModal()" aria-label="Show how it looks in the app">📱 Show in app</button>
+            </span>
           </li>
         </ol>
         <p class="section-note">Next visit you only need the app – no need to register again. Tip: register and download the app at home before you arrive!</p>
@@ -430,12 +508,56 @@
   </div><!-- /.sign -->
 
   <!-- ============================================================
+       MODAL – lightbox with screenshot from the Wondr app
+       Shown when the user clicks "Show in app" at step 3.
+       ============================================================ -->
+  <div class="modal-overlay" id="wondrModal" role="dialog" aria-modal="true"
+       aria-label="Screenshot from the Wondr app"
+       onclick="closeModal(event)">
+    <div class="modal-box">
+      <!-- Title bar with close button -->
+      <div class="modal-title">
+        Wondr app – select Single Entry and pay
+        <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
+      </div>
+      <!-- Screenshot from the Wondr app -->
+      <img src="Wondr_engangsintrade.jpg"
+           alt="Screenshot from the Wondr app showing Single Entry, 100 kr, with a Buy button" />
+    </div>
+  </div>
+
+  <!-- ============================================================
        JAVASCRIPT – print function
        Injects a <style> tag with the correct @page size just
        before window.print() is called. The tag is removed after
        printing so the next call starts with a clean state.
        ============================================================ -->
   <script>
+    /* ----------------------------------------------------------
+       Modal functions for Wondr app screenshot
+       ---------------------------------------------------------- */
+
+    // Opens the modal by adding the CSS class 'open'
+    function openModal() {
+      document.getElementById('wondrModal').classList.add('open');
+    }
+
+    // Closes the modal – called from the close button
+    // or when the user clicks the dark background overlay
+    function closeModal(event) {
+      // If a click event exists and it hit the modal box (not the overlay), do nothing
+      if (event && event.target.closest('.modal-box')) return;
+      document.getElementById('wondrModal').classList.remove('open');
+    }
+
+    // Close the modal with the Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    /* ----------------------------------------------------------
+       Print function
+       ---------------------------------------------------------- */
     function printSign(format) {
       // Remove any previous dynamic page-size style
       const old = document.getElementById('dynamic-page-style');

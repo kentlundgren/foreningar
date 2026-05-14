@@ -509,12 +509,56 @@
   </div><!-- /.sign -->
 
   <!-- ============================================================
+       MODAL – lightbox med skärmbild från Wondr-appen
+       Visas när användaren klickar "Visa i appen" vid steg 3.
+       ============================================================ -->
+  <div class="modal-overlay" id="wondrModal" role="dialog" aria-modal="true"
+       aria-label="Skärmbild från Wondr-appen"
+       onclick="stangModal(event)">
+    <div class="modal-box">
+      <!-- Rubrikrad med stängknapp -->
+      <div class="modal-title">
+        Wondr-appen – välj Engångsinträde och betala
+        <button class="modal-close" onclick="stangModal()" aria-label="Stäng">×</button>
+      </div>
+      <!-- Skärmbild från Wondr-appen -->
+      <img src="Wondr_engangsintrade.jpg"
+           alt="Skärmbild från Wondr-appen som visar Engångsinträde, 100 kr, med Köp-knapp" />
+    </div>
+  </div>
+
+  <!-- ============================================================
        JAVASCRIPT – utskriftsfunktion
        Injicerar en <style>-tagg med rätt @page-storlek precis
        innan window.print() anropas. Taggen tas bort efter utskrift
        så att nästa anrop börjar med ren slate.
        ============================================================ -->
   <script>
+    /* ----------------------------------------------------------
+       Modal-funktioner för Wondr-skärmbild
+       ---------------------------------------------------------- */
+
+    // Öppnar modalen genom att lägga till CSS-klassen 'open'
+    function oppnaModal() {
+      document.getElementById('wondrModal').classList.add('open');
+    }
+
+    // Stänger modalen – anropas antingen från stängknappen
+    // eller om användaren klickar på den mörka bakgrunden
+    function stangModal(event) {
+      // Om event finns och klicket var på modal-boxen (inte bakgrunden), gör ingenting
+      if (event && event.target.closest('.modal-box')) return;
+      document.getElementById('wondrModal').classList.remove('open');
+    }
+
+    // Stäng modalen med Escape-tangenten
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') stangModal();
+    });
+
+    /* ----------------------------------------------------------
+       Utskriftsfunktion
+       ---------------------------------------------------------- */
     function printSign(format) {
       // Ta bort eventuell tidigare utskriftsstil för sidformat
       const gammal = document.getElementById('dynamic-page-style');
