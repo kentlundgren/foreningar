@@ -10,6 +10,15 @@
     Visar den gamla entréskylt och erbjuder länkar till
     uppdaterade digitala skyltar (svenska och engelska)
     samt inpasseringsstatistik.
+
+    Mappstruktur:
+      index.html             ← denna fil (landningssida)
+      inpassering/
+        skylt.html           ← digital entréskylt, svenska
+        skylt_eng.html       ← digital entréskylt, engelska
+        index.html           ← inpasseringsstatistik
+        data.html            ← redigerbar datatabell
+        gammal_skylt.jpg     ← foto på den gamla fysiska skylten
   -->
 
   <style>
@@ -271,7 +280,7 @@
 
     <!-- Foto på den gamla/nuvarande fysiska skylten -->
     <div class="old-sign-wrapper">
-      <img src="inpasseringar/gammal_skylt.jpg"
+      <img src="inpassering/gammal_skylt.jpg"
            alt="Nuvarande entréskylt vid grinden till Bjerreds Saltsjöbad" />
       <p class="old-sign-label">Nuvarande skylt vid grinden</p>
     </div>
@@ -286,17 +295,17 @@
     <div class="new-sign-buttons">
 
       <!-- Svenska skylten -->
-      <a class="btn btn-sv" href="skylt.html">
+      <a class="btn btn-sv" href="inpassering/skylt.html">
         <span class="flag">🇸🇪</span>
         <span>Svensk skylt<span class="new-badge">NY</span></span>
-        <span class="btn-sub">skylt.html</span>
+        <span class="btn-sub">inpassering/skylt.html</span>
       </a>
 
       <!-- Engelska skylten -->
-      <a class="btn btn-en" href="skylt_eng.html">
+      <a class="btn btn-en" href="inpassering/skylt_eng.html">
         <span class="flag">🇬🇧</span>
         <span>English sign<span class="new-badge">NY</span></span>
-        <span class="btn-sub">skylt_eng.html</span>
+        <span class="btn-sub">inpassering/skylt_eng.html</span>
       </a>
 
     </div>

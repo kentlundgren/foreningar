@@ -13,8 +13,14 @@ Webbplats: https://bjerredskallbadhus.se
 BjerredsSaltsjobad/
 ├── CLAUDE.md              ← denna fil
 ├── README.md
-└── inpasseringar/
-    └── index.html         ← huvudfil, publiceras via GitHub Pages
+├── index.html             ← landningssida (rot, publiceras via GitHub Pages)
+├── inpassering/           ← digitala entrésyltar
+│   ├── skylt.html         ← digital entréskylt, svenska
+│   ├── skylt_eng.html     ← digital entréskylt, engelska
+│   └── gammal_skylt.jpg   ← foto på den gamla fysiska skylten
+└── inpasseringar/         ← inpasseringsstatistik (orörd)
+    ├── index.html         ← statistik med diagram
+    └── data.html          ← redigerbar datatabell
 ```
 
 ## Parallell utvecklingsmiljö

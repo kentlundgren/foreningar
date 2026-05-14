@@ -2,34 +2,60 @@
 
 Webbapplikationer för Bjerreds Saltsjöbad – en badanläggning i Skåne.
 
-**Live-sida (inpasseringar):** https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/
+**Live-sida (startsida):** https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/
 
 **GitHub-repo (denna mapp):** https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad
 
 ---
 
-## Projektbeskrivning
+## Mappstruktur
 
-Samling av webbverktyg för Bjerreds Saltsjöbad. För närvarande finns ett verktyg för att visualisera och administrera inpasseringsstatistik.
+```
+BjerredsSaltsjobad/
+├── index.html               ← Landningssida – startpunkt för hela projektet
+├── inpassering/             ← Digitala entrésyltar (hur man betalar & kommer in)
+│   ├── skylt.html           ← Entréskylt på svenska
+│   ├── skylt_eng.html       ← Entréskylt på engelska
+│   └── gammal_skylt.jpg     ← Foto på den gamla fysiska skylten vid grinden
+└── inpasseringar/           ← Inpasseringsstatistik
+    ├── index.html           ← Webbapp med diagram och månadsvis statistik
+    └── data.html            ← Redigerbar datatabell (Excel-liknande vy)
+```
 
 ---
 
-## Filer och mappar
+## inpassering/ – Entrésyltar
 
-| Fil / Mapp | Beskrivning |
-|---|---|
-| `inpasseringar/index.html` | Webbapp för inpasseringsstatistik – visar och jämför antal besökare per månad, år och kategori med diagram (Chart.js). Data lagras i localStorage. |
+Digitala versioner av skylten vid grinden som visar hur besökare betalar för att komma in. Finns på svenska (`skylt.html`) och engelska (`skylt_eng.html`). Skyltarna är optimerade för mobil och kan även skrivas ut på A4.
+
+Betalmetoder som visas:
+- **Wondr-appen** – 100 kr (rekommenderas)
+- **SMS** – 120 kr (skicka `ccasvo` till `72456`)
+- **Swish / Kort** – 120 kr (via cckod.se, terminal-ID `ASVO`)
+- **Coincode-appen** – 120 kr
 
 ---
 
-## Inpasseringar – funktioner
+## inpasseringar/ – Statistik
+
+Webbapp för att visualisera och administrera inpasseringsstatistik.
+
+### Funktioner
 
 - Månadsvis jämförelse av inpasseringar för åren 2024, 2025 och 2026
-- Uppdelning per kategori: Restaurangen/badbiljetter, SMS/Swish-biljetter, Medlemmar – armband, Medlemmar – Wonder
-- Interaktiva stapeldiagram byggda med Chart.js 4.4
+- Uppdelning per kategori: Restaurangen/badbiljetter, SMS/Swish-biljetter, Medlemmar – armband, Medlemmar – Wondr
+- Interaktiva diagram byggda med Chart.js 4.4
+- Visuell markering för ombyggnadsperiod (feb–jul 2025) och ofullständig data
 - Redigeringsläge: ändra enstaka månadsdata direkt i webbläsaren (sparas i localStorage)
-- Lägg till nya år och kategorier dynamiskt
-- Markering för ombyggnadsperiod (påverkar jämförelsen)
+- `data.html` – Excel-liknande datatabell med inline-redigering
+
+### Viktig datakontext
+
+- **2024**: Komplett helårsdata
+- **2025**: Bastun stängd för ombyggnad mitten februari – mitten juli → 0-värden i mars–juni är korrekta
+- **2025**: Nytt system **Wondr** lanserades juli 2025 → ny kategori från jul 2025
+- **2026**: Armband fasades ut 1 februari 2026
+- Uppdatera data permanent i `inpasseringar/index.html` → `BASE_DATA`-objektet i `<script>`-blocket
 
 ---
 
