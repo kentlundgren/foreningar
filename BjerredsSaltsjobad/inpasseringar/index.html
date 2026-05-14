@@ -256,6 +256,12 @@
        (visas/döljs av JavaScript via classList) */
     .form-hidden { display: none; }
 
+    /* Tidsstämpel i footer-raden */
+    .footer-row .timestamp {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
     /* Fotnot & återställningsknapp */
     .footer-row {
       display: flex;
@@ -487,7 +493,7 @@
         <div class="price-label">Familjemedlemskap – 2 vuxna + hemmaboende barn 7–20 år</div>
       </div>
     </div>
-    <p style="font-size:0.82rem; opacity:0.82;">
+    <p class="member-note">
       Registrera konto på
       <a href="https://bjerredssaltsjobad.wondr.se/register" target="_blank" rel="noopener">bjerredssaltsjobad.wondr.se</a>
       · Ladda sedan ned <strong>Wondr-appen</strong> ·
@@ -498,7 +504,7 @@
 
   <!-- Fotnot + återställningsknapp -->
   <div class="footer-row">
-    <span style="font-size:0.78rem; color:var(--muted);">
+    <span class="timestamp">
       Senast uppdaterad: <span id="last-updated">–</span>
     </span>
     <button class="btn-reset" onclick="resetData()">↺ Återställ originaldata</button>
@@ -538,7 +544,7 @@
     </div>
 
     <!-- Fält för att skriva in nytt år (dolt som standard) -->
-    <div class="form-group" id="grp-new-year" style="display:none;">
+    <div class="form-group form-hidden" id="grp-new-year">
       <label for="inp-new-year">Ange nytt år</label>
       <input type="number" id="inp-new-year" placeholder="t.ex. 2027" min="2020" max="2040" />
     </div>
@@ -571,7 +577,7 @@
     </div>
 
     <!-- Ny kategori (dolt, visas om "+ Ny kategori…" väljs) -->
-    <div class="form-group" id="grp-new-cat" style="display:none;">
+    <div class="form-group form-hidden" id="grp-new-cat">
       <label for="inp-new-cat">Namn på ny kategori</label>
       <input type="text" id="inp-new-cat" placeholder="t.ex. Onlinebiljetter" />
     </div>
@@ -1008,8 +1014,9 @@ function overlayClick(e) {
  */
 function onYearChange() {
   const year = document.getElementById('inp-year').value;
-  document.getElementById('grp-new-year').style.display =
-    year === '__new__' ? 'block' : 'none';
+  /* Visa/dölj via CSS-klass – undviker inline-stilar */
+  document.getElementById('grp-new-year')
+    .classList.toggle('form-hidden', year !== '__new__');
   updateCategoryOptions();
 }
 
@@ -1035,8 +1042,8 @@ function updateCategoryOptions() {
 
   /* Hantera visning av extra kategoriinput */
   sel.onchange = () => {
-    document.getElementById('grp-new-cat').style.display =
-      sel.value === '__new__' ? 'block' : 'none';
+    document.getElementById('grp-new-cat')
+      .classList.toggle('form-hidden', sel.value !== '__new__');
   };
 }
 
