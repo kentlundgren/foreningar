@@ -413,6 +413,23 @@
         i databasen så att den inte krockar med annan data i projektet.
       </p>
 
+      <!-- Länk till Firebase Console – kräver inloggning med rätt Google-konto -->
+      <div class="info-ruta" style="margin-top:0.75rem;">
+        <strong>🔗 Firebase Console för projektet "skylt":</strong><br>
+        <a href="https://console.firebase.google.com/project/skylt-e0c45"
+           target="_blank" rel="noopener"
+           style="color:var(--secondary);word-break:break-all;">
+          https://console.firebase.google.com/project/skylt-e0c45
+        </a><br><br>
+        <span style="font-size:0.83rem;color:var(--muted);">
+          ℹ️ Länken är inte hemlig – den kräver att du är inloggad med rätt
+          Google-konto för att visa något. Den långa URL som Firebase Console
+          ibland genererar (med <code>web:ZmU3...</code> i slutet) är bara
+          App-ID:t kodat och behövs inte – den kortare versionen ovan fungerar
+          lika bra och är enklare att läsa.
+        </span>
+      </div>
+
       <p style="margin-top:0.75rem;">
         Nedanför visas <code>firebaseConfig</code> för projektet.
         Notera att koden är anpassad för CDN-laddning (direkt i HTML utan
@@ -530,14 +547,42 @@
        4. CHECKLISTA – VAD ÅTERSTÅR?
        ============================================================ -->
   <div class="card">
-    <div class="card-header">✅ Checklista – steg mot en fungerande databas</div>
+    <div class="card-header">✅ Checklista – 8 steg mot en fungerande databas (= backend)</div>
     <div class="card-body">
+
+      <!-- Förklaring: databas och backend är samma sak i det här sammanhanget -->
+      <div class="info-ruta" style="margin-bottom:1.2rem;">
+        <strong>💡 "Databas" och "backend" – vad är skillnaden?</strong><br><br>
+        I vardagligt tal används orden ibland som synonymer, och i det här
+        projektet betyder de i praktiken samma sak:
+        <br><br>
+        <strong>Backend</strong> är den del av ett system som användaren
+        <em>inte ser</em> – servern, databasen, logiken som körs bakom kulisserna.
+        Motsatsen är <strong>frontend</strong>, det vill säga det som visas i
+        webbläsaren (HTML, CSS, JavaScript).
+        <br><br>
+        <strong>Databas</strong> är den specifika del av backend där data
+        <em>lagras</em> permanent. En backend kan innehålla mycket mer
+        (beräkningar, autentisering, e-post osv.), men för det här projektet
+        är det databasen som är det viktiga.
+        <br><br>
+        Firebase är en <em>backend som en tjänst</em> (BaaS – Backend as a Service):
+        Google sköter servern och infrastrukturen, vi sköter bara vår data
+        och våra regler. Det är därför Firebase är ett bra val för ett litet
+        projekt som det här – vi slipper sätta upp en egen server.
+        <br><br>
+        <strong>Kort sagt:</strong> när vi säger "koppla data.html till en
+        backend" menar vi "lagra inpasseringssiffrorna i Firebase-databasen
+        istället för bara lokalt i webbläsaren".
+      </div>
+
+      <!-- De åtta stegen med löpnummer -->
       <ul class="steg-lista">
 
         <li class="klar">
           <span class="steg-ikon">✅</span>
           <div class="steg-text">
-            <strong>Firebase-projekt valt</strong>
+            <strong>Steg 1 – Firebase-projekt valt</strong>
             <span>Använder befintliga projektet "skylt" (skylt-e0c45)
             med appen "Bjerreds-skylt". Inget nytt projekt behövs.</span>
           </div>
@@ -546,21 +591,24 @@
         <li class="klar">
           <span class="steg-ikon">✅</span>
           <div class="steg-text">
-            <strong>firebaseConfig hämtad</strong>
+            <strong>Steg 2 – firebaseConfig hämtad</strong>
             <span>Konfigurationen är kopierad från Firebase Console
-            och dokumenterad ovan.</span>
+            och dokumenterad ovan i det här dokumentet.</span>
           </div>
         </li>
 
         <li class="väntar">
           <span class="steg-ikon">⏳</span>
           <div class="steg-text">
-            <strong>Aktivera Realtime Database i Firebase Console</strong>
+            <strong>Steg 3 – Aktivera Realtime Database i Firebase Console</strong>
             <span>
-              Gå till Databases &amp; Storage → Realtime Database → Create database.
-              Välj regionen <em>europe-west1</em>. Starta i testläge, byt sedan
-              regler enligt avsnittet ovan.
-              Efter aktivering: kopiera databaseURL och lägg till i firebaseConfig.
+              Gå till <em>Databases &amp; Storage → Realtime Database → Create database</em>.
+              Välj regionen <strong>europe-west1</strong>. Starta i testläge och byt
+              sedan regler enligt säkerhetsreglerna i avsnittet ovan.
+              Efter aktivering: kopiera <code>databaseURL</code> (t.ex.
+              <code>https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app</code>)
+              och lägg till den i <code>firebaseConfig</code> ovan.
+              <br><em>← Du är här just nu.</em>
             </span>
           </div>
         </li>
@@ -568,47 +616,56 @@
         <li class="todo">
           <span class="steg-ikon">◻️</span>
           <div class="steg-text">
-            <strong>Sätt säkerhetsregler</strong>
-            <span>Realtime Database → Rules → klistra in JSON-reglerna ovan.
-            Läsning öppen, skrivning kräver inloggning.</span>
+            <strong>Steg 4 – Sätt säkerhetsregler</strong>
+            <span>I Firebase Console: <em>Realtime Database → Rules</em> →
+            klistra in JSON-reglerna från avsnittet ovan.
+            Innebär att alla kan läsa data, men bara inloggade kan skriva.</span>
           </div>
         </li>
 
         <li class="todo">
           <span class="steg-ikon">◻️</span>
           <div class="steg-text">
-            <strong>Aktivera Firebase Authentication</strong>
-            <span>Security → Authentication → Sign-in method → aktivera
-            "E-post/lösenord" (och/eller "Google"). Skapa konto för Kent
-            och eventuella andra behöriga.</span>
+            <strong>Steg 5 – Aktivera Firebase Authentication</strong>
+            <span>I Firebase Console: <em>Security → Authentication →
+            Sign-in method</em> → aktivera "E-post/lösenord"
+            (och/eller "Google Sign-In").
+            Skapa sedan konton för Kent och eventuella andra behöriga
+            föreningsmedlemmar som ska få skriva in siffror.</span>
           </div>
         </li>
 
         <li class="todo">
           <span class="steg-ikon">◻️</span>
           <div class="steg-text">
-            <strong>Lägg upp BASE_DATA i Firebase (engångsmigration)</strong>
-            <span>Ett litet engångsskript (kan köras i webbläsarkonsolen) läser
-            BASE_DATA och skriver det till Firebase. Görs en gång.</span>
+            <strong>Steg 6 – Lägg upp BASE_DATA i Firebase (engångsmigration)</strong>
+            <span>Ett litet engångsskript läser <code>BASE_DATA</code> från
+            koden och skriver upp alla historiska siffror till Firebase-databasen.
+            Kan köras direkt i webbläsarens utvecklarkonsol (F12).
+            Görs bara en gång – sedan är all data i Firebase.</span>
           </div>
         </li>
 
         <li class="todo">
           <span class="steg-ikon">◻️</span>
           <div class="steg-text">
-            <strong>Koda om data.html att läsa från Firebase</strong>
-            <span>loadData() ersätts med onValue() från Firebase SDK.
-            BASE_DATA används som fallback om Firebase inte svarar.
-            Redigering kräver inloggning.</span>
+            <strong>Steg 7 – Koda om data.html att läsa och skriva mot Firebase</strong>
+            <span>Funktionen <code>loadData()</code> ersätts med <code>onValue()</code>
+            från Firebase SDK – data laddas från molnet istället för lokalt.
+            <code>saveOverride()</code> ersätts med <code>set()</code> till Firebase.
+            <code>BASE_DATA</code> behålls i koden som reserv om Firebase inte svarar.
+            Redigering av celler kräver att man är inloggad.</span>
           </div>
         </li>
 
         <li class="todo">
           <span class="steg-ikon">◻️</span>
           <div class="steg-text">
-            <strong>Testa på separat branch och publicera</strong>
-            <span>Bygg och testa Firebase-versionen i Cursor på en ny branch
-            innan den slås ihop med main och publiceras på GitHub Pages.</span>
+            <strong>Steg 8 – Testa på separat branch och publicera</strong>
+            <span>Bygg och testa Firebase-versionen i Cursor på en ny Git-branch
+            innan den slås ihop med <code>main</code> och publiceras på
+            GitHub Pages. På så sätt riskerar vi aldrig att förstöra den
+            fungerande produktionssidan under testerna.</span>
           </div>
         </li>
 
