@@ -461,16 +461,29 @@
   storageBucket:     <span class="s">"skylt-e0c45.firebasestorage.app"</span>,
   messagingSenderId: <span class="s">"653653642598"</span>,
   appId:             <span class="s">"1:653653642598:web:29e332c87fed1cd9f34ca7"</span>,
-  <span class="c">// databaseURL läggs till här när Realtime Database är aktiverad:</span>
-  <span class="c">// databaseURL: "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"</span>
+  <span class="c">// databaseURL – tillagd efter att Realtime Database aktiverades (steg 3 klart):</span>
+  databaseURL: <span class="s">"https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"</span>
 };</pre>
 
-      <div class="varning">
-        ⚠️ <strong>databaseURL saknas.</strong> Den här nyckeln behövs för att
-        ansluta till Realtime Database. Den syns i Firebase Console först efter
-        att Realtime Database har aktiverats (se steg 3 i checklistan nedan).
-        URL:en brukar se ut ungefär som:
-        <code>https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app</code>
+      <div style="background:var(--ok-bg);border-left:4px solid #1e8449;
+                  border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
+                  margin-top:1rem;font-size:0.87rem;color:#145a32;">
+        ✅ <strong>databaseURL är inlagd.</strong> Realtime Database är aktiverad
+        och konfigurationen är komplett. Anslutningstest-knappen längre ned på sidan
+        kan nu användas för att verifiera att anslutningen fungerar.
+      </div>
+
+      <div class="info-ruta" style="margin-top:0.75rem;">
+        <strong>Vad är databas.html och vad är data.html?</strong><br><br>
+        <strong>databas.html (den här sidan)</strong> är ett levande
+        arbetsdokument – en loggbok över vad vi gör, varför vi gör det,
+        och hur långt vi har kommit. databaseURL:en finns här för att
+        anslutningstest-knappen ska kunna testa om Firebase svarar.
+        Den här sidan påverkar inte produktionsdatan.<br><br>
+        <strong>data.html</strong> är produktionsfilen – den som besökare
+        använder för att se och (när Firebase är klart) uppdatera
+        inpasseringssiffror. Firebase-koden läggs in i data.html
+        i <strong>steg 7</strong>, inte förrän allt är testat och klart.
       </div>
     </div>
   </div>
@@ -597,29 +610,30 @@
           </div>
         </li>
 
-        <li class="väntar">
-          <span class="steg-ikon">⏳</span>
+        <li class="klar">
+          <span class="steg-ikon">✅</span>
           <div class="steg-text">
             <strong>Steg 3 – Aktivera Realtime Database i Firebase Console</strong>
             <span>
-              Gå till <em>Databases &amp; Storage → Realtime Database → Create database</em>.
-              Välj regionen <strong>europe-west1</strong>. Starta i testläge och byt
-              sedan regler enligt säkerhetsreglerna i avsnittet ovan.
-              Efter aktivering: kopiera <code>databaseURL</code> (t.ex.
-              <code>https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app</code>)
-              och lägg till den i <code>firebaseConfig</code> ovan.
-              <br><em>← Du är här just nu.</em>
+              Klart! Realtime Database är aktiverad i projektet "skylt" (europe-west1).
+              Databasen är tom men redo att ta emot data.<br>
+              <strong>databaseURL:</strong>
+              <code>https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app</code><br>
+              <em>Obs: URL:en slutar på <code>/:null</code> i Firebase Console –
+              det betyder bara att databasen är tom. Det är korrekt.</em>
             </span>
           </div>
         </li>
 
-        <li class="todo">
-          <span class="steg-ikon">◻️</span>
+        <li class="väntar">
+          <span class="steg-ikon">⏳</span>
           <div class="steg-text">
             <strong>Steg 4 – Sätt säkerhetsregler</strong>
-            <span>I Firebase Console: <em>Realtime Database → Rules</em> →
-            klistra in JSON-reglerna från avsnittet ovan.
-            Innebär att alla kan läsa data, men bara inloggade kan skriva.</span>
+            <span>I Firebase Console:
+            <em>Databases &amp; Storage → Realtime Database → Rules</em> →
+            ersätt det som står där med JSON-reglerna från avsnittet ovan
+            (läsning öppen, skrivning kräver inloggning) → klicka Publish.
+            <br><em>← Du är här just nu.</em></span>
           </div>
         </li>
 
@@ -687,10 +701,14 @@
         och databaseURL är inlagd.</strong>
       </p>
 
-      <div class="varning">
-        ⚠️ Anslutningstest kräver att Realtime Database är aktiverad och att
-        <code>databaseURL</code> är tillagd i konfigurationen ovan (rad 29 i
-        skriptet längst ned på sidan).
+      <div style="background:var(--ok-bg);border-left:4px solid #1e8449;
+                  border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
+                  margin-bottom:1rem;font-size:0.87rem;color:#145a32;">
+        ✅ Realtime Database är aktiverad och <code>databaseURL</code> är inlagd.
+        Klicka på knappen för att testa att anslutningen fungerar – ett litet
+        testmeddelande skrivs till Firebase och läses tillbaka.
+        Säkerhetsreglerna är ännu på testläge (steg 4 återstår), så
+        skrivning fungerar tillfälligt utan inloggning.
       </div>
 
       <div id="test-sektion">
@@ -925,7 +943,8 @@
     storageBucket:     "skylt-e0c45.firebasestorage.app",
     messagingSenderId: "653653642598",
     appId:             "1:653653642598:web:29e332c87fed1cd9f34ca7",
-    // databaseURL: "LÄGG IN URL HÄR EFTER ATT REALTIME DATABASE AKTIVERATS"
+    // databaseURL lades till efter att Realtime Database aktiverades i steg 3:
+    databaseURL:       "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"
   };
 
   // ============================================================
