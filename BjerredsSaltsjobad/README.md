@@ -52,12 +52,18 @@ Webbapp för att visualisera och administrera inpasseringsstatistik.
 
 ### data.html – Redigerbar tabell (Firebase-kopplad)
 
+Det här är hela poängen med Firebase-backenden: **flera personer på olika enheter och platser kan uppdatera data direkt i webbläsaren** – utan att behöva installera någon app eller ha tillgång till källkoden. En inpasseringsansvarig kan lägga in månadens siffror från sin mobil, en annan från sin dator, och alla ser ändringarna direkt.
+
 - Excel-liknande tabellvy med inline-redigering per cell
-- Data läses från **Firebase Realtime Database** via `onValue()` – uppdateras live
+- Data läses från **Firebase Realtime Database** via `onValue()` – uppdateras live för alla öppna flikar
 - Skrivning kräver inloggning (Firebase Authentication, e-post/lösenord)
 - Inloggningsmodal öppnas automatiskt när en icke-inloggad användare klickar på en cell
+- Länken "Glömt lösenordet?" i inloggningsrutan skickar ett återställningsmail – nya användare kan sätta sitt eget lösenord utan hjälp av administratören
 - `BASE_DATA` (hårdkodad) används som fallback om Firebase inte kan nås
 - Grön statusdot i headern visar att Firebase-anslutning är aktiv
+
+**Bjuda in nya användare:**
+Administratören klickar på knappen **✉ Bjud in** längst ned till vänster på sidan, fyller i namn och e-postadress, och får ett färdigt välkomstbrev att kopiera och skicka. Nya användare registreras i Firebase Console (Authentication → Users → Add user).
 
 ### Viktig datakontext
 
@@ -83,18 +89,13 @@ const firebaseConfig = {
 
 **Firebase Console:** https://console.firebase.google.com/project/skylt-e0c45
 
-**Implementationsstatus (klart 2026-05-15):**
+**Implementationsstatus (klart 2026-05-15):** Alla 8 steg genomförda ✅
 
-| # | Steg | Status |
-|---|---|---|
-| 1 | Firebase-projekt valt | ✅ |
-| 2 | firebaseConfig hämtad | ✅ |
-| 3 | Realtime Database aktiverad | ✅ |
-| 4 | Säkerhetsregler: read=true, write=auth!=null | ✅ |
-| 5 | Authentication aktiverad, användare skapad | ✅ |
-| 6 | BASE_DATA migrerad (11 kategorier, 0 fel) | ✅ |
-| 7 | data.html omskriven med Firebase-integration | ✅ |
-| 8 | Testat på GitHub Pages – fungerar fullt ut | ✅ |
+**Aktiva användare:**
+| Användare | Roll |
+|---|---|
+| `lundgren.kent@gmail.com` | Administratör |
+| `bjorn.syren1@gmail.com` | Björn Syren – inpasseringsansvarig |
 
 **Authorized domains (Firebase Authentication):**
 - `localhost` – lokal testning

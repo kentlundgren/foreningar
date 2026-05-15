@@ -11,17 +11,20 @@
     integrationen av inpasseringsstatistiken.
 
     SYFTE:
-    Den här filen är ett levande dokument som beskriver planen för
-    att koppla inpasseringsdata till Firebase Realtime Database.
+    Den här filen är ett levande dokument som beskriver hur
+    inpasseringsdata kopplades till Firebase Realtime Database.
     Den innehåller:
       1. Bakgrund och mål
       2. Firebase-konfigurationen för "skylt"-projektet
-      3. Vad som återstår att göra
+      3. Checklistan – alla 8 steg klara (2026-05-15)
       4. En enkel anslutningstest mot Firebase
 
-    NÄR ÄR DEN KLAR?
-    När Firebase Realtime Database är aktiverad, data.html läser
-    från Firebase, och behöriga kan skriva direkt i webbgränssnittet.
+    STATUS (2026-05-15): KLART ✅
+    Alla 8 steg är genomförda. data.html läser och skriver mot
+    Firebase Realtime Database. Behöriga föreningsmedlemmar kan
+    logga in och uppdatera siffror direkt i webbläsaren.
+    Administratören kan bjuda in nya användare via "Bjud in"-
+    knappen i data.html (genererar ett färdigt välkomstbrev).
     ================================================================
   -->
 
@@ -350,12 +353,30 @@
       </p>
 
       <div class="info-ruta">
-        <strong>Målet</strong> är att koppla sidan till Firebase Realtime Database
+        <strong>Målet</strong> var att koppla sidan till Firebase Realtime Database
         så att behöriga föreningsmedlemmar kan skriva in siffror direkt i webbläsaren,
         och alla ser ändringen direkt – utan att Kent behöver röra koden.
         <br><br>
         <strong>BASE_DATA behålls alltid</strong> i koden som reserv, ifall
         Firebase inte går att nå.
+      </div>
+
+      <!-- Slutstatus -->
+      <div style="margin-top:1rem; padding:0.9rem 1.1rem; background:#d5f5e3;
+                  border:1px solid #a9dfbf; border-radius:7px; font-size:0.88rem;
+                  line-height:1.65;">
+        <strong style="color:var(--ok);">✅ Klart – 2026-05-15</strong><br>
+        Alla 8 steg är genomförda och systemet är i produktion på GitHub Pages.
+        Föreningsmedlemmar loggar in direkt på
+        <a href="data.html" style="color:var(--secondary);">data.html</a>
+        och uppdaterar siffror utan att Kent behöver göra något.
+        Nya användare bjuds in via "✉ Bjud in"-knappen i nedre vänstra hörnet
+        av data.html – administratören anger namn, e-post och tillfälligt lösenord,
+        och ett färdigt välkomstbrev genereras att kopiera och skicka.
+        <br><br>
+        Aktiva användare (2026-05-15):<br>
+        • <code>lundgren.kent@gmail.com</code> – administratör<br>
+        • <code>bjorn.syren1@gmail.com</code> – Björn Syren, inbjuden 2026-05-15
       </div>
     </div>
   </div>
@@ -708,27 +729,47 @@
           </div>
         </li>
 
-        <li class="väntar">
-          <span class="steg-ikon">⏳</span>
+        <li class="klar">
+          <span class="steg-ikon">✅</span>
           <div class="steg-text">
-            <strong>Steg 7 – Koda om data.html att läsa och skriva mot Firebase</strong>
-            <span>Funktionen <code>loadData()</code> ersätts med <code>onValue()</code>
-            från Firebase SDK – data laddas från molnet istället för lokalt.
-            <code>saveOverride()</code> ersätts med <code>set()</code> till Firebase.
-            <code>BASE_DATA</code> behålls i koden som reserv om Firebase inte svarar.
-            Redigering av celler kräver att man är inloggad.
-            <br><em>← Du är här just nu.</em></span>
+            <strong>Steg 7 – data.html omskriven för Firebase (2026-05-15)</strong>
+            <span>
+              Hela JavaScript-blocket skrevs om med <code>&lt;script type="module"&gt;</code>
+              och Firebase SDK v11.0.0 (ES-moduler via CDN).<br>
+              • <code>onValue()</code> prenumererar på
+              <code>bjerred-inpasseringar/data</code> – tabellen uppdateras live.<br>
+              • <code>set()</code> sparar cellredigering direkt till Firebase.<br>
+              • <code>BASE_DATA</code> renderas omedelbart vid sidladdning som fallback.<br>
+              • Inloggningsmodal visas automatiskt vid cellklick om ej inloggad.<br>
+              • Grön/röd statusdot i headern visar om Firebase är uppkopplad.<br>
+              • CSP-metatag tillåter Firebase WebSocket från GitHub Pages.<br>
+              • <code>tolkFirebaseSnapshot()</code> hanterar kategorier med
+              snedstreck (nästlad sökväg i Firebase).
+            </span>
           </div>
         </li>
 
-        <li class="todo">
-          <span class="steg-ikon">◻️</span>
+        <li class="klar">
+          <span class="steg-ikon">✅</span>
           <div class="steg-text">
-            <strong>Steg 8 – Testa på separat branch och publicera</strong>
-            <span>Bygg och testa Firebase-versionen i Cursor på en ny Git-branch
-            innan den slås ihop med <code>main</code> och publiceras på
-            GitHub Pages. På så sätt riskerar vi aldrig att förstöra den
-            fungerande produktionssidan under testerna.</span>
+            <strong>Steg 8 – Testat och publicerat på GitHub Pages (2026-05-15)</strong>
+            <span>
+              Pusha direkt till <code>main</code> via Cursor – säkerhetskopior
+              (<code>index copy.html</code>, <code>data copy.html</code>) fungerade
+              som skyddsnät i stället för separat branch.<br>
+              Bekräftat på live-URL:
+              <a href="https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/data.html"
+                 target="_blank" rel="noopener" style="color:var(--secondary);">data.html</a>:<br>
+              • Tabellen laddas från Firebase ✓<br>
+              • Live-synk bekräftad: ändring i Chrome syntes direkt i Firefox ✓<br>
+              • Inloggning och utloggning fungerar från <code>kentlundgren.github.io</code> ✓<br><br>
+              <strong>Tillägg efter steg 8:</strong> "Bjud in"-knapp (<code>✉ Bjud in</code>)
+              lagd till i nedre vänstra hörnet av data.html. Knappen öppnar en modal
+              där administratören fyller i namn, e-post och tillfälligt lösenord –
+              ett färdigt välkomstbrev genereras automatiskt och kan kopieras med
+              ett klick. Inbjudan skickad till Björn Syren
+              (<code>bjorn.syren1@gmail.com</code>) 2026-05-15.
+            </span>
           </div>
         </li>
 

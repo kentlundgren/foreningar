@@ -96,10 +96,12 @@ Konsekvent navigationssystem (lagt till 2026-05-14):
 
 ## Uppdatera data
 
-### Snabbast (tillfälligt, via webbläsaren):
-Öppna `inpasseringar/index.html` → klicka **"+ Lägg till / uppdatera data"** → fyll i formuläret. Sparas i `localStorage`.
+### Primärt (via Firebase – direkt i webbläsaren, ingen kod):
+Öppna `inpasseringar/data.html` → logga in → klicka på en cell → skriv nytt värde → tryck Enter.  
+Ändringen sparas direkt i Firebase och syns för **alla** inloggade användare utan sidladdning.  
+Kräver ett registrerat konto (se avsnittet **Bjuda in nya användare** nedan).
 
-### Permanent (för Git-commit):
+### Fallback – direkt i koden (för Git-commit):
 Öppna `inpasseringar/index.html` i Cursor och redigera `BASE_DATA`-objektet i `<script>`-blocket.  
 Strukturen är: `BASE_DATA[år][kategori][månadsindex]` där 0 = januari, 11 = december.  
 `null` = data saknas, `0` = bekräftat noll (t.ex. stängd period).
@@ -110,7 +112,7 @@ Strukturen är: `BASE_DATA[år][kategori][månadsindex]` där 0 = januari, 11 = 
 
 Inpasseringsdata kopplas till **Firebase Realtime Database** så att auktoriserade föreningsmedlemmar kan uppdatera siffror direkt i webbgränssnittet utan att Kent behöver committa kod.
 
-**Status (2026-05-15): Steg 1–6 klara, Steg 7 pågår**
+**Status (2026-05-15): Alla 8 steg klara – i produktion ✅**
 
 | # | Steg | Status |
 |---|---|---|
@@ -118,10 +120,10 @@ Inpasseringsdata kopplas till **Firebase Realtime Database** så att auktorisera
 | 2 | firebaseConfig hämtad och dokumenterad | ✅ |
 | 3 | Realtime Database aktiverad (region: europe-west1) | ✅ |
 | 4 | Säkerhetsregler: read=true, write=auth!=null | ✅ |
-| 5 | Authentication aktiverad, användare skapad | ✅ |
+| 5 | Authentication aktiverad, användare skapade | ✅ |
 | 6 | BASE_DATA migrerad (11 kategorier, 0 fel) | ✅ |
-| 7 | Koda om data.html att läsa/skriva mot Firebase | ✅ |
-| 8 | Testa på separat branch, publicera på GitHub Pages | ⏳ |
+| 7 | data.html omskriven att läsa/skriva mot Firebase | ✅ |
+| 8 | Testat på GitHub Pages – live-synk bekräftad | ✅ |
 
 **Firebase-konfiguration:**
 ```javascript
@@ -187,7 +189,31 @@ När en cell redigeras skrivs det nya värdet till Firebase med `set()`. Ändrin
 Under migrationen (Steg 6) skrevs kategorier som `"Restaurangen/badbiljetter"` till Firebase med snedstrecket som sökvägsavgränsare, vilket skapade nästlade noder (`Restaurangen → badbiljetter`) i stället för ett platt nyckelnamn. Den nya funktionen `tolkFirebaseSnapshot()` hanterar detta korrekt: den delar upp kategorinamnet på snedstreck och traverserar Firebase-trädet steg för steg.
 
 **Inloggningsmodal – visas automatiskt vid redigering:**
-Sidan har ett inbyggt inloggningsformulär (e-post förifyllt, bara lösenord behövs) som poppar upp automatiskt när en icke-inloggad användare klickar på en cell. Efter lyckad inloggning öppnas den cell som triggade inloggningen direkt. En inloggad användare visas med grön bock och e-postadress i sidhuvudet.
+Sidan har ett inbyggt inloggningsformulär som poppar upp automatiskt när en icke-inloggad användare klickar på en cell. E-postfältet är redigerbart (flera användare stöds). Lösenordsåterställning sker direkt i modalen via länken "Glömt lösenordet?" – Firebase skickar ett återställningsmail. Efter lyckad inloggning öppnas den cell som triggade inloggningen direkt. En inloggad användare visas med grön bock och e-postadress i sidhuvudet.
 
 **CSP-meta för GitHub Pages:**
 En `Content-Security-Policy`-metatag lades till så att webbläsaren tillåter Firebase WebSocket-anslutningar (`wss://*.firebasedatabase.app`) även när sidan körs från GitHub Pages statiska hosting.
+
+## Bjuda in nya användare till data.html
+
+Det är hela poängen med Firebase-backenden: **flera personer på olika enheter kan uppdatera data direkt**, utan att Kent behöver committa kod. Inpasseringsansvariga i föreningen kan lägga in månadens siffror direkt i webbläsaren – på mobil eller dator.
+
+### Steg 1 – Registrera användaren i Firebase Console
+1. Gå till [console.firebase.google.com/project/skylt-e0c45](https://console.firebase.google.com/project/skylt-e0c45)
+2. Authentication → Users → **Add user**
+3. Fyll i personens e-postadress och ett tillfälligt lösenord
+4. Klicka **Add user**
+
+### Steg 2 – Skicka välkomstbrevet
+1. Öppna `inpasseringar/data.html`
+2. Klicka på den diskreta knappen **✉ Bjud in** längst ned till vänster (bredvid `{ } GitHub`)
+3. Fyll i namn, e-postadress och det tillfälliga lösenordet
+4. Klicka **📋 Kopiera text** och klistra in i ett mail eller SMS
+
+Mottagaren kan sedan byta till ett eget lösenord via länken "Glömt lösenordet?" i inloggningsrutan.
+
+### Aktiva användare (2026-05-15)
+| Användare | Roll | Tillagd |
+|---|---|---|
+| `lundgren.kent@gmail.com` | Administratör | 2026-05-15 |
+| `bjorn.syren1@gmail.com` | Björn Syren – inpasseringsansvarig | 2026-05-15 |
