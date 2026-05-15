@@ -85,6 +85,21 @@ Konsekvent navigationssystem (lagt till 2026-05-14):
 - Eget inline Canvas-plugin för ombyggnadsmarkeringen (feb–jul 2025)
 - **localStorage** för att spara dataändringar mellan sessioner utan backend
 - Responsiv CSS med CSS-variabler
+- **Firebase Realtime Database** – live-data via `onValue()`, BASE_DATA som fallback
+- **Data-källeindikator** i headern: grön prick "Live från Firebase · datum" eller orange "Lokal backup (BASE_DATA)"
+
+## Diagramfärger – inpasseringar/index.html
+
+Kategorierna har namngivna färger i konstanten `KATEGORI_FÄRGER` (inte indexbaserad palett):
+
+| Kategori | Färg | Motivering |
+|---|---|---|
+| Restaurangen / Restaurangen/badbiljetter | Grön `#2ecc71` | Neutral val |
+| SMS-biljetter / SMS/Swish-biljetter | Röd `#e74c3c` | Neutral val |
+| Medlemmar – armband | Blå `#3498db` | Matchar de fysiska **blå** armbanden |
+| Medlemmar – Wonder/Wondr | Orange `#f39c12` | Neutral val |
+
+> **⚠️ Regel:** Om nya kategorier läggs till ska de läggas till i `KATEGORI_FÄRGER` med en motiverad färg. Okända kategorier faller automatiskt tillbaka på `CAT_COLORS`-paletten.
 
 ## Data – viktig kontext
 
@@ -92,7 +107,7 @@ Konsekvent navigationssystem (lagt till 2026-05-14):
 - **2025**: Bastun stängd för ombyggnad **mitten februari – mitten juli 2025** → 0-värden i mars–juni är korrekta, inte saknade
 - **2025**: Nytt inpasseringssystem **Wondr** lanserades juli 2025 → ny kategori "Medlemmar – Wonder" från jul 2025
 - **2026**: Armbanden fasades ut **1 februari 2026** → Armband-kategorin har låga värden jan–mar
-- **2026 april**: Restaurangen och Armband saknas (null) – väntar på indata
+- **2026 april**: Alla kategorier ifyllda (2026-05-15): Restaurangen 359, SMS/Swish 913, Armband 90, Wonder 3 293
 
 ## Uppdatera data
 

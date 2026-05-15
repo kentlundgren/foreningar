@@ -655,8 +655,35 @@ const YEAR_COLORS = {
   2026: { border: '#27ae60', fill: 'rgba(39,174,96,0.10)'  }
 };
 
-/* Färgpalett för kategorier i stapeldiagrammet */
+/* Färgpalett för kategorier i stapeldiagrammet – fallback för okända kategorier */
 const CAT_COLORS = ['#3498db','#e74c3c','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22'];
+
+/*
+  Namngiven färgkarta per kategori.
+  Motivering: de fysiska armbanden är blå → Medlemmar – armband = blå.
+  Restaurangen/badbiljetter = grön (frigjord från armbandens tidigare blå).
+  SMS/Swish = röd (oförändrad), Wonder = orange (oförändrad).
+
+  Alla kända kategorinamn (2024-format och 2025/2026-format) mappas
+  så att färgen är stabil oavsett vilket år som visas i diagrammet.
+*/
+const KATEGORI_FÄRGER = {
+  /* Restaurangen – grön */
+  'Restaurangen':              '#2ecc71',
+  'Restaurangen/badbiljetter': '#2ecc71',
+
+  /* SMS/Swish – röd */
+  'SMS-biljetter':             '#e74c3c',
+  'SMS/Swish-biljett':         '#e74c3c',
+  'SMS/Swish-biljetter':       '#e74c3c',
+
+  /* Armband – blå (matchar de fysiska blå armbanden) */
+  'Medlemmar – armband':       '#3498db',
+
+  /* Wonder/Wondr – orange */
+  'Medlemmar – Wonder':        '#f39c12',
+  'Medlemmar – Wondr':         '#f39c12',
+};
 
 /* ================================================================
    DATA-HANTERING
@@ -892,14 +919,19 @@ function showCategoryChart(year, tabEl) {
   const cats     = Object.keys(yearData);
 
   /* Bygg en dataset per kategori */
-  const datasets = cats.map((cat, i) => ({
-    label:           cat,
-    /* null → 0 i stapeldiagrammet för att undvika luckor */
-    data:            yearData[cat].map(v => (v !== null ? v : 0)),
-    backgroundColor: CAT_COLORS[i % CAT_COLORS.length],
-    borderColor:     CAT_COLORS[i % CAT_COLORS.length],
-    borderWidth:     1
-  }));
+  const datasets = cats.map((cat, i) => {
+    /* Använd namngiven färg om kategorin finns i KATEGORI_FÄRGER,
+       annars falla tillbaka på indexbaserad CAT_COLORS-palett */
+    const färg = KATEGORI_FÄRGER[cat] || CAT_COLORS[i % CAT_COLORS.length];
+    return {
+      label:           cat,
+      /* null → 0 i stapeldiagrammet för att undvika luckor */
+      data:            yearData[cat].map(v => (v !== null ? v : 0)),
+      backgroundColor: färg,
+      borderColor:     färg,
+      borderWidth:     1
+    };
+  });
 
   if (catChartInst) {
     /* Uppdatera befintlig instans */
