@@ -576,6 +576,99 @@
     #login-cancel:hover { background: #ddd; }
 
     /* ============================================================
+       VÄLKOMSTKNAPP – diskret fast knapp bredvid GitHub-länken
+       Visas bara för administratören (Kent) som ett verktyg
+       för att generera välkomstmeddelanden till nya användare.
+       ============================================================ */
+    #invite-btn {
+      position: fixed;
+      bottom: 0.6rem;
+      left: 7.5rem;       /* Placeras till höger om GitHub-länken */
+      font-size: 0.72rem;
+      color: #7f8c8d;
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.65;
+      transition: opacity 0.2s;
+      z-index: 50;
+      padding: 0;
+      font-family: inherit;
+    }
+    #invite-btn:hover { opacity: 1; }
+
+    /* ============================================================
+       VÄLKOMSTMODAL – genererar ett välkomstbrev till ny användare
+       ============================================================ */
+    #invite-modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    #invite-modal-bg.visible { display: flex; }
+
+    #invite-modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      width: min(580px, 95vw);
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+    }
+    #invite-modal h2 {
+      font-size: 1.05rem;
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+    }
+    #invite-modal p.modal-ingress {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+      line-height: 1.5;
+    }
+
+    /* Tredelad rad med namn / e-post / lösenord */
+    .invite-row {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+    }
+    .invite-row .modal-field { margin-bottom: 0; }
+
+    /* Textarean med det genererade meddelandet */
+    #invite-text {
+      width: 100%;
+      height: 300px;
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      color: var(--text);
+      line-height: 1.65;
+      resize: vertical;
+      background: #f9fafb;
+    }
+
+    /* Bekräftelse efter kopiering */
+    #copy-feedback {
+      font-size: 0.8rem;
+      color: #27ae60;
+      min-height: 1.2em;
+      margin-top: 0.4rem;
+    }
+
+    @media (max-width: 560px) {
+      .invite-row { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
        RESPONSIVT
        ============================================================ */
     @media (max-width: 700px) {
@@ -789,6 +882,65 @@
     <div class="modal-btns">
       <button id="login-cancel" onclick="stängLoginModal()">Avbryt</button>
       <button id="login-submit" onclick="utförLogin()">Logga in</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     VÄLKOMSTMODAL – genererar ett färdigskrivet välkomstbrev
+     Administratören fyller i namn, e-post och tillfälligt lösenord.
+     Meddelandet uppdateras i realtid och kan kopieras med ett klick.
+     ============================================================ -->
+<div id="invite-modal-bg">
+  <div id="invite-modal">
+    <h2>✉ Välkomstmeddelande – ny användare</h2>
+    <p class="modal-ingress">
+      Fyll i uppgifter nedan. Meddelandet genereras automatiskt och
+      kan kopieras med ett klick – skicka det via mail eller SMS.
+    </p>
+
+    <!-- Tre inmatningsfält: namn, e-post, tillfälligt lösenord -->
+    <div class="invite-row">
+      <div class="modal-field">
+        <label for="inv-name">Namn</label>
+        <input type="text"
+               id="inv-name"
+               placeholder="t.ex. Björn"
+               oninput="uppdateraMeddelande()" />
+      </div>
+      <div class="modal-field">
+        <label for="inv-email">E-postadress</label>
+        <input type="email"
+               id="inv-email"
+               placeholder="bjorn@exempel.se"
+               oninput="uppdateraMeddelande()" />
+      </div>
+      <div class="modal-field">
+        <label for="inv-pwd">Tillfälligt lösenord</label>
+        <input type="text"
+               id="inv-pwd"
+               placeholder="TempXxx123"
+               oninput="uppdateraMeddelande()" />
+      </div>
+    </div>
+
+    <!-- Det genererade meddelandet – redigerbart om Kent vill justera -->
+    <textarea id="invite-text"></textarea>
+
+    <!-- Bekräftelsetext efter kopiering -->
+    <div id="copy-feedback"></div>
+
+    <!-- Knappar -->
+    <div class="modal-btns" style="margin-top:0.9rem;">
+      <button style="background:#eee;color:var(--text);padding:0.55rem 1.2rem;
+                     border-radius:6px;border:none;cursor:pointer;font-size:0.88rem;
+                     font-family:inherit;"
+              onclick="stängInviteModal()">Stäng</button>
+      <button style="background:var(--secondary);color:#fff;font-weight:600;
+                     padding:0.55rem 1.2rem;border-radius:6px;border:none;
+                     cursor:pointer;font-size:0.88rem;font-family:inherit;"
+              onclick="kopieraMeddelande()">📋 Kopiera text</button>
     </div>
   </div>
 </div>
@@ -1705,6 +1857,136 @@
      ================================================================ */
   renderAll();   /* Visar BASE_DATA direkt – ersätts av Firebase-data när det anländer */
 
+</script>
+
+<!-- ============================================================
+     VÄLKOMSTKNAPP – diskret fast knapp bredvid GitHub-länken
+     Syns bara för den som vet om den. Öppnar välkomstmodalen.
+     ============================================================ -->
+<button id="invite-btn"
+        title="Generera välkomstmeddelande till ny användare"
+        onclick="öppnaInviteModal()">✉ Bjud in</button>
+
+<!-- ================================================================
+     JAVASCRIPT – Välkomstmodal (inte Firebase, inget module-scope)
+     Separerat från Firebase-skriptet för att kunna anropas direkt
+     från HTML-elementens onclick-attribut utan window.*-exponering.
+     ================================================================ -->
+<script>
+  /* ----------------------------------------------------------------
+     meddelandeMall()
+     Bygger det kompletta välkomstbrevet med platshållare ersatta
+     av de värden administratören fyllt i.
+     ---------------------------------------------------------------- */
+  function meddelandeMall(namn, email, lösen) {
+    return `Hej ${namn},
+
+Du har fått tillgång till Bjerreds Saltsjöbads inpasseringsstatistik på webben. Nedan finns dina inloggningsuppgifter.
+
+  Länk:               https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/data.html
+  E-postadress:       ${email}
+  Tillfälligt lösenord: ${lösen}
+
+────────────────────────────────────────────
+Byt gärna lösenordet till ett eget:
+Klicka på en cell på sidan → välj "Glömt lösenordet? Skicka återställningslänk"
+→ skriv in din e-postadress → du får ett mail med en länk där du väljer
+ett eget lösenord. Länken är giltig i 1 timme.
+────────────────────────────────────────────
+
+Så här lägger du in data:
+
+  1. Öppna länken ovan i valfri webbläsare (fungerar på mobil och dator).
+
+  2. Klicka på valfri siffra i tabellen – ett inloggningsformulär
+     visas automatiskt.
+
+  3. Skriv in din e-postadress och ditt lösenord och klicka "Logga in".
+     Uppe i högra hörnet ser du en grön prick och ditt konto-
+     namn när du är inloggad – det bekräftar att allt fungerar.
+
+  4. Skriv in det nya värdet och tryck Enter eller Tab.
+     Siffran sparas direkt och syns för alla som har sidan öppen.
+
+  5. Vill du ta bort ett värde och göra cellen gul igen (data saknas):
+     klicka på cellen, radera siffran och tryck Enter.
+
+Kategorier att fylla i:
+  • Restaurangen/badbiljetter
+  • SMS/Swish-biljetter
+  • Medlemmar – armband
+  • Medlemmar – Wondr
+
+────────────────────────────────────────────
+Lite om tekniken:
+Sidan är kopplad till Firebase – ett molnbaserat databassystem från
+Google. Alla inloggade användare kan uppdatera siffror direkt i
+tabellen, och ändringarna syns omedelbart för alla som har sidan öppen.
+Ingen app behöver laddas ned – det fungerar i vanlig webbläsare.
+────────────────────────────────────────────
+
+Hör av dig om du har frågor!
+Kent`;
+  }
+
+  /* ----------------------------------------------------------------
+     uppdateraMeddelande()
+     Anropas vid varje tangenttryckning i fälten namn/e-post/lösenord.
+     Ersätter platshållare med aktuella värden i realtid.
+     ---------------------------------------------------------------- */
+  function uppdateraMeddelande() {
+    const namn  = document.getElementById('inv-name').value.trim()  || '[namn]';
+    const email = document.getElementById('inv-email').value.trim() || '[e-postadress]';
+    const lösen = document.getElementById('inv-pwd').value.trim()   || '[lösenord]';
+    document.getElementById('invite-text').value = meddelandeMall(namn, email, lösen);
+  }
+
+  /* ----------------------------------------------------------------
+     öppnaInviteModal()
+     Visar välkomstmodalen och genererar ett startmeddelande med
+     platshållare (eller de värden som redan fyllts i).
+     ---------------------------------------------------------------- */
+  function öppnaInviteModal() {
+    uppdateraMeddelande();
+    document.getElementById('invite-modal-bg').classList.add('visible');
+    /* Fokusera namnfältet direkt */
+    setTimeout(() => document.getElementById('inv-name').focus(), 50);
+  }
+
+  /* ----------------------------------------------------------------
+     stängInviteModal()
+     Stänger modalen och rensar bekräftelsetexten.
+     ---------------------------------------------------------------- */
+  function stängInviteModal() {
+    document.getElementById('invite-modal-bg').classList.remove('visible');
+    document.getElementById('copy-feedback').textContent = '';
+  }
+
+  /* ----------------------------------------------------------------
+     kopieraMeddelande()
+     Kopierar det genererade meddelandet till urklipp via
+     Clipboard API. Visar en grön bekräftelse i 3 sekunder.
+     ---------------------------------------------------------------- */
+  async function kopieraMeddelande() {
+    const text = document.getElementById('invite-text').value;
+    const fb   = document.getElementById('copy-feedback');
+    try {
+      await navigator.clipboard.writeText(text);
+      fb.style.color   = '#27ae60';
+      fb.textContent   = '✅ Texten kopierades till urklipp – klistra in i mail eller SMS!';
+      setTimeout(() => { fb.textContent = ''; }, 3500);
+    } catch (e) {
+      /* Fallback för äldre webbläsare eller otillåten clipboard-åtkomst */
+      fb.style.color = '#c0392b';
+      fb.textContent = 'Markera texten manuellt och kopiera med Ctrl+C / Cmd+C.';
+    }
+  }
+
+  /* Stäng modalen vid klick utanför själva modalrutan */
+  document.addEventListener('click', function(e) {
+    const bg = document.getElementById('invite-modal-bg');
+    if (e.target === bg) stängInviteModal();
+  });
 </script>
 
 <!-- ================================================================
