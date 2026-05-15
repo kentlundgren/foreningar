@@ -738,6 +738,27 @@
 
 (<span class="k">async</span> () => {
 
+  <span class="c">// ============================================================
+  // STEG 0 – Logga in med ditt Firebase-konto
+  // Skriptet måste autentisera sig innan det kan skriva,
+  // eftersom säkerhetsreglerna kräver auth != null.
+  // Fyll i ditt lösenord på raden nedan innan du kör skriptet.
+  // ============================================================</span>
+  <span class="k">const</span> <span class="v">EPOST</span>    = <span class="s">'lundgren.kent@gmail.com'</span>;
+  <span class="k">const</span> <span class="v">LÖSENORD</span> = <span class="s">'FYLL_IN_DITT_LÖSENORD_HÄR'</span>; <span class="c">// ← ändra detta</span>
+
+  <span class="k">const</span> { <span class="f">getAuth</span>, <span class="f">signInWithEmailAndPassword</span> } =
+    <span class="k">await</span> <span class="k">import</span>(<span class="s">'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js'</span>);
+  <span class="k">const</span> <span class="v">auth</span> = <span class="f">getAuth</span>();
+
+  <span class="k">try</span> {
+    <span class="k">await</span> <span class="f">signInWithEmailAndPassword</span>(auth, EPOST, LÖSENORD);
+    console.<span class="f">log</span>(<span class="s">'✅ Inloggad som'</span>, EPOST);
+  } <span class="k">catch</span> (<span class="v">e</span>) {
+    console.<span class="f">error</span>(<span class="s">'❌ Inloggning misslyckades:'</span>, e.message);
+    <span class="k">return</span>; <span class="c">// avbryt om inloggningen misslyckas</span>
+  }
+
   <span class="c">// ---- BASE_DATA – identisk kopia från data.html och index.html ----</span>
   <span class="k">const</span> <span class="v">BASE_DATA</span> = {
 
