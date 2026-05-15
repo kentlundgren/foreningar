@@ -102,3 +102,25 @@ Konsekvent navigationssystem (lagt till 2026-05-14):
 Öppna `inpasseringar/index.html` i Cursor och redigera `BASE_DATA`-objektet i `<script>`-blocket.  
 Strukturen är: `BASE_DATA[år][kategori][månadsindex]` där 0 = januari, 11 = december.  
 `null` = data saknas, `0` = bekräftat noll (t.ex. stängd period).
+
+> **⚠️ OBS:** `BASE_DATA` finns i **både** `inpasseringar/index.html` och `inpasseringar/data.html`. Uppdatera alltid båda filerna samtidigt.
+
+## Framtidsplan – Firebase-backend
+
+Kent vill på sikt koppla inpasseringsdata till **Firebase Realtime Database** så att auktoriserade föreningsmedlemmar kan uppdatera siffror direkt i webbgränssnittet utan att Kent behöver committa kod.
+
+**Viktiga principer för Firebase-implementationen:**
+- `BASE_DATA` ska **alltid behållas** hårdkodad i filerna som fallback – inget data ska kunna förloras om Firebase inte nås.
+- Firebase är ett lager ovanpå: läs från Firebase om tillgängligt, annars falla tillbaka på `BASE_DATA`.
+- **Autentisering krävs för skrivning** (Firebase Authentication, e-post/lösenord eller Google Sign-In). Läsning ska vara öppen för alla.
+- Datastruktur i Firebase speglar `BASE_DATA`: `bjerred-inpasseringar/data/{år}/{kategori}/{månadsindex}`.
+
+**Kents tidigare Firebase-erfarenhet:**  
+Referensimplementation finns på https://kentlundgren.se/program/quiz/16B/ – använder Firebase SDK v11.0.0 (ES-moduler), `initializeApp`, `getDatabase`, `ref`, `set`, `push`, `onValue`. CSP-headers för GitHub Pages är lösta i det projektet och kan återanvändas.
+
+**Firebase-projekt att återanvända:** `borgholm-registration` (Kent har redan tillgång).
+
+**Innan implementationen påbörjas:**
+1. Skapa ett nytt Firebase-projekt (eller återanvänd `borgholm-registration`) och lägg upp `BASE_DATA` som ett engångs-script.
+2. Bygg och testa Firebase-integrationen på en separat branch/testkopia.
+3. `localStorage`-nyckeln `bjerred_overrides` måste tömmas eller ignoreras när Firebase är aktiv källa.

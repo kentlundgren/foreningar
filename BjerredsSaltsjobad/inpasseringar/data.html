@@ -358,8 +358,8 @@
       justify-content: space-between;
       padding: 0.75rem 0;
       cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
+      -webkit-user-select: none;  /* Safari / iOS – måste komma före standardegenskapen */
+      user-select: none;          /* Standard – W3C-specifikationen */
       gap: 0.5rem;
     }
     .info-panel-header h3 {
