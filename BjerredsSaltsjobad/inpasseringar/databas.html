@@ -636,28 +636,27 @@
           </div>
         </li>
 
-        <li class="väntar">
-          <span class="steg-ikon">⏳</span>
+        <li class="klar">
+          <span class="steg-ikon">✅</span>
           <div class="steg-text">
-            <strong>Steg 5 – Aktivera Firebase Authentication</strong>
-            <span>I Firebase Console: klicka på <em>Security</em> i vänstermenyn
-            → <em>Authentication</em> → fliken <em>Sign-in method</em>
-            → aktivera <strong>"E-post/lösenord"</strong>.
-            Gå sedan till fliken <em>Users</em> → klicka <em>Add user</em>
-            → lägg till din e-postadress och ett lösenord.
-            Det är det kontot du kommer logga in med för att kunna redigera data.
-            <br><em>← Du är här just nu.</em></span>
+            <strong>Steg 5 – Firebase Authentication aktiverad</strong>
+            <span>Klart! Inloggningsmetoden E-post/lösenord är aktiverad.
+            Användarkonto skapat: <code>lundgren.kent@gmail.com</code> (2026-05-15).
+            Det är det kontot som används för att logga in och få skriva i databasen.</span>
           </div>
         </li>
 
-        <li class="todo">
-          <span class="steg-ikon">◻️</span>
+        <li class="väntar">
+          <span class="steg-ikon">⏳</span>
           <div class="steg-text">
             <strong>Steg 6 – Lägg upp BASE_DATA i Firebase (engångsmigration)</strong>
-            <span>Ett litet engångsskript läser <code>BASE_DATA</code> från
-            koden och skriver upp alla historiska siffror till Firebase-databasen.
-            Kan köras direkt i webbläsarens utvecklarkonsol (F12).
-            Görs bara en gång – sedan är all data i Firebase.</span>
+            <span>Ett engångsskript läser <code>BASE_DATA</code> från koden och
+            skriver upp alla historiska siffror (2024, 2025, 2026) till
+            Firebase-databasen under noden <code>bjerred-inpasseringar/data</code>.
+            Skriptet klistras in och körs direkt i webbläsarens
+            utvecklarkonsol (F12 → Console) på den här sidan.
+            Görs bara en gång – sedan är all historisk data i Firebase.
+            <br><em>← Du är här just nu.</em></span>
           </div>
         </li>
 
