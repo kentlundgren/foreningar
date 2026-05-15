@@ -659,10 +659,32 @@
       Det är bara skrivning som kräver behörighet.
     </p>
 
-    <h4>Hur skickar en vän in sina siffror?</h4>
+    <h4>Ny användare – så här skaffar du tillgång</h4>
     <p>
-      Om en föreningsmedlem inte har inloggnings­uppgifter skickar de siffrorna
-      till <strong>Kent</strong> via mail eller SMS, som loggar in och lägger in dem.
+      För att få redigeringsbehörighet behöver Kent lägga till dig som användare
+      i systemet. Gör så här:
+    </p>
+    <ol style="padding-left:1.4rem; margin:0.4rem 0 0.6rem; line-height:1.8;">
+      <li>Kontakta <strong>Kent Lundgren</strong> och be om att få ett konto.</li>
+      <li>
+        Kent registrerar din e-postadress i systemet –
+        du behöver inte göra något just nu.
+      </li>
+      <li>
+        Öppna den här sidan, klicka på valfri cell och välj
+        <em>"Glömt lösenordet? Skicka återställningslänk"</em>
+        i inloggningsrutan. Skriv in din e-postadress och klicka på länken.
+      </li>
+      <li>
+        Du får ett mail från Firebase (avsändare: <em>noreply@skylt-e0c45.firebaseapp.com</em>).
+        Kolla skräppost om det inte dyker upp inom någon minut.
+        Klicka på länken i mailet och välj ett eget lösenord.
+      </li>
+      <li>Logga in på den här sidan med din e-post och det nya lösenordet.</li>
+    </ol>
+    <p>
+      När du är inloggad kan du klicka på valfri cell och skriva in ett värde.
+      Ändringen sparas direkt i molnet och syns för alla.
     </p>
 
     <h4>Hur tar jag bort ett felaktigt värde och gör cellen gul igen?</h4>
@@ -730,16 +752,16 @@
     <h2>🔑 Logga in</h2>
     <p class="modal-ingress">
       Du behöver vara inloggad för att kunna redigera data.
+      Saknar du konto? Kontakta Kent Lundgren.
     </p>
 
-    <!-- E-postfält – förifyllt och skrivskyddat (bara ett konto används) -->
+    <!-- E-postfält – redigerbart så att flera användare kan logga in -->
     <div class="modal-field">
       <label for="login-email">E-postadress</label>
       <input type="email"
              id="login-email"
-             value="lundgren.kent@gmail.com"
-             readonly
-             style="background:#f4f6f9;color:var(--muted);" />
+             placeholder="din@epost.se"
+             autocomplete="email" />
     </div>
 
     <!-- Lösenordsfält -->
@@ -753,6 +775,15 @@
 
     <!-- Felmeddelande (tomt som standard) -->
     <div id="login-error"></div>
+
+    <!-- Glömt lösenord – skickar Firebase-återställningsmail -->
+    <p style="font-size:0.8rem; margin-top:0.6rem; color:var(--muted);">
+      <a href="#" onclick="skickaResetMejl(); return false;"
+         style="color:var(--secondary);">
+        Glömt lösenordet? Skicka återställningslänk
+      </a>
+    </p>
+    <div id="reset-msg" style="font-size:0.8rem; margin-top:0.3rem; display:none;"></div>
 
     <!-- Knappar -->
     <div class="modal-btns">
@@ -783,7 +814,8 @@
   import { getDatabase, ref, onValue, set }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js';
 
-  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+           sendPasswordResetEmail }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
 
 
@@ -1154,7 +1186,11 @@
     const felDiv = document.getElementById('login-error');
     const btn    = document.getElementById('login-submit');
 
-    /* Kontrollera att lösenord är ifyllt */
+    /* Kontrollera att e-post och lösenord är ifyllda */
+    if (!email) {
+      felDiv.textContent = 'Fyll i din e-postadress.';
+      return;
+    }
     if (!lösen) {
       felDiv.textContent = 'Fyll i ditt lösenord.';
       return;
@@ -1202,6 +1238,45 @@
   document.getElementById('login-pwd').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') window.utförLogin();
   });
+
+  /**
+   * Skickar ett lösenordsåterställningsmail via Firebase Authentication.
+   * Användaren skriver in sin e-post i login-fältet och klickar på länken
+   * "Glömt lösenordet?". Firebase skickar ett mail med en återställningslänk
+   * som är giltig i 1 timme.
+   *
+   * Förutsättning: e-postadressen måste vara registrerad i Firebase Authentication.
+   * Det gör Kent via Firebase Console → Authentication → Users → Add user.
+   */
+  window.skickaResetMejl = async function() {
+    const email   = document.getElementById('login-email').value.trim();
+    const msgDiv  = document.getElementById('reset-msg');
+
+    /* Kontrollera att e-post är ifyllt */
+    if (!email) {
+      msgDiv.style.display = 'block';
+      msgDiv.style.color   = '#c0392b';
+      msgDiv.textContent   = 'Fyll i din e-postadress ovan först.';
+      return;
+    }
+
+    try {
+      /* Skicka Firebase-återställningsmail */
+      await sendPasswordResetEmail(auth, email);
+      msgDiv.style.display = 'block';
+      msgDiv.style.color   = '#27ae60';
+      msgDiv.textContent   = `✅ Återställningslänk skickad till ${email}. Kolla din inkorg (och skräppost).`;
+    } catch (e) {
+      msgDiv.style.display = 'block';
+      msgDiv.style.color   = '#c0392b';
+      /* Visa felmeddelande på svenska */
+      if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-email') {
+        msgDiv.textContent = '❌ Ingen användare hittades med den e-postadressen. Kontakta Kent.';
+      } else {
+        msgDiv.textContent = '❌ Kunde inte skicka mail. Kontrollera uppkopplingen.';
+      }
+    }
+  };
 
   /* Stäng modal vid klick utanför modaldialogen */
   document.getElementById('login-modal-bg').addEventListener('click', (e) => {
