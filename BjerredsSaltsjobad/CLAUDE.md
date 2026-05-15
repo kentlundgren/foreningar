@@ -115,10 +115,15 @@ Kent vill på sikt koppla inpasseringsdata till **Firebase Realtime Database** s
 - **Autentisering krävs för skrivning** (Firebase Authentication, e-post/lösenord eller Google Sign-In). Läsning ska vara öppen för alla.
 - Datastruktur i Firebase speglar `BASE_DATA`: `bjerred-inpasseringar/data/{år}/{kategori}/{månadsindex}`.
 
-**Kents tidigare Firebase-erfarenhet:**  
-Referensimplementation finns på https://kentlundgren.se/program/quiz/16B/ – använder Firebase SDK v11.0.0 (ES-moduler), `initializeApp`, `getDatabase`, `ref`, `set`, `push`, `onValue`. CSP-headers för GitHub Pages är lösta i det projektet och kan återanvändas.
+**Kents Firebase-erfarenhet – två tekniker:**
 
-**Firebase-projekt att återanvända:** `borgholm-registration` (Kent har redan tillgång).
+1. **Firestore** – används i "skylt"-projektet (skylt-e0c45), publik sida: https://kentlundgren.github.io/Bjerred-skylt/. SDK v10.7.0 (compat), konfigurationen i separat `firebase-config.js`. Dokumentbaserad databas.
+
+2. **Realtime Database** – används i quiz-projektet https://kentlundgren.se/program/quiz/16B/. SDK v11.0.0 (ES-moduler), projekt `borgholm-registration`. JSON-träd, passar BASE_DATA-strukturen bättre för inpasseringsdata.
+
+**Firebase-projekt att använda:** `skylt` (skylt-e0c45) – redan kopplat till Bjerreds Saltsjöbad via appen "Bjerreds-skylt". Inpasseringsdata läggs under noden `bjerred-inpasseringar/` i Realtime Database.
+
+**Arbetsdokument:** `inpasseringar/databas.html` – levande dokument med checklista, firebaseConfig och anslutningstest.
 
 **Innan implementationen påbörjas:**
 1. Skapa ett nytt Firebase-projekt (eller återanvänd `borgholm-registration`) och lägg upp `BASE_DATA` som ett engångs-script.

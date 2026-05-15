@@ -432,9 +432,21 @@
     <p>Inpasseringsdata – tabellvy</p>
   </div>
   <!-- Navigeringsknappar: tillbaka till grafsidan och till startsidan -->
-  <div style="display:flex;gap:0.5rem;flex-shrink:0;">
+  <div style="display:flex;gap:0.5rem;flex-shrink:0;flex-wrap:wrap;align-items:center;">
     <a class="btn-back" href="../">🏠 Startsidan</a>
     <a class="btn-back" href="index.html">← Statistik</a>
+    <!--
+      Diskret länk till Firebase-arbetsdokumentet (databas.html).
+      Visar hur arbetet med backend-kopplingen fortskrider.
+      Länken är avsiktligt lite mer dämpad (lägre opacity) för
+      att inte dominera navigationen – den är för den nyfikne.
+    -->
+    <a class="btn-back"
+       href="databas.html"
+       title="Se hur Firebase-kopplingen byggs upp – arbetsdokument"
+       style="opacity:0.6;font-size:0.78rem;padding:0.4rem 0.85rem;">
+      🔥 Firebase-plan
+    </a>
   </div>
 </header>
 
