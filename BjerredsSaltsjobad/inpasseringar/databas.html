@@ -703,12 +703,141 @@
         </tbody>
       </table>
 
-      <div class="info-ruta" style="margin-top:1rem;">
-        <strong>För inpasseringsdata rekommenderas Realtime Database</strong>
-        eftersom BASE_DATA är ett enkelt JSON-träd (år → kategori → månadsindex → tal).
-        Realtime Database speglar den strukturen rakt av.
-        CSP-headers för GitHub Pages är redan lösta i quiz-projektet och kan återanvändas direkt.
+      <!-- --------------------------------------------------------
+           UTVÄRDERING: Var det bra val vid de två tillfällena?
+           -------------------------------------------------------- -->
+
+      <!-- Projekt 1: Bjerred-skylt med Firestore -->
+      <div class="card" style="margin-top:1.2rem;border:2px solid #d6eaf8;">
+        <div class="card-header" style="background:#2471a3;">
+          ☁️ Projekt 1 – Bjerred-skylt:
+          <a href="https://kentlundgren.github.io/Bjerred-skylt/"
+             target="_blank" rel="noopener"
+             style="color:#aed6f1;margin-left:0.5rem;font-weight:400;font-size:0.9rem;">
+            kentlundgren.github.io/Bjerred-skylt/ ↗
+          </a>
+        </div>
+        <div class="card-body">
+
+          <p><strong>Vad lagras?</strong> Trivselregler för bastun, med möjlighet
+          att rösta (👍/👎) och föreslå ändringar av enskilda regler.
+          Varje regel är ett eget objekt med svenska och engelska texter,
+          ett röstningsresultat och en lista med användarförslag.</p>
+
+          <p style="margin-top:0.75rem;"><strong>Var Firestore ett bra val här?</strong></p>
+
+          <!-- Grön ruta: Ja, det var rätt val -->
+          <div style="background:#d5f5e3;border-left:4px solid #1e8449;
+                      border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
+                      margin-top:0.5rem;font-size:0.87rem;color:#145a32;">
+            <strong>✅ Ja – Firestore var ett bra val för detta projekt.</strong>
+            Här är varför:
+            <ul style="margin-top:0.5rem;padding-left:1.2rem;line-height:1.8;">
+              <li>Varje regel är ett <em>dokument</em> med flera fält (textSv, textEn,
+                votes.up, votes.down, suggestions). Det passar Firestores
+                dokumentstruktur perfekt.</li>
+              <li>Röstning och förslag är <em>oberoende av varandra</em> – Firestore
+                hanterar det bra med subcollections.</li>
+              <li>Firestore har inbyggt stöd för att lyssna på ändringar i
+                enskilda dokument (t.ex. bara regel nr 3), vilket är effektivt
+                när man bara vill uppdatera en reglad i taget.</li>
+              <li>Compat-SDK v10.7.0 (script-taggar) är enkel att komma igång med
+                – rätt nivå för ett lärande-projekt.</li>
+            </ul>
+            <p style="margin-top:0.5rem;">
+              <strong>Kort sagt:</strong> Data med relationer (regel → röster → förslag)
+              = Firestore. Det är precis det Bjerred-skylt har.
+            </p>
+          </div>
+
+          <!-- Gul not: Vad man kunde ha gjort annorlunda -->
+          <div style="background:#fef9e7;border-left:4px solid #f39c12;
+                      border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
+                      margin-top:0.75rem;font-size:0.87rem;color:#7d6608;">
+            <strong>⚠️ En sak att tänka på:</strong>
+            Compat-SDK (v10.7.0) är äldre och lite tyngre än modern ES-modulvariant.
+            Det fungerar utmärkt, men om projektet byggs om idag skulle man
+            troligen välja ES-moduler (v11+) för ett lite smidigare flöde.
+            Det är inte fel – bara en finputsning.
+          </div>
+        </div>
       </div>
+
+      <!-- Projekt 2: Quiz 16B med Realtime Database -->
+      <div class="card" style="margin-top:1rem;border:2px solid #d5f5e3;">
+        <div class="card-header" style="background:#1e8449;">
+          ⚡ Projekt 2 – Quiz 16B:
+          <a href="https://kentlundgren.se/program/quiz/16B/"
+             target="_blank" rel="noopener"
+             style="color:#a9dfbf;margin-left:0.5rem;font-weight:400;font-size:0.9rem;">
+            kentlundgren.se/program/quiz/16B/ ↗
+          </a>
+        </div>
+        <div class="card-body">
+
+          <p><strong>Vad lagras?</strong> Quizresultat – varje deltagare
+          skickar in sitt namn, sin poäng och ett svårighetsbetyg (1–10).
+          Allt sparas i en enkel lista som sedan kan visas för alla.</p>
+
+          <p style="margin-top:0.75rem;"><strong>Var Realtime Database ett bra val här?</strong></p>
+
+          <!-- Grön ruta: Ja, det var rätt val -->
+          <div style="background:#d5f5e3;border-left:4px solid #1e8449;
+                      border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
+                      margin-top:0.5rem;font-size:0.87rem;color:#145a32;">
+            <strong>✅ Ja – Realtime Database var ett bra val för detta projekt.</strong>
+            Här är varför:
+            <ul style="margin-top:0.5rem;padding-left:1.2rem;line-height:1.8;">
+              <li>Quizresultat är en enkel <em>lista av poster</em>
+                (namn + poäng + betyg + datum). Det är ett platt JSON-träd –
+                exakt vad Realtime Database är optimerat för.</li>
+              <li>Med <code>push()</code> läggs varje ny post till med ett
+                unikt nyckel-ID automatiskt. Enkelt och felfritt.</li>
+              <li><code>onValue()</code> lyssnar i realtid – om en ny person
+                skickar in sitt resultat syns det direkt för alla utan
+                att sidan behöver laddas om.</li>
+              <li>Modern ES-modul-SDK (v11.0.0) med <code>import</code>-satser
+                är det senaste och mest underhållna alternativet.</li>
+            </ul>
+            <p style="margin-top:0.5rem;">
+              <strong>Kort sagt:</strong> Enkel lista med poster som skapas och
+              läses i realtid = Realtime Database. Perfekt match.
+            </p>
+          </div>
+
+          <!-- Gul not: Vad man kunde ha gjort annorlunda -->
+          <div style="background:#fef9e7;border-left:4px solid #f39c12;
+                      border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
+                      margin-top:0.75rem;font-size:0.87rem;color:#7d6608;">
+            <strong>⚠️ En sak att tänka på:</strong>
+            Projektet använder projektet <code>borgholm-registration</code>
+            – ett namn som inte har med quiz att göra. Det funkar tekniskt,
+            men om man bygger om det idag skulle man skapa ett nytt
+            Firebase-projekt med ett tydligare namn. Återigen: inte fel,
+            bara lite otydligt i efterhand.
+          </div>
+        </div>
+      </div>
+
+      <!-- Summering och koppling till inpasseringsdata -->
+      <div style="background:#eaf4fb;border-left:4px solid #2e86c1;
+                  border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
+                  margin-top:1rem;font-size:0.87rem;color:#1a5276;">
+        <strong>Slutsats och koppling till inpasseringsdata:</strong><br><br>
+        Båda tidigare val var välmotiverade och tekniskt korrekta.
+        Det visar att du redan har en god intuition för när man väljer
+        vad. För inpasseringsdata är valet lika tydligt:
+        <code>BASE_DATA[år][kategori][månadsindex]</code> är ett
+        JSON-träd → <strong>Realtime Database</strong>.
+        Samma teknik som i quiz-projektet, fast nu i projektet "skylt"
+        (skylt-e0c45) istället för borgholm-registration.
+        <br><br>
+        Länk till datatabellen som ska få Firebase-koppling:
+        <a href="data.html" style="color:#2e86c1;font-weight:600;">
+          📊 data.html
+        </a>
+      </div>
+
     </div>
   </div>
 
