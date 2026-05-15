@@ -1134,12 +1134,24 @@
 
       <div style="background:var(--ok-bg);border-left:4px solid #1e8449;
                   border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
-                  margin-bottom:1rem;font-size:0.87rem;color:#145a32;">
-        ✅ Realtime Database är aktiverad och <code>databaseURL</code> är inlagd.
-        Klicka på knappen för att testa att anslutningen fungerar – ett litet
-        testmeddelande skrivs till Firebase och läses tillbaka.
-        Säkerhetsreglerna är ännu på testläge (steg 4 återstår), så
-        skrivning fungerar tillfälligt utan inloggning.
+                  margin-bottom:0.7rem;font-size:0.87rem;color:#145a32;">
+        ✅ Realtime Database är aktiverad, <code>databaseURL</code> är inlagd
+        och säkerhetsreglerna är i produktion (<code>read=true, write=auth!=null</code>).
+      </div>
+
+      <div style="background:var(--warn-bg);border-left:4px solid var(--warn-bdr);
+                  border-radius:0 6px 6px 0;padding:0.9rem 1.1rem;
+                  margin-bottom:1rem;font-size:0.87rem;color:var(--warn-txt);">
+        <strong>⚠️ OBS – testet läser, skriver inte.</strong><br>
+        Tidigare försökte det här testet <em>skriva</em> ett testmeddelande till Firebase.
+        Det gav felet <code>PERMISSION_DENIED</code> – och det är <strong>korrekt beteende</strong>:
+        säkerhetsreglerna kräver numera inloggning för all skrivning, och anslutningstest-knappen
+        är inte inloggad.<br><br>
+        Testet är nu uppdaterat och gör istället en <em>läsning</em> av riktig
+        produktionsdata (<code>bjerred-inpasseringar/senast-uppdaterad</code>).
+        Läsning är öppen för alla – det bekräftar att Firebase är nådd och svarar.
+        Vill du testa skrivning loggar du in i <a href="data.html" style="color:var(--accent);">data.html</a>
+        och redigerar en cell.
       </div>
 
       <div id="test-sektion">
@@ -1495,8 +1507,8 @@ function kopieraSkript() {
   // isolerad scope).
   // ============================================================
   window.körAnslutningstest = async function() {
-    const knapp     = document.getElementById('test-knapp');
-    const resultat  = document.getElementById('test-resultat');
+    const knapp    = document.getElementById('test-knapp');
+    const resultat = document.getElementById('test-resultat');
 
     // Kontrollera att databaseURL är inlagd
     if (!firebaseConfig.databaseURL) {
@@ -1504,38 +1516,56 @@ function kopieraSkript() {
       resultat.className     = 'fel';
       resultat.textContent   =
         '⛔ databaseURL saknas i konfigurationen. ' +
-        'Aktivera Realtime Database i Firebase Console och lägg till URL:en (rad 29 i skriptet).';
+        'Aktivera Realtime Database i Firebase Console och lägg till URL:en.';
       return;
     }
 
-    knapp.disabled   = true;
+    knapp.disabled    = true;
     knapp.textContent = '⏳ Testar…';
 
     try {
-      const db       = getDatabase(app);
-      const testRef  = ref(db, 'bjerred-inpasseringar/anslutningstest');
-      const tidpunkt = new Date().toLocaleString('sv-SE');
+      const db = getDatabase(app);
 
-      // Skriv ett testmeddelande
-      await set(testRef, {
-        meddelande: 'Anslutning OK från databas.html',
-        tidpunkt:   tidpunkt
-      });
+      // ── Test 1: LÄS senast-uppdaterad (öppen för alla, kräver ej auth) ──
+      // Det här är det primära anslutningsbeviset: Firebase svarar och vi kan
+      // hämta data utan inloggning, precis som säkerhetsreglerna säger.
+      const läsRef      = ref(db, 'bjerred-inpasseringar/senast-uppdaterad');
+      const snapshot    = await get(läsRef);
+      const senastUppdaterad = snapshot.val() ?? '(ingen tidsstämpel)';
 
-      // Läs tillbaka för att bekräfta att skrivningen gick igenom
-      const snapshot = await get(testRef);
-      const data     = snapshot.val();
+      // ── Test 2: SKRIV utan auth (förväntas ge PERMISSION_DENIED) ──
+      // Det här testet SKA misslyckas – det bekräftar att säkerhetsreglerna
+      // fungerar korrekt. Om det lyckas är säkerhetsreglerna fel.
+      let säkerhetsOK = false;
+      try {
+        await set(ref(db, 'bjerred-inpasseringar/anslutningstest'), {
+          försök: new Date().toLocaleString('sv-SE')
+        });
+        // Om vi kommer hit är säkerhetsreglerna FEL (skrivning utan auth lyckades)
+        säkerhetsOK = false;
+      } catch (skrivFel) {
+        // PERMISSION_DENIED = säkerhetsreglerna fungerar korrekt
+        säkerhetsOK = skrivFel.message.includes('PERMISSION_DENIED');
+      }
 
       resultat.style.display = 'block';
       resultat.className     = 'ok';
-      resultat.textContent   =
-        `✅ Anslutning OK! Testdata skriven och läst tillbaka: "${data.meddelande}" (${data.tidpunkt})`;
+      resultat.innerHTML =
+        `✅ <strong>Anslutning OK!</strong> Firebase svarar och data kan läsas.<br>` +
+        `<span style="font-size:0.85rem;color:var(--muted);">` +
+        `Senast uppdaterad i databasen: <strong>${senastUppdaterad}</strong></span><br><br>` +
+        (säkerhetsOK
+          ? `🔒 <strong>Säkerhetsregler fungerar korrekt:</strong> obehörig skrivning ` +
+            `blockerades med PERMISSION_DENIED – precis som det ska vara.`
+          : `⚠️ <strong>OBS:</strong> Skrivning utan inloggning lyckades – kontrollera ` +
+            `säkerhetsreglerna i Firebase Console (de ska kräva auth!=null för skrivning).`
+        );
 
     } catch (fel) {
-      // Anslutningen misslyckades – visa felmeddelandet
+      // Läsningen misslyckades – verkligt anslutningsfel
       resultat.style.display = 'block';
       resultat.className     = 'fel';
-      resultat.textContent   = `❌ Fel: ${fel.message}`;
+      resultat.textContent   = `❌ Anslutning misslyckades: ${fel.message}`;
     }
 
     knapp.disabled    = false;
