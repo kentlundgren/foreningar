@@ -125,18 +125,7 @@ Inpasseringsdata kopplas till **Firebase Realtime Database** så att auktorisera
 | 7 | data.html omskriven att läsa/skriva mot Firebase | ✅ |
 | 8 | Testat på GitHub Pages – live-synk bekräftad | ✅ |
 
-**Firebase-konfiguration:**
-```javascript
-const firebaseConfig = {
-  apiKey:            "AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8",
-  authDomain:        "skylt-e0c45.firebaseapp.com",
-  projectId:         "skylt-e0c45",
-  storageBucket:     "skylt-e0c45.firebasestorage.app",
-  messagingSenderId: "653653642598",
-  appId:             "1:653653642598:web:29e332c87fed1cd9f34ca7",
-  databaseURL:       "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"
-};
-```
+**Firebase-konfiguration:** Finns i `inpasseringar/data.html` och `inpasseringar/databas.html` (i `<script>`-blocket). Hämtas från Firebase Console → Project settings → Your apps om den behöver återskapas.
 
 **Viktiga principer:**
 - `BASE_DATA` ska **alltid behållas** hårdkodad som fallback – data kan aldrig gå förlorad om Firebase inte nås.

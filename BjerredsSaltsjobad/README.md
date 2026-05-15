@@ -77,15 +77,7 @@ Administratören klickar på knappen **✉ Bjud in** längst ned till vänster p
 
 ## Firebase-backend
 
-Inpasseringsdata lagras i **Firebase Realtime Database** (projekt: `skylt-e0c45`, region: europe-west1).
-
-```javascript
-const firebaseConfig = {
-  apiKey:            "AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8",
-  authDomain:        "skylt-e0c45.firebaseapp.com",
-  databaseURL:       "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"
-};
-```
+Inpasseringsdata lagras i **Firebase Realtime Database** (projekt: `skylt-e0c45`, region: europe-west1). Konfigurationen finns i `inpasseringar/data.html` och `inpasseringar/databas.html`.
 
 **Firebase Console:** https://console.firebase.google.com/project/skylt-e0c45
 
