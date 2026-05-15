@@ -562,6 +562,187 @@
 
 
   <!-- ============================================================
+     2b. SDK – vad är det och vilken version ska vi använda?
+     ============================================================ -->
+  <div class="card">
+    <div class="card-header">📦 Vad är ett SDK – och vilken version ska vi använda?</div>
+    <div class="card-body">
+
+      <!-- ── Förklaring: vad är ett SDK? ── -->
+      <h4 style="color:var(--primary);margin-bottom:0.4rem;">SDK = Software Development Kit</h4>
+      <p>
+        Ett <strong>SDK</strong> (uttalas "es-dee-kay") är ett färdigt verktygslåda
+        av kod som ett företag paketerar och ger bort till utvecklare, så att
+        de slipper uppfinna hjulet på nytt. I stället för att skriva all kommunikation
+        med Firebase-servrar från grunden laddar vi in Googles SDK – och sedan
+        räcker det att anropa enkla funktioner som <code>set()</code> och
+        <code>onValue()</code>.
+      </p>
+
+      <div class="info-ruta" style="margin-top:0.8rem;">
+        <strong>Är SDK:er mest för databaser?</strong><br><br>
+        Nej – SDK:er finns för <em>i princip allt</em> inom modern mjukvaruutveckling.
+        Några exempel på vad SDK:er används till:
+        <ul style="margin:0.5rem 0 0.5rem 1.3rem; line-height:1.9;">
+          <li><strong>Databaser och molntjänster</strong> – Firebase, AWS, Azure (det vi använder här)</li>
+          <li><strong>Betalningar</strong> – Stripe SDK, Klarna SDK, Swish</li>
+          <li><strong>Kartor</strong> – Google Maps SDK, Mapbox</li>
+          <li><strong>Inloggning</strong> – BankID SDK, Google Sign-In</li>
+          <li><strong>Mobilappar</strong> – Android SDK, iOS SDK (hela plattformen)</li>
+          <li><strong>AI-tjänster</strong> – OpenAI SDK, Anthropic SDK</li>
+          <li><strong>Statistik</strong> – Google Analytics SDK</li>
+        </ul>
+        Mönstret är alltid detsamma: ett företag eller en community erbjuder en
+        tjänst, och SDK:t är den "bro" som gör att din kod kan prata med tjänsten
+        utan att du behöver förstå hur den fungerar inuti.
+      </div>
+
+      <!-- ── Versioner ── -->
+      <h4 style="color:var(--primary);margin:1.2rem 0 0.4rem;">Firebase JS SDK – versioner</h4>
+      <p>
+        Google släpper kontinuerligt nya versioner av Firebase JavaScript SDK.
+        Varje version kan innehålla buggfixar, prestandaförbättringar, nya
+        funktioner – och ibland ändringar som kan bryta befintlig kod
+        (<em>breaking changes</em>). Versionen anges i CDN-länken:
+      </p>
+      <pre style="margin-top:0.5rem;"><span class="c">// Versionen styr vilken kod som laddas från Googles servrar:</span>
+<span class="k">import</span> { <span class="f">initializeApp</span> }
+  <span class="k">from</span> <span class="s">'https://www.gstatic.com/firebasejs/<strong style="color:#f9c74f;">11.0.0</strong>/firebase-app.js'</span>;</pre>
+
+      <!-- ── Versionsjämförelse ── -->
+      <table class="struktur" style="margin-top:0.9rem;">
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>Status</th>
+            <th>Används i projektet</th>
+            <th>Notering</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>v10.7.0</strong></td>
+            <td>Äldre</td>
+            <td>Bjerred-skylt (Firestore, compat-läge)</td>
+            <td>Äldre compat-API – fortfarande vanlig</td>
+          </tr>
+          <tr style="background:var(--ok-bg);">
+            <td><strong>v11.0.0</strong></td>
+            <td>✅ Stabil – används nu</td>
+            <td>data.html + databas.html (Realtime DB)</td>
+            <td>ES-moduler, vältestad, rekommenderas</td>
+          </tr>
+          <tr>
+            <td><strong>v12.13.0</strong></td>
+            <td>🆕 Senaste (maj 2026)</td>
+            <td>–</td>
+            <td>Nyast men mindre beprövad i produktion</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ── Interaktiv versionsväljare ── -->
+      <div style="margin-top:1.2rem; padding:1rem 1.2rem; background:#f4f6f9;
+                  border:1px solid var(--border); border-radius:8px;">
+        <strong style="display:block;margin-bottom:0.7rem;color:var(--primary);">
+          🔧 Välj SDK-version – se hur import-raderna ser ut:
+        </strong>
+
+        <!-- Radioknappar -->
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.9rem;">
+          <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;
+                        font-size:0.88rem;font-weight:600;">
+            <input type="radio" name="sdk-ver" value="11.0.0" checked
+                   onchange="uppdateraSDK(this.value)" />
+            v11.0.0 &nbsp;<span style="font-weight:400;color:var(--muted);">(stabil – används nu)</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;
+                        font-size:0.88rem;font-weight:600;">
+            <input type="radio" name="sdk-ver" value="12.13.0"
+                   onchange="uppdateraSDK(this.value)" />
+            v12.13.0 &nbsp;<span style="font-weight:400;color:var(--muted);">(senaste, maj 2026)</span>
+          </label>
+        </div>
+
+        <!-- Kodblock som uppdateras dynamiskt -->
+        <pre id="sdk-kodblock" style="margin:0;"></pre>
+
+        <!-- Kopieringsknapp -->
+        <div style="margin-top:0.6rem;display:flex;align-items:center;gap:1rem;">
+          <button onclick="kopieraSDK()"
+                  style="background:var(--secondary);color:#fff;border:none;
+                         border-radius:6px;padding:0.45rem 1rem;font-size:0.82rem;
+                         cursor:pointer;font-family:inherit;">
+            📋 Kopiera import-rader
+          </button>
+          <span id="sdk-kopierat"
+                style="font-size:0.8rem;color:#27ae60;display:none;">
+            ✅ Kopierat!
+          </span>
+        </div>
+      </div>
+
+      <!-- ── Rekommendation ── -->
+      <div style="margin-top:1rem;padding:0.8rem 1rem;background:var(--warn-bg);
+                  border-left:3px solid var(--warn-bdr);border-radius:0 6px 6px 0;
+                  font-size:0.85rem;line-height:1.6;color:var(--warn-txt);">
+        <strong>⚠️ Rekommendation:</strong> Håll dig till <strong>v11.0.0</strong>
+        tills v12 är mer beprövad i produktion. Uppgradera aldrig en SDK-version
+        mitt i en deploy-cykel – testa alltid lokalt (Cursor + Live Preview) innan
+        du pushar till GitHub Pages. Versionsbytet görs på tre ställen i
+        <code>data.html</code> (firebase-app, firebase-database, firebase-auth)
+        och tre ställen i <code>databas.html</code>.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JavaScript för versionsväljaren (icke-modul, körs globalt) -->
+  <script>
+    /* ----------------------------------------------------------------
+       SDK-versionsväljare
+       Uppdaterar kodblocket i realtid när användaren väljer version.
+       ---------------------------------------------------------------- */
+
+    /* De tre import-raderna med versionsnumret som platshållare {v} */
+    function sdkImporter(v) {
+      return [
+        `import { initializeApp, getApps }`,
+        `  from 'https://www.gstatic.com/firebasejs/${v}/firebase-app.js';`,
+        ``,
+        `import { getDatabase, ref, onValue, set }`,
+        `  from 'https://www.gstatic.com/firebasejs/${v}/firebase-database.js';`,
+        ``,
+        `import { getAuth, signInWithEmailAndPassword, signOut,`,
+        `         onAuthStateChanged, sendPasswordResetEmail }`,
+        `  from 'https://www.gstatic.com/firebasejs/${v}/firebase-auth.js';`
+      ].join('\n');
+    }
+
+    /* Uppdatera kodblocket – anropas vid radioknapp-klick och vid sidladdning */
+    function uppdateraSDK(version) {
+      document.getElementById('sdk-kodblock').textContent = sdkImporter(version);
+    }
+
+    /* Kopiera kodblockets text till urklipp */
+    async function kopieraSDK() {
+      const text = document.getElementById('sdk-kodblock').textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        const el = document.getElementById('sdk-kopierat');
+        el.style.display = 'inline';
+        setTimeout(() => { el.style.display = 'none'; }, 2500);
+      } catch (e) {
+        alert('Markera texten manuellt och kopiera med Ctrl+C.');
+      }
+    }
+
+    /* Visa v11.0.0 direkt vid sidladdning (default) */
+    uppdateraSDK('11.0.0');
+  </script>
+
+
+  <!-- ============================================================
        3. DATASTRUKTUR I FIREBASE
        ============================================================ -->
   <div class="card">
