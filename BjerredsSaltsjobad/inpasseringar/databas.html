@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firebase-databas – Bjerreds Saltsjöbad</title>
+
+  <!--
+    ================================================================
+    databas.html – Lärandesida och arbetsdokument för Firebase-
+    integrationen av inpasseringsstatistiken.
+
+    SYFTE:
+    Den här filen är ett levande dokument som beskriver planen för
+    att koppla inpasseringsdata till Firebase Realtime Database.
+    Den innehåller:
+      1. Bakgrund och mål
+      2. Firebase-konfigurationen för "skylt"-projektet
+      3. Vad som återstår att göra
+      4. En enkel anslutningstest mot Firebase
+
+    NÄR ÄR DEN KLAR?
+    När Firebase Realtime Database är aktiverad, data.html läser
+    från Firebase, och behöriga kan skriva direkt i webbgränssnittet.
+    ================================================================
+  -->
+
+  <style>
+    /* ============================================================
+       DESIGNVARIABLER – matchar övriga sidor i projektet
+       ============================================================ */
+    :root {
+      --primary:   #1a5276;
+      --secondary: #2e86c1;
+      --accent:    #e67e22;
+      --bg:        #f4f6f9;
+      --card:      #ffffff;
+      --text:      #2c3e50;
+      --muted:     #7f8c8d;
+      --border:    #dde1e7;
+      --ok:        #1e8449;
+      --ok-bg:     #d5f5e3;
+      --warn-bg:   #fef9e7;
+      --warn-bdr:  #f39c12;
+      --warn-txt:  #7d6608;
+      --err-bg:    #fdedec;
+      --err-txt:   #922b21;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       SIDHUVUD
+       ============================================================ */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1  { font-size: 1.3rem; font-weight: 700; }
+    header p   { font-size: 0.8rem; opacity: 0.75; margin-top: 0.1rem; }
+
+    .btn-back {
+      background: rgba(255,255,255,0.13);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.18s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.25); }
+
+    /* ============================================================
+       HUVUD­INNEHÅLL
+       ============================================================ */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* ============================================================
+       KORT
+       ============================================================ */
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.75rem 1.3rem;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .card-body {
+      padding: 1.3rem 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* ============================================================
+       STEG-LISTA (checklista)
+       ============================================================ */
+    .steg-lista {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .steg-lista li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+
+    /* Statusfärger för stegen */
+    .steg-lista li.klar   { background: var(--ok-bg);   border-color: #a9dfbf; }
+    .steg-lista li.väntar { background: var(--warn-bg);  border-color: var(--warn-bdr); }
+    .steg-lista li.todo   { background: #f8f9fa;          border-color: var(--border); }
+
+    .steg-ikon { font-size: 1.2rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .steg-text strong { display: block; margin-bottom: 0.2rem; color: var(--primary); }
+    .steg-text span   { color: var(--muted); font-size: 0.83rem; }
+
+    /* ============================================================
+       KOD-BLOCK
+       ============================================================ */
+    pre {
+      background: #1e2d3d;
+      color: #cdd9e5;
+      border-radius: 7px;
+      padding: 1.1rem 1.3rem;
+      overflow-x: auto;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      font-family: 'Consolas', 'Courier New', monospace;
+      margin-top: 0.75rem;
+    }
+
+    /* Syntax-färger (manuella) */
+    .k  { color: #79b8ff; }   /* nyckelord: const, import, function */
+    .s  { color: #9ecbff; }   /* strängar  */
+    .c  { color: #6a737d; font-style: italic; }   /* kommentarer */
+    .f  { color: #b392f0; }   /* funktionsnamn */
+    .v  { color: #ffab70; }   /* variabler */
+
+    /* ============================================================
+       VARNING / INFO-RUTOR
+       ============================================================ */
+    .varning {
+      background: var(--warn-bg);
+      border-left: 4px solid var(--warn-bdr);
+      border-radius: 0 6px 6px 0;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.87rem;
+      color: var(--warn-txt);
+      margin-top: 1rem;
+    }
+
+    .info-ruta {
+      background: #eaf4fb;
+      border-left: 4px solid var(--secondary);
+      border-radius: 0 6px 6px 0;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.87rem;
+      color: var(--text);
+      margin-top: 0.75rem;
+    }
+
+    /* ============================================================
+       ANSLUTNINGSTEST
+       ============================================================ */
+    #test-sektion { margin-top: 1rem; }
+
+    #test-knapp {
+      background: var(--secondary);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    #test-knapp:hover    { background: var(--primary); }
+    #test-knapp:disabled { background: var(--muted); cursor: not-allowed; }
+
+    #test-resultat {
+      margin-top: 1rem;
+      padding: 0.85rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.87rem;
+      display: none;
+    }
+    #test-resultat.ok  { background: var(--ok-bg); color: var(--ok); border: 1px solid #a9dfbf; }
+    #test-resultat.fel { background: var(--err-bg); color: var(--err-txt); border: 1px solid #f1948a; }
+
+    /* ============================================================
+       TABELL (datastruktur)
+       ============================================================ */
+    table.struktur {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+    }
+    table.struktur th {
+      background: #d6eaf8;
+      color: var(--primary);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+    table.struktur td {
+      padding: 0.45rem 0.75rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    table.struktur tr:nth-child(even) td { background: #f8f9fa; }
+    table.struktur code {
+      background: #d6eaf8;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-family: 'Consolas', monospace;
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 700px) {
+      header { flex-direction: column; align-items: flex-start; }
+      main   { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SIDHUVUD
+     ============================================================ -->
+<header>
+  <div>
+    <h1>🔥 Firebase-integration – Bjerreds Saltsjöbad</h1>
+    <p>Arbetsdokument för backend-kopplingen av inpasseringsstatistiken</p>
+  </div>
+  <div style="display:flex;gap:0.5rem;flex-shrink:0;">
+    <a class="btn-back" href="../">🏠 Startsidan</a>
+    <a class="btn-back" href="index.html">← Statistik</a>
+  </div>
+</header>
+
+
+<main>
+
+  <!-- ============================================================
+       1. BAKGRUND OCH MÅL
+       ============================================================ -->
+  <div class="card">
+    <div class="card-header">📋 Bakgrund och mål</div>
+    <div class="card-body">
+      <p>
+        Idag lagras inpasseringsdata hårdkodat i <code>BASE_DATA</code>-objektet i
+        <strong>index.html</strong> och <strong>data.html</strong>. Det fungerar bra,
+        men för att uppdatera siffrorna måste Kent redigera koden och publicera via
+        GitHub – varje gång.
+      </p>
+
+      <div class="info-ruta">
+        <strong>Målet</strong> är att koppla sidan till Firebase Realtime Database
+        så att behöriga föreningsmedlemmar kan skriva in siffror direkt i webbläsaren,
+        och alla ser ändringen direkt – utan att Kent behöver röra koden.
+        <br><br>
+        <strong>BASE_DATA behålls alltid</strong> i koden som reserv, ifall
+        Firebase inte går att nå.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       2. FIREBASE-PROJEKT OCH KONFIGURATION
+       ============================================================ -->
+  <div class="card">
+    <div class="card-header">⚙️ Firebase-projekt och konfiguration</div>
+    <div class="card-body">
+      <p>
+        Vi använder det befintliga Firebase-projektet <strong>"skylt"</strong>
+        (skylt-e0c45), som redan är kopplat till Bjerreds Saltsjöbad via
+        appen "Bjerreds-skylt". Inpasseringsdata sparas under en egen nod
+        i databasen så att den inte krockar med annan data i projektet.
+      </p>
+
+      <p style="margin-top:0.75rem;">
+        Nedanför visas <code>firebaseConfig</code> för projektet.
+        Notera att koden är anpassad för CDN-laddning (direkt i HTML utan
+        byggverktyg), inte npm-versionen som visas i Firebase Console.
+      </p>
+
+      <!-- firebaseConfig i CDN-format, anpassad för denna webbapp -->
+      <pre><span class="c">// ============================================================
+// FIREBASE-KONFIGURATION – projekt "skylt" (skylt-e0c45)
+// Används för Bjerreds-skylt-appen (Web App)
+//
+// OBS: Konfigurationen nedan är för CDN-varianten (ES-moduler
+// från gstatic.com), inte npm-versionen. Det är det format
+// som fungerar direkt i en HTML-fil utan byggverktyg.
+//
+// databaseURL saknas ännu – läggs till när Realtime Database
+// har aktiverats i Firebase Console (se steg 3 nedan).
+// ============================================================</span>
+
+<span class="k">import</span> { <span class="f">initializeApp</span>, <span class="f">getApps</span> }
+  <span class="k">from</span> <span class="s">'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js'</span>;
+<span class="k">import</span> { <span class="f">getDatabase</span>, <span class="f">ref</span>, <span class="f">set</span>, <span class="f">onValue</span> }
+  <span class="k">from</span> <span class="s">'https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js'</span>;
+
+<span class="k">const</span> <span class="v">firebaseConfig</span> = {
+  apiKey:            <span class="s">"AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8"</span>,
+  authDomain:        <span class="s">"skylt-e0c45.firebaseapp.com"</span>,
+  projectId:         <span class="s">"skylt-e0c45"</span>,
+  storageBucket:     <span class="s">"skylt-e0c45.firebasestorage.app"</span>,
+  messagingSenderId: <span class="s">"653653642598"</span>,
+  appId:             <span class="s">"1:653653642598:web:29e332c87fed1cd9f34ca7"</span>,
+  <span class="c">// databaseURL läggs till här när Realtime Database är aktiverad:</span>
+  <span class="c">// databaseURL: "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"</span>
+};</pre>
+
+      <div class="varning">
+        ⚠️ <strong>databaseURL saknas.</strong> Den här nyckeln behövs för att
+        ansluta till Realtime Database. Den syns i Firebase Console först efter
+        att Realtime Database har aktiverats (se steg 3 i checklistan nedan).
+        URL:en brukar se ut ungefär som:
+        <code>https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app</code>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       3. DATASTRUKTUR I FIREBASE
+       ============================================================ -->
+  <div class="card">
+    <div class="card-header">🗂️ Datastruktur i Firebase</div>
+    <div class="card-body">
+      <p>
+        Firebase Realtime Database lagrar data som ett JSON-träd.
+        Vi speglar strukturen i <code>BASE_DATA</code>-objektet rakt av,
+        men lägger allt under noden <code>bjerred-inpasseringar/</code>
+        för att inte krocka med annan data i projektet.
+      </p>
+
+      <table class="struktur">
+        <thead>
+          <tr>
+            <th>Sökväg i Firebase</th>
+            <th>Innehåll</th>
+            <th>Exempel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>bjerred-inpasseringar/data</code></td>
+            <td>Rotnod för all inpasseringsdata</td>
+            <td>–</td>
+          </tr>
+          <tr>
+            <td><code>.../data/2026</code></td>
+            <td>Årsdata, ett objekt per år</td>
+            <td>–</td>
+          </tr>
+          <tr>
+            <td><code>.../data/2026/Medlemmar – armband</code></td>
+            <td>Kategori, ett objekt per kategori</td>
+            <td>–</td>
+          </tr>
+          <tr>
+            <td><code>.../data/2026/Medlemmar – armband/3</code></td>
+            <td>Månadsindex (0 = jan, 3 = apr)</td>
+            <td><code>90</code></td>
+          </tr>
+          <tr>
+            <td><code>bjerred-inpasseringar/senast-uppdaterad</code></td>
+            <td>Datum för senaste ändring</td>
+            <td><code>"2026-05-15"</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-ruta">
+        <strong>Säkerhetsregler</strong> – följande regler sätts i Firebase Console
+        under Realtime Database → Rules. Alla kan läsa, men bara inloggade
+        kan skriva:
+<pre style="margin-top:0.5rem; background:#1e2d3d;">{
+  <span class="s">"rules"</span>: {
+    <span class="s">"bjerred-inpasseringar"</span>: {
+      <span class="s">".read"</span>:  <span class="s">"true"</span>,
+      <span class="s">".write"</span>: <span class="s">"auth != null"</span>
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       4. CHECKLISTA – VAD ÅTERSTÅR?
+       ============================================================ -->
+  <div class="card">
+    <div class="card-header">✅ Checklista – steg mot en fungerande databas</div>
+    <div class="card-body">
+      <ul class="steg-lista">
+
+        <li class="klar">
+          <span class="steg-ikon">✅</span>
+          <div class="steg-text">
+            <strong>Firebase-projekt valt</strong>
+            <span>Använder befintliga projektet "skylt" (skylt-e0c45)
+            med appen "Bjerreds-skylt". Inget nytt projekt behövs.</span>
+          </div>
+        </li>
+
+        <li class="klar">
+          <span class="steg-ikon">✅</span>
+          <div class="steg-text">
+            <strong>firebaseConfig hämtad</strong>
+            <span>Konfigurationen är kopierad från Firebase Console
+            och dokumenterad ovan.</span>
+          </div>
+        </li>
+
+        <li class="väntar">
+          <span class="steg-ikon">⏳</span>
+          <div class="steg-text">
+            <strong>Aktivera Realtime Database i Firebase Console</strong>
+            <span>
+              Gå till Databases &amp; Storage → Realtime Database → Create database.
+              Välj regionen <em>europe-west1</em>. Starta i testläge, byt sedan
+              regler enligt avsnittet ovan.
+              Efter aktivering: kopiera databaseURL och lägg till i firebaseConfig.
+            </span>
+          </div>
+        </li>
+
+        <li class="todo">
+          <span class="steg-ikon">◻️</span>
+          <div class="steg-text">
+            <strong>Sätt säkerhetsregler</strong>
+            <span>Realtime Database → Rules → klistra in JSON-reglerna ovan.
+            Läsning öppen, skrivning kräver inloggning.</span>
+          </div>
+        </li>
+
+        <li class="todo">
+          <span class="steg-ikon">◻️</span>
+          <div class="steg-text">
+            <strong>Aktivera Firebase Authentication</strong>
+            <span>Security → Authentication → Sign-in method → aktivera
+            "E-post/lösenord" (och/eller "Google"). Skapa konto för Kent
+            och eventuella andra behöriga.</span>
+          </div>
+        </li>
+
+        <li class="todo">
+          <span class="steg-ikon">◻️</span>
+          <div class="steg-text">
+            <strong>Lägg upp BASE_DATA i Firebase (engångsmigration)</strong>
+            <span>Ett litet engångsskript (kan köras i webbläsarkonsolen) läser
+            BASE_DATA och skriver det till Firebase. Görs en gång.</span>
+          </div>
+        </li>
+
+        <li class="todo">
+          <span class="steg-ikon">◻️</span>
+          <div class="steg-text">
+            <strong>Koda om data.html att läsa från Firebase</strong>
+            <span>loadData() ersätts med onValue() från Firebase SDK.
+            BASE_DATA används som fallback om Firebase inte svarar.
+            Redigering kräver inloggning.</span>
+          </div>
+        </li>
+
+        <li class="todo">
+          <span class="steg-ikon">◻️</span>
+          <div class="steg-text">
+            <strong>Testa på separat branch och publicera</strong>
+            <span>Bygg och testa Firebase-versionen i Cursor på en ny branch
+            innan den slås ihop med main och publiceras på GitHub Pages.</span>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       5. ANSLUTNINGSTEST
+       ============================================================ -->
+  <div class="card">
+    <div class="card-header">🔌 Anslutningstest mot Firebase</div>
+    <div class="card-body">
+      <p>
+        Knappen nedan försöker ansluta till Firebase och skriva ett
+        testmeddelande under noden <code>bjerred-inpasseringar/anslutningstest</code>.
+        <strong>Testet fungerar inte förrän Realtime Database är aktiverad
+        och databaseURL är inlagd.</strong>
+      </p>
+
+      <div class="varning">
+        ⚠️ Anslutningstest kräver att Realtime Database är aktiverad och att
+        <code>databaseURL</code> är tillagd i konfigurationen ovan (rad 29 i
+        skriptet längst ned på sidan).
+      </div>
+
+      <div id="test-sektion">
+        <button id="test-knapp" onclick="körAnslutningstest()">
+          🔌 Testa Firebase-anslutning
+        </button>
+        <div id="test-resultat"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       6. REFERENS – TIDIGARE FIREBASE-IMPLEMENTATION
+       ============================================================ -->
+  <div class="card">
+    <div class="card-header">📚 Referens – tidigare Firebase-implementation</div>
+    <div class="card-body">
+      <p>
+        Kent har tidigare implementerat Firebase Realtime Database i ett quiz-projekt.
+        Den implementationen kan återanvändas som mall – särskilt CSP-headerna
+        som behövs för att GitHub Pages ska tillåta Firebase WebSocket-anslutningar.
+      </p>
+      <p style="margin-top:0.75rem;">
+        <strong>Referensimplementation:</strong>
+        <a href="https://kentlundgren.se/program/quiz/16B/"
+           target="_blank" rel="noopener"
+           style="color:var(--secondary);">
+          https://kentlundgren.se/program/quiz/16B/
+        </a>
+      </p>
+
+      <div class="info-ruta">
+        Tekniken som används i quiz-projektet:
+        Firebase SDK v11.0.0 (ES-moduler via gstatic.com CDN),
+        <code>initializeApp</code>, <code>getDatabase</code>,
+        <code>ref</code>, <code>set</code>, <code>push</code>,
+        <code>onValue</code>, <code>remove</code>.
+        CSP-headers för GitHub Pages är lösta i det projektet och
+        kan kopieras direkt.
+      </div>
+    </div>
+  </div>
+
+</main><!-- slut main -->
+
+
+<!-- ============================================================
+     FIREBASE SDK – laddas som ES-modul (CDN, ingen byggprocess)
+     Anslutningstest-funktionen definieras här och görs tillgänglig
+     globalt via window.körAnslutningstest.
+     ============================================================ -->
+<script type="module">
+
+  // ============================================================
+  // FIREBASE-KONFIGURATION (CDN-variant)
+  // OBS: databaseURL är utkommenterad tills Realtime Database
+  // har aktiverats i Firebase Console.
+  // ============================================================
+  import { initializeApp, getApps }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+  import { getDatabase, ref, set, get }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js';
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8",
+    authDomain:        "skylt-e0c45.firebaseapp.com",
+    projectId:         "skylt-e0c45",
+    storageBucket:     "skylt-e0c45.firebasestorage.app",
+    messagingSenderId: "653653642598",
+    appId:             "1:653653642598:web:29e332c87fed1cd9f34ca7",
+    // databaseURL: "LÄGG IN URL HÄR EFTER ATT REALTIME DATABASE AKTIVERATS"
+  };
+
+  // ============================================================
+  // INITIERING – startar Firebase om det inte redan är gjort
+  // getApps() returnerar en lista med redan initierade appar,
+  // så vi undviker att initiera samma app två gånger.
+  // ============================================================
+  const app = getApps().length === 0
+    ? initializeApp(firebaseConfig)
+    : getApps()[0];
+
+  // ============================================================
+  // ANSLUTNINGSTEST
+  // Skriver ett enkelt testmeddelande till Firebase och läser
+  // tillbaka det för att bekräfta att anslutningen fungerar.
+  // Görs tillgänglig globalt via window så att HTML-knappen
+  // kan anropa funktionen (type="module" skapar annars en
+  // isolerad scope).
+  // ============================================================
+  window.körAnslutningstest = async function() {
+    const knapp     = document.getElementById('test-knapp');
+    const resultat  = document.getElementById('test-resultat');
+
+    // Kontrollera att databaseURL är inlagd
+    if (!firebaseConfig.databaseURL) {
+      resultat.style.display = 'block';
+      resultat.className     = 'fel';
+      resultat.textContent   =
+        '⛔ databaseURL saknas i konfigurationen. ' +
+        'Aktivera Realtime Database i Firebase Console och lägg till URL:en (rad 29 i skriptet).';
+      return;
+    }
+
+    knapp.disabled   = true;
+    knapp.textContent = '⏳ Testar…';
+
+    try {
+      const db       = getDatabase(app);
+      const testRef  = ref(db, 'bjerred-inpasseringar/anslutningstest');
+      const tidpunkt = new Date().toLocaleString('sv-SE');
+
+      // Skriv ett testmeddelande
+      await set(testRef, {
+        meddelande: 'Anslutning OK från databas.html',
+        tidpunkt:   tidpunkt
+      });
+
+      // Läs tillbaka för att bekräfta att skrivningen gick igenom
+      const snapshot = await get(testRef);
+      const data     = snapshot.val();
+
+      resultat.style.display = 'block';
+      resultat.className     = 'ok';
+      resultat.textContent   =
+        `✅ Anslutning OK! Testdata skriven och läst tillbaka: "${data.meddelande}" (${data.tidpunkt})`;
+
+    } catch (fel) {
+      // Anslutningen misslyckades – visa felmeddelandet
+      resultat.style.display = 'block';
+      resultat.className     = 'fel';
+      resultat.textContent   = `❌ Fel: ${fel.message}`;
+    }
+
+    knapp.disabled    = false;
+    knapp.textContent = '🔌 Testa Firebase-anslutning';
+  };
+
+</script>
+</body>
+</html>
