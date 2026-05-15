@@ -697,29 +697,27 @@
           </div>
         </li>
 
-        <li class="väntar">
-          <span class="steg-ikon">⏳</span>
+        <li class="klar">
+          <span class="steg-ikon">✅</span>
           <div class="steg-text">
-            <strong>Steg 6 – Lägg upp BASE_DATA i Firebase (engångsmigration)</strong>
-            <span>Ett engångsskript läser <code>BASE_DATA</code> från koden och
-            skriver upp alla historiska siffror (2024, 2025, 2026) till
-            Firebase-databasen under noden <code>bjerred-inpasseringar/data</code>.
-            Skriptet klistras in och körs direkt i webbläsarens
-            utvecklarkonsol (F12 → Console) på den här sidan.
-            Görs bara en gång – sedan är all historisk data i Firebase.
-            <br><em>← Du är här just nu.</em></span>
+            <strong>Steg 6 – Engångsmigration klar (2026-05-15)</strong>
+            <span>All historisk data är uppskriven till Firebase Realtime Database.
+            11 kategorier skrivna, 0 fel. Data finns under
+            <code>bjerred-inpasseringar/data/</code> i Firebase Console.
+            Migrationen kördes inloggad som <code>lundgren.kent@gmail.com</code>.</span>
           </div>
         </li>
 
-        <li class="todo">
-          <span class="steg-ikon">◻️</span>
+        <li class="väntar">
+          <span class="steg-ikon">⏳</span>
           <div class="steg-text">
             <strong>Steg 7 – Koda om data.html att läsa och skriva mot Firebase</strong>
             <span>Funktionen <code>loadData()</code> ersätts med <code>onValue()</code>
             från Firebase SDK – data laddas från molnet istället för lokalt.
             <code>saveOverride()</code> ersätts med <code>set()</code> till Firebase.
             <code>BASE_DATA</code> behålls i koden som reserv om Firebase inte svarar.
-            Redigering av celler kräver att man är inloggad.</span>
+            Redigering av celler kräver att man är inloggad.
+            <br><em>← Du är här just nu.</em></span>
           </div>
         </li>
 

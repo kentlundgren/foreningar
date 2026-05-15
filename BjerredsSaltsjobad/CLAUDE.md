@@ -105,27 +105,60 @@ Strukturen är: `BASE_DATA[år][kategori][månadsindex]` där 0 = januari, 11 = 
 
 > **⚠️ OBS:** `BASE_DATA` finns i **både** `inpasseringar/index.html` och `inpasseringar/data.html`. Uppdatera alltid båda filerna samtidigt.
 
-## Framtidsplan – Firebase-backend
+## Firebase-backend – status och konfiguration
 
-Kent vill på sikt koppla inpasseringsdata till **Firebase Realtime Database** så att auktoriserade föreningsmedlemmar kan uppdatera siffror direkt i webbgränssnittet utan att Kent behöver committa kod.
+Inpasseringsdata kopplas till **Firebase Realtime Database** så att auktoriserade föreningsmedlemmar kan uppdatera siffror direkt i webbgränssnittet utan att Kent behöver committa kod.
 
-**Viktiga principer för Firebase-implementationen:**
-- `BASE_DATA` ska **alltid behållas** hårdkodad i filerna som fallback – inget data ska kunna förloras om Firebase inte nås.
+**Status (2026-05-15): Steg 1–6 klara, Steg 7 pågår**
+
+| # | Steg | Status |
+|---|---|---|
+| 1 | Firebase-projekt valt: "skylt" (skylt-e0c45) | ✅ |
+| 2 | firebaseConfig hämtad och dokumenterad | ✅ |
+| 3 | Realtime Database aktiverad (region: europe-west1) | ✅ |
+| 4 | Säkerhetsregler: read=true, write=auth!=null | ✅ |
+| 5 | Authentication aktiverad, användare skapad | ✅ |
+| 6 | BASE_DATA migrerad (11 kategorier, 0 fel) | ✅ |
+| 7 | Koda om data.html att läsa/skriva mot Firebase | ⏳ |
+| 8 | Testa på separat branch, publicera på GitHub Pages | ◻️ |
+
+**Firebase-konfiguration:**
+```javascript
+const firebaseConfig = {
+  apiKey:            "AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8",
+  authDomain:        "skylt-e0c45.firebaseapp.com",
+  projectId:         "skylt-e0c45",
+  storageBucket:     "skylt-e0c45.firebasestorage.app",
+  messagingSenderId: "653653642598",
+  appId:             "1:653653642598:web:29e332c87fed1cd9f34ca7",
+  databaseURL:       "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"
+};
+```
+
+**Viktiga principer:**
+- `BASE_DATA` ska **alltid behållas** hårdkodad som fallback – data kan aldrig gå förlorad om Firebase inte nås.
 - Firebase är ett lager ovanpå: läs från Firebase om tillgängligt, annars falla tillbaka på `BASE_DATA`.
-- **Autentisering krävs för skrivning** (Firebase Authentication, e-post/lösenord eller Google Sign-In). Läsning ska vara öppen för alla.
-- Datastruktur i Firebase speglar `BASE_DATA`: `bjerred-inpasseringar/data/{år}/{kategori}/{månadsindex}`.
+- **Autentisering krävs för skrivning** (Firebase Authentication, e-post/lösenord). Läsning är öppen för alla.
+- SDK v11.0.0 (ES-moduler) via CDN – inga npm-beroenden.
+
+**OBS – kategorinamn med snedstreck:** Kategorier som `"Restaurangen/badbiljetter"` lagras som nästlad sökväg i Firebase (`Restaurangen > badbiljetter`). Läskoden i data.html hanterar detta genom att traversera sökvägen utifrån BASE_DATA-kategorinamnen.
+
+**Datastruktur i Firebase:**
+```
+bjerred-inpasseringar/
+  data/
+    2024/ { Restaurangen, SMS-biljetter, Medlemmar – armband }
+    2025/ { Restaurangen/badbiljetter, SMS/Swish-biljett, Medlemmar – armband, Medlemmar – Wonder }
+    2026/ { Restaurangen/badbiljetter, SMS/Swish-biljetter, Medlemmar – armband, Medlemmar – Wonder }
+  senast-uppdaterad: "2026-05-15"
+```
 
 **Kents Firebase-erfarenhet – två tekniker:**
 
-1. **Firestore** – används i "skylt"-projektet (skylt-e0c45), publik sida: https://kentlundgren.github.io/Bjerred-skylt/. SDK v10.7.0 (compat), konfigurationen i separat `firebase-config.js`. Dokumentbaserad databas.
+1. **Firestore** – "skylt"-projektet (skylt-e0c45), https://kentlundgren.github.io/Bjerred-skylt/. SDK v10.7.0 (compat). Dokumentbaserad databas, används för trivselregler/röster.
 
-2. **Realtime Database** – används i quiz-projektet https://kentlundgren.se/program/quiz/16B/. SDK v11.0.0 (ES-moduler), projekt `borgholm-registration`. JSON-träd, passar BASE_DATA-strukturen bättre för inpasseringsdata.
+2. **Realtime Database** – quiz-projektet https://kentlundgren.se/program/quiz/16B/. SDK v11.0.0 (ES-moduler). JSON-träd, passar BASE_DATA-strukturen bättre för inpasseringsdata.
 
-**Firebase-projekt att använda:** `skylt` (skylt-e0c45) – redan kopplat till Bjerreds Saltsjöbad via appen "Bjerreds-skylt". Inpasseringsdata läggs under noden `bjerred-inpasseringar/` i Realtime Database.
+**Firebase Console:** https://console.firebase.google.com/project/skylt-e0c45
 
-**Arbetsdokument:** `inpasseringar/databas.html` – levande dokument med checklista, firebaseConfig och anslutningstest.
-
-**Innan implementationen påbörjas:**
-1. Skapa ett nytt Firebase-projekt (eller återanvänd `borgholm-registration`) och lägg upp `BASE_DATA` som ett engångs-script.
-2. Bygg och testa Firebase-integrationen på en separat branch/testkopia.
-3. `localStorage`-nyckeln `bjerred_overrides` måste tömmas eller ignoreras när Firebase är aktiv källa.
+**Arbetsdokument:** `inpasseringar/databas.html` – levande dokument med checklista, firebaseConfig, Firestore vs Realtime Database-jämförelse, och migrationssskript med lösenordsruta.
