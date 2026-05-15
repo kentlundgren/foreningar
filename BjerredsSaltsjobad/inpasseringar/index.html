@@ -450,9 +450,9 @@
     <h2>Inpasseringar per kategori och månad</h2>
     <p class="subtitle">Välj år för att se hur inpasseringarna fördelar sig på kategorierna.</p>
     <div class="year-tabs" id="yearTabs">
-      <button class="year-tab active" onclick="showCategoryChart(2024, this)">2024</button>
+      <button class="year-tab"        onclick="showCategoryChart(2024, this)">2024</button>
       <button class="year-tab"        onclick="showCategoryChart(2025, this)">2025</button>
-      <button class="year-tab"        onclick="showCategoryChart(2026, this)">2026</button>
+      <button class="year-tab active" onclick="showCategoryChart(2026, this)">2026</button>
     </div>
     <div class="chart-wrapper">
       <canvas id="categoryChart"></canvas>
@@ -619,7 +619,7 @@ const BASE_DATA = {
   /* -- 2026 ---------------------------------------------------- */
   /* null = saknas (gulmarkerat i originaltabellen)                */
   2026: {
-    'Restaurangen/badbiljetter': [ 643,  665,  600, null, null, null, null, null, null, null, null, null],
+    'Restaurangen/badbiljetter': [ 643,  665,  600,  359, null, null, null, null, null, null, null, null],
     'SMS/Swish-biljetter':       [1114,  751, 1006,  913, null, null, null, null, null, null, null, null],
     'Medlemmar – armband':       [ 492,  119,   95,   90, null, null, null, null, null, null, null, null],
     'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, null, null, null, null, null, null, null, null]
@@ -854,7 +854,7 @@ function buildMainDatasets(data) {
    ================================================================ */
 
 let catChartInst      = null;   /* Referens till Chart.js-instansen */
-let activeCategoryYear = 2024;  /* Aktuellt valt år i flikarna      */
+let activeCategoryYear = 2026;  /* Aktuellt valt år i flikarna      */
 
 /**
  * Ritar eller uppdaterar kategoriuppdelningsdiagrammet.
@@ -1356,7 +1356,9 @@ Chart.register(closurePlugin);
 (function init() {
   const data = loadData();
   initMainChart(data);
-  showCategoryChart(2024, document.querySelector('.year-tab'));
+  /* Visa 2026 som default – det aktuella året */
+  const tabs = document.querySelectorAll('.year-tab');
+  showCategoryChart(2026, tabs[tabs.length - 1]);
   updateSummaryCards(data);
 })();
 </script>
