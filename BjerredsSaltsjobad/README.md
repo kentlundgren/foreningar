@@ -14,58 +14,102 @@ Webbapplikationer för Bjerreds Saltsjöbad – en badanläggning i Skåne.
 BjerredsSaltsjobad/
 ├── index.html               ← Landningssida – startpunkt för hela projektet
 ├── inpassering/             ← Digitala entrésyltar (hur man betalar & kommer in)
-│   ├── skylt.html           ← Entréskylt på svenska
-│   ├── skylt_eng.html       ← Entréskylt på engelska
+│   ├── index.html           ← Skylt-sida med foto av gamla skylten + knappar till digitala
+│   ├── skylt.html           ← Entréskylt på svenska (A4/A5-utskrift)
+│   ├── skylt_eng.html       ← Entréskylt på engelska (A4/A5-utskrift)
 │   └── gammal_skylt.jpg     ← Foto på den gamla fysiska skylten vid grinden
 └── inpasseringar/           ← Inpasseringsstatistik
-    ├── index.html           ← Webbapp med diagram och månadsvis statistik
-    └── data.html            ← Redigerbar datatabell (Excel-liknande vy)
+    ├── index.html           ← Webbapp med diagram och månadsvis statistik (Chart.js)
+    ├── data.html            ← Redigerbar datatabell kopplad till Firebase Realtime Database
+    └── databas.html         ← Arbetsdokument: Firebase-checklista, config, migrationsskript
 ```
 
 ---
 
 ## inpassering/ – Entrésyltar
 
-Digitala versioner av skylten vid grinden som visar hur besökare betalar för att komma in. Finns på svenska (`skylt.html`) och engelska (`skylt_eng.html`). Skyltarna är optimerade för mobil och kan även skrivas ut på A4.
+Digitala versioner av skylten vid grinden som visar hur besökare betalar för att komma in. Finns på svenska (`skylt.html`) och engelska (`skylt_eng.html`). Skyltarna är optimerade för mobil och kan skrivas ut på A4 eller A5.
 
 Betalmetoder som visas:
-- **Wondr-appen** – 100 kr (rekommenderas)
+- **Wondr-appen** – 100 kr (rekommenderas, öppnar dörren direkt)
 - **SMS** – 120 kr (skicka `ccasvo` till `72456`)
 - **Swish / Kort** – 120 kr (via cckod.se, terminal-ID `ASVO`)
-- **Coincode-appen** – 120 kr
+
+Wondr-priset är medvetet lägre för att uppmuntra registrering i föreningens system.
 
 ---
 
-## inpasseringar/ – Statistik
+## inpasseringar/ – Statistik och datahantering
 
 Webbapp för att visualisera och administrera inpasseringsstatistik.
 
-### Funktioner
+### index.html – Statistikdiagram
 
 - Månadsvis jämförelse av inpasseringar för åren 2024, 2025 och 2026
 - Uppdelning per kategori: Restaurangen/badbiljetter, SMS/Swish-biljetter, Medlemmar – armband, Medlemmar – Wondr
 - Interaktiva diagram byggda med Chart.js 4.4
 - Visuell markering för ombyggnadsperiod (feb–jul 2025) och ofullständig data
-- Redigeringsläge: ändra enstaka månadsdata direkt i webbläsaren (sparas i localStorage)
-- `data.html` – Excel-liknande datatabell med inline-redigering
+
+### data.html – Redigerbar tabell (Firebase-kopplad)
+
+- Excel-liknande tabellvy med inline-redigering per cell
+- Data läses från **Firebase Realtime Database** via `onValue()` – uppdateras live
+- Skrivning kräver inloggning (Firebase Authentication, e-post/lösenord)
+- Inloggningsmodal öppnas automatiskt när en icke-inloggad användare klickar på en cell
+- `BASE_DATA` (hårdkodad) används som fallback om Firebase inte kan nås
+- Grön statusdot i headern visar att Firebase-anslutning är aktiv
 
 ### Viktig datakontext
 
-- **2024**: Komplett helårsdata
+- **2024**: Komplett helårsdata (tre kategorier)
 - **2025**: Bastun stängd för ombyggnad mitten februari – mitten juli → 0-värden i mars–juni är korrekta
 - **2025**: Nytt system **Wondr** lanserades juli 2025 → ny kategori från jul 2025
 - **2026**: Armband fasades ut 1 februari 2026
-- Uppdatera data permanent i `inpasseringar/index.html` → `BASE_DATA`-objektet i `<script>`-blocket
+- **2026 april**: Restaurangen och Armband saknas (null) – väntar på indata
+
+---
+
+## Firebase-backend
+
+Inpasseringsdata lagras i **Firebase Realtime Database** (projekt: `skylt-e0c45`, region: europe-west1).
+
+```javascript
+const firebaseConfig = {
+  apiKey:            "AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8",
+  authDomain:        "skylt-e0c45.firebaseapp.com",
+  databaseURL:       "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"
+};
+```
+
+**Firebase Console:** https://console.firebase.google.com/project/skylt-e0c45
+
+**Implementationsstatus (klart 2026-05-15):**
+
+| # | Steg | Status |
+|---|---|---|
+| 1 | Firebase-projekt valt | ✅ |
+| 2 | firebaseConfig hämtad | ✅ |
+| 3 | Realtime Database aktiverad | ✅ |
+| 4 | Säkerhetsregler: read=true, write=auth!=null | ✅ |
+| 5 | Authentication aktiverad, användare skapad | ✅ |
+| 6 | BASE_DATA migrerad (11 kategorier, 0 fel) | ✅ |
+| 7 | data.html omskriven med Firebase-integration | ✅ |
+| 8 | Testat på GitHub Pages – fungerar fullt ut | ✅ |
+
+**Authorized domains (Firebase Authentication):**
+- `localhost` – lokal testning
+- `kentlundgren.github.io` – GitHub Pages (tillagd 2026-05-15)
 
 ---
 
 ## Teknisk information
 
 - **Teknik:** Ren HTML/CSS/JavaScript (ingen byggprocess krävs)
-- **Bibliotek:** Chart.js 4.4 (laddas från Cloudflare CDN)
-- **Datalagring:** localStorage i webbläsaren
+- **Bibliotek:** Chart.js 4.4 (Cloudflare CDN), Firebase JS SDK v11.0.0 (Google CDN)
+- **Datalagring:** Firebase Realtime Database (primär) + `BASE_DATA` hårdkodad fallback
 - **Publicering:** GitHub Pages
+- **Parallell utvecklingsmiljö:** Claude Cowork (AI-assisterat innehållsarbete) + Cursor (kodredigering, Git)
 
 ---
 
-## Senast uppdaterad: 2026-05-14
+## Senast uppdaterad: 2026-05-15
