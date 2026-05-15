@@ -20,9 +20,10 @@ BjerredsSaltsjobad/
 │   ├── skylt.html         ← digital entréskylt, svenska (A4/A5-utskrift)
 │   ├── skylt_eng.html     ← digital entréskylt, engelska (A4/A5-utskrift)
 │   └── gammal_skylt.jpg   ← foto på den gamla fysiska skylten
-└── inpasseringar/         ← inpasseringsstatistik (orörd)
+└── inpasseringar/         ← inpasseringsstatistik
     ├── index.html         ← statistik med diagram (Chart.js)
-    └── data.html          ← redigerbar datatabell
+    ├── data.html          ← redigerbar datatabell (Firebase-kopplad, steg 7 klart)
+    └── databas.html       ← Firebase-arbetsdokument: checklista, config, migrationsskript
 ```
 
 ## Parallell utvecklingsmiljö
@@ -119,8 +120,8 @@ Inpasseringsdata kopplas till **Firebase Realtime Database** så att auktorisera
 | 4 | Säkerhetsregler: read=true, write=auth!=null | ✅ |
 | 5 | Authentication aktiverad, användare skapad | ✅ |
 | 6 | BASE_DATA migrerad (11 kategorier, 0 fel) | ✅ |
-| 7 | Koda om data.html att läsa/skriva mot Firebase | ⏳ |
-| 8 | Testa på separat branch, publicera på GitHub Pages | ◻️ |
+| 7 | Koda om data.html att läsa/skriva mot Firebase | ✅ |
+| 8 | Testa på separat branch, publicera på GitHub Pages | ⏳ |
 
 **Firebase-konfiguration:**
 ```javascript
@@ -162,3 +163,25 @@ bjerred-inpasseringar/
 **Firebase Console:** https://console.firebase.google.com/project/skylt-e0c45
 
 **Arbetsdokument:** `inpasseringar/databas.html` – levande dokument med checklista, firebaseConfig, Firestore vs Realtime Database-jämförelse, och migrationssskript med lösenordsruta.
+
+## Vad som gjordes i Steg 7 – data.html omskriven för Firebase
+
+Hela JavaScript-blocket i `inpasseringar/data.html` skrevs om till `<script type="module">` för att kunna importera Firebase SDK direkt från Googles CDN utan byggprocess.
+
+**Läsning – onValue() ersätter localStorage:**
+Tidigare läste sidan data från `localStorage` (webbläsarens lokala lagring – bara synlig på den egna datorn). Nu använder sidan `onValue()` från Firebase SDK, som prenumererar på noden `bjerred-inpasseringar/data` i Realtime Database. Det innebär att tabellen uppdateras automatiskt i realtid varje gång någon annan sparar ett värde – utan att man behöver ladda om sidan.
+
+**Skrivning – set() ersätter localStorage.setItem():**
+När en cell redigeras skrivs det nya värdet till Firebase med `set()`. Ändringen syns direkt för alla som har sidan öppen.
+
+**BASE_DATA som fallback:**
+`BASE_DATA` (den hårdkodade grunddatan) finns kvar i koden och renderas direkt vid sidladdning medan Firebase-anslutningen upprättas. Om Firebase av någon anledning inte kan nås faller sidan automatiskt tillbaka på BASE_DATA. Ingen data kan gå förlorad.
+
+**Snedstreck i kategorinamn – ett tekniskt specialfall:**
+Under migrationen (Steg 6) skrevs kategorier som `"Restaurangen/badbiljetter"` till Firebase med snedstrecket som sökvägsavgränsare, vilket skapade nästlade noder (`Restaurangen → badbiljetter`) i stället för ett platt nyckelnamn. Den nya funktionen `tolkFirebaseSnapshot()` hanterar detta korrekt: den delar upp kategorinamnet på snedstreck och traverserar Firebase-trädet steg för steg.
+
+**Inloggningsmodal – visas automatiskt vid redigering:**
+Sidan har ett inbyggt inloggningsformulär (e-post förifyllt, bara lösenord behövs) som poppar upp automatiskt när en icke-inloggad användare klickar på en cell. Efter lyckad inloggning öppnas den cell som triggade inloggningen direkt. En inloggad användare visas med grön bock och e-postadress i sidhuvudet.
+
+**CSP-meta för GitHub Pages:**
+En `Content-Security-Policy`-metatag lades till så att webbläsaren tillåter Firebase WebSocket-anslutningar (`wss://*.firebasedatabase.app`) även när sidan körs från GitHub Pages statiska hosting.
