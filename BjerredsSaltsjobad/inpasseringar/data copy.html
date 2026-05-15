@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inpasseringsdata – Bjerreds Saltsjöbad</title>
+
+  <!--
+    ================================================================
+    data.html – Tabellvy för inpasseringsstatistik
+    Bjerreds Saltsjöbad
+
+    Funktioner:
+    - Excel-liknande tabell per år med alla kategorier och månader
+    - Gult = data saknas (null), Ljusgrå = bekräftat noll (stängd)
+    - Klicka på valfri cell för att redigera värdet inline
+    - Inloggning (Firebase Auth) krävs för att spara ändringar
+    - Data läses från Firebase Realtime Database (onValue-lyssnare)
+    - Skrivning sker till Firebase (set), BASE_DATA är alltid fallback
+    - Tab/Enter navigerar till nästa cell
+    - Knapp för att gå tillbaka till index.html
+
+    Firebase-projekt: skylt (skylt-e0c45)
+    Databas-nod:      bjerred-inpasseringar/data/
+    SDK:              Firebase JS SDK v11.0.0 (ES-moduler via CDN)
+
+    OBS – kategorinamn med snedstreck:
+    Kategorier som "Restaurangen/badbiljetter" lagras med snedstrecket
+    som sökvägsavgränsare i Firebase (Restaurangen > badbiljetter).
+    tolkFirebaseSnapshot() hanterar detta korrekt.
+    ================================================================
+  -->
+
+  <!--
+    ================================================================
+    CONTENT SECURITY POLICY – tillåter Firebase-anslutningar
+    (WebSocket + HTTPS) från GitHub Pages
+    ================================================================
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          script-src  'self' 'unsafe-inline' https://www.gstatic.com;
+          connect-src 'self'
+                      https://*.firebasedatabase.app
+                      wss://*.firebasedatabase.app
+                      https://*.googleapis.com
+                      https://identitytoolkit.googleapis.com
+                      https://securetoken.googleapis.com;
+          style-src   'self' 'unsafe-inline';
+        " />
+
+  <style>
+    /* ============================================================
+       DESIGNVARIABLER – matchar index.html
+       ============================================================ */
+    :root {
+      --primary:    #1a5276;
+      --secondary:  #2e86c1;
+      --accent:     #e67e22;
+      --bg:         #f4f6f9;
+      --card:       #ffffff;
+      --text:       #2c3e50;
+      --muted:      #7f8c8d;
+      --border:     #dde1e7;
+
+      /* Cellfärger */
+      --cell-null:     #fef08a;   /* Gul  – data saknas   */
+      --cell-null-txt: #a0860a;   /* Mörkgul text i null-cell */
+      --cell-zero:     #e8ecf0;   /* Grå  – bekräftat noll */
+      --cell-tot-bg:   #d6eaf8;   /* Blå  – totalkolumn   */
+      --row-tot-bg:    #ebf5fb;   /* Blå  – totalrad      */
+      --row-tot-part:  #fef3cd;   /* Gul  – ofullständig totalrad */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       SIDHUVUD (klistrat överst vid scroll)
+       ============================================================ */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 { font-size: 1.3rem; font-weight: 700; }
+    header p  { font-size: 0.8rem; opacity: 0.75; margin-top: 0.1rem; }
+
+    /* Tillbaka-knapp */
+    .btn-back {
+      background: rgba(255,255,255,0.13);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: background 0.18s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.25); }
+
+    /* ============================================================
+       INLOGGNINGSSTATUS I HEADERN
+       Visas till höger om navigationsknapparna.
+       ============================================================ */
+    #auth-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      opacity: 0.85;
+      flex-shrink: 0;
+    }
+    #auth-status button {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 5px;
+      padding: 0.3rem 0.75rem;
+      cursor: pointer;
+      font-size: 0.76rem;
+      transition: background 0.18s;
+    }
+    #auth-status button:hover { background: rgba(255,255,255,0.28); }
+
+    /* Liten Firebase-statusindikator */
+    #fb-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #aaa;   /* Grå = laddar */
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    #fb-status-dot.ok  { background: #2ecc71; } /* Grön = uppkopplad */
+    #fb-status-dot.err { background: #e74c3c; } /* Röd  = ej nådd    */
+
+    /* ============================================================
+       FÄRGFÖRKLARING
+       ============================================================ */
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      padding: 0.75rem 2rem;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.81rem;
+      flex-wrap: wrap;
+      color: var(--text);
+    }
+    .legend strong { color: var(--primary); }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .legend-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.12);
+      flex-shrink: 0;
+    }
+    /* Specifika swatchfärger – ersätter inline-stilar */
+    .swatch-normal  { background: #fff; }
+    .swatch-null    { background: #fef08a; border-color: #c9a800; }
+    .swatch-zero    { background: #e8ecf0; }
+    .swatch-total   { background: #d6eaf8; }
+    .swatch-partial { background: #fef3cd; border-color: #e6b800; }
+
+    /* ============================================================
+       HUVUDINNEHÅLL
+       ============================================================ */
+    main {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* ============================================================
+       ÅRSSEKTION
+       ============================================================ */
+    .year-section {
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+
+    .year-header {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.75rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .year-header h2  { font-size: 1.05rem; font-weight: 700; }
+    .year-header .yr-total { font-size: 0.85rem; opacity: 0.82; }
+
+    /* Scroll-wrapper så tabellen inte spränger layouten */
+    .table-wrap { overflow-x: auto; }
+
+    /* ============================================================
+       TABELL
+       ============================================================ */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 750px;
+      font-size: 0.84rem;
+    }
+
+    /* Kolumnrubriker */
+    thead th {
+      background: var(--cell-tot-bg);
+      color: var(--primary);
+      font-weight: 600;
+      text-align: center;
+      padding: 0.5rem 0.4rem;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      -webkit-user-select: none; /* Safari 3+ / iOS 3+ */
+      user-select: none;         /* Standard – W3C-specifikationen */
+    }
+    thead th:first-child {
+      text-align: left;
+      padding-left: 0.9rem;
+      min-width: 190px;
+    }
+    thead th.col-tot {
+      background: #aed6f1;
+    }
+
+    /* Datarader */
+    tbody tr:hover { background: #f0f7fd; }
+
+    tbody td {
+      border: 1px solid var(--border);
+      padding: 0.42rem 0.55rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    /* Kategorinamn – vänsterkolumnen */
+    tbody td:first-child {
+      text-align: left;
+      padding-left: 0.9rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      background: #f8f9fa !important;
+      color: var(--text);
+      cursor: default;
+    }
+
+    /* Normal datafält – redigerbar */
+    td.cell-data {
+      cursor: pointer;
+    }
+    td.cell-data:hover {
+      background: #e8f4fb;
+      outline: 1px solid var(--secondary);
+      outline-offset: -1px;
+    }
+
+    /* Saknas (null) */
+    td.cell-null {
+      background: var(--cell-null);
+      cursor: pointer;
+      color: var(--cell-null-txt);
+      font-style: italic;
+      text-align: center;
+    }
+    td.cell-null:hover {
+      background: #fce97a;
+      outline: 1px solid #c9a800;
+      outline-offset: -1px;
+    }
+
+    /* Bekräftat noll (t.ex. bastun stängd) */
+    td.cell-zero {
+      background: var(--cell-zero);
+      color: var(--muted);
+      cursor: pointer;
+    }
+    td.cell-zero:hover {
+      background: #d8e4ee;
+      outline: 1px solid var(--secondary);
+      outline-offset: -1px;
+    }
+
+    /* Totalkolumn (TOT år) */
+    td.cell-row-tot {
+      background: var(--cell-tot-bg);
+      font-weight: 700;
+      color: var(--primary);
+      cursor: default;
+    }
+
+    /* Totalrad (TOTALT per månad) */
+    tfoot td {
+      background: var(--row-tot-bg);
+      font-weight: 700;
+      border: 1px solid var(--border);
+      text-align: right;
+      padding: 0.48rem 0.55rem;
+      color: var(--primary);
+    }
+    tfoot td:first-child {
+      text-align: left;
+      padding-left: 0.9rem;
+    }
+
+    /* Ofullständig kolumntotal (saknar data i någon kategori) */
+    td.cell-col-tot-partial {
+      background: var(--row-tot-part);
+      color: #7d4e00;
+    }
+
+    /* ============================================================
+       REDIGERINGS-OVERLAY
+       Placeras exakt ovanpå den klickade cellen.
+       ============================================================ */
+    #edit-overlay {
+      position: absolute;   /* Absolut mot document */
+      z-index: 500;
+      background: #fff;
+      border: 2px solid var(--secondary);
+      border-radius: 4px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+      display: none;
+    }
+    #edit-input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.88rem;
+      font-family: inherit;
+      text-align: right;
+      background: transparent;
+      color: var(--text);
+    }
+
+    /* ============================================================
+       REDIGERINGSHINT (under varje tabell)
+       ============================================================ */
+    .edit-hint {
+      font-size: 0.77rem;
+      color: var(--muted);
+      text-align: right;
+      padding: 0.4rem 0.9rem;
+      border-top: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    /* ============================================================
+       TOAST
+       ============================================================ */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2c3e50;
+      color: #fff;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.87rem;
+      z-index: 1000;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    #toast.visible { opacity: 1; }
+
+    /* ============================================================
+       INFORMATIONSPANEL – dataflöde och arbetsätt
+       ============================================================ */
+    .info-panel {
+      background: #eaf4fb;
+      border-left: 4px solid #2e86c1;
+      border-radius: 0 8px 8px 0;
+      padding: 0 1.2rem;
+      margin: 1rem 1.5rem 0;
+      max-width: 1160px;
+      margin-left: auto;
+      margin-right: auto;
+      overflow: hidden;
+    }
+
+    /* Klickbar rubrikrad som togglar panelen */
+    .info-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      cursor: pointer;
+      -webkit-user-select: none;  /* Safari / iOS – måste komma före standardegenskapen */
+      user-select: none;          /* Standard – W3C-specifikationen */
+      gap: 0.5rem;
+    }
+    .info-panel-header h3 {
+      font-size: 0.9rem;
+      color: #1a5276;
+      font-weight: 600;
+    }
+    .info-chevron {
+      font-size: 0.75rem;
+      color: #2e86c1;
+      transition: transform 0.2s;
+    }
+    .info-panel.open .info-chevron { transform: rotate(180deg); }
+
+    /* Innehållet – dolt tills panelen öppnas */
+    .info-body {
+      display: none;
+      padding-bottom: 1rem;
+      font-size: 0.84rem;
+      color: #2c3e50;
+      line-height: 1.65;
+    }
+    .info-panel.open .info-body { display: block; }
+
+    .info-body h4 {
+      font-size: 0.83rem;
+      color: #1a5276;
+      margin: 0.9rem 0 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .info-body p  { margin-bottom: 0.5rem; }
+    .info-body code {
+      background: #d6eaf8;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-size: 0.82rem;
+      font-family: 'Consolas', monospace;
+    }
+    .info-body ol {
+      padding-left: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .info-body li { margin-bottom: 0.25rem; }
+    .info-body .warn {
+      background: #fef3cd;
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      margin-top: 0.6rem;
+      font-size: 0.82rem;
+      color: #7d4e00;
+    }
+
+    /* ============================================================
+       INLOGGNINGSMODAL
+       Visas när en icke-inloggad användare försöker redigera en cell.
+       ============================================================ */
+    #login-modal-bg {
+      /* Halvtransparent bakgrundsslöja som täcker hela sidan */
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 800;
+      display: none;          /* Dolt som standard */
+      align-items: center;
+      justify-content: center;
+    }
+    #login-modal-bg.visible { display: flex; }
+
+    #login-modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      width: min(380px, 90vw);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+    }
+    #login-modal h2 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 0.35rem;
+    }
+    #login-modal p.modal-ingress {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    /* Formulärfält i modalen */
+    .modal-field {
+      margin-bottom: 0.9rem;
+    }
+    .modal-field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .modal-field input {
+      width: 100%;
+      padding: 0.55rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      transition: border-color 0.18s;
+    }
+    .modal-field input:focus {
+      outline: none;
+      border-color: var(--secondary);
+    }
+
+    /* Felmeddelande i modalen */
+    #login-error {
+      font-size: 0.8rem;
+      color: #c0392b;
+      min-height: 1.2em;
+      margin-bottom: 0.7rem;
+    }
+
+    /* Knapprad i modalen */
+    .modal-btns {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: flex-end;
+    }
+    .modal-btns button {
+      padding: 0.55rem 1.2rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-family: inherit;
+      transition: background 0.18s;
+    }
+    #login-submit {
+      background: var(--secondary);
+      color: #fff;
+      font-weight: 600;
+    }
+    #login-submit:hover { background: var(--primary); }
+    #login-submit:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+    }
+    #login-cancel {
+      background: #eee;
+      color: var(--text);
+    }
+    #login-cancel:hover { background: #ddd; }
+
+    /* ============================================================
+       RESPONSIVT
+       ============================================================ */
+    @media (max-width: 700px) {
+      header  { flex-direction: column; align-items: flex-start; }
+      main    { padding: 0.8rem; }
+      .legend { padding: 0.6rem 1rem; gap: 0.8rem; }
+      .info-panel { margin: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SIDHUVUD
+     ============================================================ -->
+<header>
+  <div>
+    <h1>🌊 Bjerreds Saltsjöbad</h1>
+    <p>Inpasseringsdata – tabellvy</p>
+  </div>
+
+  <!-- Navigeringsknappar: tillbaka till grafsidan och till startsidan -->
+  <div style="display:flex;gap:0.5rem;flex-shrink:0;flex-wrap:wrap;align-items:center;">
+    <a class="btn-back" href="../">🏠 Startsidan</a>
+    <a class="btn-back" href="index.html">← Statistik</a>
+    <!--
+      Diskret länk till Firebase-arbetsdokumentet (databas.html).
+      Länken är avsiktligt lite mer dämpad (lägre opacity) för
+      att inte dominera navigationen – den är för den nyfikne.
+    -->
+    <a class="btn-back"
+       href="databas.html"
+       title="Se hur Firebase-kopplingen byggs upp – arbetsdokument"
+       style="opacity:0.6;font-size:0.78rem;padding:0.4rem 0.85rem;">
+      🔥 Firebase-plan
+    </a>
+  </div>
+
+  <!--
+    Firebase-status och inloggning.
+    Uppdateras dynamiskt av JavaScript baserat på auth- och
+    databas-tillståndet.
+  -->
+  <div id="auth-status">
+    <!-- Grön/röd prick som visar om Firebase är nådd -->
+    <span id="fb-status-dot" title="Firebase-status"></span>
+    <!-- Text och knapp uppdateras av uppdateraInloggningsstatus() -->
+    <span id="auth-label">Ansluter…</span>
+    <button id="auth-btn" style="display:none;" onclick="hanteraAuthKnapp()">
+      Logga in
+    </button>
+  </div>
+</header>
+
+<!-- ============================================================
+     INFORMATIONSPANEL – förklarar hur datauppdatering fungerar
+     Öppnas/stängs med klick på rubriken.
+     ============================================================ -->
+<div class="info-panel" id="infoPanel">
+  <div class="info-panel-header" onclick="toggleInfo()" role="button" aria-expanded="false">
+    <h3>ℹ️ Hur fungerar det – vem kan ändra vad?</h3>
+    <span class="info-chevron">▼</span>
+  </div>
+  <div class="info-body">
+
+    <h4>Data lagras i molnet (Firebase)</h4>
+    <p>
+      Den här sidan läser data från <strong>Firebase Realtime Database</strong> – ett moln­baserat system.
+      Det innebär att alla som öppnar sidan ser <em>samma</em> siffror, oavsett dator eller webbläsare.
+      Uppdateringar syns direkt för alla.
+    </p>
+
+    <h4>Vem kan skriva in siffror?</h4>
+    <p>
+      För att <strong>redigera</strong> ett värde behöver du logga in med
+      ditt föreningskonto (e-post och lösenord). Klicka på valfri cell – om
+      du inte är inloggad visas ett inloggnings­formulär automatiskt.
+    </p>
+    <p>
+      <strong>Alla</strong> kan läsa och se statistiken utan att logga in.
+      Det är bara skrivning som kräver behörighet.
+    </p>
+
+    <h4>Hur skickar en vän in sina siffror?</h4>
+    <p>
+      Om en föreningsmedlem inte har inloggnings­uppgifter skickar de siffrorna
+      till <strong>Kent</strong> via mail eller SMS, som loggar in och lägger in dem.
+    </p>
+
+    <h4>Hur tar jag bort ett felaktigt värde och gör cellen gul igen?</h4>
+    <p>
+      Logga in → klicka på cellen → radera siffran i rutan →
+      tryck <strong>Enter</strong>. Cellen blir gul igen (data saknas) och
+      ändringen sparas i Firebase.
+    </p>
+
+    <h4>Vad händer om Firebase inte kan nås?</h4>
+    <p>
+      Sidan faller automatiskt tillbaka på <code>BASE_DATA</code> – den grunddata som
+      är hårdkodad i filen. Inga siffror kan gå förlorade.
+    </p>
+
+    <div class="warn">
+      🔒 <strong>Redigering kräver inloggning.</strong> Dina ändringar sparas direkt
+      i Firebase och syns för alla besökare.
+    </div>
+
+  </div>
+</div>
+
+<!-- Färgförklaring -->
+<div class="legend">
+  <strong>Färgförklaring:</strong>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-normal"></div>
+    <span>Inpasserad data – logga in för att redigera</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-null"></div>
+    <span>Saknas – logga in för att fylla i</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-zero"></div>
+    <span>Bekräftat noll (t.ex. bastun stängd)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-total"></div>
+    <span>Totalt</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-partial"></div>
+    <span>⚠ Ofullständig kolumntotal</span>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<!-- Redigerings-overlay – positioneras dynamiskt av JavaScript -->
+<div id="edit-overlay">
+  <input type="number" id="edit-input" min="0" step="1" />
+</div>
+
+<!-- Toast-notifiering -->
+<div id="toast"></div>
+
+<!-- ============================================================
+     INLOGGNINGSMODAL
+     Visas när en icke-inloggad användare klickar på en cell.
+     ============================================================ -->
+<div id="login-modal-bg">
+  <div id="login-modal">
+    <h2>🔑 Logga in</h2>
+    <p class="modal-ingress">
+      Du behöver vara inloggad för att kunna redigera data.
+    </p>
+
+    <!-- E-postfält – förifyllt och skrivskyddat (bara ett konto används) -->
+    <div class="modal-field">
+      <label for="login-email">E-postadress</label>
+      <input type="email"
+             id="login-email"
+             value="lundgren.kent@gmail.com"
+             readonly
+             style="background:#f4f6f9;color:var(--muted);" />
+    </div>
+
+    <!-- Lösenordsfält -->
+    <div class="modal-field">
+      <label for="login-pwd">Lösenord</label>
+      <input type="password"
+             id="login-pwd"
+             placeholder="Ange ditt lösenord…"
+             autocomplete="current-password" />
+    </div>
+
+    <!-- Felmeddelande (tomt som standard) -->
+    <div id="login-error"></div>
+
+    <!-- Knappar -->
+    <div class="modal-btns">
+      <button id="login-cancel" onclick="stängLoginModal()">Avbryt</button>
+      <button id="login-submit" onclick="utförLogin()">Logga in</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     JAVASCRIPT – Firebase-integration och tabellrendering
+     Använder ES-moduler (type="module") för att kunna importera
+     Firebase SDK direkt från Google CDN utan byggprocess.
+     ============================================================ -->
+<script type="module">
+
+  /* ================================================================
+     FIREBASE SDK – importera funktioner vi behöver
+
+     firebase-app.js   – initieringsfunktioner (initializeApp, getApps)
+     firebase-database – Realtime Database (ref, onValue, set)
+     firebase-auth     – autentisering (signIn, signOut, onAuthStateChanged)
+     ================================================================ */
+  import { initializeApp, getApps }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+
+  import { getDatabase, ref, onValue, set }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js';
+
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+
+
+  /* ================================================================
+     FIREBASE-KONFIGURATION
+     Projekt: skylt (skylt-e0c45) – delar projekt med Bjerred-skylt.
+     Inpasseringsdata lagras under noden "bjerred-inpasseringar/" i
+     Realtime Database (separerat från Firestore-data i samma projekt).
+     ================================================================ */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8",
+    authDomain:        "skylt-e0c45.firebaseapp.com",
+    projectId:         "skylt-e0c45",
+    storageBucket:     "skylt-e0c45.firebasestorage.app",
+    messagingSenderId: "653653642598",
+    appId:             "1:653653642598:web:29e332c87fed1cd9f34ca7",
+    databaseURL:       "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"
+  };
+
+  /* ================================================================
+     FIREBASE-INITIERING
+     Kontrollera om Firebase redan initierats (t.ex. av databas.html
+     om de öppnats i samma flik) – undvik dubbel-initiering.
+     ================================================================ */
+  const app  = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+  const db   = getDatabase(app);
+  const auth = getAuth(app);
+
+
+  /* ================================================================
+     INPASSERINGSDATA – BASE_DATA
+     OBS: Identisk med BASE_DATA i index.html.
+          Uppdatera BÅDA filerna om basdata ändras permanent.
+
+     Månadsindex: 0=Jan … 11=Dec
+     null  = data saknas
+     0     = bekräftat noll (t.ex. stängd)
+     tal   = faktisk inpassering
+     ================================================================ */
+  const BASE_DATA = {
+
+    /* ---- 2024 -------------------------------------------------- */
+    2024: {
+      'Restaurangen':         [754, 696, 772, 656, 841,  654, 696, 678, 725, 607, 795, 620],
+      'SMS-biljetter':        [557, 458, 484, 331, 265,  184, 143, 197, 240, 484, 593, 827],
+      'Medlemmar – armband': [2949,2788,3096,2251,3388, 3130,3581,3362,4210,3146,3299,3255]
+    },
+
+    /* ---- 2025 -------------------------------------------------- */
+    /* 0-värden mars–juli = ombyggnad av bastun                     */
+    2025: {
+      'Restaurangen/badbiljetter': [ 737, 764,   0,   0,   0,   0,  344,  891,  991,  667,  794,  621],
+      'SMS/Swish-biljett':         [ 801, 619,   0,   0,   0,   0,    4,  140,  285,  726, 1052, 1373],
+      'Medlemmar – armband':       [3231,2555,   0,   0,   0,   0, 1524, 2134, 2339, 1552, 1400, 1000],
+      'Medlemmar – Wonder':        [   0,   0,   0,   0,   0,   0,  120, 1359, 1729, 1993, 2443, 2513]
+    },
+
+    /* ---- 2026 -------------------------------------------------- */
+    /* null = saknas (gulmarkerat i ursprungstabellen)              */
+    2026: {
+      'Restaurangen/badbiljetter': [ 643,  665,  600, null, null, null, null, null, null, null, null, null],
+      'SMS/Swish-biljetter':       [1114,  751, 1006,  913, null, null, null, null, null, null, null, null],
+      'Medlemmar – armband':       [ 492,  119,   95,   90, null, null, null, null, null, null, null, null],
+      'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, null, null, null, null, null, null, null, null]
+    }
+  };
+
+  /* Månadsnamn */
+  const MONTHS      = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
+  const MONTHS_FULL = ['Januari','Februari','Mars','April','Maj','Juni',
+                       'Juli','Augusti','September','Oktober','November','December'];
+
+
+  /* ================================================================
+     GLOBALT TILLSTÅND
+
+     firebaseData  – Data från Firebase (null = ej laddat ännu).
+                     Sätts av onValue-lyssnaren nedan.
+     currentUser   – Inloggad Firebase-användare (null = ej inloggad).
+                     Sätts av onAuthStateChanged-lyssnaren.
+     väntandeCelll – Om användaren klickade på en cell INNAN inloggning
+                     sparas cellen här och redigeras efter inloggning.
+     ================================================================ */
+  let firebaseData   = null;
+  let currentUser    = null;
+  let väntandeCell   = null;
+
+
+  /* ================================================================
+     FIREBASE AUTH-LYSSNARE
+     Körs direkt vid sidan laddas och sedan vid varje ändring av
+     inloggningsstatus (login/logout).
+     ================================================================ */
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    uppdateraInloggningsstatus(user);
+  });
+
+
+  /* ================================================================
+     FIREBASE REALTIME DATABASE – DATALYSSNARE
+     onValue() prenumererar på ändringar under noden
+     'bjerred-inpasseringar/data'. Varje gång data ändras i Firebase
+     (t.ex. av en annan användare) anropas callback-funktionen
+     automatiskt och tabellen renderas om.
+     ================================================================ */
+  onValue(
+    ref(db, 'bjerred-inpasseringar/data'),
+
+    /* Succé-callback – data hämtad från Firebase */
+    (snapshot) => {
+      /* Tolka Firebase-snapshot till samma format som BASE_DATA */
+      firebaseData = tolkFirebaseSnapshot(snapshot);
+
+      /* Visa grön prick – vi har kontakt med Firebase */
+      const dot = document.getElementById('fb-status-dot');
+      if (dot) { dot.className = 'ok'; dot.title = 'Firebase uppkopplad'; }
+
+      /* Rendera tabellerna med den nya datan */
+      renderAll();
+    },
+
+    /* Fel-callback – Firebase ej nådd */
+    (error) => {
+      console.warn('⚠️ Firebase-fel – faller tillbaka på BASE_DATA:', error.message);
+      firebaseData = null;
+
+      /* Visa röd prick */
+      const dot = document.getElementById('fb-status-dot');
+      if (dot) { dot.className = 'err'; dot.title = 'Firebase ej nådd – visar grunddata'; }
+
+      /* Rendera ändå med BASE_DATA som fallback */
+      renderAll();
+    }
+  );
+
+
+  /* ================================================================
+     tolkFirebaseSnapshot()
+     Konverterar ett Firebase DatabaseSnapshot till samma format
+     som BASE_DATA: { år: { kategori: [12 värden] } }
+
+     OBS – SNEDSTRECK I KATEGORINAMN:
+     Kategorier som "Restaurangen/badbiljetter" lagrades under
+     migrationen som nästlad sökväg i Firebase, dvs:
+       bjerred-inpasseringar/data/2025/Restaurangen/badbiljetter/
+     Inte som ett platt nyckelnamn med snedstreck.
+
+     Lösning: vi använder BASE_DATA som mall och traverserar
+     Firebase-snapshotets JSON-träd längs de delar som snedstrecket
+     i kategorinamnet delar upp det i.
+     ================================================================ */
+  function tolkFirebaseSnapshot(snapshot) {
+    /* Finns det överhuvudtaget data i Firebase? */
+    if (!snapshot.exists()) return null;
+
+    const råData  = snapshot.val(); /* JavaScript-objekt från Firebase */
+    const resultat = {};
+
+    /* Iterera varje år som finns i BASE_DATA */
+    for (const [år, kategorier] of Object.entries(BASE_DATA)) {
+      const yearStr = String(år);
+
+      /* Hoppa över om detta år saknas i Firebase */
+      if (!råData[yearStr]) continue;
+
+      resultat[yearStr] = {};
+
+      /* Iterera varje kategori för detta år */
+      for (const kategoriNamn of Object.keys(kategorier)) {
+
+        /* Dela upp kategorinamnet på snedstreck – t.ex.
+           "Restaurangen/badbiljetter" → ["Restaurangen", "badbiljetter"]
+           "Medlemmar – armband"       → ["Medlemmar – armband"]  */
+        const delar = kategoriNamn.split('/');
+
+        /* Traversera Firebase-JSON-trädet steg för steg */
+        let nod    = råData[yearStr];
+        let hittad = true;
+
+        for (const del of delar) {
+          if (nod && typeof nod === 'object' && del in nod) {
+            /* Gå ett steg ned i trädet */
+            nod = nod[del];
+          } else {
+            /* Del saknas i Firebase – kategorin finns ej */
+            hittad = false;
+            break;
+          }
+        }
+
+        /* Om vi hittade kategorins data: konvertera till array */
+        if (hittad && nod && typeof nod === 'object') {
+          const månader = [];
+
+          for (let m = 0; m < 12; m++) {
+            const val = nod[m];
+
+            if (val === undefined || val === null || val === 'null') {
+              /* Saknas – null i vår representation */
+              månader.push(null);
+            } else {
+              /* Tal (kan vara strängen "0" – konvertera till Number) */
+              månader.push(Number(val));
+            }
+          }
+
+          resultat[yearStr][kategoriNamn] = månader;
+        }
+      }
+
+      /* Ta bort tomma år-poster */
+      if (Object.keys(resultat[yearStr]).length === 0) {
+        delete resultat[yearStr];
+      }
+    }
+
+    return Object.keys(resultat).length > 0 ? resultat : null;
+  }
+
+
+  /* ================================================================
+     loadData()
+     Slår samman BASE_DATA med data från Firebase.
+     Firebase-data har företräde om båda finns.
+     Om Firebase är otillgänglig används BASE_DATA som fallback.
+     ================================================================ */
+  function loadData() {
+    /* Djup kopia av BASE_DATA – vi vill inte ändra originalet */
+    const data = JSON.parse(JSON.stringify(BASE_DATA));
+
+    /* Om Firebase-data saknas → returnera bara BASE_DATA */
+    if (!firebaseData) return data;
+
+    /* Slå samman Firebase-data ovanpå BASE_DATA */
+    for (const [yearStr, kategorier] of Object.entries(firebaseData)) {
+      const year = parseInt(yearStr, 10);
+
+      /* Skapa år-noden om den inte finns (t.ex. framtida år) */
+      if (!data[year]) data[year] = {};
+
+      for (const [kategori, månader] of Object.entries(kategorier)) {
+        /* Firebase-data skriver över BASE_DATA för denna kategori */
+        data[year][kategori] = månader;
+      }
+    }
+
+    return data;
+  }
+
+
+  /* ================================================================
+     saveValue()
+     Skriver ett enskilt månadssvärde till Firebase.
+     Sökvägen speglar kategorinamnet:
+       "Restaurangen/badbiljetter" → Firebase-sökväg
+       bjerred-inpasseringar/data/2025/Restaurangen/badbiljetter/3
+     ================================================================ */
+  async function saveValue(year, category, monthIndex, value) {
+    /* Bygg Firebase-sökvägen – snedstreck i kategorinamnet ger naturlig nesting */
+    const sökväg = `bjerred-inpasseringar/data/${year}/${category}/${monthIndex}`;
+
+    /* Skriv värdet – Firebase set() ersätter det befintliga värdet */
+    await set(ref(db, sökväg), value);
+
+    /* Uppdatera tidsstämpel-noden */
+    await set(
+      ref(db, 'bjerred-inpasseringar/senast-uppdaterad'),
+      new Date().toLocaleDateString('sv-SE')
+    );
+  }
+
+
+  /* ================================================================
+     clearValue()
+     Markerar en cell som "saknas" (null) i Firebase.
+     Firebase Realtime Database lagrar inte null direkt – vi
+     använder strängen 'null' som konvention (tolkFirebaseSnapshot
+     konverterar tillbaka till JavaScript null).
+     ================================================================ */
+  async function clearValue(year, category, monthIndex) {
+    const sökväg = `bjerred-inpasseringar/data/${year}/${category}/${monthIndex}`;
+    await set(ref(db, sökväg), 'null');
+    await set(
+      ref(db, 'bjerred-inpasseringar/senast-uppdaterad'),
+      new Date().toLocaleDateString('sv-SE')
+    );
+  }
+
+
+  /* ================================================================
+     uppdateraInloggningsstatus()
+     Uppdaterar auth-status-rutan i headern baserat på om
+     användaren är inloggad eller inte.
+     ================================================================ */
+  function uppdateraInloggningsstatus(user) {
+    const label = document.getElementById('auth-label');
+    const btn   = document.getElementById('auth-btn');
+    if (!label || !btn) return;
+
+    if (user) {
+      /* Inloggad – visa e-postadress och Logga ut-knapp */
+      label.textContent = `✅ ${user.email}`;
+      btn.textContent   = 'Logga ut';
+      btn.style.display = 'inline-block';
+    } else {
+      /* Ej inloggad – dolt (login triggas via cell-klick) */
+      label.textContent = 'Ej inloggad';
+      btn.textContent   = 'Logga in';
+      btn.style.display = 'inline-block';
+    }
+  }
+
+
+  /* ================================================================
+     hanteraAuthKnapp()
+     Anropas när användaren klickar på knappen i headern.
+     Loggar ut om inloggad, öppnar modal om ej inloggad.
+     Exponeras globalt (window) eftersom onclick-attributet i HTML
+     inte kan referera till modulscope-funktioner direkt.
+     ================================================================ */
+  window.hanteraAuthKnapp = async function() {
+    if (currentUser) {
+      /* Logga ut */
+      await signOut(auth);
+      showToast('👋 Utloggad');
+    } else {
+      /* Öppna inloggningsmodal */
+      öppnaLoginModal(null);
+    }
+  };
+
+
+  /* ================================================================
+     INLOGGNINGSMODAL – öppna/stäng/logga in
+     ================================================================ */
+
+  /**
+   * Öppnar inloggningsmodalen.
+   * @param {HTMLTableCellElement|null} cell – Cellen som triggade
+   *   inloggningen, sparas för redigering efter lyckad inloggning.
+   */
+  function öppnaLoginModal(cell) {
+    väntandeCell = cell;
+    document.getElementById('login-error').textContent = '';
+    document.getElementById('login-pwd').value = '';
+    document.getElementById('login-modal-bg').classList.add('visible');
+    /* Fokusera lösenordsfältet */
+    setTimeout(() => document.getElementById('login-pwd').focus(), 50);
+  }
+
+  /**
+   * Stänger inloggningsmodalen och rensar väntande cell.
+   * Exponeras globalt (onclick i HTML).
+   */
+  window.stängLoginModal = function() {
+    document.getElementById('login-modal-bg').classList.remove('visible');
+    väntandeCell = null;
+  };
+
+  /**
+   * Utför Firebase-inloggning med e-post och lösenord.
+   * Exponeras globalt (onclick i HTML).
+   */
+  window.utförLogin = async function() {
+    const email  = document.getElementById('login-email').value.trim();
+    const lösen  = document.getElementById('login-pwd').value;
+    const felDiv = document.getElementById('login-error');
+    const btn    = document.getElementById('login-submit');
+
+    /* Kontrollera att lösenord är ifyllt */
+    if (!lösen) {
+      felDiv.textContent = 'Fyll i ditt lösenord.';
+      return;
+    }
+
+    /* Inaktivera knappen under inloggning */
+    btn.disabled    = true;
+    btn.textContent = 'Loggar in…';
+    felDiv.textContent = '';
+
+    try {
+      /* Anropa Firebase Authentication */
+      await signInWithEmailAndPassword(auth, email, lösen);
+
+      /* Inloggning lyckad – stäng modal */
+      document.getElementById('login-modal-bg').classList.remove('visible');
+      showToast('✅ Inloggad!');
+
+      /* Om användaren klickade på en cell före inloggning – öppna redigeringen nu */
+      if (väntandeCell) {
+        const cell = väntandeCell;
+        väntandeCell = null;
+        startEdit(cell);
+      }
+
+    } catch (e) {
+      /* Firebase-felkoder översatta till svenska */
+      let meddelande = 'Inloggning misslyckades.';
+      if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
+        meddelande = '❌ Fel lösenord. Försök igen.';
+      } else if (e.code === 'auth/too-many-requests') {
+        meddelande = '❌ För många försök. Vänta en stund.';
+      } else if (e.code === 'auth/network-request-failed') {
+        meddelande = '❌ Nätverksfel. Kontrollera din uppkoppling.';
+      }
+      felDiv.textContent = meddelande;
+    } finally {
+      /* Återställ knappen */
+      btn.disabled    = false;
+      btn.textContent = 'Logga in';
+    }
+  };
+
+  /* Tillåt Enter-tangenten i lösenordsfältet */
+  document.getElementById('login-pwd').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') window.utförLogin();
+  });
+
+  /* Stäng modal vid klick utanför modaldialogen */
+  document.getElementById('login-modal-bg').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('login-modal-bg')) {
+      window.stängLoginModal();
+    }
+  });
+
+
+  /* ================================================================
+     TABELLRENDERING
+     Byggs dynamiskt av JavaScript för att alltid spegla
+     den senaste datan (BASE_DATA + Firebase-överskrivningar).
+     ================================================================ */
+
+  /**
+   * Renderar om alla årsavsnitt i <main>.
+   * Anropas initialt och sedan varje gång Firebase-data uppdateras
+   * (via onValue-lyssnaren).
+   */
+  function renderAll() {
+    const data = loadData();
+    const main = document.getElementById('main');
+    main.innerHTML = '';
+
+    for (const year of Object.keys(data).map(Number).sort()) {
+      main.appendChild(buildYearSection(data, year));
+    }
+  }
+
+  /**
+   * Bygger ett komplett årsavsnitt med rubrik + tabell.
+   * @param {Object} data  – Fullständig datauppsättning
+   * @param {number} year
+   * @returns {HTMLElement}
+   */
+  function buildYearSection(data, year) {
+    const yearData = data[year] || {};
+    const cats     = Object.keys(yearData);
+
+    /* Räkna totalt för hela året (exkl. null) */
+    let grandTotal = 0;
+    for (const vals of Object.values(yearData)) {
+      vals.forEach(v => { if (v !== null) grandTotal += v; });
+    }
+
+    /* ---- Årssektion-wrapper ---- */
+    const section   = document.createElement('div');
+    section.className = 'year-section';
+
+    /* ---- Årsrubrik ---- */
+    const header = document.createElement('div');
+    header.className = 'year-header';
+    header.innerHTML = `
+      <h2>Inpasseringar ${year}</h2>
+      <span class="yr-total">Totalt: ${grandTotal.toLocaleString('sv-SE')}</span>`;
+    section.appendChild(header);
+
+    /* ---- Scroll-wrapper ---- */
+    const wrap = document.createElement('div');
+    wrap.className = 'table-wrap';
+
+    /* ---- Tabell ---- */
+    const table = document.createElement('table');
+
+    /* -- Kolumnrubriker -- */
+    const thead   = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    headRow.innerHTML =
+      `<th>Kategori</th>` +
+      MONTHS.map(m => `<th>${m}</th>`).join('') +
+      `<th class="col-tot">TOT ${year}</th>`;
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    /* -- Datarader -- */
+    const tbody   = document.createElement('tbody');
+
+    /* Håll koll på kolumnsummor för totalraden */
+    const colSums    = new Array(12).fill(0);
+    const colHasVal  = new Array(12).fill(false); /* Om >=1 kategori har ett värde */
+    const colPartial = new Array(12).fill(false); /* Om >=1 kategori saknar värde */
+
+    for (const cat of cats) {
+      const vals = yearData[cat];
+      const row  = document.createElement('tr');
+
+      /* Kategorinamncell (ej redigerbar) */
+      const catTd       = document.createElement('td');
+      catTd.textContent = cat;
+      row.appendChild(catTd);
+
+      let rowTotal = 0;
+
+      for (let m = 0; m < 12; m++) {
+        const val = vals[m];
+        const td  = document.createElement('td');
+
+        /* Spara metadata som data-attribut för redigeringsfunktionen */
+        td.dataset.year  = year;
+        td.dataset.cat   = cat;
+        td.dataset.month = m;
+        td.dataset.value = (val === null) ? 'null' : String(val);
+
+        if (val === null) {
+          /* ---- Saknas ---- */
+          td.className   = 'cell-null';
+          td.textContent = '–';
+          colPartial[m]  = true;
+
+        } else if (val === 0) {
+          /* ---- Bekräftat noll ---- */
+          td.className   = 'cell-zero';
+          td.textContent = '0';
+          colHasVal[m]   = true;
+          colSums[m]    += 0;
+
+        } else {
+          /* ---- Normalt värde ---- */
+          td.className   = 'cell-data';
+          td.textContent = val.toLocaleString('sv-SE');
+          rowTotal      += val;
+          colHasVal[m]   = true;
+          colSums[m]    += val;
+        }
+
+        /* Klickhändelse öppnar redigering (eller inloggning) */
+        td.addEventListener('click', () => hanteraCellklick(td));
+        row.appendChild(td);
+      }
+
+      /* Radtotal (TOT kolumnen) */
+      const totTd       = document.createElement('td');
+      totTd.className   = 'cell-row-tot';
+      totTd.textContent = rowTotal > 0 ? rowTotal.toLocaleString('sv-SE') : '–';
+      row.appendChild(totTd);
+
+      tbody.appendChild(row);
+    }
+
+    table.appendChild(tbody);
+
+    /* -- Totalrad (TOTALT per månad) -- */
+    const tfoot  = document.createElement('tfoot');
+    const totRow = document.createElement('tr');
+
+    const totLabel       = document.createElement('td');
+    totLabel.textContent = 'TOTALT';
+    totRow.appendChild(totLabel);
+
+    let colGrandTotal = 0;
+
+    for (let m = 0; m < 12; m++) {
+      const td        = document.createElement('td');
+      const isPartial = colPartial[m] && colHasVal[m]; /* Har lite data men inte all */
+      const isEmpty   = !colHasVal[m] && !colPartial[m];
+
+      if (isEmpty) {
+        td.textContent = colSums[m] > 0 ? colSums[m].toLocaleString('sv-SE') : '0';
+      } else if (!colHasVal[m]) {
+        td.className   = 'cell-null';
+        td.textContent = '–';
+      } else if (isPartial) {
+        td.className   = 'cell-col-tot-partial';
+        td.textContent = colSums[m].toLocaleString('sv-SE') + ' ⚠';
+        td.title       = 'Ofullständig total – data saknas för minst en kategori';
+      } else {
+        td.textContent = colSums[m].toLocaleString('sv-SE');
+      }
+
+      colGrandTotal += colSums[m];
+      totRow.appendChild(td);
+    }
+
+    /* Högerkolumnen: grand total för hela året */
+    const grandTd       = document.createElement('td');
+    grandTd.className   = 'cell-row-tot';
+    grandTd.textContent = colGrandTotal.toLocaleString('sv-SE');
+    totRow.appendChild(grandTd);
+
+    tfoot.appendChild(totRow);
+    table.appendChild(tfoot);
+
+    /* Redigeringshint */
+    const hint       = document.createElement('div');
+    hint.className   = 'edit-hint';
+    hint.innerHTML =
+      '💡 <strong>Klicka på en cell</strong> för att redigera. ' +
+      'Inloggning krävs – formuläret öppnas automatiskt om du inte är inloggad. ' +
+      'Ändringar sparas direkt i Firebase och syns för alla.';
+
+    wrap.appendChild(table);
+    section.appendChild(wrap);
+    section.appendChild(hint);
+
+    return section;
+  }
+
+
+  /* ================================================================
+     CELL-KLICK
+     Kontrollerar om användaren är inloggad. Om inte – visa modal.
+     ================================================================ */
+
+  /**
+   * Anropas när en td-cell klickas.
+   * @param {HTMLTableCellElement} td
+   */
+  function hanteraCellklick(td) {
+    if (currentUser) {
+      /* Inloggad – öppna redigeringsoverlay direkt */
+      startEdit(td);
+    } else {
+      /* Ej inloggad – spara cellen och visa inloggningsmodal */
+      öppnaLoginModal(td);
+    }
+  }
+
+
+  /* ================================================================
+     INLINE-REDIGERING
+     En <div id="edit-overlay"> med ett <input> placeras exakt
+     ovanpå den klickade cellen med position: absolute.
+     ================================================================ */
+
+  let activeCell = null; /* Den cell som redigeras just nu */
+
+  /**
+   * Öppnar redigeringsoverlayen ovanpå en td-cell.
+   * @param {HTMLTableCellElement} td
+   */
+  function startEdit(td) {
+    activeCell = td;
+
+    const overlay = document.getElementById('edit-overlay');
+    const input   = document.getElementById('edit-input');
+
+    /* Beräkna cellens position relativt till dokumentet */
+    const rect    = td.getBoundingClientRect();
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    const scrollX = window.scrollX || document.documentElement.scrollLeft;
+
+    overlay.style.top    = `${rect.top  + scrollY}px`;
+    overlay.style.left   = `${rect.left + scrollX}px`;
+    overlay.style.width  = `${Math.max(rect.width,  80)}px`;
+    overlay.style.height = `${Math.max(rect.height, 32)}px`;
+    overlay.style.display = 'block';
+
+    /* Fyll in nuvarande värde (tomt om null) */
+    const cur  = td.dataset.value;
+    input.value = (cur === 'null') ? '' : cur;
+    input.focus();
+    input.select();
+
+    /* Spara vid blur (fokus lämnar fältet) – fire-and-forget */
+    input.onblur = () => {
+      commitEdit().catch(err => showToast('❌ ' + err.message));
+    };
+
+    /* Tangentbordsnavigering */
+    input.onkeydown = e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        input.onblur = null;  /* Undvik dubbel-commit vid blur efter blur() */
+        commitEdit()
+          .then(() => moveToNextCell(td, 1))
+          .catch(err => showToast('❌ ' + err.message));
+      } else if (e.key === 'Tab') {
+        e.preventDefault();
+        input.onblur = null;
+        commitEdit()
+          .then(() => moveToNextCell(td, e.shiftKey ? -1 : 1))
+          .catch(err => showToast('❌ ' + err.message));
+      } else if (e.key === 'Escape') {
+        input.onblur = null;
+        overlay.style.display = 'none';
+        activeCell = null;
+      }
+    };
+  }
+
+  /**
+   * Sparar inmatat värde till Firebase och renderar om tabellerna.
+   * Asynkron – väntar på Firebase-skrivning.
+   *
+   * Tomt fält → null (saknas), "0" → 0, tal → det talet.
+   * @returns {Promise<void>}
+   */
+  async function commitEdit() {
+    const overlay = document.getElementById('edit-overlay');
+    const input   = document.getElementById('edit-input');
+    overlay.style.display = 'none';
+
+    if (!activeCell) return;
+
+    const td      = activeCell;
+    const year    = parseInt(td.dataset.year);
+    const cat     = td.dataset.cat;
+    const month   = parseInt(td.dataset.month);
+    const oldStr  = td.dataset.value;
+    const trimmed = input.value.trim();
+
+    activeCell = null;
+
+    /* Tolka det inmatade värdet */
+    let newVal;
+    if (trimmed === '') {
+      newVal = null;                       /* Tomt fält = data saknas */
+    } else {
+      const parsed = parseInt(trimmed, 10);
+      if (isNaN(parsed) || parsed < 0) return; /* Ogiltigt – avbryt tyst */
+      newVal = parsed;
+    }
+
+    /* Kontrollera om värdet faktiskt ändrades */
+    const oldVal = (oldStr === 'null') ? null : parseInt(oldStr, 10);
+    if (newVal === oldVal) return;
+
+    /* Kontrollera igen att användaren är inloggad */
+    if (!currentUser) {
+      showToast('❌ Du måste vara inloggad för att spara.');
+      return;
+    }
+
+    /* Visa spinner-toast medan vi väntar på Firebase */
+    showToast('💾 Sparar…', 0);
+
+    try {
+      /* Spara till Firebase (asynkront) */
+      if (newVal === null) {
+        await clearValue(year, cat, month);
+      } else {
+        await saveValue(year, cat, month, newVal);
+      }
+
+      /* Firebase sparad – onValue-lyssnaren uppdaterar datan och
+         renderar om tabellen automatiskt */
+      const label = (newVal === null)
+        ? `${MONTHS_FULL[month]} ${year} / ${cat} markerad som saknas`
+        : `${MONTHS_FULL[month]} ${year} / ${cat} = ${newVal.toLocaleString('sv-SE')}`;
+      showToast(`✓ ${label}`);
+
+    } catch (err) {
+      /* Firebase-fel – visa felmeddelande */
+      console.error('Firebase-skrivfel:', err);
+      showToast('❌ Kunde inte spara: ' + err.message);
+    }
+  }
+
+  /**
+   * Flyttar redigeringsfokus till nästa (dir=+1) eller
+   * föregående (dir=-1) redigerbara cell i dokumentet.
+   * @param {HTMLTableCellElement} currentTd
+   * @param {number} dir  +1 eller -1
+   */
+  function moveToNextCell(currentTd, dir) {
+    const cells = [...document.querySelectorAll(
+      'td.cell-data, td.cell-null, td.cell-zero'
+    )];
+    const idx  = cells.indexOf(currentTd);
+    const next = cells[idx + dir];
+    if (next) {
+      next.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      hanteraCellklick(next);
+    }
+  }
+
+
+  /* ================================================================
+     STÄNG OVERLAY VID KLICK UTANFÖR CELLEN
+     ================================================================ */
+  document.addEventListener('mousedown', e => {
+    const overlay = document.getElementById('edit-overlay');
+    if (
+      overlay.style.display !== 'none' &&
+      !overlay.contains(e.target) &&
+      e.target !== activeCell
+    ) {
+      /* blur() triggar commitEdit() via onblur */
+      document.getElementById('edit-input').blur();
+    }
+  });
+
+
+  /* ================================================================
+     TOAST-NOTIFIERING
+     ================================================================ */
+  let toastTimer = null;
+
+  /**
+   * Visar ett kortvarigt bekräftelsemeddelande längst ned på sidan.
+   * @param {string} msg
+   * @param {number} [ms=3000]  – Hur länge toasten visas (0 = tills nästa anrop)
+   */
+  function showToast(msg, ms = 3000) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('visible');
+    clearTimeout(toastTimer);
+    if (ms > 0) {
+      toastTimer = setTimeout(() => el.classList.remove('visible'), ms);
+    }
+  }
+
+  /* Exponera showToast globalt (används inte externt men kan vara bra för debug) */
+  window.showToast = showToast;
+
+
+  /* ================================================================
+     INFORMATIONSPANEL – öppna/stäng
+     Exponeras globalt för onclick-attributet i HTML.
+     ================================================================ */
+  window.toggleInfo = function() {
+    const panel  = document.getElementById('infoPanel');
+    const header = panel.querySelector('.info-panel-header');
+    const isOpen = panel.classList.toggle('open');
+    header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  };
+
+
+  /* ================================================================
+     INITIERING
+     Rendera tabellen direkt med BASE_DATA medan Firebase-anslutningen
+     upprättas. När onValue-lyssnaren ovan tar emot data från Firebase
+     anropas renderAll() igen med de uppdaterade värdena.
+     ================================================================ */
+  renderAll();   /* Visar BASE_DATA direkt – ersätts av Firebase-data när det anländer */
+
+</script>
+</body>
+</html>
