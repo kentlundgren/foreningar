@@ -141,6 +141,27 @@
     }
     #auth-status button:hover { background: rgba(255,255,255,0.28); }
 
+    /* Data-källeindikator under rubriken (identisk med index.html) */
+    #data-källa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      margin-top: 0.25rem;
+      opacity: 0.82;
+      font-weight: 400;
+      color: rgba(255,255,255,0.75);
+    }
+    #data-källa-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #a0aec0;   /* Grå = ansluter */
+      display: inline-block;
+      flex-shrink: 0;
+      transition: background 0.4s;
+    }
+
     /* Liten Firebase-statusindikator */
     #fb-status-dot {
       width: 8px;
@@ -688,6 +709,15 @@
   <div>
     <h1>🌊 Bjerreds Saltsjöbad</h1>
     <p>Inpasseringsdata – tabellvy</p>
+    <!--
+      Data-källeindikator: visar om tabelldata kommer från Firebase (grön)
+      eller från hårdkodad BASE_DATA-fallback (orange).
+      Uppdateras dynamiskt av JavaScript i onValue-callback.
+    -->
+    <span id="data-källa">
+      <span id="data-källa-dot"></span>
+      <span id="data-källa-text">Ansluter till Firebase…</span>
+    </span>
   </div>
 
   <!-- Navigeringsknappar: tillbaka till grafsidan och till startsidan -->
@@ -963,7 +993,7 @@
   import { initializeApp, getApps }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
 
-  import { getDatabase, ref, onValue, set }
+  import { getDatabase, ref, onValue, set, get }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js';
 
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
@@ -1078,13 +1108,27 @@
     ref(db, 'bjerred-inpasseringar/data'),
 
     /* Succé-callback – data hämtad från Firebase */
-    (snapshot) => {
+    async (snapshot) => {
       /* Tolka Firebase-snapshot till samma format som BASE_DATA */
       firebaseData = tolkFirebaseSnapshot(snapshot);
 
-      /* Visa grön prick – vi har kontakt med Firebase */
+      /* Visa grön prick i auth-raden – vi har kontakt med Firebase */
       const dot = document.getElementById('fb-status-dot');
       if (dot) { dot.className = 'ok'; dot.title = 'Firebase uppkopplad'; }
+
+      /* Hämta tidsstämpel för senaste dataändring (ej kritisk – ignorera fel) */
+      let senast = '';
+      try {
+        const tsSnap = await get(ref(db, 'bjerred-inpasseringar/senast-uppdaterad'));
+        senast = tsSnap.val() || '';
+      } catch (e) { /* timestamp kunde ej hämtas – fortsätt utan */ }
+
+      /* Uppdatera data-källe-badge under rubriken till grön "Live"-status */
+      const källDot  = document.getElementById('data-källa-dot');
+      const källText = document.getElementById('data-källa-text');
+      if (källDot)  källDot.style.background  = '#68d391'; /* grön */
+      if (källText) källText.textContent =
+        `Live från Firebase · ${senast || new Date().toLocaleDateString('sv-SE')}`;
 
       /* Rendera tabellerna med den nya datan */
       renderAll();
@@ -1095,9 +1139,15 @@
       console.warn('⚠️ Firebase-fel – faller tillbaka på BASE_DATA:', error.message);
       firebaseData = null;
 
-      /* Visa röd prick */
+      /* Visa röd prick i auth-raden */
       const dot = document.getElementById('fb-status-dot');
       if (dot) { dot.className = 'err'; dot.title = 'Firebase ej nådd – visar grunddata'; }
+
+      /* Uppdatera data-källe-badge under rubriken till orange "fallback"-status */
+      const källDot  = document.getElementById('data-källa-dot');
+      const källText = document.getElementById('data-källa-text');
+      if (källDot)  källDot.style.background  = '#f6ad55'; /* orange */
+      if (källText) källText.textContent = 'Lokal backup (BASE_DATA) – Firebase ej nådd';
 
       /* Rendera ändå med BASE_DATA som fallback */
       renderAll();
