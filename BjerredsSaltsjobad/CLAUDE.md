@@ -142,6 +142,12 @@ const firebaseConfig = {
 - **Autentisering krävs för skrivning** (Firebase Authentication, e-post/lösenord). Läsning är öppen för alla.
 - SDK v11.0.0 (ES-moduler) via CDN – inga npm-beroenden.
 
+**Authorized domains (Firebase Authentication → Settings):**
+- `localhost` – default, för lokal testning
+- `skylt-e0c45.firebaseapp.com` – default
+- `skylt-e0c45.web.app` – default
+- `kentlundgren.github.io` – **tillagd 2026-05-15** (krävs för inloggning från GitHub Pages)
+
 **OBS – kategorinamn med snedstreck:** Kategorier som `"Restaurangen/badbiljetter"` lagras som nästlad sökväg i Firebase (`Restaurangen > badbiljetter`). Läskoden i data.html hanterar detta genom att traversera sökvägen utifrån BASE_DATA-kategorinamnen.
 
 **Datastruktur i Firebase:**
