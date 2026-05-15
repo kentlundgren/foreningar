@@ -392,6 +392,21 @@
   <div>
     <h1>🌊 Bjerreds Saltsjöbad</h1>
     <p>Inpasseringsstatistik – uppdateras löpande</p>
+    <!--
+      Datakälla-badge: visar om diagramdatan kommer från Firebase (live)
+      eller från den hårdkodade BASE_DATA (lokal backup).
+      Uppdateras dynamiskt av applyFirebaseData() / visaFallback().
+    -->
+    <span id="data-källa"
+          style="display:inline-flex;align-items:center;gap:0.35rem;
+                 font-size:0.72rem;margin-top:0.25rem;opacity:0.82;
+                 font-weight:400;color:rgba(255,255,255,0.75);">
+      <span id="data-källa-dot"
+            style="width:7px;height:7px;border-radius:50%;
+                   background:#a0aec0;display:inline-block;
+                   flex-shrink:0;"></span>
+      <span id="data-källa-text">Ansluter till Firebase…</span>
+    </span>
   </div>
   <!-- Knappar i header -->
   <div class="header-actions">
@@ -1351,7 +1366,102 @@ function drawIncompleteAnnotation(ctx, px, py, year, monthIdx, chartArea) {
 Chart.register(closurePlugin);
 
 /* ================================================================
+   FIREBASE-INTEGRATION
+   Dessa funktioner anropas från <script type="module"> längst ned
+   på sidan, efter att Firebase SDK har importerats och datan hämtats.
+
+   Designprincip:
+   - Sidladdning visar direkt BASE_DATA (ingen väntan på nätverk)
+   - När Firebase svarar ersätts datan sömlöst och badge uppdateras
+   - Om Firebase ej nås inom 5 s, eller ger fel, visas fallback-badge
+   ================================================================ */
+
+/**
+ * Transformerar Firebase Realtime Database-snapshot till samma
+ * format som BASE_DATA / loadData() returnerar:
+ *   { 2024: { 'Kategorinamn': [jan,feb,...,dec] }, ... }
+ *
+ * Hantering av snedstreck i kategorinamn:
+ *   Firebase lagrar "Restaurangen/badbiljetter" som nästlad sökväg
+ *   Restaurangen → badbiljetter. Funktionen traverserar sökvägen
+ *   steg för steg baserat på kategorinamnen i BASE_DATA.
+ *
+ * @param  {Object} fbSnapshot  - Rådata från Firebase (snapshot.val())
+ * @returns {Object}            - Data i BASE_DATA-format
+ */
+function tolkFBData(fbSnapshot) {
+  const result = {};
+
+  for (const [år, kategorier] of Object.entries(fbSnapshot)) {
+    const årNum = parseInt(år);
+    result[årNum] = {};
+
+    /* Använd BASE_DATA som mall för vilka kategorier som ska finnas */
+    const basKat = BASE_DATA[årNum] || {};
+
+    for (const katNamn of Object.keys(basKat)) {
+      /* Traversera ev. nästlad sökväg (snedstreck = avdelare) */
+      const delar = katNamn.split('/');
+      let nod = kategorier;
+      for (const del of delar) {
+        nod = nod?.[del];
+        if (nod === undefined || nod === null) break;
+      }
+      if (!nod || typeof nod !== 'object') continue;
+
+      /* Konvertera { "0": 643, "1": 665, … } → [643, 665, …, null] */
+      const arr = new Array(12).fill(null);
+      for (const [idx, val] of Object.entries(nod)) {
+        const i = parseInt(idx);
+        /* Firebase lagrar null-värden som strängen "null" */
+        arr[i] = (val === 'null' || val === null) ? null : Number(val);
+      }
+      result[årNum][katNamn] = arr;
+    }
+  }
+  return result;
+}
+
+/**
+ * Anropas av Firebase-modulen när ny data har tagits emot.
+ * Uppdaterar diagrammen och visar grön "Live Firebase"-badge.
+ *
+ * @param {Object} fbSnapshot  - Rådata från Firebase
+ * @param {string} senast      - Tidsstämpel från Firebase (senast-uppdaterad)
+ */
+window.applyFirebaseData = function(fbSnapshot, senast) {
+  /* Transformera till BASE_DATA-format */
+  const data = tolkFBData(fbSnapshot);
+
+  /* Uppdatera diagram och sammanfattningskort */
+  refreshCharts(data);
+  updateSummaryCards(data);
+
+  /* Visa grön badge – data kommer från Firebase */
+  document.getElementById('data-källa-dot').style.background  = '#68d391'; /* grön */
+  document.getElementById('data-källa-text').textContent =
+    `Live från Firebase · ${senast || new Date().toLocaleDateString('sv-SE')}`;
+};
+
+/**
+ * Anropas om Firebase ej kan nås (timeout eller fel).
+ * Visar orange badge och låter diagrammen visa BASE_DATA.
+ *
+ * @param {string} [felmeddelande]  - Valfritt tekniskt felmeddelande
+ */
+window.visaFallback = function(felmeddelande) {
+  /* Diagrammen visar redan BASE_DATA från init() – inget behöver göras */
+  document.getElementById('data-källa-dot').style.background  = '#f6ad55'; /* orange */
+  document.getElementById('data-källa-text').textContent =
+    'Lokal backup (BASE_DATA) – Firebase ej nådd';
+  if (felmeddelande) {
+    console.warn('Firebase-fel i index.html:', felmeddelande);
+  }
+};
+
+/* ================================================================
    INITIERING – körs direkt när sidan laddas
+   Visar BASE_DATA direkt – ersätts av Firebase-data när det anländer.
    ================================================================ */
 (function init() {
   const data = loadData();
@@ -1361,6 +1471,83 @@ Chart.register(closurePlugin);
   showCategoryChart(2026, tabs[tabs.length - 1]);
   updateSummaryCards(data);
 })();
+</script>
+
+<!--
+  ============================================================
+  FIREBASE-ANSLUTNING – <script type="module"> krävs för
+  Firebase SDK v11 (ES-moduler). Körs efter huvud-scriptet.
+
+  Flöde:
+  1. Sätt en fallback-timer på 5 sekunder (visar BASE_DATA-badge om
+     Firebase inte svarar i tid).
+  2. onValue() lyssnar kontinuerligt på bjerred-inpasseringar/data.
+  3. Vid svar: rensa timer → hämta timestamp → anropa applyFirebaseData().
+  4. Vid fel: rensa timer → anropa visaFallback().
+  ============================================================
+-->
+<script type="module">
+  /* --- Firebase SDK-importer (ES-moduler från Googles CDN) --- */
+  import { initializeApp, getApps }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+  import { getDatabase, ref, onValue, get }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js';
+
+  /* --- Projektets Firebase-konfiguration --- */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8",
+    authDomain:        "skylt-e0c45.firebaseapp.com",
+    projectId:         "skylt-e0c45",
+    storageBucket:     "skylt-e0c45.firebasestorage.app",
+    messagingSenderId: "653653642598",
+    appId:             "1:653653642598:web:29e332c87fed1cd9f34ca7",
+    databaseURL:       "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"
+  };
+
+  /* --- Initiera Firebase (undvik dubbel-initiering om flera script körs) --- */
+  const app = getApps().length === 0
+    ? initializeApp(firebaseConfig)
+    : getApps()[0];
+  const db = getDatabase(app);
+
+  /* --- Fallback-timer: om Firebase ej svarar inom 5 s → visa BASE_DATA-badge --- */
+  const fallbackTimer = setTimeout(() => {
+    window.visaFallback('Timeout – ingen respons inom 5 s');
+  }, 5000);
+
+  /* --- Prenumerera på live-data från Firebase --- */
+  onValue(
+    ref(db, 'bjerred-inpasseringar/data'),
+
+    /* Callback vid ny data (körs direkt + vid varje ändring) */
+    async (snapshot) => {
+      clearTimeout(fallbackTimer); /* Firebase svarade – avbryt fallback-timern */
+
+      if (!snapshot.exists()) {
+        /* Noden finns men är tom – oväntat, visa fallback */
+        window.visaFallback('Ingen data i Firebase');
+        return;
+      }
+
+      /* Hämta "senast-uppdaterad"-timestamp (ej kritisk – ignorera fel) */
+      let senast = '';
+      try {
+        const tsSnap = await get(ref(db, 'bjerred-inpasseringar/senast-uppdaterad'));
+        senast = tsSnap.val() || '';
+      } catch (e) {
+        /* Timestamp kunde ej hämtas – fortsätt utan */
+      }
+
+      /* Uppdatera diagram och summarykort med Firebase-data */
+      window.applyFirebaseData(snapshot.val(), senast);
+    },
+
+    /* Callback vid fel (t.ex. nätverksavbrott eller nekad behörighet) */
+    (error) => {
+      clearTimeout(fallbackTimer);
+      window.visaFallback(error.message);
+    }
+  );
 </script>
 </body>
 </html>
