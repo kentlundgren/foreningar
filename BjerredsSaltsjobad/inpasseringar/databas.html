@@ -689,7 +689,126 @@
 
 
   <!-- ============================================================
-       5. ANSLUTNINGSTEST
+       5. ENGÅNGSMIGRATION – kopiera BASE_DATA till Firebase
+       ============================================================ -->
+  <div class="card">
+    <div class="card-header">🚀 Steg 6 – Engångsmigration: kopiera all data till Firebase</div>
+    <div class="card-body">
+
+      <div class="info-ruta">
+        <strong>Varför körs skriptet härifrån och inte från data.html?</strong><br><br>
+        Skriptet behöver Firebase SDK för att kunna skriva till databasen.
+        Firebase SDK är inläst på <em>den här sidan</em> (databas.html) –
+        det lade vi in tidigare. <strong>data.html har ingen Firebase-kod än</strong>
+        (det kommer i steg 7). Därför kör vi migrationen härifrån.<br><br>
+        <strong>Är BASE_DATA samma i data.html och databas.html?</strong><br>
+        BASE_DATA finns i <code>data.html</code> och <code>inpasseringar/index.html</code>
+        – de är identiska och hålls alltid synkade. Den här sidan (databas.html)
+        har ingen BASE_DATA. Därför är all historisk data inbakad direkt i
+        skriptet nedan – en kopia av BASE_DATA från data.html.
+      </div>
+
+      <p style="margin-top:1rem;">
+        <strong>Så här gör du:</strong>
+      </p>
+      <ol style="margin:0.5rem 0 1rem 1.3rem;line-height:2;font-size:0.88rem;">
+        <li>Se till att du är på sidan <strong>databas.html</strong> i webbläsaren</li>
+        <li>Tryck <strong>F12</strong> för att öppna utvecklarverktyget</li>
+        <li>Klicka på fliken <strong>Console</strong></li>
+        <li>Kopiera <em>hela</em> skriptet nedan och klistra in det i konsolen</li>
+        <li>Tryck <strong>Enter</strong></li>
+        <li>Vänta på bekräftelsemeddelandena – hela BASE_DATA skrivs till Firebase</li>
+      </ol>
+
+      <div class="varning">
+        ⚠️ <strong>Kör skriptet bara en gång.</strong> Kör du det flera gånger
+        skrivs samma data igen (det skadar ingenting, men är onödigt).
+        När konsolen visar "✅ Migration klar!" är all data uppe i Firebase.
+      </div>
+
+      <!-- Migrationssskriptet – kopieras och körs i webbläsarens konsol -->
+      <pre style="margin-top:1rem;"><span class="c">// ============================================================
+// ENGÅNGSMIGRATION – BASE_DATA → Firebase Realtime Database
+// ============================================================
+// Kör detta skript EN GÅNG i konsolen (F12) på databas.html.
+// Skriptet använder Firebase SDK som redan är inläst på sidan.
+//
+// Data skrivs till: bjerred-inpasseringar/data/{år}/{kategori}/{månadsindex}
+// ============================================================</span>
+
+(<span class="k">async</span> () => {
+
+  <span class="c">// ---- BASE_DATA – identisk kopia från data.html och index.html ----</span>
+  <span class="k">const</span> <span class="v">BASE_DATA</span> = {
+
+    <span class="c">/* ---- 2024 -------------------------------------------------- */</span>
+    <span class="s">2024</span>: {
+      <span class="s">'Restaurangen'</span>:         [<span class="s">754</span>,<span class="s">696</span>,<span class="s">772</span>,<span class="s">656</span>,<span class="s">841</span>, <span class="s">654</span>,<span class="s">696</span>,<span class="s">678</span>,<span class="s">725</span>,<span class="s">607</span>,<span class="s">795</span>,<span class="s">620</span>],
+      <span class="s">'SMS-biljetter'</span>:        [<span class="s">557</span>,<span class="s">458</span>,<span class="s">484</span>,<span class="s">331</span>,<span class="s">265</span>, <span class="s">184</span>,<span class="s">143</span>,<span class="s">197</span>,<span class="s">240</span>,<span class="s">484</span>,<span class="s">593</span>,<span class="s">827</span>],
+      <span class="s">'Medlemmar – armband'</span>: [<span class="s">2949</span>,<span class="s">2788</span>,<span class="s">3096</span>,<span class="s">2251</span>,<span class="s">3388</span>,<span class="s">3130</span>,<span class="s">3581</span>,<span class="s">3362</span>,<span class="s">4210</span>,<span class="s">3146</span>,<span class="s">3299</span>,<span class="s">3255</span>]
+    },
+
+    <span class="c">/* ---- 2025 – 0-värden mars–juli = ombyggnad av bastun ------- */</span>
+    <span class="s">2025</span>: {
+      <span class="s">'Restaurangen/badbiljetter'</span>: [<span class="s">737</span>,<span class="s">764</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>, <span class="s">344</span>, <span class="s">891</span>, <span class="s">991</span>, <span class="s">667</span>, <span class="s">794</span>, <span class="s">621</span>],
+      <span class="s">'SMS/Swish-biljett'</span>:         [<span class="s">801</span>,<span class="s">619</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>,   <span class="s">4</span>, <span class="s">140</span>, <span class="s">285</span>, <span class="s">726</span>,<span class="s">1052</span>,<span class="s">1373</span>],
+      <span class="s">'Medlemmar – armband'</span>:       [<span class="s">3231</span>,<span class="s">2555</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>,<span class="s">1524</span>,<span class="s">2134</span>,<span class="s">2339</span>,<span class="s">1552</span>,<span class="s">1400</span>,<span class="s">1000</span>],
+      <span class="s">'Medlemmar – Wonder'</span>:        [  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>,  <span class="s">0</span>, <span class="s">120</span>,<span class="s">1359</span>,<span class="s">1729</span>,<span class="s">1993</span>,<span class="s">2443</span>,<span class="s">2513</span>]
+    },
+
+    <span class="c">/* ---- 2026 – null = saknas (ännu ej rapporterat) ------------ */</span>
+    <span class="s">2026</span>: {
+      <span class="s">'Restaurangen/badbiljetter'</span>: [<span class="s">643</span>, <span class="s">665</span>, <span class="s">600</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>],
+      <span class="s">'SMS/Swish-biljetter'</span>:       [<span class="s">1114</span>, <span class="s">751</span>,<span class="s">1006</span>, <span class="s">913</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>],
+      <span class="s">'Medlemmar – armband'</span>:       [ <span class="s">492</span>, <span class="s">119</span>,  <span class="s">95</span>,  <span class="s">90</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>],
+      <span class="s">'Medlemmar – Wonder'</span>:        [<span class="s">2627</span>,<span class="s">2445</span>,<span class="s">3663</span>,<span class="s">3293</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>,<span class="k">null</span>]
+    }
+  };
+
+  <span class="c">// ---- Hämta Firebase-instansen som redan är initierad på sidan ----</span>
+  <span class="k">const</span> { <span class="f">getDatabase</span>, <span class="f">ref</span>, <span class="f">set</span> } =
+    <span class="k">await</span> <span class="k">import</span>(<span class="s">'https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js'</span>);
+  <span class="k">const</span> <span class="v">db</span>  = <span class="f">getDatabase</span>();
+  <span class="k">let</span>   <span class="v">ok</span>  = <span class="s">0</span>;
+  <span class="k">let</span>   <span class="v">fel</span> = <span class="s">0</span>;
+
+  <span class="c">// ---- Skriv år för år, kategori för kategori till Firebase --------</span>
+  <span class="k">for</span> (<span class="k">const</span> [<span class="v">år</span>, <span class="v">kategorier</span>] <span class="k">of</span> Object.<span class="f">entries</span>(BASE_DATA)) {
+    <span class="k">for</span> (<span class="k">const</span> [<span class="v">kategori</span>, <span class="v">månader</span>] <span class="k">of</span> Object.<span class="f">entries</span>(kategorier)) {
+
+      <span class="c">// Bygg ett objekt {0: val, 1: val, ...} – null-värden inkluderas</span>
+      <span class="k">const</span> <span class="v">månadsObj</span> = {};
+      månader.<span class="f">forEach</span>((<span class="v">v</span>, <span class="v">i</span>) => { månadsObj[i] = v ?? <span class="s">'null'</span>; });
+
+      <span class="k">try</span> {
+        <span class="k">await</span> <span class="f">set</span>(
+          <span class="f">ref</span>(db, <span class="s">`bjerred-inpasseringar/data/${år}/${kategori}`</span>),
+          månadsObj
+        );
+        console.<span class="f">log</span>(<span class="s">`✅ ${år} / ${kategori}`</span>);
+        ok++;
+      } <span class="k">catch</span> (<span class="v">e</span>) {
+        console.<span class="f">error</span>(<span class="s">`❌ ${år} / ${kategori}: ${e.message}`</span>);
+        fel++;
+      }
+    }
+  }
+
+  <span class="c">// ---- Spara tidsstämpel för migrationen ---------------------------</span>
+  <span class="k">await</span> <span class="f">set</span>(<span class="f">ref</span>(db, <span class="s">'bjerred-inpasseringar/senast-uppdaterad'</span>),
+    <span class="k">new</span> Date().<span class="f">toLocaleDateString</span>(<span class="s">'sv-SE'</span>));
+
+  console.<span class="f">log</span>(<span class="s">`\n✅ Migration klar! ${ok} kategorier skrivna, ${fel} fel.`</span>);
+  <span class="k">if</span> (fel > <span class="s">0</span>) console.<span class="f">warn</span>(<span class="s">'Kontrollera felen ovan och kör om vid behov.'</span>);
+
+})();</pre>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       6. ANSLUTNINGSTEST
        ============================================================ -->
   <div class="card">
     <div class="card-header">🔌 Anslutningstest mot Firebase</div>
