@@ -201,6 +201,57 @@
     }
 
     /* ============================================================
+       LÖSENORDSRUTA + KOPIERINGSKNAPP (migration)
+       ============================================================ */
+    .lösenord-sektion {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 1.2rem 0 0.5rem;
+    }
+    .lösenord-sektion label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+    .lösenord-sektion input[type="password"] {
+      flex: 1;
+      min-width: 180px;
+      padding: 0.55rem 0.85rem;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.18s;
+    }
+    .lösenord-sektion input[type="password"]:focus {
+      border-color: var(--secondary);
+    }
+    #kopiera-knapp {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.55rem 1.3rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.18s;
+    }
+    #kopiera-knapp:hover { background: #c0621a; }
+    #kopiera-bekräftelse {
+      display: none;
+      font-size: 0.85rem;
+      color: var(--ok);
+      font-weight: 600;
+      margin-top: 0.4rem;
+    }
+
+    /* ============================================================
        ANSLUTNINGSTEST
        ============================================================ */
     #test-sektion { margin-top: 1rem; }
@@ -726,6 +777,26 @@
         När konsolen visar "✅ Migration klar!" är all data uppe i Firebase.
       </div>
 
+      <!-- --------------------------------------------------------
+           LÖSENORDSRUTA + KOPIERINGSKNAPP
+           Fyll i lösenordet → klicka Kopiera → klistra in i konsolen.
+           Lösenordet skrivs aldrig till disk – det lever bara i minnet
+           tills du stänger webbläsarfliken.
+           -------------------------------------------------------- -->
+      <div class="lösenord-sektion">
+        <label for="lösenord-input">🔑 Ditt Firebase-lösenord:</label>
+        <input type="password"
+               id="lösenord-input"
+               placeholder="Skriv in ditt lösenord här…"
+               autocomplete="current-password" />
+        <button id="kopiera-knapp" onclick="kopieraSkript()">
+          📋 Kopiera skript med lösenord
+        </button>
+      </div>
+      <div id="kopiera-bekräftelse">
+        ✅ Skriptet är kopierat! Klistra in det i konsolen (F12 → Console → >) och tryck Enter.
+      </div>
+
       <!-- Migrationssskriptet – kopieras och körs i webbläsarens konsol -->
       <pre style="margin-top:1rem;"><span class="c">// ============================================================
 // ENGÅNGSMIGRATION – BASE_DATA → Firebase Realtime Database
@@ -1058,6 +1129,105 @@
 
 </main><!-- slut main -->
 
+
+<script>
+/* ================================================================
+   KOPIERINGSFUNKTION FÖR MIGRATIONSSSKRIPTET
+   Läser lösenordet från inmatningsfältet, bygger ihop det
+   kompletta JavaScript-skriptet och kopierar det till urklipp.
+   Lösenordet ersätter platshållartexten i skriptmallen nedan.
+   ================================================================ */
+function kopieraSkript() {
+  /* Hämta lösenordet från inmatningsfältet */
+  const lösenord = document.getElementById('lösenord-input').value.trim();
+
+  /* Kontrollera att lösenordet inte är tomt */
+  if (!lösenord) {
+    alert('Ange ditt Firebase-lösenord i rutan först!');
+    return;
+  }
+
+  /* ---- Det kompletta skriptet som ska köras i konsolen ----
+     Lösenordet bäddas in direkt i strängen via template literal.
+     BASE_DATA är identisk kopia från data.html och index.html. */
+  const skript = `(async () => {
+
+  // Logga in med Firebase Authentication
+  const EPOST    = 'lundgren.kent@gmail.com';
+  const LÖSENORD = '${lösenord.replace(/'/g, "\\'")}';
+
+  const { getAuth, signInWithEmailAndPassword } =
+    await import('https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js');
+  const auth = getAuth();
+
+  try {
+    await signInWithEmailAndPassword(auth, EPOST, LÖSENORD);
+    console.log('✅ Inloggad som', EPOST);
+  } catch (e) {
+    console.error('❌ Inloggning misslyckades:', e.message);
+    return;
+  }
+
+  // BASE_DATA – identisk kopia från data.html och index.html
+  const BASE_DATA = {
+    2024: {
+      'Restaurangen':         [754,696,772,656,841,654,696,678,725,607,795,620],
+      'SMS-biljetter':        [557,458,484,331,265,184,143,197,240,484,593,827],
+      'Medlemmar – armband': [2949,2788,3096,2251,3388,3130,3581,3362,4210,3146,3299,3255]
+    },
+    2025: {
+      'Restaurangen/badbiljetter': [737,764,0,0,0,0,344,891,991,667,794,621],
+      'SMS/Swish-biljett':         [801,619,0,0,0,0,4,140,285,726,1052,1373],
+      'Medlemmar – armband':       [3231,2555,0,0,0,0,1524,2134,2339,1552,1400,1000],
+      'Medlemmar – Wonder':        [0,0,0,0,0,0,120,1359,1729,1993,2443,2513]
+    },
+    2026: {
+      'Restaurangen/badbiljetter': [643,665,600,null,null,null,null,null,null,null,null,null],
+      'SMS/Swish-biljetter':       [1114,751,1006,913,null,null,null,null,null,null,null,null],
+      'Medlemmar – armband':       [492,119,95,90,null,null,null,null,null,null,null,null],
+      'Medlemmar – Wonder':        [2627,2445,3663,3293,null,null,null,null,null,null,null,null]
+    }
+  };
+
+  // Skriv till Firebase
+  const { getDatabase, ref, set } =
+    await import('https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js');
+  const db = getDatabase();
+  let ok = 0, fel = 0;
+
+  for (const [år, kategorier] of Object.entries(BASE_DATA)) {
+    for (const [kategori, månader] of Object.entries(kategorier)) {
+      const månadsObj = {};
+      månader.forEach((v, i) => { månadsObj[i] = v ?? 'null'; });
+      try {
+        await set(ref(db, \`bjerred-inpasseringar/data/\${år}/\${kategori}\`), månadsObj);
+        console.log(\`✅ \${år} / \${kategori}\`);
+        ok++;
+      } catch (e) {
+        console.error(\`❌ \${år} / \${kategori}: \${e.message}\`);
+        fel++;
+      }
+    }
+  }
+
+  await set(ref(db, 'bjerred-inpasseringar/senast-uppdaterad'),
+    new Date().toLocaleDateString('sv-SE'));
+
+  console.log(\`\\n✅ Migration klar! \${ok} kategorier skrivna, \${fel} fel.\`);
+})();`;
+
+  /* Kopiera till urklipp */
+  navigator.clipboard.writeText(skript).then(() => {
+    /* Visa bekräftelse och töm lösenordsfältet av säkerhetsskäl */
+    const bekr = document.getElementById('kopiera-bekräftelse');
+    bekr.style.display = 'block';
+    document.getElementById('lösenord-input').value = '';
+    setTimeout(() => { bekr.style.display = 'none'; }, 6000);
+  }).catch(() => {
+    alert('Kunde inte kopiera automatiskt – markera och kopiera skriptet manuellt.');
+  });
+}
+</script>
 
 <!-- ============================================================
      FIREBASE SDK – laddas som ES-modul (CDN, ingen byggprocess)
