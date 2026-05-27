@@ -69,8 +69,7 @@
       transition: background 0.15s;
     }
     .toggle-btn:hover { background: #1a6fa0; }
-    .toggle-btn .arrow { font-style: normal; transition: transform 0.2s; display: inline-block; }
-    .toggle-btn.open .arrow { transform: rotate(180deg); }
+
 
     .return-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
     .return-table th { background: var(--bg); padding: 0.7rem 1rem; text-align: left; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 2px solid var(--border); }
@@ -161,9 +160,7 @@
       Besökare som förekommer mer än en gång i datasetet.
       Samma anonymiserade kod = samma person.
     </p>
-    <button class="toggle-btn" id="toggle-btn" onclick="toggleReturning()">
-      <span class="arrow">▼</span> Visa återkommande besökare
-    </button>
+    <button class="toggle-btn" id="toggle-btn" onclick="toggleReturning()">▼ Visa återkommande besökare</button>
     <div id="return-table-container" style="display:none">Bearbetar data…</div>
   </div>
 
@@ -598,9 +595,11 @@ function toggleReturning() {
   }
 
   container.style.display = hidden ? 'block' : 'none';
-  btn.classList.toggle('open', hidden);
-  btn.querySelector('.arrow').textContent = hidden ? '▲' : '▼';
-  btn.childNodes[1].textContent = hidden ? ' Dölj återkommande besökare' : ' Visa återkommande besökare';
+
+  /* Uppdatera knapptext – enkel innerHTML utan nästlade spans */
+  btn.innerHTML = hidden
+    ? '▲ Dölj återkommande besökare'
+    : '▼ Visa återkommande besökare';
 }
 
 /* ================================================================
