@@ -6,3 +6,8 @@ SK/
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# Privata mappningsfiler – ska ALDRIG pushas till GitHub
+# Fil med riktiga namn för anonymiserade besökardata (Bjerreds Saltsjöbad m.fl.)
+PRIVAT-*.json
+PRIVAT-*.txt
