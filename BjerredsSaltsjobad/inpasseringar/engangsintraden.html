@@ -4,17 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Engångsinträden 2026 – Bjerreds Saltsjöbad</title>
-
-  <!--
-    Chart.js 4.4 – linjediagram för månadsvis besöksutveckling
-    Samma CDN-version som index.html
-  -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
   <style>
-    /* ============================================================
-       DESIGNSYSTEM – CSS-variabler (speglar index.html)
-       ============================================================ */
     :root {
       --primary:   #1a5276;
       --secondary: #2e86c1;
@@ -25,187 +16,74 @@
       --muted:     #7f8c8d;
       --border:    #dde1e7;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-    }
-
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
     a { color: var(--secondary); }
 
-    /* ---- Sidhuvud ---- */
-    header {
-      background: var(--primary);
-      color: #fff;
-      padding: 1.4rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    }
+    header { background: var(--primary); color: #fff; padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
     header h1 { font-size: 1.4rem; font-weight: 700; }
     header p  { font-size: 0.82rem; opacity: 0.78; margin-top: 0.15rem; }
 
-    /* ---- Navigeringsknappar ---- */
-    .btn-nav {
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }
-    .btn-nav:hover {
-      background: rgba(255,255,255,0.28);
-      text-decoration: none;
-      color: #fff;
-    }
+    .btn-nav { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: background 0.15s; white-space: nowrap; }
+    .btn-nav:hover { background: rgba(255,255,255,0.28); text-decoration: none; color: #fff; }
     .header-actions { display: flex; gap: 0.7rem; align-items: center; }
 
-    /* ---- Huvud-innehåll ---- */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-    }
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
 
-    /* ---- Sammanfattningskort ---- */
-    .summary-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
-      margin-bottom: 2rem;
-    }
-    .summary-card {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1.4rem 1.6rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      border-top: 4px solid var(--secondary);
-    }
+    .summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+    .summary-card { background: var(--card); border-radius: 10px; padding: 1.4rem 1.6rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-top: 4px solid var(--secondary); }
     .summary-card.green  { border-top-color: #27ae60; }
     .summary-card.accent { border-top-color: var(--accent); }
-    .summary-card .label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      margin-bottom: 0.4rem;
-    }
-    .summary-card .value {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--primary);
-      line-height: 1.1;
-    }
-    .summary-card .sub {
-      font-size: 0.77rem;
-      color: var(--muted);
-      margin-top: 0.3rem;
-    }
+    .summary-card .label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.4rem; }
+    .summary-card .value { font-size: 2.2rem; font-weight: 700; color: var(--primary); line-height: 1.1; }
+    .summary-card .sub   { font-size: 0.77rem; color: var(--muted); margin-top: 0.3rem; }
 
-    /* ---- Inforuta ---- */
-    .info-box {
-      background: #eaf4fb;
-      border-left: 4px solid var(--secondary);
-      border-radius: 6px;
-      padding: 0.9rem 1.2rem;
-      margin-bottom: 2rem;
-      font-size: 0.88rem;
-      color: var(--text);
-    }
+    .info-box { background: #eaf4fb; border-left: 4px solid var(--secondary); border-radius: 6px; padding: 0.9rem 1.2rem; margin-bottom: 2rem; font-size: 0.88rem; color: var(--text); }
     .info-box strong { color: var(--primary); }
 
-    /* ---- Diagramsektion ---- */
-    .chart-section {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1.6rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      margin-bottom: 2rem;
-    }
-    .chart-section h2 {
-      font-size: 1.1rem;
-      color: var(--primary);
-      margin-bottom: 0.3rem;
-    }
-    .chart-section .subtitle {
-      font-size: 0.83rem;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-    }
-    .chart-wrapper {
-      position: relative;
-      height: 360px;
-    }
+    .partial-note { background: #fef9e7; border-left: 4px solid #f39c12; border-radius: 6px; padding: 0.75rem 1.2rem; margin-bottom: 2rem; font-size: 0.85rem; color: #7d6608; }
 
-    /* ---- Återkommande besökare ---- */
-    .return-section {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1.6rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      margin-bottom: 2rem;
-    }
-    .return-section h2 {
-      font-size: 1.1rem;
-      color: var(--primary);
-      margin-bottom: 0.3rem;
-    }
-    .return-section .subtitle {
-      font-size: 0.83rem;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-    }
-    .return-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-    }
-    .return-table th {
-      background: var(--bg);
-      padding: 0.7rem 1rem;
-      text-align: left;
-      font-size: 0.78rem;
+    .chart-section { background: var(--card); border-radius: 10px; padding: 1.6rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 2rem; }
+    .chart-section h2 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.3rem; }
+    .chart-section .subtitle { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .chart-wrapper { position: relative; height: 360px; }
+
+    .return-section { background: var(--card); border-radius: 10px; padding: 1.6rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 2rem; }
+    .return-section h2 { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.3rem; }
+    .return-section .subtitle { font-size: 0.83rem; color: var(--muted); margin-bottom: 1rem; }
+
+    /* Knapp för att visa/dölja tabellen */
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--secondary);
+      color: #fff;
+      border: none;
+      padding: 0.55rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.87rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      border-bottom: 2px solid var(--border);
+      margin-bottom: 1.2rem;
+      transition: background 0.15s;
     }
-    .return-table td {
-      padding: 0.65rem 1rem;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
+    .toggle-btn:hover { background: #1a6fa0; }
+    .toggle-btn .arrow { font-style: normal; transition: transform 0.2s; display: inline-block; }
+    .toggle-btn.open .arrow { transform: rotate(180deg); }
+
+    .return-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .return-table th { background: var(--bg); padding: 0.7rem 1rem; text-align: left; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 2px solid var(--border); }
+    .return-table td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
     .return-table tr:hover td { background: #f7f9fc; }
     .return-table .code  { font-weight: 600; color: var(--primary); white-space: nowrap; }
     .return-table .count { text-align: center; font-weight: 700; color: var(--accent); }
     .return-table .dates { font-size: 0.80rem; color: var(--muted); }
 
-    /* ---- Sidfot ---- */
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.82rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      margin-top: 1rem;
-    }
+    footer { text-align: center; padding: 1.5rem; font-size: 0.82rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 1rem; }
     footer a { color: var(--muted); }
     .page-version { font-size: 0.72rem; opacity: 0.75; margin-top: 0.4rem; }
 
-    /* ---- Responsiv ---- */
     @media (max-width: 700px) {
       main { padding: 1rem; }
       .summary-cards { grid-template-columns: 1fr; }
@@ -220,7 +98,7 @@
 <header>
   <div>
     <h1>🌊 Bjerreds Saltsjöbad</h1>
-    <p>Engångsinträden 2026 – Besökarutveckling</p>
+    <p>Engångsinträden 2026 – 248 besökare t.o.m. 27 maj</p>
   </div>
   <div class="header-actions">
     <a href="index.html" class="btn-nav">← Inpasseringsstatistik</a>
@@ -229,19 +107,17 @@
 
 <main>
 
-  <!-- ============================================================
-       SAMMANFATTNINGSKORT – fylls dynamiskt av JavaScript
-       ============================================================ -->
+  <!-- Sammanfattningskort -->
   <div class="summary-cards">
     <div class="summary-card">
       <div class="label">Totalt sålda biljetter</div>
       <div class="value" id="card-total">–</div>
-      <div class="sub">Januari – maj 2026</div>
+      <div class="sub">1 jan – 27 maj 2026</div>
     </div>
     <div class="summary-card green">
       <div class="label">Unika besökare</div>
       <div class="value" id="card-unique">–</div>
-      <div class="sub">Distinkta anonymiserade namn</div>
+      <div class="sub">Distinkta anonymiserade koder</div>
     </div>
     <div class="summary-card accent">
       <div class="label">Återkommande besökare</div>
@@ -250,43 +126,45 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       INFORUTA – förklaring av datakälla och anonymisering
-       ============================================================ -->
-  <div class="info-box">
-    <strong>Om datan:</strong> Betalningsdatum används för månadsgruppering.
-    Namn är anonymiserade – varje unikt namn tilldelas en konsekvent kod
-    (Besökare 001, Besökare 002, …) i ordning av första förekomst i datasetet.
-    Samma kod = samma person. Dubbelposter samma datum kan avspegla att
-    en person köpt biljetter för sällskap registrerade under samma namn.
+  <!-- Notering om partiell maj-data -->
+  <div class="partial-note">
+    ⚠️ <strong>Maj är inte komplett:</strong> Datan täcker 1 januari – 27 maj 2026.
+    Majsiffran i diagrammet (149 biljetter) är alltså inte hela månaden – maj fortsätter.
   </div>
 
-  <!-- ============================================================
-       LINJEDIAGRAM – månadsvis besöksutveckling
-       Blå linje = totalt biljetter, grön = unika besökare per månad
-       ============================================================ -->
+  <!-- Förklaring av anonymisering -->
+  <div class="info-box">
+    <strong>Om datan och anonymiseringen:</strong>
+    Totalt <strong>248 biljetter</strong> såldes till <strong>185 unika besökare</strong> under perioden
+    1 januari – 27 maj 2026. Inga riktiga namn förekommer i denna fil – varje person är
+    ersatt med en permanent kod (B001–B185) som är konsekvent genom hela datasetet.
+    Samma kod = samma person. Den privata mappningen (kod ↔ namn) förvaras separat.
+  </div>
+
+  <!-- Linjediagram -->
   <div class="chart-section">
     <h2>Engångsinträden per månad – 2026</h2>
     <p class="subtitle">
       Heldragen blå linje = totalt sålda biljetter ·
-      Streckad grön linje = unika besökare (distinkt namn) per månad
+      Streckad grön linje = unika besökare (distinct kod) per månad ·
+      <em>Maj = t.o.m. 27 maj (ej hela månaden)</em>
     </p>
     <div class="chart-wrapper">
       <canvas id="engångsChart"></canvas>
     </div>
   </div>
 
-  <!-- ============================================================
-       ÅTERKOMMANDE BESÖKARE – tabell
-       Byggas dynamiskt av JavaScript nedan
-       ============================================================ -->
+  <!-- Återkommande besökare med dold tabell -->
   <div class="return-section">
     <h2>Återkommande besökare (anonymiserade)</h2>
     <p class="subtitle">
       Besökare som förekommer mer än en gång i datasetet.
-      Samma anonymiserade kod = samma person i hela listan.
+      Samma anonymiserade kod = samma person.
     </p>
-    <div id="return-table-container">Bearbetar data…</div>
+    <button class="toggle-btn" id="toggle-btn" onclick="toggleReturning()">
+      <span class="arrow">▼</span> Visa återkommande besökare
+    </button>
+    <div id="return-table-container" style="display:none">Bearbetar data…</div>
   </div>
 
 </main>
@@ -294,330 +172,322 @@
 <footer>
   Data: Bjerreds Saltsjöbad ·
   <a href="https://bjerredskallbadhus.se/" target="_blank" rel="noopener">bjerredskallbadhus.se</a>
-  <div class="page-version">📋 Engångsinträden 2026 · Senast uppdaterad: 2026-05-27</div>
+  <div class="page-version">📋 Engångsinträden 2026 · Uppdaterad: 2026-05-27 · Data t.o.m. 27 maj</div>
 </footer>
 
-<!-- Diskret GitHub-länk – nedre vänstra hörnet -->
 <a href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad"
    target="_blank" rel="noopener" title="Källkod på GitHub"
-   style="position:fixed;bottom:0.6rem;left:1rem;font-size:0.72rem;
-          color:#7f8c8d;text-decoration:none;opacity:0.65;
-          transition:opacity 0.2s;z-index:50;"
-   onmouseover="this.style.opacity='1'"
-   onmouseout="this.style.opacity='0.65'"
+   style="position:fixed;bottom:0.6rem;left:1rem;font-size:0.72rem;color:#7f8c8d;
+          text-decoration:none;opacity:0.65;transition:opacity 0.2s;z-index:50;"
+   onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.65'"
 >{ } GitHub</a>
 
 <script>
-/* ================================================================
-   RÅDATA – Engångsinträden 2026
-   Struktur: [ordernr, betalningsdatum, kundnamn]
-   Källa: Bokningssystemets exportfil.
-   Täcker: 2026-01-01 – 2026-05-27 (samtliga engångsinträden).
-   ================================================================ */
+/*
+ * ================================================================
+ *  ENGÅNGSINTRÄDEN 2026 – PRE-ANONYMISERAD DATA
+ *
+ *  Struktur: [ordernr, betalningsdatum, besökarkod]
+ *
+ *  Alla riktiga namn är ersatta med permanenta koder B001–B185.
+ *  Den privata mappningen (kod <-> namn) förvaras SEPARAT och
+ *  ska INTE läggas in i denna fil.
+ *
+ *  Nästa lediga kod för ny besökare: B186
+ *  Data täcker: 2026-01-01 – 2026-05-27
+ * ================================================================
+ */
 const ENGANGS_RAWDATA = [
 
   /* === Januari 2026 (17 poster) === */
-  [1001627,"2026-01-01","Ebba Jacobson"],
-  [1001628,"2026-01-01","Love Albertsson"],
-  [1001667,"2026-01-04","noah Hellman"],
-  [1001668,"2026-01-04","William Wallin"],
-  [1001670,"2026-01-04","Filip Carselid"],
-  [1001671,"2026-01-04","Matteo Alm"],
-  [1001672,"2026-01-04","Dante Nagell"],
-  [1001698,"2026-01-07","William Wallin"],
-  [1001822,"2026-01-19","Svitlana Olga Poliakova Saibel"],
-  [1001836,"2026-01-20","Henriette Malmström"],
-  [1001851,"2026-01-21","Ann-Marie Hölzer"],
-  [1001852,"2026-01-21","Ann-Marie Hölzer"],
-  [1001864,"2026-01-23","Anna Wilkens"],
-  [1001875,"2026-01-24","Ylva Landgren"],
-  [1001881,"2026-01-25","Waileth Persson"],
-  [1001882,"2026-01-25","Valentine Longinidis"],
-  [1001936,"2026-01-30","Ann Dryselius"],
+  [1001627,"2026-01-01","B001"],
+  [1001628,"2026-01-01","B002"],
+  [1001667,"2026-01-04","B003"],
+  [1001668,"2026-01-04","B004"],
+  [1001670,"2026-01-04","B005"],
+  [1001671,"2026-01-04","B006"],
+  [1001672,"2026-01-04","B007"],
+  [1001698,"2026-01-07","B004"],
+  [1001822,"2026-01-19","B008"],
+  [1001836,"2026-01-20","B009"],
+  [1001851,"2026-01-21","B010"],
+  [1001852,"2026-01-21","B010"],
+  [1001864,"2026-01-23","B011"],
+  [1001875,"2026-01-24","B012"],
+  [1001881,"2026-01-25","B013"],
+  [1001882,"2026-01-25","B014"],
+  [1001936,"2026-01-30","B015"],
 
   /* === Februari 2026 (13 poster) === */
-  [1001964,"2026-02-01","Viktor Rossi"],
-  [1001991,"2026-02-03","Ida von"],
-  [1002027,"2026-02-09","philina stoepel"],
-  [1002055,"2026-02-16","Bettina Mester de Parajd"],
-  [1002056,"2026-02-16","Arpad Mester de Parajd"],
-  [1002057,"2026-02-16","Ann Dryselius"],
-  [1002064,"2026-02-16","Alice Penanhoat"],
-  [1002065,"2026-02-16","Alice Penanhoat"],
-  [1002069,"2026-02-17","Svitlana Olga Poliakova Saibel"],
-  [1002085,"2026-02-21","Emma Borglin"],
-  [1002100,"2026-02-23","Julia Ernst"],
-  [1002101,"2026-02-23","Julia Ernst"],
-  [1002117,"2026-02-27","Ann Dryselius"],
+  [1001964,"2026-02-01","B016"],
+  [1001991,"2026-02-03","B017"],
+  [1002027,"2026-02-09","B018"],
+  [1002055,"2026-02-16","B019"],
+  [1002056,"2026-02-16","B020"],
+  [1002057,"2026-02-16","B015"],
+  [1002064,"2026-02-16","B021"],
+  [1002065,"2026-02-16","B021"],
+  [1002069,"2026-02-17","B008"],
+  [1002085,"2026-02-21","B022"],
+  [1002100,"2026-02-23","B023"],
+  [1002101,"2026-02-23","B023"],
+  [1002117,"2026-02-27","B015"],
 
   /* === Mars 2026 (38 poster) === */
-  [1002146,"2026-03-02","Anna Silan"],
-  [1002145,"2026-03-02","Lara Pitzek"],
-  [1002147,"2026-03-02","Mara Peschke"],
-  [1002149,"2026-03-02","Maja Runde"],
-  [1002148,"2026-03-02","Julia Stegemann"],
-  [1002150,"2026-03-02","Sophia Mettler"],
-  [1002154,"2026-03-04","Stefan Åström"],
-  [1002156,"2026-03-04","Zofia Korbasiewicz"],
-  [1002157,"2026-03-05","Holger Svensson"],
-  [1002158,"2026-03-05","Axel Alvén"],
-  [1002165,"2026-03-06","Stefan Åström"],
-  [1002180,"2026-03-08","William Wallin"],
-  [1002189,"2026-03-09","Stefan Åström"],
-  [1002191,"2026-03-09","Ebba Lindgren"],
-  [1002195,"2026-03-11","Eva Asu"],
-  [1002196,"2026-03-11","Robin Whitty"],
-  [1002202,"2026-03-13","Charles Hodgdon"],
-  [1002210,"2026-03-15","Maja Runde"],
-  [1002218,"2026-03-17","Eva Asu"],
-  [1002219,"2026-03-17","Andreas Ahlstrand"],
-  [1002220,"2026-03-17","Stefan Åström"],
-  [1002221,"2026-03-17","Sabine Schober"],
-  [1002228,"2026-03-20","Elena Ledeneva"],
-  [1002230,"2026-03-21","Daniela Silan"],
-  [1002229,"2026-03-21","Anna Silan"],
-  [1002232,"2026-03-22","Julia Stegemann"],
-  [1002233,"2026-03-22","Lukas Grießmann"],
-  [1002240,"2026-03-24","Britta Regling"],
-  [1002241,"2026-03-24","Britta Regling"],
-  [1002243,"2026-03-24","Louba Meimaris"],
-  [1002244,"2026-03-24","Louba Meimaris"],
-  [1002247,"2026-03-25","Fabiana Ivanovski"],
-  [1002248,"2026-03-25","Isabel Erb"],
-  [1002264,"2026-03-30","Sabine Schober"],
-  [1002265,"2026-03-30","Niki Seifert"],
-  [1002277,"2026-03-31","Kyra Heisgen"],
-  [1002278,"2026-03-31","Kyra Heisgen"],
-  [1002279,"2026-03-31","Kyra Heisgen"],
+  [1002146,"2026-03-02","B024"],
+  [1002145,"2026-03-02","B025"],
+  [1002147,"2026-03-02","B026"],
+  [1002149,"2026-03-02","B027"],
+  [1002148,"2026-03-02","B028"],
+  [1002150,"2026-03-02","B029"],
+  [1002154,"2026-03-04","B030"],
+  [1002156,"2026-03-04","B031"],
+  [1002157,"2026-03-05","B032"],
+  [1002158,"2026-03-05","B033"],
+  [1002165,"2026-03-06","B030"],
+  [1002180,"2026-03-08","B004"],
+  [1002189,"2026-03-09","B030"],
+  [1002191,"2026-03-09","B034"],
+  [1002195,"2026-03-11","B035"],
+  [1002196,"2026-03-11","B036"],
+  [1002202,"2026-03-13","B037"],
+  [1002210,"2026-03-15","B027"],
+  [1002218,"2026-03-17","B035"],
+  [1002219,"2026-03-17","B038"],
+  [1002220,"2026-03-17","B030"],
+  [1002221,"2026-03-17","B039"],
+  [1002228,"2026-03-20","B040"],
+  [1002230,"2026-03-21","B041"],
+  [1002229,"2026-03-21","B024"],
+  [1002232,"2026-03-22","B028"],
+  [1002233,"2026-03-22","B042"],
+  [1002240,"2026-03-24","B043"],
+  [1002241,"2026-03-24","B043"],
+  [1002243,"2026-03-24","B044"],
+  [1002244,"2026-03-24","B044"],
+  [1002247,"2026-03-25","B045"],
+  [1002248,"2026-03-25","B046"],
+  [1002264,"2026-03-30","B039"],
+  [1002265,"2026-03-30","B047"],
+  [1002277,"2026-03-31","B048"],
+  [1002278,"2026-03-31","B048"],
+  [1002279,"2026-03-31","B048"],
 
   /* === April 2026 (31 poster) === */
-  [1002289,"2026-04-01","Helena Rycicka"],
-  [1002290,"2026-04-01","Mara Peschke"],
-  [1002304,"2026-04-03","Hussein Elkhafaji"],
-  [1002305,"2026-04-03","Komel Faleh"],
-  [1002320,"2026-04-06","Sophia Mettler"],
-  [1002321,"2026-04-06","Niklas Brunner"],
-  [1002323,"2026-04-06","Katerina Malina"],
-  [1002322,"2026-04-06","Dominik Brunner"],
-  [1002325,"2026-04-06","Maja Runde"],
-  [1002324,"2026-04-06","Anna Helmel"],
-  [1002345,"2026-04-09","Fabian Slamanig"],
-  [1002344,"2026-04-09","Emil Zölß"],
-  [1002346,"2026-04-09","Jana Limberger"],
-  [1002355,"2026-04-10","Annika Dehnen"],
-  [1002356,"2026-04-10","Hussein Elkhafaji"],
-  [1002357,"2026-04-10","Komel Faleh"],
-  [1002365,"2026-04-12","philina stoepel"],
-  [1002369,"2026-04-13","Ann-Marie Hölzer"],
-  [1002370,"2026-04-13","Hannes Schewe"],
-  [1002375,"2026-04-14","Julia Åkerblom"],
-  [1002376,"2026-04-14","Catarina Ekström"],
-  [1002378,"2026-04-15","Stefan Åström"],
-  [1002380,"2026-04-16","Ann-Marie Hölzer"],
-  [1002385,"2026-04-17","Linda Westergaard"],
-  [1002384,"2026-04-17","Hussein Elkhafaji"],
-  [1002386,"2026-04-17","Komel Faleh"],
-  [1002399,"2026-04-21","Marcus Kvist"],
-  [1002414,"2026-04-24","William Wallin"],
-  [1002443,"2026-04-30","Jan Matějíček"],
-  [1002444,"2026-04-30","Ondra Rosa"],
-  [1002445,"2026-04-30","Sharon Boyo"],
+  [1002289,"2026-04-01","B049"],
+  [1002290,"2026-04-01","B026"],
+  [1002304,"2026-04-03","B050"],
+  [1002305,"2026-04-03","B051"],
+  [1002320,"2026-04-06","B029"],
+  [1002321,"2026-04-06","B052"],
+  [1002323,"2026-04-06","B053"],
+  [1002322,"2026-04-06","B054"],
+  [1002325,"2026-04-06","B027"],
+  [1002324,"2026-04-06","B055"],
+  [1002345,"2026-04-09","B056"],
+  [1002344,"2026-04-09","B057"],
+  [1002346,"2026-04-09","B058"],
+  [1002355,"2026-04-10","B059"],
+  [1002356,"2026-04-10","B050"],
+  [1002357,"2026-04-10","B051"],
+  [1002365,"2026-04-12","B018"],
+  [1002369,"2026-04-13","B010"],
+  [1002370,"2026-04-13","B060"],
+  [1002375,"2026-04-14","B061"],
+  [1002376,"2026-04-14","B062"],
+  [1002378,"2026-04-15","B030"],
+  [1002380,"2026-04-16","B010"],
+  [1002385,"2026-04-17","B063"],
+  [1002384,"2026-04-17","B050"],
+  [1002386,"2026-04-17","B051"],
+  [1002399,"2026-04-21","B064"],
+  [1002414,"2026-04-24","B004"],
+  [1002443,"2026-04-30","B065"],
+  [1002444,"2026-04-30","B066"],
+  [1002445,"2026-04-30","B067"],
 
-  /* === Maj 2026 (149 poster) === */
-  [1002447,"2026-05-01","Simon Jakobsson"],
-  [1002451,"2026-05-01","Johan Sander"],
-  [1002453,"2026-05-01","Sanae Maass"],
-  [1002508,"2026-05-02","Meryem Uzun"],
-  [1002509,"2026-05-02","Sabine Schober"],
-  [1002511,"2026-05-03","Leonard De Causmaecker"],
-  [1002512,"2026-05-03","Helena Salomon"],
-  [1002513,"2026-05-03","Whui-Mei Yeo"],
-  [1002514,"2026-05-03","Jacob Oldenborg"],
-  [1002515,"2026-05-03","Philip Aller"],
-  [1002517,"2026-05-03","Vladymir Vovk"],
-  [1002518,"2026-05-03","Anja Tornbo"],
-  [1002519,"2026-05-03","Yulia Abelin"],
-  [1002531,"2026-05-05","Nico Stubbe"],
-  [1002533,"2026-05-05","Sophie Bosbach"],
-  [1002534,"2026-05-05","chelsea kenneally"],
-  [1002532,"2026-05-05","Helena Rycicka"],
-  [1002535,"2026-05-05","Amelie Sibillin"],
-  [1002537,"2026-05-06","Cecilia Sand"],
-  [1002539,"2026-05-06","Nico Stubbe"],
-  [1002542,"2026-05-07","Nico Stubbe"],
-  [1002543,"2026-05-07","Mårten Niklasson"],
-  [1002544,"2026-05-07","Albert Niklasson"],
-  [1002545,"2026-05-07","Axel Niklasson"],
-  [1002546,"2026-05-07","Torkel Niklasson"],
-  [1002548,"2026-05-07","Joel Niklasson"],
-  [1002551,"2026-05-08","Simon Jakobsson"],
-  [1002552,"2026-05-08","cecilia wohltat"],
-  [1002553,"2026-05-08","Jana Ematinger"],
-  [1002554,"2026-05-08","Sabine Schober"],
-  [1002555,"2026-05-08","Patrick Lindblom"],
-  [1002559,"2026-05-09","Sara Bianchi"],
-  [1002560,"2026-05-09","Daniel Myhrman"],
-  [1002561,"2026-05-09","daniel smedberg"],
-  [1002562,"2026-05-09","Arvid Wernberg"],
-  [1002563,"2026-05-09","Oskar Johansson"],
-  [1002564,"2026-05-09","Julia Olsson"],
-  [1002565,"2026-05-09","Oscar Rengbrandt"],
-  [1002567,"2026-05-09","Alvin Rengbrandt"],
-  [1002569,"2026-05-09","Victoria Moore"],
-  [1002571,"2026-05-09","Olga Alilovic"],
-  [1002572,"2026-05-10","Anne Udén"],
-  [1002577,"2026-05-10","Anne Udén"],
-  [1002578,"2026-05-10","Nils Öster"],
-  [1002579,"2026-05-10","Caroline Klintevall"],
-  [1002580,"2026-05-10","Leonard De Causmaecker"],
-  [1002588,"2026-05-10","Sanae Maass"],
-  [1002589,"2026-05-10","Jonathan Smith"],
-  [1002590,"2026-05-10","Laura Jing-Li"],
-  [1002591,"2026-05-10","Simon Wallin"],
-  [1002594,"2026-05-10","Hedvig Tham"],
-  [1002595,"2026-05-10","Klara Janlert"],
-  [1002596,"2026-05-10","Charlotte Kratzer"],
-  [1002597,"2026-05-10","Tobias Antonsson"],
-  [1002600,"2026-05-11","Johan Alvå"],
-  [1002601,"2026-05-11","Lilly Friebel"],
-  [1002602,"2026-05-11","Mimmi Sandström"],
-  [1002610,"2026-05-12","Mia Nideborn"],
-  [1002611,"2026-05-12","Lisa Boström"],
-  [1002612,"2026-05-12","Vladymir Vovk"],
-  [1002615,"2026-05-13","Bonnie Thornington"],
-  [1002616,"2026-05-13","Davichito Campana"],
-  [1002617,"2026-05-13","Jessica Peter"],
-  [1002618,"2026-05-13","Gertraud Mittermaier"],
-  [1002621,"2026-05-14","Alexander Bica"],
-  [1002622,"2026-05-14","Sami K"],
-  [1002623,"2026-05-14","Elias Alhar"],
-  [1002624,"2026-05-14","AIDAN MC CLEMENTS"],
-  [1002625,"2026-05-14","Mustafa Harun Bal"],
-  [1002626,"2026-05-14","magnus lanner"],
-  [1002627,"2026-05-14","Kalle Andersson"],
-  [1002630,"2026-05-14","Jon Westholm"],
-  [1002632,"2026-05-14","Anna Pustovoyt"],
-  [1002633,"2026-05-14","Nils Öster"],
-  [1002634,"2026-05-14","Nadine Chiad"],
-  [1002636,"2026-05-14","Kyra Heisgen"],
-  [1002637,"2026-05-14","Kyra Heisgen"],
-  [1002638,"2026-05-14","Kyra Heisgen"],
-  [1002639,"2026-05-14","Kyra Heisgen"],
-  [1002640,"2026-05-15","Veronica Ekdahl"],
-  [1002643,"2026-05-15","Stefan Molin"],
-  [1002644,"2026-05-15","Malin Hünger"],
-  [1002645,"2026-05-15","Roxana Ansari"],
-  [1002646,"2026-05-15","Shuang Liu"],
-  [1002647,"2026-05-15","Sofia Broomé"],
-  [1002648,"2026-05-15","Elvin Norlén"],
-  [1002650,"2026-05-15","Ulla Lundberg"],
-  [1002653,"2026-05-15","Nadine Chiad"],
-  [1002657,"2026-05-16","Angela Madden"],
-  [1002658,"2026-05-16","Viktor Barsk"],
-  [1002659,"2026-05-16","Emil Weitoft"],
-  [1002660,"2026-05-16","Arvid Wernberg"],
-  [1002661,"2026-05-16","Julia Olsson"],
-  [1002662,"2026-05-17","erik fransson"],
-  [1002664,"2026-05-17","erik fransson"],
-  [1002665,"2026-05-17","Anna Stafström"],
-  [1002666,"2026-05-17","Anna Jantoft"],
-  [1002667,"2026-05-17","Linnea Berggren"],
-  [1002668,"2026-05-17","Ingrid Larsson"],
-  [1002670,"2026-05-17","Ivar Gunnarsson"],
-  [1002671,"2026-05-17","Julia Olsson"],
-  [1002672,"2026-05-17","Arvid Wernberg"],
-  [1002675,"2026-05-17","Adrian Östlund"],
-  [1002676,"2026-05-17","Mikael Bundsen"],
-  [1002677,"2026-05-17","Hanna Bergström Talevska"],
-  [1002678,"2026-05-17","Elin Talevski"],
-  [1002679,"2026-05-17","August Borg"],
-  [1002680,"2026-05-17","Kajsa Nilsson"],
-  [1002683,"2026-05-18","Stefan Åström"],
-  [1002684,"2026-05-18","Liv-Sophia Gieseking"],
-  [1002685,"2026-05-18","Liv-Sophia Gieseking"],
-  [1002686,"2026-05-18","William Spetz"],
-  [1002691,"2026-05-18","Katarina Jonasson"],
-  [1002693,"2026-05-19","Anna Åberg"],
-  [1002694,"2026-05-19","Meredith Newton"],
-  [1002696,"2026-05-20","Johan Boström"],
-  [1002699,"2026-05-20","Catarina Ulveryd"],
-  [1002700,"2026-05-20","Inger Somerville"],
-  [1002706,"2026-05-22","Lisa Skevarp"],
-  [1002707,"2026-05-22","Yannick Kapelle"],
-  [1002708,"2026-05-22","Torkel Niklasson"],
-  [1002709,"2026-05-22","Yuliia Zheliezna"],
-  [1002711,"2026-05-23","Tobias Schweiger"],
-  [1002713,"2026-05-23","Sabine Griebel"],
-  [1002714,"2026-05-23","philina stoepel"],
-  [1002715,"2026-05-23","philina stoepel"],
-  [1002719,"2026-05-24","Annika Svensson"],
-  [1002720,"2026-05-24","Karin o Sven Wisti o Kjellström"],
-  [1002721,"2026-05-24","Maria Trejling"],
-  [1002725,"2026-05-24","Gwendoline Nalvarte"],
-  [1002726,"2026-05-24","annika tibblin"],
-  [1002729,"2026-05-24","Nils Öster"],
-  [1002731,"2026-05-24","Malin Schadt"],
-  [1002732,"2026-05-24","Maraija Lucia Magdalena Glasmacher"],
-  [1002733,"2026-05-24","Elin Talevski"],
-  [1002734,"2026-05-24","Hanna Bergström Talevska"],
-  [1002735,"2026-05-24","Christina Lindeberg"],
-  [1002736,"2026-05-24","Anna Hahre"],
-  [1002739,"2026-05-25","Katrín Rut Möller Magnúsdóttir"],
-  [1002740,"2026-05-25","Nadine Chiad"],
-  [1002742,"2026-05-25","Emma Major"],
-  [1002743,"2026-05-25","Christin Ekstrand Simryd"],
-  [1002744,"2026-05-25","Marcus Wallin"],
-  [1002746,"2026-05-26","OLGA KARKAVATLI"],
-  [1002750,"2026-05-26","Emma Thörnkvist"],
-  [1002756,"2026-05-27","Marcus Kvist"],
-  [1002757,"2026-05-27","Susanne Erlingson"],
-  [1002758,"2026-05-27","Thea Hartzell"],
-  [1002759,"2026-05-27","Tim Johansson"]
+  /* === Maj 2026, t.o.m. 27 maj (149 poster) === */
+  [1002447,"2026-05-01","B068"],
+  [1002451,"2026-05-01","B069"],
+  [1002453,"2026-05-01","B070"],
+  [1002508,"2026-05-02","B071"],
+  [1002509,"2026-05-02","B039"],
+  [1002511,"2026-05-03","B072"],
+  [1002512,"2026-05-03","B073"],
+  [1002513,"2026-05-03","B074"],
+  [1002514,"2026-05-03","B075"],
+  [1002515,"2026-05-03","B076"],
+  [1002517,"2026-05-03","B077"],
+  [1002518,"2026-05-03","B078"],
+  [1002519,"2026-05-03","B079"],
+  [1002531,"2026-05-05","B080"],
+  [1002533,"2026-05-05","B081"],
+  [1002534,"2026-05-05","B082"],
+  [1002532,"2026-05-05","B049"],
+  [1002535,"2026-05-05","B083"],
+  [1002537,"2026-05-06","B084"],
+  [1002539,"2026-05-06","B080"],
+  [1002542,"2026-05-07","B080"],
+  [1002543,"2026-05-07","B085"],
+  [1002544,"2026-05-07","B086"],
+  [1002545,"2026-05-07","B087"],
+  [1002546,"2026-05-07","B088"],
+  [1002548,"2026-05-07","B089"],
+  [1002551,"2026-05-08","B068"],
+  [1002552,"2026-05-08","B090"],
+  [1002553,"2026-05-08","B091"],
+  [1002554,"2026-05-08","B039"],
+  [1002555,"2026-05-08","B092"],
+  [1002559,"2026-05-09","B093"],
+  [1002560,"2026-05-09","B094"],
+  [1002561,"2026-05-09","B095"],
+  [1002562,"2026-05-09","B096"],
+  [1002563,"2026-05-09","B097"],
+  [1002564,"2026-05-09","B098"],
+  [1002565,"2026-05-09","B099"],
+  [1002567,"2026-05-09","B100"],
+  [1002569,"2026-05-09","B101"],
+  [1002571,"2026-05-09","B102"],
+  [1002572,"2026-05-10","B103"],
+  [1002577,"2026-05-10","B103"],
+  [1002578,"2026-05-10","B104"],
+  [1002579,"2026-05-10","B105"],
+  [1002580,"2026-05-10","B072"],
+  [1002588,"2026-05-10","B070"],
+  [1002589,"2026-05-10","B106"],
+  [1002590,"2026-05-10","B107"],
+  [1002591,"2026-05-10","B108"],
+  [1002594,"2026-05-10","B109"],
+  [1002595,"2026-05-10","B110"],
+  [1002596,"2026-05-10","B111"],
+  [1002597,"2026-05-10","B112"],
+  [1002600,"2026-05-11","B113"],
+  [1002601,"2026-05-11","B114"],
+  [1002602,"2026-05-11","B115"],
+  [1002610,"2026-05-12","B116"],
+  [1002611,"2026-05-12","B117"],
+  [1002612,"2026-05-12","B077"],
+  [1002615,"2026-05-13","B118"],
+  [1002616,"2026-05-13","B119"],
+  [1002617,"2026-05-13","B120"],
+  [1002618,"2026-05-13","B121"],
+  [1002621,"2026-05-14","B122"],
+  [1002622,"2026-05-14","B123"],
+  [1002623,"2026-05-14","B124"],
+  [1002624,"2026-05-14","B125"],
+  [1002625,"2026-05-14","B126"],
+  [1002626,"2026-05-14","B127"],
+  [1002627,"2026-05-14","B128"],
+  [1002630,"2026-05-14","B129"],
+  [1002632,"2026-05-14","B130"],
+  [1002633,"2026-05-14","B104"],
+  [1002634,"2026-05-14","B131"],
+  [1002636,"2026-05-14","B048"],
+  [1002637,"2026-05-14","B048"],
+  [1002638,"2026-05-14","B048"],
+  [1002639,"2026-05-14","B048"],
+  [1002640,"2026-05-15","B132"],
+  [1002643,"2026-05-15","B133"],
+  [1002644,"2026-05-15","B134"],
+  [1002645,"2026-05-15","B135"],
+  [1002646,"2026-05-15","B136"],
+  [1002647,"2026-05-15","B137"],
+  [1002648,"2026-05-15","B138"],
+  [1002650,"2026-05-15","B139"],
+  [1002653,"2026-05-15","B131"],
+  [1002657,"2026-05-16","B140"],
+  [1002658,"2026-05-16","B141"],
+  [1002659,"2026-05-16","B142"],
+  [1002660,"2026-05-16","B096"],
+  [1002661,"2026-05-16","B098"],
+  [1002662,"2026-05-17","B143"],
+  [1002664,"2026-05-17","B143"],
+  [1002665,"2026-05-17","B144"],
+  [1002666,"2026-05-17","B145"],
+  [1002667,"2026-05-17","B146"],
+  [1002668,"2026-05-17","B147"],
+  [1002670,"2026-05-17","B148"],
+  [1002671,"2026-05-17","B098"],
+  [1002672,"2026-05-17","B096"],
+  [1002675,"2026-05-17","B149"],
+  [1002676,"2026-05-17","B150"],
+  [1002677,"2026-05-17","B151"],
+  [1002678,"2026-05-17","B152"],
+  [1002679,"2026-05-17","B153"],
+  [1002680,"2026-05-17","B154"],
+  [1002683,"2026-05-18","B030"],
+  [1002684,"2026-05-18","B155"],
+  [1002685,"2026-05-18","B155"],
+  [1002686,"2026-05-18","B156"],
+  [1002691,"2026-05-18","B157"],
+  [1002693,"2026-05-19","B158"],
+  [1002694,"2026-05-19","B159"],
+  [1002696,"2026-05-20","B160"],
+  [1002699,"2026-05-20","B161"],
+  [1002700,"2026-05-20","B162"],
+  [1002706,"2026-05-22","B163"],
+  [1002707,"2026-05-22","B164"],
+  [1002708,"2026-05-22","B088"],
+  [1002709,"2026-05-22","B165"],
+  [1002711,"2026-05-23","B166"],
+  [1002713,"2026-05-23","B167"],
+  [1002714,"2026-05-23","B018"],
+  [1002715,"2026-05-23","B018"],
+  [1002719,"2026-05-24","B168"],
+  [1002720,"2026-05-24","B169"],
+  [1002721,"2026-05-24","B170"],
+  [1002725,"2026-05-24","B171"],
+  [1002726,"2026-05-24","B172"],
+  [1002729,"2026-05-24","B104"],
+  [1002731,"2026-05-24","B173"],
+  [1002732,"2026-05-24","B174"],
+  [1002733,"2026-05-24","B152"],
+  [1002734,"2026-05-24","B151"],
+  [1002735,"2026-05-24","B175"],
+  [1002736,"2026-05-24","B176"],
+  [1002739,"2026-05-25","B177"],
+  [1002740,"2026-05-25","B131"],
+  [1002742,"2026-05-25","B178"],
+  [1002743,"2026-05-25","B179"],
+  [1002744,"2026-05-25","B180"],
+  [1002746,"2026-05-26","B181"],
+  [1002750,"2026-05-26","B182"],
+  [1002756,"2026-05-27","B064"],
+  [1002757,"2026-05-27","B183"],
+  [1002758,"2026-05-27","B184"],
+  [1002759,"2026-05-27","B185"]
 ];
 
-/* ================================================================
-   STEG 1: ANONYMISERING
-   Varje unikt namn (normaliserat: trim + lowercase) tilldelas
-   en konsekvent kod i ordning av första förekomst i datasetet.
-   Samma kod = samma person i hela datasetet.
-   ================================================================ */
-const anonMap = {};
-let anonCounter = 0;
-
-ENGANGS_RAWDATA.forEach(([id, date, name]) => {
-  const key = name.trim().toLowerCase();
-  if (!(key in anonMap)) {
-    anonCounter++;
-    anonMap[key] = 'Besökare ' + String(anonCounter).padStart(3, '0');
-  }
-});
+/*
+ * Konverterar intern kod (t.ex. "B004") till visningsform "Besökare 004"
+ */
+function toDisplay(code) {
+  return code.replace(/^B(\d+)$/, 'Besökare $1');
+}
 
 /* ================================================================
-   STEG 2: MÅNADSAGGREGERING
-   monthlyCounts  = totalt antal biljetter per månad (0=jan)
-   monthlyUniqSets = unika besökare (distinct nyckel) per månad
+   MÅNADSAGGREGERING
+   Eftersom datan är pre-anonymiserad behövs inget mappningsbygge.
+   monthlyCounts  = totalt antal biljetter (poster) per månad
+   monthlyUniqSets = unika besökarkoder per månad
    ================================================================ */
 const monthlyCounts   = Array(12).fill(0);
 const monthlyUniqSets = Array(12).fill(null).map(() => new Set());
 
-ENGANGS_RAWDATA.forEach(([id, date, name]) => {
-  const m   = parseInt(date.substring(5, 7)) - 1;
-  const key = name.trim().toLowerCase();
+ENGANGS_RAWDATA.forEach(([id, date, code]) => {
+  const m = parseInt(date.substring(5, 7)) - 1;
   monthlyCounts[m]++;
-  monthlyUniqSets[m].add(key);
+  monthlyUniqSets[m].add(code);
 });
-
 const monthlyUnique = monthlyUniqSets.map(s => s.size);
 
 /* ================================================================
-   STEG 3: ÅTERKOMMANDE BESÖKARE
-   Samlar alla betalningsdatum per anonymiserad besökare.
-   Besökare med fler än en post räknas som "återkommande".
+   ÅTERKOMMANDE BESÖKARE
+   Samlar alla betalningsdatum per kod.
+   Koder med fler än en post är "återkommande".
    ================================================================ */
 const visitorDates = {};
-
-ENGANGS_RAWDATA.forEach(([id, date, name]) => {
-  const code = anonMap[name.trim().toLowerCase()];
+ENGANGS_RAWDATA.forEach(([id, date, code]) => {
   if (!visitorDates[code]) visitorDates[code] = [];
   visitorDates[code].push(date);
 });
@@ -627,24 +497,27 @@ const returning = Object.entries(visitorDates)
   .sort((a, b) => b[1].length - a[1].length);
 
 /* ================================================================
-   STEG 4: FYLL SAMMANFATTNINGSKORT
+   FYLL SAMMANFATTNINGSKORT
    ================================================================ */
+const uniqueCount = new Set(ENGANGS_RAWDATA.map(([id, date, code]) => code)).size;
 document.getElementById('card-total').textContent     = ENGANGS_RAWDATA.length.toLocaleString('sv-SE');
-document.getElementById('card-unique').textContent    = Object.keys(anonMap).length.toLocaleString('sv-SE');
+document.getElementById('card-unique').textContent    = uniqueCount.toLocaleString('sv-SE');
 document.getElementById('card-returning').textContent = returning.length;
 
 /* ================================================================
-   STEG 5: LINJEDIAGRAM MED CHART.JS
-   Visar bara de månader som faktiskt har data (jan–maj).
+   LINJEDIAGRAM
    ================================================================ */
 const MONTHS_SV = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
 
-const lastMonth = ENGANGS_RAWDATA.reduce((max, [id, date]) =>
+const lastMonth   = ENGANGS_RAWDATA.reduce((max, [id, date]) =>
   Math.max(max, parseInt(date.substring(5, 7)) - 1), 0);
 
 const chartLabels = MONTHS_SV.slice(0, lastMonth + 1);
 const chartTotal  = monthlyCounts.slice(0, lastMonth + 1);
 const chartUniq   = monthlyUnique.slice(0, lastMonth + 1);
+
+/* Lägg till "(t.o.m. 27)" på Maj-etiketten */
+chartLabels[chartLabels.length - 1] = 'Maj*';
 
 const ctx = document.getElementById('engångsChart').getContext('2d');
 new Chart(ctx, {
@@ -653,7 +526,6 @@ new Chart(ctx, {
     labels: chartLabels,
     datasets: [
       {
-        /* Heldragen blå linje – totalt antal sålda biljetter per månad */
         label: 'Sålda biljetter (totalt)',
         data: chartTotal,
         borderColor: '#2e86c1',
@@ -666,7 +538,6 @@ new Chart(ctx, {
         tension: 0.3
       },
       {
-        /* Streckad grön linje – unika besökare (distinct namn) per månad */
         label: 'Unika besökare',
         data: chartUniq,
         borderColor: '#27ae60',
@@ -686,18 +557,18 @@ new Chart(ctx, {
     maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
     plugins: {
-      legend: {
-        position: 'top',
-        labels: { boxWidth: 16, padding: 16, font: { size: 13 } }
-      },
+      legend: { position: 'top', labels: { boxWidth: 16, padding: 16, font: { size: 13 } } },
       tooltip: {
         callbacks: {
-          /* Extra rad i tooltip: visa diff (dubbelposter + återbesök) */
+          title: (items) => {
+            const label = items[0].label;
+            return label === 'Maj*' ? 'Maj (t.o.m. 27 maj)' : label;
+          },
           afterBody: (items) => {
             const tot  = items.find(i => i.datasetIndex === 0)?.raw ?? 0;
             const uniq = items.find(i => i.datasetIndex === 1)?.raw ?? 0;
             const diff = tot - uniq;
-            return diff > 0 ? [`Dubbelposter / återbesök: ${diff}`] : [];
+            return diff > 0 ? ['Dubbelposter / återbesök: ' + diff] : [];
           }
         }
       }
@@ -714,48 +585,62 @@ new Chart(ctx, {
 });
 
 /* ================================================================
-   STEG 6: BYGG TABELL ÖVER ÅTERKOMMANDE BESÖKARE
+   TOGGLE – VISA/DÖlJ TABELLEN
    ================================================================ */
-const container = document.getElementById('return-table-container');
+function toggleReturning() {
+  const container = document.getElementById('return-table-container');
+  const btn       = document.getElementById('toggle-btn');
+  const hidden    = container.style.display === 'none';
 
-if (returning.length === 0) {
-  container.innerHTML =
-    '<p style="color:var(--muted);font-style:italic">Inga återkommande besökare hittades.</p>';
-} else {
+  /* Bygg tabellen vid första öppning (lazy rendering) */
+  if (hidden && container.textContent === 'Bearbetar data…') {
+    buildReturningTable();
+  }
+
+  container.style.display = hidden ? 'block' : 'none';
+  btn.classList.toggle('open', hidden);
+  btn.querySelector('.arrow').textContent = hidden ? '▲' : '▼';
+  btn.childNodes[1].textContent = hidden ? ' Dölj återkommande besökare' : ' Visa återkommande besökare';
+}
+
+/* ================================================================
+   BYGG TABELL ÖVER ÅTERKOMMANDE BESÖKARE (anropas vid första klick)
+   ================================================================ */
+function buildReturningTable() {
+  const container = document.getElementById('return-table-container');
+
+  if (returning.length === 0) {
+    container.innerHTML = '<p style="color:var(--muted);font-style:italic">Inga återkommande besökare hittades.</p>';
+    return;
+  }
+
   const rows = returning.map(([code, dates]) => {
     const uniqueDates = [...new Set(dates)].sort();
+    const pattern = uniqueDates.length === 1
+      ? dates.length + ' biljetter, 1 datum'
+      : uniqueDates.length + ' olika datum';
 
-    /* Beskriv besöksmönstret */
-    let pattern;
-    if (uniqueDates.length === 1) {
-      pattern = `${dates.length} biljetter, 1 datum`;
-    } else {
-      pattern = `${uniqueDates.length} olika datum`;
-    }
-
-    return `<tr>
-      <td class="code">${code}</td>
-      <td class="count">${dates.length}</td>
-      <td>${pattern}</td>
-      <td class="dates">${uniqueDates.join(' · ')}</td>
-    </tr>`;
+    return '<tr>'
+      + '<td class="code">' + toDisplay(code) + '</td>'
+      + '<td class="count">' + dates.length + '</td>'
+      + '<td>' + pattern + '</td>'
+      + '<td class="dates">' + uniqueDates.join(' · ') + '</td>'
+      + '</tr>';
   });
 
-  container.innerHTML = `
-    <table class="return-table">
-      <thead>
-        <tr>
-          <th>Besökarkod</th>
-          <th style="text-align:center">Biljetter</th>
-          <th>Besöksmönster</th>
-          <th>Datum</th>
-        </tr>
-      </thead>
-      <tbody>${rows.join('')}</tbody>
-    </table>
-    <p style="margin-top:0.9rem;font-size:0.80rem;color:var(--muted)">
-      Totalt ${returning.length} besökare med 2 eller fler biljetter i datasetet.
-    </p>`;
+  container.innerHTML =
+    '<table class="return-table">'
+    + '<thead><tr>'
+    + '<th>Besökarkod</th>'
+    + '<th style="text-align:center">Biljetter</th>'
+    + '<th>Besöksmönster</th>'
+    + '<th>Datum</th>'
+    + '</tr></thead>'
+    + '<tbody>' + rows.join('') + '</tbody>'
+    + '</table>'
+    + '<p style="margin-top:0.9rem;font-size:0.80rem;color:var(--muted)">'
+    + 'Totalt ' + returning.length + ' besökare med 2 eller fler biljetter i datasetet.'
+    + '</p>';
 }
 </script>
 </body>
