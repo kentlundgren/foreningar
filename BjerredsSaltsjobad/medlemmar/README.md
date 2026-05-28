@@ -12,17 +12,19 @@
 
 ---
 
-Ett webbaserat system för att hantera och visualisera medlemsdata för Bjerreds Saltsjöbad.
+Ett webbaserat system för att hantera och visualisera medlemsstatistik för Bjerreds Saltsjöbad.
 Byggt med vanilla JavaScript, HTML och CSS – ingen byggprocess krävs.
 
 ## Beskrivning
 
 Systemet innehåller:
 
-- **Medlemsöversikt** – visa alla aktiva medlemmar
-- **Statistik och grafer** – visualisering av medlemsutveckling över tid
-- **Datahantering** – import och export av medlemsdata i JSON, CSV och Markdown
+- **Medlemsöversikt** – visualisering av aktiva medlemmar per månad
+- **Statistik och grafer** – interaktivt diagram med filter för år och period
 - **Responsiv design** – fungerar på desktop, tablet och mobil
+
+> **OBS – Personuppgifter:** Rådata och namnlistor från Wondr lagras
+> enbart lokalt och ingår inte i detta repo (se `.gitignore`).
 
 ## Aktuell statistik (maj 2026)
 
@@ -46,27 +48,21 @@ medlemmar/
 ├── privatadata.html                    # Hantering av privat data
 ├── brev_till_Wondr_260105.html         # Brev till Wondr (5 jan 2026, HTML)
 ├── brev_till_Wondr_260105.txt          # Brev till Wondr (5 jan 2026, text)
-├── nyamedlemmar.js                     # JavaScript för nya medlemmar
-├── kopiera_datafiler.ps1               # PowerShell-script för filkopiering
-│
-├── medlemsdata.json                    # Huvuddatafil (JSON)
-├── medlemsdata_rå.csv                  # Rådata i CSV-format
-├── medlemsdata_komplett.md             # Komplett medlemsdata (Markdown)
-├── medlemsdata_sammanfattning.md       # Sammanfattning av medlemsdata
-├── Subscription-Active-20251223.xlsx   # Excel-export, 23 dec 2025
+├── nyamedlemmar.js                     # JavaScript för trippelklick-funktion
+├── kopiera_datafiler.ps1               # PowerShell-script för lokal filkopiering
 │
 ├── aktiva_medlemmar_251223.jpg         # Graf: aktiva medlemmar dec 2025
 ├── ackumulerad_utveckling_2025_tom_251223.jpg  # Graf: ackumulerad utveckling
 ├── collaborators.jpg                   # Bild: medarbetare
 ├── git_autentisering.jpg               # Bild: Git-autentisering
 │
-├── data/                               # Äldre datafiler (dec 2025)
-│   ├── md_251226.json                  # Medlemsdata JSON, 26 dec 2025
-│   ├── md_komplett_251226.md           # Komplett data Markdown
-│   └── md_summary_251226.md            # Sammanfattning Markdown
-│
-├── .gitignore                          # Git ignore-fil
+├── .gitignore                          # Exkluderar datafiler med personuppgifter
 └── README.md                           # Denna fil
+
+# Följande filer lagras ENBART LOKALT (ingår ej i repot):
+#   medlemsdata.json, medlemsdata_rå.csv, medlemsdata_komplett.md,
+#   medlemsdata_sammanfattning.md, Subscription-Active-20251223.xlsx,
+#   data/md_251226.json, data/md_komplett_251226.md, data/md_summary_251226.md
 ```
 
 ## Komma igång
@@ -80,15 +76,16 @@ cd foreningar/BjerredsSaltsjobad/medlemmar
 
 Öppna sedan `index.html` direkt i webbläsaren – ingen lokal server krävs.
 
-## Uppdatera medlemsdata
-
-Medlemsdata finns i flera format och uppdateras manuellt:
-
-1. **JSON** (`medlemsdata.json`) – används av webbapplikationen
-2. **CSV** (`medlemsdata_rå.csv`) – råexport från Wondr
-3. **Markdown** (`medlemsdata_komplett.md`, `medlemsdata_sammanfattning.md`) – läsbar sammanfattning
+> **Datafiler med namn:** Dessa ingår inte i repot och måste kopieras
+> separat till din lokala klon om du vill använda trippelklick-funktionen
+> för att visa enskilda medlemmar per månad.
 
 ## Versionshistorik
+
+- **v3.1** (2026-05-28)
+  - Datafiler med personuppgifter borttagna från GitHub
+  - Lagras nu enbart lokalt, exkluderade via `.gitignore`
+  - README uppdaterad: beskrivning och projektstruktur justerade
 
 - **v3.0** (2026-05-28)
   - Mappen flyttad till `foreningar/BjerredsSaltsjobad/medlemmar`
