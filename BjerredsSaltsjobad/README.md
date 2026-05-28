@@ -18,10 +18,16 @@ BjerredsSaltsjobad/
 │   ├── skylt.html           ← Entréskylt på svenska (A4/A5-utskrift)
 │   ├── skylt_eng.html       ← Entréskylt på engelska (A4/A5-utskrift)
 │   └── gammal_skylt.jpg     ← Foto på den gamla fysiska skylten vid grinden
-└── inpasseringar/           ← Inpasseringsstatistik
-    ├── index.html           ← Webbapp med diagram och månadsvis statistik (Chart.js)
-    ├── data.html            ← Redigerbar datatabell kopplad till Firebase Realtime Database
-    └── databas.html         ← Arbetsdokument: Firebase-checklista, config, migrationsskript
+├── inpasseringar/           ← Inpasseringsstatistik och datahantering
+│   ├── index.html           ← Webbapp med diagram och månadsvis statistik (Chart.js)
+│   ├── data.html            ← Redigerbar datatabell kopplad till Firebase Realtime Database
+│   ├── engangsintraden.html ← Linjediagram: engångsinträden 2026 (anonymiserade)
+│   └── databas.html         ← Arbetsdokument: Firebase-checklista, config, migrationsskript
+└── medlemmar/               ← Medlemsstatistik och visualisering
+    ├── index.html           ← Interaktivt diagram: nyregistreringar och ackumulerad tillväxt
+    ├── GitHub.html          ← Guide för Git och GitHub
+    ├── dataformat.html      ← Information om dataformat
+    └── privatadata.html     ← Hantering av privat data
 ```
 
 ---
@@ -52,18 +58,20 @@ Webbapp för att visualisera och administrera inpasseringsstatistik.
 
 ### data.html – Redigerbar tabell (Firebase-kopplad)
 
-Det här är hela poängen med Firebase-backenden: **flera personer på olika enheter och platser kan uppdatera data direkt i webbläsaren** – utan att behöva installera någon app eller ha tillgång till källkoden. En inpasseringsansvarig kan lägga in månadens siffror från sin mobil, en annan från sin dator, och alla ser ändringarna direkt.
+Det här är hela poängen med Firebase-backenden: **flera personer på olika enheter och platser kan uppdatera data direkt i webbläsaren** – utan att behöva installera någon app eller ha tillgång till källkoden.
 
 - Excel-liknande tabellvy med inline-redigering per cell
 - Data läses från **Firebase Realtime Database** via `onValue()` – uppdateras live för alla öppna flikar
 - Skrivning kräver inloggning (Firebase Authentication, e-post/lösenord)
-- Inloggningsmodal öppnas automatiskt när en icke-inloggad användare klickar på en cell
-- Länken "Glömt lösenordet?" i inloggningsrutan skickar ett återställningsmail – nya användare kan sätta sitt eget lösenord utan hjälp av administratören
 - `BASE_DATA` (hårdkodad) används som fallback om Firebase inte kan nås
 - Grön statusdot i headern visar att Firebase-anslutning är aktiv
 
-**Bjuda in nya användare:**
-Administratören klickar på knappen **✉ Bjud in** längst ned till vänster på sidan, fyller i namn och e-postadress, och får ett färdigt välkomstbrev att kopiera och skicka. Nya användare registreras i Firebase Console (Authentication → Users → Add user).
+### engangsintraden.html – Engångsinträden 2026
+
+- Linjediagram över engångsinträden per månad (jan–maj 2026)
+- Besökarnamn anonymiserade med koder (B001, B002 …)
+- Visar återkommande besökare via valbar tabell
+- Data t.o.m. 27 maj 2026 (248 besök totalt)
 
 ### Viktig datakontext
 
@@ -72,6 +80,33 @@ Administratören klickar på knappen **✉ Bjud in** längst ned till vänster p
 - **2025**: Nytt system **Wondr** lanserades juli 2025 → ny kategori från jul 2025
 - **2026**: Armband fasades ut 1 februari 2026
 - **2026 april**: Restaurangen och Armband saknas (null) – väntar på indata
+
+---
+
+## medlemmar/ – Medlemsstatistik
+
+Webbapp för att visualisera tillväxten av aktiva medlemmar registrerade i Wondr.
+
+**Live-sida:** https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/medlemmar/
+
+- Interaktivt diagram: nyregistreringar per månad och ackumulerad tillväxt
+- Filter för år (2025 / 2026 / hela perioden)
+- Uppdelning per typ: familjemedlemskap och enskilt medlemskap
+- Trippelklick på stapel visar förnamn + initial för den månaden (nov 2025 hårdkodat; övriga månader kräver lokal datafil)
+
+> **OBS – Personuppgifter:** Rådata och namnlistor från Wondr lagras
+> enbart lokalt och ingår inte i detta repo (se `.gitignore` i `medlemmar/`).
+
+### Aktuell statistik (maj 2026)
+
+| Typ | Antal |
+|-----|-------|
+| Familjemedlemskap | 446 |
+| Enskilda medlemskap | 884 |
+| **Totalt** | **1 330** |
+| Netto nya efter bastuöppning (juli 2025) | 773 |
+
+Källa: [Wondr Subscribers/Count2](https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2) *(kräver inloggning)*
 
 ---
 
@@ -105,4 +140,4 @@ Inpasseringsdata lagras i **Firebase Realtime Database** (projekt: `skylt-e0c45`
 
 ---
 
-## Senast uppdaterad: 2026-05-15
+## Senast uppdaterad: 2026-05-28
