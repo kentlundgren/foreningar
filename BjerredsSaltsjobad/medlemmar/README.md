@@ -1,173 +1,30 @@
-# 🏛️ Bjerred Medlemmar
+# Bjerreds Saltsjöbad – Medlemmar
 
-## 🔗 Direktlänkar
+*Senast uppdaterad: 2026-05-28*
+
+## Direktlänkar
 
 | Sida | Länk |
 |------|------|
-| 📊 **Live-sidan (statistik)** | [kentlundgren.github.io/Bjerred-medlemmar](https://kentlundgren.github.io/Bjerred-medlemmar/) |
-| 📚 **Git & GitHub-guide** | [GitHub.html (live)](https://kentlundgren.github.io/Bjerred-medlemmar/GitHub.html) |
-| 💻 **GitHub-repo (källkod)** | [github.com/kentlundgren/Bjerred-medlemmar](https://github.com/kentlundgren/Bjerred-medlemmar/tree/main) |
+| Live-sidan (statistik) | https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/medlemmar/ |
+| Git & GitHub-guide | https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/medlemmar/GitHub.html |
+| GitHub-repo (källkod) | https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad/medlemmar |
 
 ---
 
-Ett webbaserat medlemshanteringssystem för Bjerred, utvecklat med vanilla JavaScript, HTML och CSS.
+Ett webbaserat system för att hantera och visualisera medlemsdata för Bjerreds Saltsjöbad.
+Byggt med vanilla JavaScript, HTML och CSS – ingen byggprocess krävs.
 
-## 📋 Beskrivning
+## Beskrivning
 
-Detta projekt är ett komplett system för att hantera och visualisera medlemsdata. Det inkluderar:
+Systemet innehåller:
 
-- **Medlemsöversikt** - Visa alla aktiva medlemmar
-- **Statistik och grafer** - Visualisering av medlemsutveckling över tid
-- **Datahantering** - Import och export av medlemsdata i olika format (JSON, CSV, Markdown)
-- **Responsiv design** - Fungerar på desktop, tablet och mobil
+- **Medlemsöversikt** – visa alla aktiva medlemmar
+- **Statistik och grafer** – visualisering av medlemsutveckling över tid
+- **Datahantering** – import och export av medlemsdata i JSON, CSV och Markdown
+- **Responsiv design** – fungerar på desktop, tablet och mobil
 
-## 🚀 Funktioner
-
-### Huvudfunktioner
-- ✅ Visa aktiva medlemmar med detaljerad information
-- ✅ Sök och filtrera medlemmar
-- ✅ Statistik över medlemsutveckling
-- ✅ Grafer för visuell representation
-- ✅ Export av data till olika format
-- ✅ Responsiv design för alla enheter
-
-### Dataformat som stöds
-- JSON (medlemsdata.json)
-- CSV (medlemsdata_rå.csv)
-- Markdown (md_komplett_251226.md, md_summary_251226.md)
-
-## 📁 Projektstruktur
-
-```
-medlemmar/
-│
-├── index.html              # Huvudfil med all funktionalitet
-├── medlemmar.html          # Alternativ vy för medlemmar
-├── dataformat.html         # Information om dataformat
-├── privatadata.html        # Hantering av privat data
-│
-├── data/                   # Datamapp
-│   ├── md_251226.json     # Medlemsdata i JSON-format
-│   ├── md_komplett_251226.md
-│   └── md_summary_251226.md
-│
-├── medlemsdata.json        # Huvuddatafil
-├── medlemsdata_rå.csv      # Rådata i CSV-format
-├── nyamedlemmar.js         # JavaScript för nya medlemmar
-│
-├── .gitignore              # Git ignore-fil
-├── README.md               # Denna fil
-└── GitHub.html             # Guide för Git och GitHub
-```
-
-## 🛠️ Installation och användning
-
-### Förutsättningar
-- En modern webbläsare (Chrome, Firefox, Safari, Edge)
-- Ingen server krävs - projektet körs lokalt i webbläsaren
-
-### Steg för att komma igång
-
-1. **Klona repositoryt:**
-   ```bash
-   git clone https://github.com/kentlundgren/bjerred-medlemmar.git
-   ```
-
-2. **Navigera till projektmappen:**
-   ```bash
-   cd bjerred-medlemmar
-   ```
-
-3. **Öppna i webbläsare:**
-   - Dubbelklicka på `index.html`, eller
-   - Högerklicka och välj "Öppna med" → din webbläsare
-
-### Alternativ: Använd en lokal server
-
-För bästa resultat (särskilt om du arbetar med externa datafiler):
-
-```bash
-# Med Python 3
-python -m http.server 8000
-
-# Med Node.js (om du har http-server installerat)
-npx http-server
-
-# Med PHP
-php -S localhost:8000
-```
-
-Öppna sedan `http://localhost:8000` i din webbläsare.
-
-## 📊 Datahantering
-
-### Uppdatera medlemsdata
-
-Medlemsdata lagras i flera format:
-
-1. **JSON-format** (`medlemsdata.json`):
-   ```json
-   {
-     "medlemsnummer": "001",
-     "namn": "Namn Efternamn",
-     "datum": "2024-01-15",
-     "status": "aktiv"
-   }
-   ```
-
-2. **CSV-format** (`medlemsdata_rå.csv`):
-   ```csv
-   medlemsnummer,namn,datum,status
-   001,Namn Efternamn,2024-01-15,aktiv
-   ```
-
-### Importera ny data
-
-1. Uppdatera relevant datafil (JSON eller CSV)
-2. Ladda om sidan i webbläsaren
-3. Data uppdateras automatiskt
-
-## 🎨 Anpassning
-
-### Ändra färger och stil
-
-Alla stilar finns inline i HTML-filerna. Sök efter `<style>`-taggen för att anpassa:
-
-- Färger
-- Typsnitt
-- Layout
-- Responsiva brytpunkter
-
-### Lägga till nya funktioner
-
-Projektets JavaScript-kod är väl kommenterad. Sök efter kommentarer som:
-```javascript
-// UPPDATERING: Här skedde en ändring...
-```
-
-## 📈 Statistik och grafer
-
-Projektet använder följande för visualisering:
-- Bilder för grafer (genererade externt)
-- Dynamiska tabeller
-- Responsiva layouter
-
-Graferna finns som bildfiler:
-- `aktiva_medlemmar_251223.jpg`
-- `ackumulerad_utveckling_2025_tom_251223.jpg`
-
-## 🤝 Bidra till projektet
-
-Vill du bidra? Fantastiskt! Här är hur:
-
-1. Forka projektet
-2. Skapa en ny branch (`git checkout -b feature/ny-funktion`)
-3. Gör dina ändringar
-4. Committa (`git commit -m 'Lagt till ny funktion'`)
-5. Pusha till din branch (`git push origin feature/ny-funktion`)
-6. Öppna en Pull Request
-
-## 📊 Aktuell statistik (maj 2026)
+## Aktuell statistik (maj 2026)
 
 | Typ | Antal |
 |-----|-------|
@@ -176,64 +33,91 @@ Vill du bidra? Fantastiskt! Här är hur:
 | **Totalt** | **1 330** |
 | Netto nya efter bastuöppning (juli 2025) | 773 |
 
-Källa för 2026-data: [Wondr Subscribers/Count2](https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2) *(kräver inloggning)*
+Källa: [Wondr Subscribers/Count2](https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2) *(kräver inloggning)*
 
-## 📝 Versionshistorik
+## Projektstruktur
 
-- **v3.0** (28 maj 2026)
-  - Lagt till månadsdata för jan–maj 2026
+```
+medlemmar/
+│
+├── index.html                          # Huvudsida – statistik och visualisering
+├── GitHub.html                         # Guide för Git och GitHub
+├── dataformat.html                     # Information om dataformat
+├── privatadata.html                    # Hantering av privat data
+├── brev_till_Wondr_260105.html         # Brev till Wondr (5 jan 2026, HTML)
+├── brev_till_Wondr_260105.txt          # Brev till Wondr (5 jan 2026, text)
+├── nyamedlemmar.js                     # JavaScript för nya medlemmar
+├── kopiera_datafiler.ps1               # PowerShell-script för filkopiering
+│
+├── medlemsdata.json                    # Huvuddatafil (JSON)
+├── medlemsdata_rå.csv                  # Rådata i CSV-format
+├── medlemsdata_komplett.md             # Komplett medlemsdata (Markdown)
+├── medlemsdata_sammanfattning.md       # Sammanfattning av medlemsdata
+├── Subscription-Active-20251223.xlsx   # Excel-export, 23 dec 2025
+│
+├── aktiva_medlemmar_251223.jpg         # Graf: aktiva medlemmar dec 2025
+├── ackumulerad_utveckling_2025_tom_251223.jpg  # Graf: ackumulerad utveckling
+├── collaborators.jpg                   # Bild: medarbetare
+├── git_autentisering.jpg               # Bild: Git-autentisering
+│
+├── data/                               # Äldre datafiler (dec 2025)
+│   ├── md_251226.json                  # Medlemsdata JSON, 26 dec 2025
+│   ├── md_komplett_251226.md           # Komplett data Markdown
+│   └── md_summary_251226.md            # Sammanfattning Markdown
+│
+├── .gitignore                          # Git ignore-fil
+└── README.md                           # Denna fil
+```
+
+## Komma igång
+
+Projektet bor som en undermapp i repot `foreningar`:
+
+```bash
+git clone https://github.com/kentlundgren/foreningar.git
+cd foreningar/BjerredsSaltsjobad/medlemmar
+```
+
+Öppna sedan `index.html` direkt i webbläsaren – ingen lokal server krävs.
+
+## Uppdatera medlemsdata
+
+Medlemsdata finns i flera format och uppdateras manuellt:
+
+1. **JSON** (`medlemsdata.json`) – används av webbapplikationen
+2. **CSV** (`medlemsdata_rå.csv`) – råexport från Wondr
+3. **Markdown** (`medlemsdata_komplett.md`, `medlemsdata_sammanfattning.md`) – läsbar sammanfattning
+
+## Versionshistorik
+
+- **v3.0** (2026-05-28)
+  - Mappen flyttad till `foreningar/BjerredsSaltsjobad/medlemmar`
+  - README uppdaterad med korrekta URL:er och fullständig filförteckning
+  - Månadsdata för jan–maj 2026 tillagd
   - Nytt tidsfilter "År 2026" (satt som standard)
   - Y-axeln hanterar nu negativa nettoförändringar
   - Statistikkort uppdaterade med maj 2026-värden
-  - Länk till Wondr-rapporten tillagd i fotnoten
-  - Lokal mapp återkopplad till GitHub-repo (git init + merge + push)
 
-- **v2.1** (23 december 2025)
+- **v2.1** (2025-12-23)
   - Exkluderat "Registrering av familjemedlemmar" från statistiken
   - Uppdaterad fotnot med förklaring av exkluderade kategorier
 
-- **v2.0** (23 december 2025)
-  - Lagt till total-linje i ackumulerat diagram
-  - Ökat diagramhöjden för bättre läsbarhet
+- **v2.0** (2025-12-23)
+  - Total-linje i ackumulerat diagram
+  - Ökad diagramhöjd för bättre läsbarhet
   - Förbättrad responsiv design
 
-- **v1.0** (5 januari 2025)
-  - Initial release
-  - Grundläggande medlemshantering
-  - Statistik och visualisering
-  - Export till olika format
+- **v1.0** (2025-01-05)
+  - Initial release med grundläggande medlemshantering,
+    statistik, visualisering och export
 
-## 🐛 Kända problem
+## Länkar
 
-Inga kända problem för tillfället. Rapportera gärna om du hittar något!
-
-## 📄 Licens
-
-Detta projekt är öppen källkod och tillgängligt under MIT-licensen.
-
-## 👤 Författare
-
-**Kent Lundgren**
-- GitHub: [@kentlundgren](https://github.com/kentlundgren)
-- Email: lundgren.kent@gmail.com
-- Plats: Lund, Sverige
-
-## 🙏 Tack till
-
-- Bjerred-gemenskapen
-- Alla som bidragit med feedback
-
-## 📚 Dokumentation
-
-För mer detaljerad information om Git och GitHub-användning, se:
-- [GitHub.html](GitHub.html) - Komplett guide för Git och GitHub
-
-## 🔗 Länkar
-
-- [Projektets hemsida](https://kentlundgren.se)
-- [GitHub Repository](https://github.com/kentlundgren/Bjerred-medlemmar)
-- [Rapportera problem](https://github.com/kentlundgren/Bjerred-medlemmar/issues)
+- [Live-sida](https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/medlemmar/)
+- [GitHub-repo](https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad/medlemmar)
+- [Rapportera problem](https://github.com/kentlundgren/foreningar/issues)
+- [Wondr-rapport (kräver inloggning)](https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2)
 
 ---
 
-**Skapad med ❤️ i Lund, Sverige**
+**Kent Lundgren · Lund, Sverige · [@kentlundgren](https://github.com/kentlundgren)**
