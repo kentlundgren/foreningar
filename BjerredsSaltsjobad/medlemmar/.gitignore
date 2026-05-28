@@ -1,0 +1,101 @@
+# .gitignore för Bjerred Medlemmar
+# Skapad: 5 januari 2025
+# 
+# Denna fil talar om för Git vilka filer som INTE ska versionshanteras.
+# Varför? För att undvika att ladda upp:
+# - Temporära filer
+# - Känslig information
+# - Stora genererade filer
+# - OS-specifika filer
+
+# ============================================
+# Windows specifika filer
+# ============================================
+# Thumbs.db skapas av Windows för miniatyrbilder
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Desktop.ini innehåller mappinställningar
+Desktop.ini
+
+# Windows shortcuts
+*.lnk
+
+# ============================================
+# macOS specifika filer (om du använder Mac)
+# ============================================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ============================================
+# Backup-filer
+# ============================================
+*.bak
+*.backup
+*~
+*.swp
+*.swo
+
+# ============================================
+# Temporära filer
+# ============================================
+*.tmp
+*.temp
+*.log
+
+# ============================================
+# Editor-specifika filer
+# ============================================
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Cursor (din IDE)
+.cursor/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ============================================
+# Node.js (om du använder npm/node)
+# ============================================
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# ============================================
+# Känslig information (VIKTIGT!)
+# ============================================
+# Lägg aldrig upp filer med lösenord, API-nycklar etc.
+.env
+.env.local
+secrets.json
+config.private.js
+
+# ============================================
+# Projektspecifika filer att ignorera
+# ============================================
+# Om du har privata medlemsuppgifter som inte ska vara publika:
+# medlemsdata_privat.json
+# privata_anteckningar.txt
+
+# ============================================
+# Komprimerade filer (ofta stora)
+# ============================================
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# ============================================
+# Genererade filer
+# ============================================
+dist/
+build/
+*.min.js
+*.min.css

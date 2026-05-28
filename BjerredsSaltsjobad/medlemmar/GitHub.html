@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git & GitHub Guide - Bjerred Medlemmar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #555;
+            margin-top: 20px;
+        }
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .command {
+            color: #50fa7b;
+        }
+        .comment {
+            color: #6272a4;
+            font-style: italic;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .step {
+            background-color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .step-number {
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        ul {
+            margin: 10px 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+        .git-concept {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Git & GitHub Guide - Bjerred Medlemmar</h1>
+    
+    <div class="info">
+        <strong>📅 Skapad:</strong> 5 januari 2025 | <strong>Uppdaterad:</strong> 28 maj 2026<br>
+        <strong>📁 Projekt:</strong> Bjerred Medlemmar - Medlemshanteringssystem<br>
+        <strong>🌐 Live-sida:</strong> <a href="https://kentlundgren.github.io/Bjerred-medlemmar/" target="_blank">kentlundgren.github.io/Bjerred-medlemmar</a><br>
+        <strong>🔗 GitHub-repo:</strong> <a href="https://github.com/kentlundgren/Bjerred-medlemmar/tree/main" target="_blank">github.com/kentlundgren/Bjerred-medlemmar</a>
+    </div>
+
+    <h2>📚 Vad är Git och GitHub?</h2>
+    
+    <div class="git-concept">
+        <h3>Git (Versionshantering)</h3>
+        <p><strong>Git</strong> är ett versionshanteringssystem som låter dig:</p>
+        <ul>
+            <li>Spara historik över alla ändringar i ditt projekt</li>
+            <li>Gå tillbaka till tidigare versioner</li>
+            <li>Arbeta med olika versioner parallellt (branches)</li>
+            <li>Se vem som ändrat vad och när</li>
+        </ul>
+        
+        <h3>GitHub (Remote Repository)</h3>
+        <p><strong>GitHub</strong> är en molntjänst som:</p>
+        <ul>
+            <li>Lagrar dina Git-repositories online</li>
+            <li>Gör det möjligt att dela kod med andra</li>
+            <li>Fungerar som backup för din kod</li>
+            <li>Tillhandahåller verktyg för samarbete</li>
+        </ul>
+    </div>
+
+    <h2>🎯 Viktiga Git-begrepp</h2>
+    
+    <div class="step">
+        <h3>Repository (Repo)</h3>
+        <p>En mapp som Git övervakar. Innehåller alla dina filer plus en dold .git-mapp med historik.</p>
+        
+        <h3>Commit</h3>
+        <p>En "ögonblicksbild" av ditt projekt vid en viss tidpunkt. Varje commit har ett meddelande som beskriver ändringen.</p>
+        
+        <h3>Remote</h3>
+        <p>En version av ditt repository som finns på en server (t.ex. GitHub). Kallas ofta "origin".</p>
+        
+        <h3>Push</h3>
+        <p>Skicka dina lokala commits till remote repository (GitHub).</p>
+        
+        <h3>Pull</h3>
+        <p>Hämta ändringar från remote repository till din lokala dator.</p>
+        
+        <h3>Branch</h3>
+        <p>En parallell version av koden där du kan arbeta utan att påverka huvudversionen (main/master).</p>
+    </div>
+
+    <h2>🛠️ Steg-för-steg: Skapa lokalt och remote repository</h2>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Förberedelser</h3>
+        <p>Kontrollera att Git är installerat:</p>
+        <div class="code-block">
+<span class="command">git --version</span>
+<span class="comment"># Ska visa något som: git version 2.x.x</span>
+        </div>
+        
+        <p>Konfigurera Git (om inte redan gjort):</p>
+        <div class="code-block">
+<span class="command">git config --global user.name "Kent Lundgren"</span>
+<span class="command">git config --global user.email "lundgren.kent@gmail.com"</span>
+
+<span class="comment"># Kontrollera konfigurationen:</span>
+<span class="command">git config --list</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Skapa .gitignore-fil</h3>
+        <p>En .gitignore-fil talar om för Git vilka filer som INTE ska versionshanteras.</p>
+        
+        <div class="info">
+            <strong>Varför .gitignore?</strong><br>
+            Vissa filer ska inte laddas upp till GitHub:
+            <ul>
+                <li>Temporära filer</li>
+                <li>Känslig information (lösenord, API-nycklar)</li>
+                <li>Stora filer som genereras automatiskt</li>
+                <li>OS-specifika filer (t.ex. Thumbs.db på Windows)</li>
+            </ul>
+        </div>
+        
+        <p>Exempel på innehåll i .gitignore:</p>
+        <div class="code-block">
+<span class="comment"># Windows specifika filer</span>
+Thumbs.db
+Desktop.ini
+
+<span class="comment"># Backup-filer</span>
+*.bak
+*~
+
+<span class="comment"># Temporära filer</span>
+*.tmp
+*.temp
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Initiera lokalt Git-repository</h3>
+        <p>Navigera till projektmappen och initiera Git:</p>
+        <div class="code-block">
+<span class="comment"># Navigera till projektmappen</span>
+<span class="command">cd D:\VåraFiler_primära_på_SSD\Kent_dokument\Data\HTML\kentlundgren_se\program\Bjerred\medlemmar</span>
+
+<span class="comment"># Initiera Git-repository</span>
+<span class="command">git init</span>
+<span class="comment"># Skapar en dold .git-mapp som innehåller all versionshistorik</span>
+        </div>
+        
+        <div class="success">
+            <strong>✅ Resultat:</strong> Du har nu ett lokalt Git-repository!
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">4</span>Lägg till filer (Staging)</h3>
+        <p>Innan du kan commita måste du "stage" filerna (lägga till dem i staging area):</p>
+        <div class="code-block">
+<span class="comment"># Se status på alla filer</span>
+<span class="command">git status</span>
+
+<span class="comment"># Lägg till ALLA filer</span>
+<span class="command">git add .</span>
+
+<span class="comment"># ELLER lägg till specifika filer</span>
+<span class="command">git add index.html</span>
+<span class="command">git add medlemmar.html</span>
+
+<span class="comment"># Kontrollera vad som är staged</span>
+<span class="command">git status</span>
+        </div>
+        
+        <div class="info">
+            <strong>Staging Area:</strong> En mellanstation där du samlar de ändringar du vill inkludera i nästa commit.
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">5</span>Skapa första commit</h3>
+        <p>Spara en ögonblicksbild av projektet:</p>
+        <div class="code-block">
+<span class="command">git commit -m "Initial commit: Bjerred medlemshanteringssystem"</span>
+
+<span class="comment"># -m betyder "message" - alltid skriv ett beskrivande meddelande!</span>
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ Viktigt:</strong> Skriv alltid tydliga commit-meddelanden som beskriver VAD du ändrat och VARFÖR.
+        </div>
+        
+        <p>Exempel på bra commit-meddelanden:</p>
+        <ul>
+            <li>"Lagt till sökfunktion för medlemmar"</li>
+            <li>"Fixat bug i datumformatering"</li>
+            <li>"Uppdaterat medlemsdata med nya medlemmar"</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">6</span>Skapa repository på GitHub</h3>
+        <p>Nu ska vi skapa ett remote repository på GitHub:</p>
+        
+        <h4>Alternativ A: Via GitHub webbgränssnitt (Rekommenderas för nybörjare)</h4>
+        <ol>
+            <li>Gå till <a href="https://github.com" target="_blank">github.com</a> och logga in</li>
+            <li>Klicka på "+" i övre högra hörnet → "New repository"</li>
+            <li>Fyll i:
+                <ul>
+                    <li><strong>Repository name:</strong> Bjerred-medlemmar</li>
+                    <li><strong>Description:</strong> Medlemshanteringssystem för Bjerred</li>
+                    <li><strong>Public/Private:</strong> Public</li>
+                    <li><strong>VIKTIGT:</strong> Kryssa INTE i "Initialize with README" (vi har redan filer)</li>
+                </ul>
+            </li>
+            <li>Klicka "Create repository"</li>
+        </ol>
+        
+        <h4>Alternativ B: Via GitHub CLI (Kommandorad)</h4>
+        <div class="code-block">
+<span class="comment"># Installera GitHub CLI först (om inte redan installerat)</span>
+<span class="comment"># Ladda ner från: https://cli.github.com/</span>
+
+<span class="comment"># Logga in på GitHub</span>
+<span class="command">gh auth login</span>
+
+<span class="comment"># Skapa repository</span>
+<span class="command">gh repo create Bjerred-medlemmar --public --source=. --remote=origin</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">7</span>Koppla lokalt repo till GitHub (Remote)</h3>
+        <p>Efter att du skapat repositoryt på GitHub, koppla ihop det med ditt lokala repo:</p>
+        <div class="code-block">
+<span class="comment"># Lägg till remote (GitHub-adressen)</span>
+<span class="command">git remote add origin https://github.com/kentlundgren/Bjerred-medlemmar.git</span>
+
+<span class="comment"># Kontrollera att remote är tillagd</span>
+<span class="command">git remote -v</span>
+<span class="comment"># Ska visa:</span>
+<span class="comment"># origin  https://github.com/kentlundgren/Bjerred-medlemmar.git (fetch)</span>
+<span class="comment"># origin  https://github.com/kentlundgren/Bjerred-medlemmar.git (push)</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">8</span>Byt till main-branch (om nödvändigt)</h3>
+        <p>GitHub använder "main" som standardbranch, men Git kan skapa "master":</p>
+        <div class="code-block">
+<span class="comment"># Kontrollera vilken branch du är på</span>
+<span class="command">git branch</span>
+
+<span class="comment"># Om du är på "master", byt till "main"</span>
+<span class="command">git branch -M main</span>
+        </div>
+        
+        <div class="info">
+            <strong>📖 Master vs Main - Historik och förklaring:</strong><br><br>
+            
+            <strong>Historiskt (före 2020):</strong><br>
+            Git använde "master" som standardnamn för huvudbranchen när man körde <code>git init</code>.<br><br>
+            
+            <strong>Nu (efter 2020):</strong><br>
+            På grund av inkluderingsskäl har branschen gått över till att använda "main" istället för "master".
+            <ul>
+                <li><strong>GitHub:</strong> Använder "main" som standard för nya repositories sedan oktober 2020</li>
+                <li><strong>Git (lokal):</strong> Vissa versioner skapar fortfarande "master" som standard</li>
+                <li><strong>GitLab, Bitbucket:</strong> Använder också "main" numera</li>
+            </ul>
+            
+            <strong>Vad ska du göra?</strong><br>
+            För att undvika förvirring, använd alltid "main" för nya projekt. Om Git skapar "master", byt till "main" med kommandot ovan.
+            
+            <br><br>
+            <strong>Ändra Git's standardbranch-namn permanent:</strong>
+            <div class="code-block">
+<span class="comment"># Gör så att Git alltid skapar "main" istället för "master"</span>
+<span class="command">git config --global init.defaultBranch main</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">9</span>Pusha till GitHub</h3>
+        <p>Nu ska vi skicka upp all kod till GitHub:</p>
+        <div class="code-block">
+<span class="comment"># Första gången: pusha och sätt upstream</span>
+<span class="command">git push -u origin main</span>
+
+<span class="comment"># -u (--set-upstream) gör att framtida push/pull kan göras med bara "git push"</span>
+        </div>
+        
+        <div class="success">
+            <strong>🎉 Grattis!</strong> Din kod är nu på GitHub!<br>
+            Besök: <a href="https://github.com/kentlundgren/Bjerred-medlemmar" target="_blank">https://github.com/kentlundgren/Bjerred-medlemmar</a>
+        </div>
+    </div>
+
+    <h2>🔄 Dagligt arbetsflöde</h2>
+    
+    <div class="step">
+        <h3>När du gör ändringar i projektet:</h3>
+        <div class="code-block">
+<span class="comment"># 1. Se vilka filer som ändrats</span>
+<span class="command">git status</span>
+
+<span class="comment"># 2. Se exakt vad som ändrats</span>
+<span class="command">git diff</span>
+
+<span class="comment"># 3. Lägg till ändrade filer</span>
+<span class="command">git add .</span>
+<span class="comment"># ELLER specifika filer:</span>
+<span class="command">git add index.html medlemmar.html</span>
+
+<span class="comment"># 4. Commita med beskrivande meddelande</span>
+<span class="command">git commit -m "Beskrivning av ändringen"</span>
+
+<span class="comment"># 5. Pusha till GitHub</span>
+<span class="command">git push</span>
+        </div>
+    </div>
+
+    <h2>📖 Användbara Git-kommandon</h2>
+    
+    <div class="step">
+        <h3>Visa historik</h3>
+        <div class="code-block">
+<span class="comment"># Visa commit-historik</span>
+<span class="command">git log</span>
+
+<span class="comment"># Kompakt vy med en rad per commit</span>
+<span class="command">git log --oneline</span>
+
+<span class="comment"># Grafisk vy av branches</span>
+<span class="command">git log --oneline --graph --all</span>
+        </div>
+        
+        <h3>Ångra ändringar</h3>
+        <div class="code-block">
+<span class="comment"># Ångra ändringar i en fil (innan add)</span>
+<span class="command">git restore index.html</span>
+
+<span class="comment"># Ta bort fil från staging (efter add, innan commit)</span>
+<span class="command">git restore --staged index.html</span>
+
+<span class="comment"># Ändra senaste commit-meddelandet</span>
+<span class="command">git commit --amend -m "Nytt meddelande"</span>
+        </div>
+        
+        <h3>Branches</h3>
+        <div class="code-block">
+<span class="comment"># Visa alla branches</span>
+<span class="command">git branch</span>
+
+<span class="comment"># Skapa ny branch</span>
+<span class="command">git branch ny-funktion</span>
+
+<span class="comment"># Byt till en branch</span>
+<span class="command">git checkout ny-funktion</span>
+
+<span class="comment"># Skapa OCH byt till ny branch</span>
+<span class="command">git checkout -b ny-funktion</span>
+
+<span class="comment"># Merga branch till main</span>
+<span class="command">git checkout main</span>
+<span class="command">git merge ny-funktion</span>
+        </div>
+        
+        <h3>Hämta ändringar från GitHub</h3>
+        <div class="code-block">
+<span class="comment"># Hämta och merga ändringar</span>
+<span class="command">git pull</span>
+
+<span class="comment"># Bara hämta (utan att merga)</span>
+<span class="command">git fetch</span>
+        </div>
+    </div>
+
+    <h2>💡 Bra att veta</h2>
+    
+    <div class="step">
+        <h3>Commit ofta!</h3>
+        <p>Gör små, frekventa commits istället för stora sällsynta. Det gör det lättare att:</p>
+        <ul>
+            <li>Förstå vad som ändrats</li>
+            <li>Hitta när en bug introducerades</li>
+            <li>Ångra specifika ändringar</li>
+        </ul>
+        
+        <h3>Skriv bra commit-meddelanden</h3>
+        <p>Format:</p>
+        <div class="code-block">
+<span class="comment"># Kort sammanfattning (max 50 tecken)</span>
+<span class="command">git commit -m "Lagt till sökfunktion"</span>
+
+<span class="comment"># Med längre beskrivning</span>
+<span class="command">git commit -m "Lagt till sökfunktion
+
+Användare kan nu söka medlemmar på namn, 
+medlemsnummer eller datum. Sökningen är 
+case-insensitive och söker i realtid."</span>
+        </div>
+        
+        <h3>.gitignore är viktig!</h3>
+        <p>Lägg alltid till en .gitignore INNAN du gör första commit. Det förhindrar att oönskade filer laddas upp.</p>
+        
+        <h3>README.md</h3>
+        <p>En README-fil är första intrycket av ditt projekt. Den bör innehålla:</p>
+        <ul>
+            <li>Vad projektet gör</li>
+            <li>Hur man installerar/använder det</li>
+            <li>Eventuella krav (dependencies)</li>
+            <li>Kontaktinformation</li>
+        </ul>
+    </div>
+
+    <h2>🚨 Vanliga problem och lösningar</h2>
+    
+    <div class="step">
+        <h3>Problem: "fatal: not a git repository"</h3>
+        <p><strong>Lösning:</strong> Du är inte i en Git-mapp. Kör <code>git init</code> eller navigera till rätt mapp.</p>
+        
+        <h3>Problem: "fatal: remote origin already exists"</h3>
+        <p><strong>Lösning:</strong> Remote finns redan. Ta bort och lägg till igen:</p>
+        <div class="code-block">
+<span class="command">git remote remove origin</span>
+<span class="command">git remote add origin https://github.com/kentlundgren/Bjerred-medlemmar.git</span>
+        </div>
+        
+        <h3>Problem: Push nekad - Permission denied / Authentication failed</h3>
+        <p><strong>Exempel på fel:</strong></p>
+        <div class="code-block">
+<span class="comment">remote: Permission to kentlundgren/Bjerred-medlemmar.git denied to lundgren9.</span>
+<span class="comment">fatal: unable to access 'https://github.com/...': The requested URL returned error: 403</span>
+        </div>
+        
+        <p><strong>Orsak:</strong> Git försöker använda fel GitHub-konto (t.ex. "lundgren9" istället för "kentlundgren") för att pusha. Detta händer när Windows har sparat gamla inloggningsuppgifter.</p>
+        
+        <div class="info">
+            <strong>🔐 Hur Git-autentisering fungerar i Windows:</strong><br><br>
+            
+            <strong>1. Första gången du pushar:</strong><br>
+            Git ber dig logga in på GitHub (vanligtvis via en popup i webbläsaren).<br><br>
+            
+            <strong>2. Windows sparar dina credentials:</strong><br>
+            Efter lyckad inloggning sparar Windows dina autentiseringsuppgifter i <strong>Windows Credential Manager</strong> 
+            (Autentiseringshanteraren på svenska) under namnet: <code>git:https://github.com</code><br><br>
+            
+            <strong>3. Framtida push-kommandon:</strong><br>
+            Git använder automatiskt de sparade credentials - du behöver inte logga in igen.<br><br>
+            
+            <strong>⚠️ Problemet:</strong> Om du har flera GitHub-konton eller gamla credentials, kan Git använda fel konto!
+        </div>
+        
+        <p><strong>Se bild:</strong> Windows Credential Manager med sparade Git-credentials</p>
+        <img src="git_autentisering.jpg" alt="Windows Credential Manager med Git-autentiseringsuppgifter" style="max-width: 100%; border: 1px solid #ddd; border-radius: 5px; margin: 10px 0;">
+        
+        <h4>Lösning 1: Rensa Windows Credential Manager (Rekommenderas för att byta konto) ✅</h4>
+        <ol>
+            <li>Tryck på <strong>Windows-knappen</strong> och sök efter: <strong>"Autentiseringshanteraren"</strong> eller <strong>"Credential Manager"</strong></li>
+            <li>Klicka på <strong>"Windows-autentiseringsuppgifter"</strong> (Windows Credentials)</li>
+            <li>Leta efter poster som börjar med <strong>"git:https://github.com"</strong> (se bild ovan)</li>
+            <li>Klicka på pilen för att expandera posten</li>
+            <li>Klicka på <strong>"Ta bort"</strong> (Remove)</li>
+            <li>Försök pusha igen: <code>git push -u origin main</code></li>
+            <li>Du får nu en ny inloggningsprompt - logga in med rätt konto (kentlundgren)</li>
+        </ol>
+        
+        <div class="warning">
+            <strong>⚠️ Viktigt:</strong> När du tar bort credentials och pushar igen kommer Windows automatiskt 
+            att skapa NYA credentials efter att du loggat in. Dessa nya credentials sparas permanent tills 
+            du tar bort dem igen.
+        </div>
+        
+        <h4>Lösning 2: Lägg till det andra kontot som Collaborator 👥</h4>
+        <p>Om du har två GitHub-konton (t.ex. "kentlundgren" och "lundgren9") och vill att båda ska ha tillgång 
+        till repositoryt, kan du lägga till det andra kontot som collaborator:</p>
+        
+        <p><strong>Steg för att lägga till collaborator:</strong></p>
+        <ol>
+            <li>Gå till ditt GitHub-repository: <code>https://github.com/kentlundgren/Bjerred-medlemmar</code></li>
+            <li>Klicka på <strong>Settings</strong> (längst till höger i menyn)</li>
+            <li>Klicka på <strong>Collaborators</strong> i vänstermenyn under "Access"</li>
+            <li>Klicka på <strong>"Add people"</strong></li>
+            <li>Skriv användarnamnet (t.ex. "lundgren9") och klicka <strong>"Add [username] to this repository"</strong></li>
+            <li>Den andra användaren får en invitation via email och måste acceptera den</li>
+        </ol>
+        
+        <p><strong>Se bild:</strong> Collaborators-sidan på GitHub</p>
+        <img src="collaborators.jpg" alt="GitHub Collaborators-sida med pending invite" style="max-width: 100%; border: 1px solid #ddd; border-radius: 5px; margin: 10px 0;">
+        
+        <p><strong>Acceptera collaborator-invitation:</strong></p>
+        <ol>
+            <li>Logga in på GitHub med kontot som blev inbjudet (t.ex. lundgren9)</li>
+            <li>Du kommer se en notifikation om invitation</li>
+            <li>Gå till repositoryt eller klicka på notifikationen</li>
+            <li>Klicka på <strong>"Accept invitation"</strong></li>
+            <li>Nu har både "kentlundgren" och "lundgren9" push-rättigheter!</li>
+        </ol>
+        
+        <p><strong>Efter att invitation accepterats:</strong></p>
+        <div class="code-block">
+<span class="comment"># Nu kan du pusha utan problem!</span>
+<span class="command">git push -u origin main</span>
+
+<span class="comment"># Git kommer använda lundgren9's credentials och det fungerar nu</span>
+<span class="comment"># eftersom lundgren9 är collaborator</span>
+        </div>
+        
+        <div class="info">
+            <strong>📌 När ska du använda Collaborators?</strong>
+            <ul>
+                <li>✅ Du har två separata GitHub-konton som båda behöver push-access</li>
+                <li>✅ Du arbetar i team och andra personer ska kunna pusha</li>
+                <li>✅ Du vill ge någon annan rättigheter att ändra i repositoryt</li>
+            </ul>
+            
+            <strong>När ska du INTE använda Collaborators?</strong>
+            <ul>
+                <li>❌ Du vill byta från ett konto till ett annat permanent</li>
+                <li>❌ "lundgren9" är gamla/felaktiga credentials som inte längre ska användas</li>
+            </ul>
+            
+            <strong>I ditt fall:</strong> Om både kentlundgren och lundgren9 är dina konton, är collaborator-lösningen perfekt! 
+            Om lundgren9 bara är gamla credentials, använd Lösning 1 (rensa Credential Manager) istället.
+        </div>
+        
+        <h4>Lösning 3: Använd GitHub CLI</h4>
+        <div class="code-block">
+<span class="comment"># Installera GitHub CLI från: https://cli.github.com/</span>
+<span class="command">gh auth login</span>
+<span class="comment"># Följ instruktionerna och välj rätt konto</span>
+        </div>
+        
+        <h4>Lösning 4: Använd SSH istället för HTTPS</h4>
+        <p>SSH-nycklar är mer säkra och kräver ingen lösenordsinloggning:</p>
+        <div class="code-block">
+<span class="comment"># Generera SSH-nyckel (om du inte har en)</span>
+<span class="command">ssh-keygen -t ed25519 -C "lundgren.kent@gmail.com"</span>
+
+<span class="comment"># Kopiera din publika nyckel</span>
+<span class="command">cat ~/.ssh/id_ed25519.pub</span>
+
+<span class="comment"># Lägg till nyckeln på GitHub: Settings → SSH and GPG keys → New SSH key</span>
+
+<span class="comment"># Ändra remote URL till SSH</span>
+<span class="command">git remote set-url origin git@github.com:kentlundgren/Bjerred-medlemmar.git</span>
+
+<span class="comment"># Pusha med SSH</span>
+<span class="command">git push -u origin main</span>
+        </div>
+        
+        <h3>Problem: Merge conflicts</h3>
+        <p><strong>Lösning:</strong> När Git inte kan merga automatiskt:</p>
+        <ol>
+            <li>Öppna filen med konflikten</li>
+            <li>Sök efter markeringar: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code></li>
+            <li>Välj vilken version du vill behålla</li>
+            <li>Ta bort markeringarna</li>
+            <li>Kör: <code>git add .</code> och <code>git commit</code></li>
+        </ol>
+        
+        <h3>Problem: Ser filer från andra projekt i Cursor/IDE</h3>
+        <p><strong>Orsak:</strong> Det finns ett Git-repository i en överliggande (parent) mapp som inkluderar flera projekt.</p>
+        
+        <div class="warning">
+            <strong>⚠️ Viktigt att förstå: Nested Git Repositories</strong><br><br>
+            
+            Om du har följande struktur:
+            <pre style="background-color: rgba(0,0,0,0.1); padding: 10px; border-radius: 5px;">
+D:/
+└── kentlundgren_se/           ← Git repo här
+    ├── .git/
+    ├── program/
+    │   ├── projekt1/
+    │   ├── projekt2/
+    │   └── Bjerred/
+    │       └── medlemmar/      ← Vill ha separat Git repo här
+    │           └── .git/
+            </pre>
+            
+            Då kan det bli förvirrande! Det överliggande repositoryt (kentlundgren_se) kan "se" alla ändringar i alla undermappar.
+        </div>
+        
+        <p><strong>Lösningar:</strong></p>
+        
+        <h4>Lösning 1: Öppna bara projektmappen i din IDE (Rekommenderas!) ✅</h4>
+        <ol>
+            <li>I Cursor/VS Code: <strong>File → Open Folder</strong> (eller <code>Ctrl+K Ctrl+O</code>)</li>
+            <li>Välj BARA medlemmar-mappen:<br>
+                <code>D:\VåraFiler_primära_på_SSD\Kent_dokument\Data\HTML\kentlundgren_se\program\Bjerred\medlemmar</code>
+            </li>
+            <li>Nu kommer Cursor bara fokusera på detta projekt och dess Git-repository</li>
+        </ol>
+        
+        <h4>Lösning 2: Lägg till i .gitignore i överliggande repo</h4>
+        <p>Om det överliggande repositoryt ska fortsätta existera, lägg till medlemmar-mappen i dess .gitignore:</p>
+        <div class="code-block">
+<span class="comment"># I D:/kentlundgren_se/.gitignore</span>
+<span class="command">program/Bjerred/medlemmar/</span>
+        </div>
+        
+        <h4>Lösning 3: Använd Git Submodule (Avancerat)</h4>
+        <p>För avancerade användare som vill ha separata repositories men ändå länka dem:</p>
+        <div class="code-block">
+<span class="comment"># I det överliggande repositoryt</span>
+<span class="command">git submodule add https://github.com/kentlundgren/Bjerred-medlemmar.git program/Bjerred/medlemmar</span>
+        </div>
+        
+        <div class="info">
+            <strong>💡 Best Practice:</strong> För separata projekt som inte är relaterade till varandra, 
+            håll dem i helt separata mappar utanför varandra, eller använd Lösning 1 (öppna bara projektmappen i din IDE).
+        </div>
+    </div>
+
+    <h2>🔗 Användbara resurser</h2>
+    
+    <div class="step">
+        <ul>
+            <li><a href="https://git-scm.com/doc" target="_blank">Officiell Git-dokumentation</a></li>
+            <li><a href="https://docs.github.com/en" target="_blank">GitHub Docs</a></li>
+            <li><a href="https://learngitbranching.js.org/" target="_blank">Learn Git Branching (interaktiv)</a></li>
+            <li><a href="https://education.github.com/git-cheat-sheet-education.pdf" target="_blank">Git Cheat Sheet (PDF)</a></li>
+            <li><a href="https://cli.github.com/" target="_blank">GitHub CLI</a></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================
+         UPPDATERING 2026-05-28: Ny sektion om att återkoppla en lokal
+         mapp till ett befintligt GitHub-repo (utan .git-mapp)
+         ============================================================ -->
+    <h2>🔄 Återkoppla lokal mapp till befintligt GitHub-repo (28 maj 2026)</h2>
+
+    <div class="info">
+        <strong>📖 Situationen som uppstod:</strong><br>
+        Den lokala mappen hade <strong>ingen <code>.git</code>-mapp</strong> – Git var aldrig initierat där 
+        (eller hade tagits bort). Cursor visade knappen <em>"Publish to GitHub"</em> istället för att 
+        visa kopplingen till det befintliga repot på GitHub.
+        <br><br>
+        GitHub-repot existerade redan: 
+        <a href="https://github.com/kentlundgren/Bjerred-medlemmar" target="_blank">github.com/kentlundgren/Bjerred-medlemmar</a> 
+        (med 7 commits och den gamla versionen av index.html).
+        <br><br>
+        Den lokala mappen hade <em>nyare</em> filer (index.html uppdaterad med 2026-data) 
+        som skulle ersätta det som låg på GitHub.
+    </div>
+
+    <div class="warning">
+        <strong>⚠️ Viktigt – klicka INTE på "Publish to GitHub" i Cursor!</strong><br>
+        Knappen "Publish to GitHub" i Cursor/VS Code <em>skapar ett nytt repo</em> på GitHub. 
+        Den kopplar INTE till ett befintligt repo. Om du klickar på den och redan har ett repo 
+        med samma namn kan du råka skapa ett duplikat eller ett nytt tomt repo.
+    </div>
+
+    <div class="step">
+        <h3>Diagnos – kontrollera om git är initierat</h3>
+        <p>Kör detta kommando i terminalen för att se om det finns ett git-repo i mappen:</p>
+        <div class="code-block">
+<span class="command">git status</span>
+<span class="comment"># Om du ser detta fel – saknas .git-mappen:</span>
+<span class="comment"># fatal: not a git repository (or any of the parent directories): .git</span>
+<span class="comment">#</span>
+<span class="comment"># Om git är initierat ser du istället något som:</span>
+<span class="comment"># On branch main</span>
+<span class="comment"># nothing to commit, working tree clean</span>
+        </div>
+        <div class="warning">
+            <strong>I PowerShell:</strong> Kommandot fungerar som vanligt. Men <code>&amp;&amp;</code> för att kedja kommandon 
+            fungerar INTE i PowerShell – dela upp dem på separata rader istället.
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">1</span>Initiera git med rätt branch-namn</h3>
+        <p>Skapa en ny <code>.git</code>-mapp i den lokala mappen. Flaggan <code>-b main</code> sätter 
+        branch-namnet direkt till "main" (istället för gamla standardnamnet "master"):</p>
+        <div class="code-block">
+<span class="command">git init -b main</span>
+<span class="comment"># Skapar: Initialized empty Git repository in D:/.../medlemmar/.git/</span>
+<span class="comment"># OBS: Flaggan -b finns i Git 2.28+. På äldre Git använd: git init + git branch -M main</span>
+        </div>
+        <div class="success">
+            <strong>✅ Resultat:</strong> En tom .git-mapp skapas i din lokala mapp. 
+            Cursor/IDE byter nu från "Publish to GitHub" till att visa git-panelen.
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">2</span>Koppla till det befintliga GitHub-repot</h3>
+        <p>Tala om för git var det remote repositoryt finns. "origin" är standardnamnet för det primära remote-repot:</p>
+        <div class="code-block">
+<span class="command">git remote add origin https://github.com/kentlundgren/Bjerred-medlemmar.git</span>
+
+<span class="comment"># Verifiera att det lades till korrekt:</span>
+<span class="command">git remote -v</span>
+<span class="comment"># Ska visa:</span>
+<span class="comment"># origin  https://github.com/kentlundgren/Bjerred-medlemmar.git (fetch)</span>
+<span class="comment"># origin  https://github.com/kentlundgren/Bjerred-medlemmar.git (push)</span>
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">3</span>Hämta remote-historiken (utan att skriva över lokala filer)</h3>
+        <p><code>git fetch</code> laddar ner all historik och data från GitHub 
+        <strong>utan att röra dina lokala filer</strong>. Det är säkert att köra:</p>
+        <div class="code-block">
+<span class="command">git fetch origin</span>
+<span class="comment"># Visar: * [new branch]  main  -> origin/main</span>
+<span class="comment"># Det betyder att git nu "vet" om remote-historiken</span>
+<span class="comment"># men dina lokala filer är fortfarande orörda</span>
+        </div>
+        <div class="info">
+            <strong>Skillnad fetch vs pull:</strong><br>
+            <code>git fetch</code> = hämtar info om vad som finns på remote, utan att ändra lokala filer.<br>
+            <code>git pull</code> = hämtar + slår ihop med dina lokala filer (kan skriva över ändringar!).
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">4</span>Stagea och committa lokala filer</h3>
+        <p>Nu lägger vi till alla lokala filer i en commit. Det skapar den lokala historiken:</p>
+        <div class="code-block">
+<span class="comment"># Se vilka filer som finns (alla visar "U" = Untracked = ej i git än)</span>
+<span class="command">git status</span>
+
+<span class="comment"># Stagea alla filer (-A inkluderar även borttagna filer, mer komplett än ".")</span>
+<span class="command">git add -A</span>
+
+<span class="comment"># Skapa commit med beskrivande meddelande</span>
+<span class="comment"># I PowerShell: använd en temp-fil för meddelandet (inte heredoc som i bash)</span>
+<span class="command">Set-Content -Path "$env:TEMP\commitmsg.txt" -Encoding UTF8 -Value "Version 3.0: Uppdaterad med 2026-data"</span>
+<span class="command">git commit -F "$env:TEMP\commitmsg.txt"</span>
+        </div>
+        <div class="info">
+            <strong>Varför temp-fil för commit-meddelandet i PowerShell?</strong><br>
+            Bash stöder heredoc-syntax (<code>&lt;&lt;'EOF'</code>) för flerradiga strängar. 
+            PowerShell gör det inte – det ger syntaxfel. 
+            Lösningen är att skriva meddelandet till en temporär fil och använda flaggan <code>-F</code> (file).
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">5</span>Sammanfoga med remote-historiken (det knepiga steget!)</h3>
+        <p>Nu har vi ett lokalt problem: vår lokala branch har <strong>ingen gemensam historik</strong> 
+        med remote-branchen (origin/main). Git kallar det "unrelated histories".</p>
+        
+        <div class="warning">
+            <strong>⚠️ Varför behöver vi detta steg?</strong><br>
+            Om vi försöker pusha nu utan detta steg får vi felet:<br>
+            <code>! [rejected] main -> main (non-fast-forward)</code><br>
+            <code>error: failed to push some refs</code><br><br>
+            Git nekar pushen för att det lokala repot inte är en "fortsättning" på remote-historiken.
+            De två historierna startade oberoende av varandra.
+        </div>
+        
+        <p>Lösningen är att <strong>merga in remote-historiken</strong> och tala om för git att vi vet 
+        vad vi gör med flaggan <code>--allow-unrelated-histories</code>:</p>
+        
+        <div class="code-block">
+<span class="command">git merge --allow-unrelated-histories -X ours origin/main -m "Anslut till remote-historik, behåll lokala filer"</span>
+
+<span class="comment"># Flaggor förklarade:</span>
+<span class="comment"># --allow-unrelated-histories  = tillåt merge av två "orelaterade" historiker</span>
+<span class="comment"># -X ours                      = vid konflikter: behåll VÅR (lokala) version</span>
+<span class="comment">#                                (t.ex. vår uppdaterade index.html vinner mot den gamla på GitHub)</span>
+<span class="comment"># -m "..."                     = commit-meddelande för merge-commiten</span>
+        </div>
+        
+        <div class="success">
+            <strong>✅ Vad händer efter merge?</strong><br>
+            Filer som BARA finns på GitHub (t.ex. README.md, .gitignore, gamla .jpg-bilder) 
+            hämtas ner och läggs till i din lokala mapp.<br>
+            Filer som finns på BÅDA ställena (t.ex. index.html) – din lokala version vinner tack vare <code>-X ours</code>.
+        </div>
+        
+        <div class="git-concept">
+            <strong>📖 Alternativet: Force Push (använd ej om du kan undvika det)</strong><br><br>
+            Cursor/VS Code erbjuder ibland "Force Push" som lösning på non-fast-forward-problemet. 
+            Force push (<code>git push --force</code>) skriver ÖVER hela remote-historiken med din lokala.
+            <ul>
+                <li>✅ Fungerar tekniskt och är OK om du är ensam på repot och VET vad du gör</li>
+                <li>❌ Farligt om andra jobbar i samma repo – du raderar deras commits!</li>
+                <li>❌ Du förlorar möjligheten att se vad som tidigare låg på GitHub</li>
+            </ul>
+            <strong>Bättre approach:</strong> Använd <code>git merge --allow-unrelated-histories</code> 
+            som vi gör här – det bevarar all historik från båda håll.
+        </div>
+    </div>
+
+    <div class="step">
+        <h3><span class="step-number">6</span>Pusha till GitHub</h3>
+        <p>Nu kan vi äntligen pusha! Flaggan <code>-u</code> sätter upp "tracking" så att 
+        framtida <code>git push</code> och <code>git pull</code> vet vilken remote-branch 
+        de ska prata med:</p>
+        <div class="code-block">
+<span class="command">git push -u origin main</span>
+<span class="comment"># Svar: branch 'main' set up to track 'origin/main'.</span>
+<span class="comment"># Svar: To https://github.com/kentlundgren/Bjerred-medlemmar.git</span>
+<span class="comment"># Svar:    bb668b2..4504f3b  main -> main</span>
+<span class="comment">#</span>
+<span class="comment"># OBS: Varningen "git: 'credential-manager-core' is not a git command" är ofarlig!</span>
+<span class="comment"># Det är bara ett gammalt namn på credential-hjälparen. Push lyckas ändå.</span>
+        </div>
+        <div class="success">
+            <strong>🎉 Klart!</strong> Din uppdaterade index.html och alla övriga lokala filer 
+            är nu pushade till GitHub. GitHub Pages-sidan uppdateras automatiskt inom några minuter.
+        </div>
+    </div>
+
+    <div class="step">
+        <h3>Hela processen sammanfattad – PowerShell-kommandon</h3>
+        <p>Här är alla kommandon i rätt ordning för att återkoppla en lokal mapp 
+        till ett befintligt GitHub-repo:</p>
+        <div class="code-block">
+<span class="comment"># OBS: Kör kommandona ett i taget i PowerShell (inte && mellan dem)</span>
+
+<span class="comment"># Steg 1: Initiera git</span>
+<span class="command">git init -b main</span>
+
+<span class="comment"># Steg 2: Koppla till GitHub-repo</span>
+<span class="command">git remote add origin https://github.com/kentlundgren/Bjerred-medlemmar.git</span>
+
+<span class="comment"># Steg 3: Hämta remote-historik (rör ej lokala filer)</span>
+<span class="command">git fetch origin</span>
+
+<span class="comment"># Steg 4: Stagea alla lokala filer</span>
+<span class="command">git add -A</span>
+
+<span class="comment"># Steg 5: Committa (via temp-fil eftersom PowerShell inte stöder heredoc)</span>
+<span class="command">Set-Content -Path "$env:TEMP\msg.txt" -Encoding UTF8 -Value "Ditt commit-meddelande här"</span>
+<span class="command">git commit -F "$env:TEMP\msg.txt"</span>
+
+<span class="comment"># Steg 6: Merga in remote-historik (lokala filer vinner vid konflikter)</span>
+<span class="command">git merge --allow-unrelated-histories -X ours origin/main -m "Anslut till remote-historik"</span>
+
+<span class="comment"># Steg 7: Pusha!</span>
+<span class="command">git push -u origin main</span>
+        </div>
+    </div>
+
+    <h2>📝 Checklista för detta projekt</h2>
+    
+    <div class="step">
+        <h3>✅ Genomförda steg (5 januari 2025):</h3>
+        <ul>
+            <li>✅ Skapat .gitignore-fil</li>
+            <li>✅ Skapat README.md</li>
+            <li>✅ Skapat GitHub.html (denna dokumentation)</li>
+            <li>✅ Initierat lokalt Git-repository (<code>git init</code>)</li>
+            <li>✅ Lagt till alla filer (<code>git add .</code>)</li>
+            <li>✅ Gjort första commit</li>
+            <li>✅ Bytt branch från "master" till "main" (<code>git branch -M main</code>)</li>
+            <li>✅ Skapat repository på GitHub: <a href="https://github.com/kentlundgren/Bjerred-medlemmar" target="_blank">Bjerred-medlemmar</a></li>
+            <li>✅ Kopplat lokalt repo till GitHub (<code>git remote add origin</code>)</li>
+            <li>✅ Pushat till GitHub (löst via collaborator-lösning med "lundgren9")</li>
+        </ul>
+
+        <h3>✅ Genomförda steg (28 maj 2026) – Återkoppling av lokal mapp till GitHub:</h3>
+        <ul>
+            <li>✅ Diagnostiserat problemet: <code>git status</code> → "fatal: not a git repository"</li>
+            <li>✅ Förstått att man INTE ska klicka "Publish to GitHub" i Cursor (skapar nytt repo)</li>
+            <li>✅ <code>git init -b main</code> – skapade ny .git-mapp med rätt branch-namn</li>
+            <li>✅ <code>git remote add origin ...</code> – kopplat till befintligt GitHub-repo</li>
+            <li>✅ <code>git fetch origin</code> – hämtat remote-historik utan att röra lokala filer</li>
+            <li>✅ <code>git add -A</code> + <code>git commit</code> – committat lokala filer (inkl. uppdaterad index.html med 2026-data)</li>
+            <li>✅ <code>git merge --allow-unrelated-histories -X ours origin/main</code> – sammanfogat historiker, lokala filer vann vid konflikter</li>
+            <li>✅ <code>git push -u origin main</code> – pushat till GitHub utan force-push!</li>
+            <li>✅ GitHub Pages uppdateras automatiskt: <a href="https://kentlundgren.github.io/Bjerred-medlemmar/" target="_blank">kentlundgren.github.io/Bjerred-medlemmar</a></li>
+        </ul>
+        
+        <div class="info">
+            <strong>📌 Specialfall i detta projekt:</strong><br><br>
+            
+            <strong>1. Överliggande Git-repository:</strong><br>
+            Det fanns ett överliggande Git-repository i en parent-mapp som gjorde att Cursor/IDE visade 
+            filer från andra projekt. Detta löstes genom att öppna bara medlemmar-mappen i Cursor 
+            (<strong>File → Open Folder</strong>), så att IDE:n endast fokuserar på detta projekt.<br><br>
+            
+            <strong>2. Multipla GitHub-konton:</strong><br>
+            Två GitHub-konton används: "kentlundgren" (ägare) och "lundgren9" (collaborator). 
+            Windows Credential Manager sparade credentials för lundgren9, vilket orsakade 
+            autentiseringsproblem vid push. Detta löstes genom att lägga till lundgren9 
+            som collaborator i projektet.
+        </div>
+    </div>
+
+    <div class="success">
+        <h3>🎓 Nästa steg i din Git-resa:</h3>
+        <ol>
+            <li>Öva på att göra commits regelbundet</li>
+            <li>Experimentera med branches för nya funktioner</li>
+            <li>Lär dig använda <code>git log</code> för att utforska historiken</li>
+            <li>Testa att klona repositoryt till en annan dator</li>
+            <li>Utforska GitHub Actions för automatisering</li>
+        </ol>
+    </div>
+
+    <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #ddd; text-align: center; color: #666;">
+        <p>Skapad av Kent Lundgren | 5 januari 2025 | Uppdaterad 28 maj 2026</p>
+        <p>För projektet: <a href="https://kentlundgren.github.io/Bjerred-medlemmar/" target="_blank">Bjerred Medlemmar</a></p>
+    </footer>
+</body>
+</html>

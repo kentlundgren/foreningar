@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medlemsutveckling - Bastuföreningen</title>
+    
+    <!-- 
+    =========================================================================
+    MEDLEMSUTVECKLING - STATISTIKVERKTYG (Version 3.0)
+    =========================================================================
+    Skapad: 2025-12-23
+    Uppdaterad: 2026-05-28
+    
+    Ändringar i version 3.0 (2026-05-28):
+    - Lagt till månadsdata för jan–maj 2026 (källa: Wondr Subscribers/Count2)
+    - Nytt tidsfilter "År 2026" tillagt
+    - Standardfilter ändrat till "År 2026"
+    - Y-axeln hanterar nu negativa nettoförändringar (familjemedlemskap minskar i 2026)
+    - Statistikkort uppdaterade med maj 2026-värden
+    - Länk till Wondr-rapporten för 2026-data tillagd i fotnoten
+    
+    Ändringar i version 2.1:
+    - Exkluderat "Registrering av familjemedlemmar" från statistiken
+    - Uppdaterad fotnot med förklaring av exkluderade kategorier
+    
+    Ändringar i version 2:
+    - Lagt till total-linje i ackumulerat diagram
+    - Ökat diagramhöjden för bättre läsbarhet
+    - Förbättrad responsiv design för mobil/desktop
+    
+    Detta program visualiserar medlemsdata exporterad från Wondr-systemet.
+    Användaren kan växla mellan att visa nyregistreringar per månad
+    eller ackumulerad medlemsutveckling över tid.
+    
+    Tekniker som används:
+    - Chart.js för interaktiva diagram
+    - Vanilla JavaScript för logik och interaktivitet
+    - CSS Grid och Flexbox för layout
+    - CSS Custom Properties (variabler) för konsekvent styling
+    - Media queries för responsiv design
+    =========================================================================
+    -->
+    
+    <!-- Chart.js bibliotek för att rendera diagram -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* 
+        =====================================================================
+        CSS VARIABLER
+        Definierar färgschema och återanvändbara värden för konsekvent design
+        =====================================================================
+        */
+        :root {
+            --primary-color: #2c5282;      /* Mörkblå - huvudfärg */
+            --secondary-color: #48bb78;    /* Grön - sekundärfärg */
+            --accent-color: #ed8936;       /* Orange - accentfärg */
+            --background-light: #f7fafc;   /* Ljus bakgrund */
+            --text-dark: #2d3748;          /* Mörk text */
+            --text-muted: #718096;         /* Dämpad text */
+            --border-color: #e2e8f0;       /* Kantlinjefärg */
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Standardskugga */
+            --family-color: #48bb78;       /* Grön för familjemedlemskap */
+            --single-color: #4299e1;       /* Blå för enskilt medlemskap */
+            --total-color: #805ad5;        /* Lila för totalt antal */
+            
+            /* Responsiva värden - ändras via media queries */
+            --container-padding: 30px;
+            --header-font-size: 1.8rem;
+            --stat-number-size: 2rem;
+            --chart-height: 500px;         /* Ökad höjd för bättre läsbarhet */
+        }
+
+        /* 
+        =====================================================================
+        GRUNDLÄGGANDE STYLING
+        Reset och basstiling för hela dokumentet
+        =====================================================================
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* 
+        =====================================================================
+        CONTAINER OCH LAYOUT
+        Centrerar innehållet och begränsar maximal bredd
+        =====================================================================
+        */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* 
+        =====================================================================
+        HEADER-SEKTION
+        Visar titel och inledande information
+        =====================================================================
+        */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #4a6fa5);
+            color: white;
+            padding: var(--container-padding);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: var(--header-font-size);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        /* 
+        =====================================================================
+        INLEDNINGSSEKTION
+        Beskriver syftet med verktyget och Wondr-integration
+        =====================================================================
+        */
+        .intro {
+            padding: 25px var(--container-padding);
+            background: #edf2f7;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .intro h2 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .intro p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .intro a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .intro a:hover {
+            text-decoration: underline;
+        }
+
+        /* 
+        =====================================================================
+        STATISTIK-SAMMANFATTNING
+        Visar nyckeltal i ett rutnät
+        Använder CSS Grid för flexibel layout
+        =====================================================================
+        */
+        .stats-summary {
+            display: grid;
+            /* 
+            Responsivt rutnät:
+            - minmax(180px, 1fr) säkerställer minst 180px bredd per kort
+            - auto-fit fyller tillgängligt utrymme automatiskt
+            */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 25px var(--container-padding);
+            background: white;
+        }
+
+        .stat-card {
+            background: var(--background-light);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid var(--primary-color);
+            /* Subtil hover-effekt */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card.family {
+            border-left-color: var(--family-color);
+        }
+
+        .stat-card.single {
+            border-left-color: var(--single-color);
+        }
+
+        .stat-card.total {
+            border-left-color: var(--total-color);
+        }
+
+        .stat-card.highlight {
+            border-left-color: var(--accent-color);
+            background: #fffaf0;
+        }
+
+        .stat-number {
+            font-size: var(--stat-number-size);
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-card.family .stat-number {
+            color: var(--family-color);
+        }
+
+        .stat-card.single .stat-number {
+            color: var(--single-color);
+        }
+
+        .stat-card.total .stat-number {
+            color: var(--total-color);
+        }
+
+        .stat-card.highlight .stat-number {
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* 
+        =====================================================================
+        KONTROLLPANEL
+        Innehåller knappar för att växla mellan diagramtyper
+        =====================================================================
+        */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px var(--container-padding);
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            /* Förhindra att texten bryts på mindre skärmar */
+            white-space: nowrap;
+        }
+
+        /* Primärknapp - aktiv/vald stil */
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1a365d;
+            transform: translateY(-2px);
+        }
+
+        /* Sekundärknapp - inaktiv stil */
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        /* Info-knapp för modal */
+        .btn-info {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-info:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* 
+        =====================================================================
+        DIAGRAMCONTAINER
+        Wrapper för Chart.js canvas-elementet
+        Använder variabel höjd för responsivitet
+        =====================================================================
+        */
+        .chart-container {
+            padding: 20px var(--container-padding);
+            position: relative;
+            /* Använder CSS-variabel för höjd - ändras i media queries */
+            height: var(--chart-height);
+        }
+
+        /* 
+        =====================================================================
+        TIDSFILTER
+        Knappar för att filtrera tidsperiod
+        =====================================================================
+        */
+        .time-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 var(--container-padding) 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            background: #edf2f7;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-filter:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-filter.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* 
+        =====================================================================
+        LEGEND-FÖRKLARING
+        Visar färgkodning för diagrammet (synlig endast vid ackumulerat)
+        =====================================================================
+        */
+        .legend-info {
+            display: none;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px var(--container-padding);
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .legend-info.visible {
+            display: flex;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.family {
+            background: var(--family-color);
+        }
+
+        .legend-dot.single {
+            background: var(--single-color);
+        }
+
+        .legend-dot.total {
+            background: var(--total-color);
+        }
+
+        /* 
+        =====================================================================
+        FOTNOT
+        Visar kompletterande information längst ner
+        =====================================================================
+        */
+        .footnote {
+            padding: 20px var(--container-padding);
+            background: #f7fafc;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footnote strong {
+            color: var(--text-dark);
+        }
+
+        .footnote .warning {
+            color: #c53030;
+            font-style: italic;
+        }
+
+        /* 
+        =====================================================================
+        MODAL (POPUP)
+        Visar teknisk information i en overlay
+        =====================================================================
+        */
+        .modal-overlay {
+            display: none;              /* Dold som standard */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);  /* Halvtransparent bakgrund */
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Visas när .active-klassen läggs till */
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* Gör headern sticky så stängknappen alltid är synlig */
+            position: sticky;
+            top: 0;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+        }
+
+        /* Stängknapp (X) */
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-body h4 {
+            color: var(--primary-color);
+            margin: 15px 0 10px;
+            font-size: 1rem;
+        }
+
+        .modal-body h4:first-child {
+            margin-top: 0;
+        }
+
+        .modal-body p, .modal-body li {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        .modal-body ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .modal-body li {
+            margin-bottom: 5px;
+        }
+
+        .modal-body code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* 
+        =====================================================================
+        MEDLEMSLISTA-MODAL
+        Visar medlemmar vid trippelklick på stapel (november 2025)
+        =====================================================================
+        */
+        .member-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .member-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .member-item:last-child {
+            border-bottom: none;
+        }
+
+        .member-item:nth-child(even) {
+            background: var(--background-light);
+        }
+
+        .member-name {
+            color: var(--text-dark);
+        }
+
+        .member-bookings {
+            background: var(--primary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .member-count {
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .member-count.family {
+            background: var(--family-color);
+        }
+
+        .member-count.single {
+            background: var(--single-color);
+        }
+
+        .triple-click-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* 
+        =====================================================================
+        RESPONSIV DESIGN - TABLET (768px och mindre)
+        Anpassningar för mellanstora skärmar
+        =====================================================================
+        */
+        @media (max-width: 768px) {
+            :root {
+                --container-padding: 20px;
+                --header-font-size: 1.5rem;
+                --stat-number-size: 1.7rem;
+                --chart-height: 450px;
+            }
+
+            body {
+                padding: 15px;
+            }
+
+            .stats-summary {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+
+            .controls {
+                gap: 8px;
+            }
+        }
+
+        /* 
+        =====================================================================
+        RESPONSIV DESIGN - MOBIL (480px och mindre)
+        Anpassningar för små skärmar (smartphones)
+        =====================================================================
+        */
+        @media (max-width: 480px) {
+            :root {
+                --container-padding: 15px;
+                --header-font-size: 1.3rem;
+                --stat-number-size: 1.5rem;
+                --chart-height: 350px;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+
+            .intro h2 {
+                font-size: 1.1rem;
+            }
+
+            .intro p {
+                font-size: 0.9rem;
+            }
+
+            /* Statistikkort i en kolumn på mobil */
+            .stats-summary {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 15px;
+                /* Horisontell layout på mobil */
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                text-align: left;
+            }
+
+            .stat-number {
+                order: 2;  /* Flytta numret till höger */
+            }
+
+            .stat-label {
+                order: 1;  /* Flytta etiketten till vänster */
+                margin-top: 0;
+            }
+
+            /* Kontrollknappar staplas vertikalt på mobil */
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Tidsfilter i två rader på mobil */
+            .time-filter {
+                gap: 8px;
+            }
+
+            .btn-filter {
+                flex: 1 1 calc(50% - 8px);
+                text-align: center;
+                padding: 10px 12px;
+            }
+
+            /* Justera modal för mobil */
+            .modal {
+                max-height: 90vh;
+                margin: 10px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .footnote {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* 
+        =====================================================================
+        RESPONSIV DESIGN - STOR SKÄRM (1200px och större)
+        Anpassningar för stora skärmar (desktop)
+        =====================================================================
+        */
+        @media (min-width: 1200px) {
+            :root {
+                --chart-height: 550px;
+            }
+
+            .container {
+                max-width: 1200px;
+            }
+
+            .stats-summary {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+    
+    <!-- 
+    =========================================================================
+    EXTERNA SKRIPT
+    =========================================================================
+    -->
+    <!-- Separat JavaScript för dynamisk datahämtning (december 2025 etc.) -->
+    <script src="nyamedlemmar.js"></script>
+</head>
+<body>
+
+    <!-- 
+    =========================================================================
+    HUVUDCONTAINER
+    Innehåller all synlig innehåll på sidan
+    =========================================================================
+    -->
+    <div class="container">
+        
+        <!-- HEADER med titel -->
+        <div class="header">
+            <h1>📊 Medlemsutveckling</h1>
+            <p>Statistik uppdaterad med 2026-data (jan–maj 2026)</p>
+        </div>
+
+        <!-- INLEDNING med beskrivning av verktyget -->
+        <!-- 
+        =========================================================================
+        UPPDATERING 2025-12-23: Lagt till tydligare information om datakällan
+        - Specificerat att data kommer från rapporten "aktiva medlemmar" i Wondr
+        - Länk till rapporten i Wondr
+        - Länk till Excel-sammanställning som bild
+        =========================================================================
+        -->
+        <div class="intro">
+            <h2>Om detta analysverktyg</h2>
+            <p>
+                Detta verktyg visualiserar medlemsstatistik exporterad från 
+                <a href="https://wondr.cc/sv-se/hem" target="_blank" rel="noopener">Wondr</a> – 
+                ett smart affärssystem primärt för träningsbranschen. Men det fungerar lika bra 
+                för en kallbadsförening som 
+                <a href="https://bjerredskallbadhus.se/" target="_blank" rel="noopener">Bjerreds Saltsjöbad</a>.
+                På sidan <a href="https://bjerredskallbadhus.se/bli-medlem/" target="_blank" rel="noopener">Bli medlem</a> 
+                kan du läsa om hur man blir medlem i föreningen.
+                <br>
+                <span style="font-size: 0.9rem; color: var(--text-muted);">
+                    (Det finns också ett 
+                    <a href="https://kentlundgren.se/program/Bjerred/Wondr/" target="_blank" rel="noopener">alternativt och skojigt sätt</a> 
+                    att visa hur man blir medlem – en sida som simulerar en gammal 60-talsdator 
+                    och visar de fyra stegen för att bli medlem i retrostil!)
+                </span>
+            </p>
+            
+            <h3 style="color: var(--primary-color); margin-top: 15px; font-size: 1.1rem;">Datakälla</h3>
+            <p>
+                All data på denna sida kommer från rapporten 
+                <strong>"Aktiva medlemmar"</strong> som finns i Wondr: 
+                <a href="https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscription/Active" 
+                   target="_blank" rel="noopener" 
+                   style="font-weight: bold;">
+                    Öppna rapporten i Wondr →
+                </a>
+            </p>
+            <p style="margin-top: 10px;">
+                I statistiken skiljer vi i huvudsak på <strong>enskilt medlemskap</strong> och 
+                <strong>familjemedlemskap</strong>. I rapporten "Aktiva medlemmar" återfinns endast 
+                en familjemedlem per familj – den som först registrerade sig. Övriga familjemedlemmar 
+                registreras genom en separat process: 
+                <a href="https://kentlundgren.se/program/Bjerred/inpassering/familjemedlemskap.html" 
+                   target="_blank" rel="noopener">
+                    Läs om hur man aktiverar familjemedlemmar →
+                </a>
+            </p>
+            <p style="margin-top: 10px;">
+                Genom att exportera rapporten till Excel kan man göra en sammanställning. 
+                <a href="aktiva_medlemmar_251223.jpg" target="_blank" rel="noopener">
+                    Se vår Excel-sammanställning (bild) →
+                </a>
+            </p>
+            
+            <p style="margin-top: 15px;">
+                Vi fortsätter att analysera och tolka denna rapport, tillsammans med andra 
+                rapporter som man kan få från Wondr, för att få djupare insikter om 
+                medlemsutvecklingen.
+            </p>
+            
+            <h3 style="color: var(--primary-color); margin-top: 15px; font-size: 1.1rem;">Övergång till digital inpassering</h3>
+            <p>
+                Vi har också analyserat inpasseringsstatistiken som visar övergången från det 
+                gamla systemet med armband till det nya digitala systemet med Wondr-appen. 
+                <a href="https://kentlundgren.se/program/Bjerred/inpassering/" target="_blank" rel="noopener">
+                    Se analys av inpasseringsstatistik →
+                </a>
+            </p>
+        </div>
+
+        <!-- STATISTIK-SAMMANFATTNING med nyckeltal -->
+        <!-- UPPDATERING 2026-05-28: Nyckeltal uppdaterade till maj 2026-värden
+             Familj: 451→446, Singel: 759→884, Totalt: 1210→1330, Nya efter bastu: 653→773 -->
+        <div class="stats-summary">
+            <div class="stat-card family">
+                <div class="stat-number">446</div>
+                <div class="stat-label">Familjemedlemskap (maj 2026)</div>
+            </div>
+            <div class="stat-card single">
+                <div class="stat-number">884</div>
+                <div class="stat-label">Enskilda medlemskap (maj 2026)</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-number">1 330</div>
+                <div class="stat-label">Totalt antal (maj 2026)</div>
+            </div>
+            <div class="stat-card highlight">
+                <div class="stat-number">773</div>
+                <div class="stat-label">Netto nya efter bastuöppning</div>
+            </div>
+        </div>
+
+        <!-- KONTROLLPANEL för att växla diagramtyp -->
+        <div class="controls">
+            <!-- 
+            Knapparna använder onclick för att anropa JavaScript-funktionen changeChartType()
+            ID:n används för att uppdatera aktiv status via JavaScript
+            -->
+            <button id="btn-new" class="btn btn-primary" onclick="changeChartType('new')">
+                📈 Nyregistreringar per månad
+            </button>
+            <button id="btn-cumulative" class="btn btn-secondary" onclick="changeChartType('cumulative')">
+                📊 Ackumulerad utveckling
+            </button>
+            <button class="btn btn-info" onclick="openModal()">
+                ℹ️ Om tekniken
+            </button>
+        </div>
+
+        <!-- TIDSFILTER för att välja vilken period som visas -->
+        <!-- UPPDATERING 2026-05-28: Lagt till filterknapp för År 2026 -->
+        <div class="time-filter">
+            <button class="btn-filter" onclick="setTimeFilter('all')" id="filter-all">
+                Hela perioden
+            </button>
+            <button class="btn-filter" onclick="setTimeFilter('2025')" id="filter-2025">
+                År 2025
+            </button>
+            <button class="btn-filter active" onclick="setTimeFilter('2026')" id="filter-2026">
+                År 2026
+            </button>
+            <button class="btn-filter" onclick="setTimeFilter('post-sauna')" id="filter-post-sauna">
+                Efter bastuöppning (juli 2025)
+            </button>
+        </div>
+
+        <!-- DIAGRAMCONTAINER - Chart.js renderar här -->
+        <div class="chart-container">
+            <canvas id="membershipChart"></canvas>
+        </div>
+
+        <!-- FOTNOT med kompletterande information -->
+        <!-- UPPDATERING 2026-05-28: Lagt till länk till rapporten "Subscribers/Count2" i Wondr -->
+        <div class="footnote">
+            <p>
+                <strong>Not:</strong> I statistiken ovan ingår inte följande kategorier: 
+                7 st "Registrering av familjemedlemmar" (mellanstation innan fullständig registrering), 
+                34 gratismedlemmar samt 1 engångsinträde. 
+                <span class="warning">Obs: Endast 1 engångsinträde registrerat – detta bör undersökas vidare.</span>
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>Källa (2024–2025):</strong> Wondr medlemsexport, 2025-12-23. 
+                Se <a href="https://wondr.cc/sv-se/hem" target="_blank">wondr.cc</a> för mer information om systemet.
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>Källa (2026, jan–maj):</strong> Aktuell medlemsstatistik kan hämtas direkt från Wondr-rapporten: 
+                <a href="https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2" 
+                   target="_blank" rel="noopener" style="font-weight: bold;">
+                    Öppna medlemsräknaren i Wondr →
+                </a>
+                (kräver inloggning). Värden visar aktiva medlemmar vid månadsslutet.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- 
+    =========================================================================
+    MODAL (POPUP) FÖR TEKNISK INFORMATION
+    Visas när användaren klickar på "Om tekniken"-knappen
+    =========================================================================
+    -->
+    <div class="modal-overlay" id="modal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🛠️ Teknisk beskrivning</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>Använda tekniker</h4>
+                <ul>
+                    <li><strong>HTML5</strong> – Semantisk struktur för tillgänglighet</li>
+                    <li><strong>CSS3</strong> – Styling med CSS Custom Properties (variabler), Flexbox och Grid</li>
+                    <li><strong>JavaScript (ES6+)</strong> – Interaktivitet och datahantering</li>
+                    <li><strong>Chart.js</strong> – Öppen källkodsbibliotek för responsiva diagram</li>
+                </ul>
+
+                <h4>Funktioner</h4>
+                <ul>
+                    <li><strong>Växling mellan diagramtyper</strong> – Stapeldiagram för nyregistreringar, linjediagram med area-fyllning för ackumulerad utveckling</li>
+                    <li><strong>Total-linje</strong> – I ackumulerat läge visas även summan av alla medlemskap</li>
+                    <li><strong>Tidsfiltrering</strong> – Data kan filtreras på olika tidsperioder</li>
+                    <li><strong>Responsiv design</strong> – Anpassad layout för mobil, tablet och desktop med CSS Media Queries</li>
+                    <li><strong>Modal-dialog</strong> – Visar teknisk information utan sidnavigering</li>
+                </ul>
+
+                <h4>Responsiv design</h4>
+                <p>
+                    Sidan använder <code>CSS Custom Properties</code> (variabler) tillsammans med 
+                    <code>@media</code> queries för att anpassa layouten:
+                </p>
+                <ul>
+                    <li><strong>Mobil (&lt;480px)</strong> – Statistikkort i en kolumn, knappar staplade vertikalt, kompakt diagram</li>
+                    <li><strong>Tablet (480-768px)</strong> – Statistikkort i två kolumner, mellanstort diagram</li>
+                    <li><strong>Desktop (&gt;768px)</strong> – Full layout med fyra kolumner för statistik</li>
+                    <li><strong>Stor skärm (&gt;1200px)</strong> – Extra högt diagram för bättre läsbarhet</li>
+                </ul>
+
+                <h4>Databearbetning</h4>
+                <p>
+                    Rådata exporterades från Wondr som Excel-fil (.xlsx). Datan bearbetades med 
+                    Python och pandas för att gruppera medlemskap per månad och kategori. 
+                    Den bearbetade datan är sedan inbäddad i JavaScript för snabb rendering 
+                    utan serveranrop.
+                </p>
+
+                <h4>Kodstruktur</h4>
+                <ul>
+                    <li><code>&lt;style&gt;</code> – All CSS i dokumentets head med tydliga sektionskommentarer</li>
+                    <li><code>&lt;script&gt;</code> – JavaScript i slutet av body för optimal laddning</li>
+                    <li>CSS-variabler i <code>:root</code> för enkel anpassning av tema och storlekar</li>
+                </ul>
+
+                <h4>Externa beroenden</h4>
+                <p>
+                    Endast <strong>Chart.js</strong> laddas från CDN (Content Delivery Network). 
+                    Ingen annan extern kod används, vilket minimerar säkerhetsrisker och 
+                    säkerställer snabb laddningstid.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+    =========================================================================
+    MEDLEMS-MODAL (POPUP)
+    Visar medlemslista vid trippelklick på stapel (november 2025)
+    =========================================================================
+    -->
+    <div class="modal-overlay" id="memberModal" onclick="closeMemberModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header" id="memberModalHeader">
+                <h3 id="memberModalTitle">Medlemmar</h3>
+                <button class="modal-close" onclick="closeMemberModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="member-count" id="memberCount"></p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">
+                    Visar förnamn och initial från efternamn + antal bokningar
+                </p>
+                <div class="member-list" id="memberList">
+                    <!-- Medlemmar fylls i via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+    =========================================================================
+    JAVASCRIPT
+    All logik för diagrammet och interaktivitet
+    =========================================================================
+    -->
+    <script>
+        /*
+        =====================================================================
+        DATA
+        Medlemsstatistik per månad, förbearbetad från Excel-exporten
+        
+        OBS: Följande kategorier är exkluderade:
+        - "Registrering av familjemedlemmar" (7 st) - mellanstation
+        - Gratismedlemmar (34 st)
+        - Engångsinträde (1 st)
+        
+        Varje objekt innehåller:
+        - period: År och månad (YYYY-MM)
+        - familj_ny: Antal nya familjemedlemskap den månaden
+        - enskild_ny: Antal nya enskilda medlemskap den månaden
+        - familj_ack: Ackumulerat antal familjemedlemskap
+        - enskild_ack: Ackumulerat antal enskilda medlemskap
+        - total_ack: Ackumulerat totalt antal (familj + enskild)
+        =====================================================================
+        */
+        const allData = [
+            {period: '2024-08', familj_ny: 5, enskild_ny: 2, familj_ack: 5, enskild_ack: 2, total_ack: 7},
+            {period: '2024-09', familj_ny: 2, enskild_ny: 4, familj_ack: 7, enskild_ack: 6, total_ack: 13},
+            {period: '2024-10', familj_ny: 11, enskild_ny: 16, familj_ack: 18, enskild_ack: 22, total_ack: 40},
+            {period: '2024-11', familj_ny: 16, enskild_ny: 32, familj_ack: 34, enskild_ack: 54, total_ack: 88},
+            {period: '2024-12', familj_ny: 31, enskild_ny: 40, familj_ack: 65, enskild_ack: 94, total_ack: 159},
+            {period: '2025-01', familj_ny: 46, enskild_ny: 52, familj_ack: 111, enskild_ack: 146, total_ack: 257},
+            {period: '2025-02', familj_ny: 21, enskild_ny: 30, familj_ack: 132, enskild_ack: 176, total_ack: 308},
+            {period: '2025-03', familj_ny: 20, enskild_ny: 27, familj_ack: 152, enskild_ack: 203, total_ack: 355},
+            {period: '2025-04', familj_ny: 20, enskild_ny: 26, familj_ack: 172, enskild_ack: 229, total_ack: 401},
+            {period: '2025-05', familj_ny: 65, enskild_ny: 39, familj_ack: 237, enskild_ack: 268, total_ack: 505},
+            {period: '2025-06', familj_ny: 28, enskild_ny: 24, familj_ack: 265, enskild_ack: 292, total_ack: 557},
+            {period: '2025-07', familj_ny: 39, enskild_ny: 46, familj_ack: 304, enskild_ack: 338, total_ack: 642},
+            {period: '2025-08', familj_ny: 43, enskild_ny: 71, familj_ack: 347, enskild_ack: 409, total_ack: 756},
+            {period: '2025-09', familj_ny: 35, enskild_ny: 100, familj_ack: 382, enskild_ack: 509, total_ack: 891},
+            {period: '2025-10', familj_ny: 39, enskild_ny: 108, familj_ack: 421, enskild_ack: 617, total_ack: 1038},
+            {period: '2025-11', familj_ny: 21, enskild_ny: 95, familj_ack: 442, enskild_ack: 712, total_ack: 1154},
+            {period: '2025-12', familj_ny: 9, enskild_ny: 47, familj_ack: 451, enskild_ack: 759, total_ack: 1210},
+            
+            // =========================================================================
+            // UPPDATERING 2026-05-28: Lagt till månadsdata för jan–maj 2026
+            // Källa: https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2
+            // OBS: "familj_ack" och "enskild_ack" speglar nu AKTIVA MEDLEMMAR vid månadsslutet
+            // (ej ackumulerade nyregistreringar). Familjemedlemskap minskar pga avslutade abonnemang.
+            // familj_ny/enskild_ny = NETTOFÖRÄNDRING den månaden (kan vara negativ = fler avslutade än nya)
+            // =========================================================================
+            {period: '2026-01', familj_ny: 11,  enskild_ny: 27, familj_ack: 462, enskild_ack: 786, total_ack: 1248},
+            {period: '2026-02', familj_ny: 0,   enskild_ny: 58, familj_ack: 462, enskild_ack: 844, total_ack: 1306},
+            {period: '2026-03', familj_ny: -2,  enskild_ny: 16, familj_ack: 460, enskild_ack: 860, total_ack: 1320},
+            {period: '2026-04', familj_ny: -2,  enskild_ny: 12, familj_ack: 458, enskild_ack: 872, total_ack: 1330},
+            {period: '2026-05', familj_ny: -12, enskild_ny: 12, familj_ack: 446, enskild_ack: 884, total_ack: 1330}
+        ];
+
+        /*
+        =====================================================================
+        MEDLEMSDATA FÖR NOVEMBER 2025
+        Data för trippelklick-funktionen - visar förnamn + initial + bokningar
+        Extraherat från data/md_komplett_251226.md (tidigare: medlemsdata_komplett.md)
+        =====================================================================
+        */
+        const novemberData = {
+            // Familjemedlemskap registrerade i november 2025 (21 st)
+            familj: [
+                {namn: 'Sandra F.', bokningar: 2},
+                {namn: 'Margrét T.', bokningar: 1},
+                {namn: 'Richard B.', bokningar: 0},
+                {namn: 'Joakim W.', bokningar: 0},
+                {namn: 'Elisabeth P.', bokningar: 0},
+                {namn: 'Robert F.', bokningar: 0},
+                {namn: 'Per D.', bokningar: 3},
+                {namn: 'Gun G.', bokningar: 2},
+                {namn: 'Anna H.', bokningar: 2},
+                {namn: 'Alva G.', bokningar: 5},
+                {namn: 'Sanna L.', bokningar: 17},
+                {namn: 'Andreas W.', bokningar: 0},
+                {namn: 'Kristin S.', bokningar: 12},
+                {namn: 'Torbjörn H.', bokningar: 6},
+                {namn: 'Lotta M.', bokningar: 5},
+                {namn: 'Gürdal S.', bokningar: 2},
+                {namn: 'Luca B.', bokningar: 10},
+                {namn: 'Odd S.', bokningar: 8},
+                {namn: 'Jörgen L.', bokningar: 2},
+                {namn: 'Mariette J.', bokningar: 2},
+                {namn: 'Mario V.', bokningar: 3}
+            ],
+            // Enskilda medlemskap registrerade i november 2025 (95 st)
+            enskild: [
+                {namn: 'Bo N.', bokningar: 7},
+                {namn: 'Carina A.', bokningar: 4},
+                {namn: 'Vahid D.', bokningar: 0},
+                {namn: 'Harald R.', bokningar: 0},
+                {namn: 'Maria W.', bokningar: 4},
+                {namn: 'Linus K.', bokningar: 14},
+                {namn: 'Lars-Erik L.', bokningar: 8},
+                {namn: 'Maria S.', bokningar: 2},
+                {namn: 'Ing-Marie L.', bokningar: 6},
+                {namn: 'Fredrik E.', bokningar: 10},
+                {namn: 'Bertil N.', bokningar: 6},
+                {namn: 'Annelie N.', bokningar: 1},
+                {namn: 'Ylva T.', bokningar: 0},
+                {namn: 'Patrick K.', bokningar: 3},
+                {namn: 'Alma H.', bokningar: 7},
+                {namn: 'Karin O.', bokningar: 8},
+                {namn: 'Mattias O.', bokningar: 2},
+                {namn: 'David A.', bokningar: 1},
+                {namn: 'Kim E.', bokningar: 5},
+                {namn: 'Maria A.', bokningar: 0},
+                {namn: 'Jonas N.', bokningar: 3},
+                {namn: 'Marcus P.', bokningar: 3},
+                {namn: 'Linnea C.', bokningar: 2},
+                {namn: 'Ciprian C.', bokningar: 11},
+                {namn: 'Marit Å.', bokningar: 1},
+                {namn: 'Helene E.', bokningar: 1},
+                {namn: 'Linda G.', bokningar: 0},
+                {namn: 'Johanna R.', bokningar: 2},
+                {namn: 'Tommy B.', bokningar: 5},
+                {namn: 'Camilla A.', bokningar: 4},
+                {namn: 'Anna-Maria L.', bokningar: 0},
+                {namn: 'Jessica P.', bokningar: 6},
+                {namn: 'Margit J.', bokningar: 5},
+                {namn: 'Michaela T.', bokningar: 0},
+                {namn: 'Lina K.', bokningar: 0},
+                {namn: 'Osman A.', bokningar: 5},
+                {namn: 'Tanya W.', bokningar: 0},
+                {namn: 'Susanne B.', bokningar: 4},
+                {namn: 'Madeleine H.', bokningar: 1},
+                {namn: 'Maria B.', bokningar: 1},
+                {namn: 'Christopher M.', bokningar: 6},
+                {namn: 'Cecilia K.', bokningar: 1},
+                {namn: 'Felix C.', bokningar: 3},
+                {namn: 'Nenad M.', bokningar: 3},
+                {namn: 'Zoran M.', bokningar: 3},
+                {namn: 'Johan P.', bokningar: 5},
+                {namn: 'Dan B.', bokningar: 9},
+                {namn: 'Louise L.', bokningar: 1},
+                {namn: 'Vejde N.', bokningar: 1},
+                {namn: 'Oskar K.', bokningar: 1},
+                {namn: 'Jenny B.', bokningar: 3},
+                {namn: 'Thomas P.', bokningar: 7},
+                {namn: 'Olof H.', bokningar: 0},
+                {namn: 'Nataliia K.', bokningar: 3},
+                {namn: 'Monica M.', bokningar: 1},
+                {namn: 'Christina P.', bokningar: 0},
+                {namn: 'Nikitas S.', bokningar: 1},
+                {namn: 'Peter B.', bokningar: 1},
+                {namn: 'Jenny F.', bokningar: 0},
+                {namn: 'Stina V.', bokningar: 1},
+                {namn: 'Elisabeth H.', bokningar: 1},
+                {namn: 'Sean C.', bokningar: 4},
+                {namn: 'Sara L.', bokningar: 6},
+                {namn: 'Kim H.', bokningar: 0},
+                {namn: 'Ida R.', bokningar: 1},
+                {namn: 'Åsa S.', bokningar: 0},
+                {namn: 'Oscar H.', bokningar: 9},
+                {namn: 'Fanny H.', bokningar: 2},
+                {namn: 'Åsa B.', bokningar: 3},
+                {namn: 'Evelina H.', bokningar: 0},
+                {namn: 'Susanne B.', bokningar: 0},
+                {namn: 'Dean M.', bokningar: 2},
+                {namn: 'Ida L.', bokningar: 2},
+                {namn: 'Markus O.', bokningar: 3},
+                {namn: 'Johan G.', bokningar: 1},
+                {namn: 'Inga M.', bokningar: 4},
+                {namn: 'Maria I.', bokningar: 0},
+                {namn: 'Familjen C.', bokningar: 1},
+                {namn: 'Albin T.', bokningar: 0},
+                {namn: 'Johan A.', bokningar: 2},
+                {namn: 'Wyatt L.', bokningar: 18},
+                {namn: 'Pernilla R.', bokningar: 5},
+                {namn: 'Babak R.', bokningar: 0},
+                {namn: 'Filip V.', bokningar: 4},
+                {namn: 'Hugo D.', bokningar: 0},
+                {namn: 'Marie S.', bokningar: 0},
+                {namn: 'Martin L.', bokningar: 5},
+                {namn: 'Mahsum K.', bokningar: 3},
+                {namn: 'Johan W.', bokningar: 6},
+                {namn: 'Inger K.', bokningar: 6},
+                {namn: 'Wilhelm W.', bokningar: 1},
+                {namn: 'Cecilia C.', bokningar: 1},
+                {namn: 'Emma S.', bokningar: 3},
+                {namn: 'Taif A.', bokningar: 5},
+                {namn: 'Jacob P.', bokningar: 1}
+            ]
+        };
+
+        /*
+        =====================================================================
+        GLOBALA VARIABLER
+        Håller reda på aktuellt tillstånd
+        =====================================================================
+        */
+        let currentChartType = 'new';       // 'new' eller 'cumulative'
+        // UPPDATERING 2026-05-28: Standardfilter ändrat till '2026' (var '2025')
+        let currentTimeFilter = '2026';     // 'all', '2025', '2026', eller 'post-sauna'
+        let chart = null;                   // Referens till Chart.js-instansen
+        
+        // Variabler för trippelklick-detektering
+        let clickCount = 0;
+        let clickTimer = null;
+        const TRIPLE_CLICK_DELAY = 400;     // Max tid (ms) mellan klick för att räknas som trippelklick
+
+        /*
+        =====================================================================
+        FUNKTION: filterData
+        Filtrerar datan baserat på vald tidsperiod
+        
+        @param {string} filter - Tidsfilter ('all', '2025', 'post-sauna')
+        @returns {Array} - Filtrerad array med dataobjekt
+        =====================================================================
+        */
+        function filterData(filter) {
+            switch(filter) {
+                case 'all':
+                    // Returnera all data
+                    return allData;
+                case '2025':
+                    // Filtrera för att endast inkludera 2025
+                    return allData.filter(d => d.period.startsWith('2025'));
+                case 'post-sauna':
+                    // Filtrera för juli 2025 och framåt
+                    return allData.filter(d => d.period >= '2025-07');
+                // UPPDATERING 2026-05-28: Nytt filter för att visa enbart år 2026
+                case '2026':
+                    return allData.filter(d => d.period.startsWith('2026'));
+                default:
+                    return allData;
+            }
+        }
+
+        /*
+        =====================================================================
+        FUNKTION: formatPeriod
+        Konverterar period från YYYY-MM till läsbart format
+        
+        @param {string} period - Period i format YYYY-MM
+        @returns {string} - Formaterad sträng (t.ex. "Aug 2024")
+        =====================================================================
+        */
+        function formatPeriod(period) {
+            // Array med svenska månadsförkortningar
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 
+                           'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
+            // Extrahera år och månad från strängen
+            const [year, month] = period.split('-');
+            // Konvertera månad till index (01 -> 0, 12 -> 11)
+            const monthIndex = parseInt(month) - 1;
+            // Returnera formaterad sträng
+            return `${months[monthIndex]} ${year}`;
+        }
+
+        /*
+        =====================================================================
+        FUNKTION: isMobile
+        Kontrollerar om användaren är på en mobil enhet
+        
+        @returns {boolean} - true om skärmbredden är mindre än 480px
+        =====================================================================
+        */
+        function isMobile() {
+            return window.innerWidth < 480;
+        }
+
+        /*
+        =====================================================================
+        FUNKTION: updateChart
+        Uppdaterar diagrammet med ny data och konfiguration
+        
+        Denna funktion:
+        1. Filtrerar datan baserat på tidsfilter
+        2. Väljer rätt dataserier baserat på diagramtyp
+        3. Förstör befintligt diagram om det finns
+        4. Skapar nytt diagram med uppdaterad konfiguration
+        =====================================================================
+        */
+        function updateChart() {
+            // Hämta filtrerad data
+            const data = filterData(currentTimeFilter);
+            
+            // Extrahera labels (x-axel) - formaterade månader
+            const labels = data.map(d => formatPeriod(d.period));
+            
+            // Välj rätt data baserat på diagramtyp
+            let datasets, chartTitle, chartType;
+            
+            if (currentChartType === 'new') {
+                // Nyregistreringar per månad - stapeldiagram
+                chartType = 'bar';
+                chartTitle = 'Nyregistreringar per månad';
+                
+                datasets = [
+                    {
+                        label: 'Familjemedlemskap',
+                        data: data.map(d => d.familj_ny),
+                        backgroundColor: 'rgba(72, 187, 120, 0.7)',
+                        borderColor: 'rgba(72, 187, 120, 1)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Enskilt medlemskap',
+                        data: data.map(d => d.enskild_ny),
+                        backgroundColor: 'rgba(66, 153, 225, 0.7)',
+                        borderColor: 'rgba(66, 153, 225, 1)',
+                        borderWidth: 2
+                    }
+                ];
+            } else {
+                // Ackumulerad utveckling - linjediagram med area-fyllning
+                chartType = 'line';
+                chartTitle = 'Ackumulerad medlemsutveckling';
+                
+                datasets = [
+                    {
+                        label: 'Totalt antal',
+                        data: data.map(d => d.total_ack),
+                        backgroundColor: 'rgba(128, 90, 213, 0.1)',  // Lila med låg transparens
+                        borderColor: 'rgba(128, 90, 213, 1)',         // Solid lila
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: isMobile() ? 3 : 5,              // Mindre punkter på mobil
+                        pointHoverRadius: isMobile() ? 5 : 7,
+                        order: 1  // Ritas först (bakom de andra)
+                    },
+                    {
+                        label: 'Enskilt medlemskap',
+                        data: data.map(d => d.enskild_ack),
+                        backgroundColor: 'rgba(66, 153, 225, 0.3)',
+                        borderColor: 'rgba(66, 153, 225, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: isMobile() ? 2 : 4,
+                        pointHoverRadius: isMobile() ? 4 : 6,
+                        order: 2
+                    },
+                    {
+                        label: 'Familjemedlemskap',
+                        data: data.map(d => d.familj_ack),
+                        backgroundColor: 'rgba(72, 187, 120, 0.4)',
+                        borderColor: 'rgba(72, 187, 120, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: isMobile() ? 2 : 4,
+                        pointHoverRadius: isMobile() ? 4 : 6,
+                        order: 3
+                    }
+                ];
+            }
+
+            // Förstör befintligt diagram för att undvika minnesläckor
+            if (chart) {
+                chart.destroy();
+            }
+
+            // Hämta canvas-elementet där diagrammet ska renderas
+            const ctx = document.getElementById('membershipChart').getContext('2d');
+            
+            // Beräkna max- och min-värde för y-axeln med lite marginal
+            const allValues = datasets.flatMap(ds => ds.data);
+            const maxValue = Math.max(...allValues);
+            const minValue = Math.min(...allValues);
+            const yMax = Math.ceil(maxValue * 1.15 / 100) * 100;  // Runda upp till närmaste hundratal + 15%
+            // UPPDATERING 2026-05-28: Stöd för negativa värden (familjemedlemskap minskar i 2026)
+            // Om data innehåller negativa värden (nettominskning), beräkna ett lämpligt minimum
+            const yMin = minValue < 0 ? Math.floor(minValue * 1.2 / 10) * 10 : 0;
+            
+            // Skapa nytt Chart.js-diagram
+            chart = new Chart(ctx, {
+                type: chartType,
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                
+                // Konfiguration för utseende och beteende
+                options: {
+                    responsive: true,           // Anpassa till containerns storlek
+                    maintainAspectRatio: false, // Tillåt anpassad höjd
+                    
+                    // Klick-hantering för trippelklick på staplar (november 2025)
+                    onClick: (event, elements, chart) => {
+                        handleChartClick(event, elements, chart);
+                    },
+                    
+                    // Interaktionsinställningar
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    
+                    // Konfiguration för plugins (titel, legend, tooltip)
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: chartTitle,
+                            font: {
+                                size: isMobile() ? 14 : 18,
+                                weight: 'bold'
+                            },
+                            color: '#2d3748',
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: isMobile() ? 10 : 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: isMobile() ? 11 : 13
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(45, 55, 72, 0.95)',
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            // Anpassad tooltip-formatering
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y.toLocaleString('sv-SE');
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    
+                    // Konfiguration för axlar
+                    scales: {
+                        y: {
+                            // UPPDATERING 2026-05-28: beginAtZero anpassas dynamiskt
+                            // (false om negativa nettoförändringar finns, t.ex. familj 2026)
+                            beginAtZero: yMin >= 0,
+                            min: yMin,  // Dynamiskt min-värde (0 eller negativt)
+                            max: yMax,  // Dynamiskt max-värde
+                            title: {
+                                display: !isMobile(),  // Dölj titel på mobil
+                                text: 'Antal medlemmar',
+                                font: {
+                                    size: 13,
+                                    weight: 'bold'
+                                },
+                                color: '#4a5568'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.06)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: isMobile() ? 10 : 12
+                                },
+                                // Formatera tal med tusentalsavgränsare
+                                callback: function(value) {
+                                    return value.toLocaleString('sv-SE');
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: isMobile() ? 9 : 11
+                                },
+                                maxRotation: isMobile() ? 45 : 0,
+                                minRotation: isMobile() ? 45 : 0
+                            }
+                        }
+                    },
+                    
+                    // Animation vid uppdatering
+                    animation: {
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        }
+
+        /*
+        =====================================================================
+        FUNKTION: changeChartType
+        Hanterar byte av diagramtyp (nyregistrering vs ackumulerat)
+        
+        @param {string} type - 'new' eller 'cumulative'
+        =====================================================================
+        */
+        function changeChartType(type) {
+            // Uppdatera global variabel
+            currentChartType = type;
+            
+            // Uppdatera knappstatus visuellt
+            const btnNew = document.getElementById('btn-new');
+            const btnCumulative = document.getElementById('btn-cumulative');
+            
+            if (type === 'new') {
+                // "Nyregistreringar" är nu aktiv
+                btnNew.className = 'btn btn-primary';
+                btnCumulative.className = 'btn btn-secondary';
+            } else {
+                // "Ackumulerad" är nu aktiv
+                btnNew.className = 'btn btn-secondary';
+                btnCumulative.className = 'btn btn-primary';
+            }
+            
+            // Uppdatera diagrammet med ny typ
+            updateChart();
+        }
+
+        /*
+        =====================================================================
+        FUNKTION: setTimeFilter
+        Hanterar byte av tidsfilter
+        
+        @param {string} filter - 'all', '2025', eller 'post-sauna'
+        =====================================================================
+        */
+        function setTimeFilter(filter) {
+            // Uppdatera global variabel
+            currentTimeFilter = filter;
+            
+            // Ta bort 'active' från alla filterknappar
+            document.querySelectorAll('.btn-filter').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Lägg till 'active' på vald knapp
+            document.getElementById('filter-' + filter).classList.add('active');
+            
+            // Uppdatera diagrammet med nytt filter
+            updateChart();
+        }
+
+        /*
+        =====================================================================
+        MODAL-FUNKTIONER
+        Hanterar öppning och stängning av teknisk information
+        =====================================================================
+        */
+        
+        // Öppna modal
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+            // Förhindra scrollning på bakgrunden
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Stäng modal
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            // Återställ scrollning
+            document.body.style.overflow = '';
+        }
+
+        // Stäng modal om man klickar utanför (på overlay)
+        function closeModalOnOverlay(event) {
+            // Kontrollera att klicket var på overlay, inte på modal-innehållet
+            if (event.target.id === 'modal') {
+                closeModal();
+            }
+        }
+
+        // Stäng modal med Escape-tangenten
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+                closeMemberModal();
+            }
+        });
+
+        /*
+        =====================================================================
+        MEDLEMS-MODAL FUNKTIONER
+        Hanterar visning av medlemslista vid trippelklick (november 2025)
+        =====================================================================
+        */
+        
+        // Öppna medlems-modal
+        function openMemberModal(type) {
+            const modal = document.getElementById('memberModal');
+            const title = document.getElementById('memberModalTitle');
+            const header = document.getElementById('memberModalHeader');
+            const countEl = document.getElementById('memberCount');
+            const listEl = document.getElementById('memberList');
+            
+            // Välj rätt data och styling
+            let members, typeLabel, colorClass;
+            if (type === 'familj') {
+                members = novemberData.familj;
+                typeLabel = 'Familjemedlemskap';
+                colorClass = 'family';
+                header.style.background = 'var(--family-color)';
+            } else {
+                members = novemberData.enskild;
+                typeLabel = 'Enskilda medlemskap';
+                colorClass = 'single';
+                header.style.background = 'var(--single-color)';
+            }
+            
+            // Uppdatera rubrik och antal
+            title.textContent = `${typeLabel} — November 2025`;
+            countEl.textContent = `${members.length} medlemmar`;
+            countEl.className = `member-count ${colorClass}`;
+            
+            // Bygg medlemslistan
+            let html = '';
+            members.forEach(m => {
+                html += `
+                    <div class="member-item">
+                        <span class="member-name">${m.namn}</span>
+                        <span class="member-bookings">${m.bokningar}</span>
+                    </div>
+                `;
+            });
+            listEl.innerHTML = html;
+            
+            // Visa modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Stäng medlems-modal
+        function closeMemberModal() {
+            document.getElementById('memberModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Stäng medlems-modal om man klickar utanför
+        function closeMemberModalOnOverlay(event) {
+            if (event.target.id === 'memberModal') {
+                closeMemberModal();
+            }
+        }
+
+        /*
+        =====================================================================
+        TRIPPELKLICK-HANTERING FÖR DIAGRAM
+        Detekterar trippelklick på staplar för november 2025
+        =====================================================================
+        */
+        // Spara senaste klickade medlemstyp för klickhantering
+        let lastClickedMemberType = null;
+        
+        function handleChartClick(event, elements, chart) {
+            // Endast i "nyregistreringar"-läge (stapeldiagram)
+            if (currentChartType !== 'new') {
+                return;
+            }
+            
+            // Hämta element som faktiskt klickades (inte alla vid samma index)
+            const clickedElements = chart.getElementsAtEventForMode(
+                event, 
+                'nearest', 
+                { intersect: true }, 
+                false
+            );
+            
+            if (clickedElements.length === 0) {
+                return;
+            }
+            
+            const element = clickedElements[0];
+            const dataIndex = element.index;
+            const datasetIndex = element.datasetIndex;
+            
+            // Hämta period för klickad stapel
+            const filteredData = filterData(currentTimeFilter);
+            const clickedPeriod = filteredData[dataIndex]?.period;
+            
+            // Avgör om det är familj (dataset 0) eller enskild (dataset 1)
+            const memberTypeForClick = datasetIndex === 0 ? 'familj' : 'enskild';
+            
+            // =========================================================================
+            // ALLA MÅNADER UTOM NOVEMBER — Dynamisk datahämtning via nyamedlemmar.js
+            // UPPDATERING 2025-12-26: Generisk hantering för alla månader
+            // =========================================================================
+            if (clickedPeriod !== '2025-11') {
+                // Anropa generisk funktion från nyamedlemmar.js
+                if (typeof handleDynamicClick === 'function') {
+                    handleDynamicClick(clickedPeriod, memberTypeForClick);
+                }
+                return;  // Avsluta här, låt nyamedlemmar.js hantera resten
+            }
+            
+            // =========================================================================
+            // NOVEMBER 2025 — Befintlig funktionalitet (hårdkodad data)
+            // OBS: Koden nedan är orörd enligt önskemål
+            // =========================================================================
+            
+            // Avgör om det är familj (dataset 0) eller enskild (dataset 1)
+            const memberType = datasetIndex === 0 ? 'familj' : 'enskild';
+            
+            // Om användaren byter stapel, återställ räknaren
+            if (lastClickedMemberType !== null && lastClickedMemberType !== memberType) {
+                clickCount = 0;
+                clearTimeout(clickTimer);
+            }
+            lastClickedMemberType = memberType;
+            
+            // Räkna klick
+            clickCount++;
+            
+            // Om första klicket, starta timer
+            if (clickCount === 1) {
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;  // Återställ efter timeout
+                    lastClickedMemberType = null;
+                }, TRIPLE_CLICK_DELAY);
+            }
+            
+            // Vid dubbelklick - navigera till dataformat.html
+            // UPPDATERING 2025-12-26: Dubbelklick öppnar sida om dataformat
+            if (clickCount === 2) {
+                // Vänta lite för att se om det blir ett trippelklick
+                setTimeout(() => {
+                    if (clickCount === 2) {
+                        // Fortfarande 2 klick efter kort väntan - navigera
+                        window.location.href = 'dataformat.html';
+                    }
+                }, 200);  // Kort fördröjning för att skilja från trippelklick
+            }
+            
+            // Vid trippelklick - visa modal med medlemslista
+            if (clickCount >= 3) {
+                clearTimeout(clickTimer);
+                clickCount = 0;
+                lastClickedMemberType = null;
+                openMemberModal(memberType);
+            }
+        }
+
+        /*
+        =====================================================================
+        RESPONSIV HANTERING
+        Uppdaterar diagrammet när fönstret ändrar storlek
+        =====================================================================
+        */
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            // Debounce - vänta tills användaren slutat ändra storlek
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                updateChart();
+            }, 250);
+        });
+
+        /*
+        =====================================================================
+        INITIALISERING
+        Körs när sidan laddats klart
+        =====================================================================
+        */
+        // Skapa initialt diagram med standardinställningar
+        updateChart();
+    </script>
+
+</body>
+</html>

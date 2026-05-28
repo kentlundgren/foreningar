@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skydda privat data från sökmotorer | Bjerreds Saltsjöbad</title>
+    
+    <!-- 
+    =========================================================================
+    PRIVAT DATA - SKYDD MOT INDEXERING
+    =========================================================================
+    Skapad: 2025-12-26
+    
+    Denna sida beskriver olika metoder för att skydda datafiler från att 
+    indexeras av sökmotorer, så att personnamn inte dyker upp i sökresultat.
+    =========================================================================
+    -->
+    
+    <style>
+        /* 
+        =====================================================================
+        CSS-VARIABLER
+        =====================================================================
+        */
+        :root {
+            --primary: #2c5282;
+            --primary-light: #4a6fa5;
+            --secondary: #48bb78;
+            --accent: #ed8936;
+            --warning: #e53e3e;
+            --bg-light: #f7fafc;
+            --bg-code: #1a202c;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 
+        =====================================================================
+        GRUNDLÄGGANDE STYLING
+        =====================================================================
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        /* 
+        =====================================================================
+        HEADER
+        =====================================================================
+        */
+        .header {
+            background: linear-gradient(135deg, #c53030, #9b2c2c);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 
+        =====================================================================
+        HUVUDCONTAINER
+        =====================================================================
+        */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 
+        =====================================================================
+        SEKTIONER
+        =====================================================================
+        */
+        section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: var(--bg-light);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header h2 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-body {
+            padding: 25px 30px;
+        }
+
+        /* 
+        =====================================================================
+        METODKORT
+        =====================================================================
+        */
+        .method-card {
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .method-card:hover {
+            box-shadow: var(--shadow);
+        }
+
+        .method-card.recommended {
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+        }
+
+        .method-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method-card .badge {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .badge.easy {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .badge.medium {
+            background: #feebc8;
+            color: #744210;
+        }
+
+        .badge.hard {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .badge.recommended {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .method-card p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .method-card .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .method-card .pros, .method-card .cons {
+            font-size: 0.9rem;
+        }
+
+        .method-card .pros li {
+            color: var(--secondary);
+            list-style: none;
+            margin-bottom: 5px;
+        }
+
+        .method-card .cons li {
+            color: var(--warning);
+            list-style: none;
+            margin-bottom: 5px;
+        }
+
+        /* 
+        =====================================================================
+        KODEXEMPEL
+        =====================================================================
+        */
+        .code-example {
+            background: var(--bg-code);
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: #2d3748;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-header span {
+            color: #a0aec0;
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+
+        .code-header .filetype {
+            background: #4a5568;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .code-body {
+            padding: 15px 20px;
+            overflow-x: auto;
+        }
+
+        .code-body pre {
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .code-body .comment {
+            color: #68d391;
+        }
+
+        /* 
+        =====================================================================
+        VARNINGSRUTOR
+        =====================================================================
+        */
+        .alert-box {
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .alert-box.warning {
+            background: #fffaf0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .alert-box.danger {
+            background: #fff5f5;
+            border-left: 4px solid var(--warning);
+        }
+
+        .alert-box.info {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+        }
+
+        .alert-box.success {
+            background: #f0fff4;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .alert-box .icon {
+            font-size: 1.3rem;
+        }
+
+        .alert-box .content h4 {
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .alert-box .content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* 
+        =====================================================================
+        STEG-FÖR-STEG
+        =====================================================================
+        */
+        .steps {
+            counter-reset: step;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 25px;
+        }
+
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step h4 {
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .step p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* 
+        =====================================================================
+        TABELL
+        =====================================================================
+        */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table th {
+            background: var(--bg-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .comparison-table .check {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .comparison-table .cross {
+            color: var(--warning);
+        }
+
+        /* 
+        =====================================================================
+        SAMMANFATTNINGSRUTA
+        =====================================================================
+        */
+        .summary-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .summary-box h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .summary-box ol {
+            margin-left: 20px;
+        }
+
+        .summary-box li {
+            margin-bottom: 10px;
+            opacity: 0.95;
+        }
+
+        .summary-box strong {
+            color: #fbd38d;
+        }
+
+        /* 
+        =====================================================================
+        FOOTER
+        =====================================================================
+        */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 
+        =====================================================================
+        RESPONSIV DESIGN
+        =====================================================================
+        */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.7rem;
+            }
+
+            .section-body {
+                padding: 20px;
+            }
+
+            .method-card .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 30px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <h1>🔒 Skydda privat data från sökmotorer</h1>
+        <p>
+            Hur förhindrar man att personnamn i datafiler (.md, .csv, .json) 
+            dyker upp i Googles sökresultat?
+        </p>
+    </header>
+
+    <div class="container">
+
+        <!-- INTRODUKTION -->
+        <section>
+            <div class="section-header">
+                <h2>📋 Problemet</h2>
+            </div>
+            <div class="section-body">
+                <p style="margin-bottom: 15px;">
+                    När man publicerar datafiler på en webbserver kan sökmotorer som Google 
+                    indexera innehållet. Det innebär att om någon söker på sitt namn kan de 
+                    hitta din datafil i sökresultaten – något som ofta är oönskat när det 
+                    gäller medlemsregister och personuppgifter.
+                </p>
+                <p>
+                    Denna guide beskriver flera metoder för att förhindra detta, från enklast 
+                    till mest säkert.
+                </p>
+
+                <div class="alert-box warning">
+                    <span class="icon">⚠️</span>
+                    <div class="content">
+                        <h4>Redan indexerad?</h4>
+                        <p>
+                            Om filerna redan har indexerats av Google kan det ta veckor innan 
+                            de försvinner från sökresultaten, även efter att du vidtagit åtgärder.
+                            Överväg att byta filnamn för omedelbar effekt.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METOD 1: ROBOTS.TXT -->
+        <section>
+            <div class="section-header">
+                <h2>🤖 Metod 1: robots.txt</h2>
+            </div>
+            <div class="section-body">
+                <div class="method-card recommended">
+                    <h3>
+                        <span>Instruera sökmotorer att inte indexera</span>
+                        <span class="badge easy">Enkel</span>
+                        <span class="badge recommended">Rekommenderad</span>
+                    </h3>
+                    <p>
+                        En <code>robots.txt</code>-fil i webbplatsens rot instruerar sökmotorer 
+                        att inte genomsöka eller indexera vissa filer. De flesta sökmotorer 
+                        (inklusive Google) respekterar dessa instruktioner.
+                    </p>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>robots.txt (placeras i webbplatsens rot)</span>
+                            <span class="filetype">TXT</span>
+                        </div>
+                        <div class="code-body">
+<pre><span class="comment"># Blockera alla sökmotorer från att indexera datafiler</span>
+User-agent: *
+
+<span class="comment"># Blockera specifika filtyper</span>
+Disallow: /*.md$
+Disallow: /*.csv$
+Disallow: /*.json$
+
+<span class="comment"># Alternativt: Blockera hela mappen med medlemsdata</span>
+Disallow: /program/Bjerred/medlemmar/*.md
+Disallow: /program/Bjerred/medlemmar/*.csv
+Disallow: /program/Bjerred/medlemmar/*.json</pre>
+                        </div>
+                    </div>
+
+                    <div class="pros-cons">
+                        <ul class="pros">
+                            <li>✅ Enkelt att implementera</li>
+                            <li>✅ Fungerar på alla servertyper</li>
+                            <li>✅ Filerna kan fortfarande läsas av JavaScript</li>
+                            <li>✅ Ingen serverkonfiguration krävs</li>
+                        </ul>
+                        <ul class="cons">
+                            <li>⚠️ Endast en "begäran" – inte en garanti</li>
+                            <li>⚠️ Illasinnade aktörer kan ignorera</li>
+                            <li>⚠️ Filerna är fortfarande åtkomliga via direktlänk</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert-box info">
+                    <span class="icon">💡</span>
+                    <div class="content">
+                        <h4>Var placeras robots.txt?</h4>
+                        <p>
+                            Filen måste ligga i <strong>roten av din domän</strong>, t.ex. 
+                            <code>https://kentlundgren.se/robots.txt</code>. 
+                            Den kan INTE ligga i en undermapp.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METOD 2: X-ROBOTS-TAG -->
+        <section>
+            <div class="section-header">
+                <h2>📡 Metod 2: X-Robots-Tag HTTP-header</h2>
+            </div>
+            <div class="section-body">
+                <div class="method-card">
+                    <h3>
+                        <span>HTTP-header som instruerar sökmotorer</span>
+                        <span class="badge medium">Medel</span>
+                    </h3>
+                    <p>
+                        Genom att konfigurera webbservern att skicka en speciell HTTP-header 
+                        för vissa filtyper kan du instruera sökmotorer att inte indexera dem.
+                    </p>
+
+                    <h4 style="margin-top: 20px; margin-bottom: 10px;">För Apache-server (.htaccess):</h4>
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>.htaccess</span>
+                            <span class="filetype">Apache</span>
+                        </div>
+                        <div class="code-body">
+<pre><span class="comment"># Lägg till noindex-header för datafiler</span>
+&lt;FilesMatch "\.(md|csv|json)$"&gt;
+    Header set X-Robots-Tag "noindex, nofollow"
+&lt;/FilesMatch&gt;</pre>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 20px; margin-bottom: 10px;">För nginx-server:</h4>
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>nginx.conf</span>
+                            <span class="filetype">nginx</span>
+                        </div>
+                        <div class="code-body">
+<pre><span class="comment"># Lägg till noindex-header för datafiler</span>
+location ~* \.(md|csv|json)$ {
+    add_header X-Robots-Tag "noindex, nofollow";
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="pros-cons">
+                        <ul class="pros">
+                            <li>✅ Starkare signal än robots.txt</li>
+                            <li>✅ Fungerar för alla filtyper</li>
+                            <li>✅ Filerna kan fortfarande läsas av JavaScript</li>
+                        </ul>
+                        <ul class="cons">
+                            <li>⚠️ Kräver serverkonfiguration</li>
+                            <li>⚠️ Måste veta vilken servertyp du har</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METOD 3: BLOCKERA ÅTKOMST -->
+        <section>
+            <div class="section-header">
+                <h2>🚫 Metod 3: Blockera extern åtkomst</h2>
+            </div>
+            <div class="section-body">
+                <div class="method-card">
+                    <h3>
+                        <span>Helt förhindra åtkomst utifrån</span>
+                        <span class="badge hard">Avancerad</span>
+                    </h3>
+                    <p>
+                        Detta blockerar helt åtkomst till filerna via webbläsare. 
+                        <strong>OBS:</strong> JavaScript på din sida kan då INTE heller läsa filerna!
+                    </p>
+
+                    <h4 style="margin-top: 20px; margin-bottom: 10px;">För Apache-server (.htaccess):</h4>
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>.htaccess (i samma mapp som datafilerna)</span>
+                            <span class="filetype">Apache</span>
+                        </div>
+                        <div class="code-body">
+<pre><span class="comment"># Blockera alla datafiler från extern åtkomst</span>
+&lt;FilesMatch "\.(md|csv|json)$"&gt;
+    <span class="comment"># Returnera 403 Forbidden</span>
+    Require all denied
+&lt;/FilesMatch&gt;
+
+<span class="comment"># Alternativ syntax för äldre Apache-versioner:</span>
+&lt;FilesMatch "\.(md|csv|json)$"&gt;
+    Order deny,allow
+    Deny from all
+&lt;/FilesMatch&gt;</pre>
+                        </div>
+                    </div>
+
+                    <div class="alert-box danger">
+                        <span class="icon">🛑</span>
+                        <div class="content">
+                            <h4>Viktigt!</h4>
+                            <p>
+                                Om du blockerar åtkomst kommer <code>fetch()</code> i din 
+                                JavaScript-kod att misslyckas. Trippelklick-funktionen för 
+                                att visa medlemmar kommer då INTE att fungera.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pros-cons">
+                        <ul class="pros">
+                            <li>✅ Helt säkert – ingen kan komma åt filerna</li>
+                            <li>✅ Sökmotorer kan omöjligen indexera</li>
+                        </ul>
+                        <ul class="cons">
+                            <li>❌ JavaScript kan inte läsa filerna</li>
+                            <li>❌ Kräver serverkonfiguration</li>
+                            <li>❌ Funktionalitet på sidan slutar fungera</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METOD 4: FLYTTA FILER -->
+        <section>
+            <div class="section-header">
+                <h2>📁 Metod 4: Flytta till privat mapp</h2>
+            </div>
+            <div class="section-body">
+                <div class="method-card">
+                    <h3>
+                        <span>Organisera med en "data"-mapp</span>
+                        <span class="badge easy">Enkel</span>
+                    </h3>
+                    <p>
+                        Flytta alla datafiler till en undermapp (t.ex. <code>/data/</code>) 
+                        och blockera hela mappen i robots.txt. Detta ger bättre struktur.
+                    </p>
+
+                    <div class="steps">
+                        <div class="step">
+                            <h4>Skapa mappstruktur</h4>
+                            <p>
+                                Skapa en mapp <code>data/</code> och flytta dit alla 
+                                <code>.md</code>, <code>.csv</code>, och <code>.json</code>-filer.
+                            </p>
+                        </div>
+                        <div class="step">
+                            <h4>Uppdatera JavaScript-koden</h4>
+                            <p>
+                                Ändra sökvägarna i din kod från t.ex. 
+                                <code>medlemsdata_komplett.md</code> till 
+                                <code>data/medlemsdata_komplett.md</code>.
+                            </p>
+                        </div>
+                        <div class="step">
+                            <h4>Blockera mappen i robots.txt</h4>
+                            <p>
+                                Lägg till <code>Disallow: /program/Bjerred/medlemmar/data/</code> 
+                                i din robots.txt.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pros-cons">
+                        <ul class="pros">
+                            <li>✅ Bättre organisation</li>
+                            <li>✅ Enkelt att förstå</li>
+                            <li>✅ Filerna fungerar fortfarande för JavaScript</li>
+                        </ul>
+                        <ul class="cons">
+                            <li>⚠️ Kräver uppdatering av kod</li>
+                            <li>⚠️ Samma begränsningar som robots.txt</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METOD 5: BYTA FILNAMN -->
+        <section>
+            <div class="section-header">
+                <h2>🔄 Metod 5: Byt filnamn (för redan indexerade filer)</h2>
+            </div>
+            <div class="section-body">
+                <div class="method-card">
+                    <h3>
+                        <span>Bryt gamla länkar från sökresultat</span>
+                        <span class="badge easy">Enkel</span>
+                    </h3>
+                    <p>
+                        Om filerna redan har indexerats av Google är det snabbaste sättet 
+                        att få dem att "försvinna" att byta namn på filerna.
+                    </p>
+
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Gammalt filnamn</th>
+                                <th>→</th>
+                                <th>Nytt filnamn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>medlemsdata_komplett.md</code></td>
+                                <td>→</td>
+                                <td><code>md_komplett_251226.md</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>medlemsdata_rå.csv</code></td>
+                                <td>→</td>
+                                <td><code>md_raw_251226.csv</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>medlemsdata.json</code></td>
+                                <td>→</td>
+                                <td><code>md_251226.json</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert-box success">
+                        <span class="icon">✅</span>
+                        <div class="content">
+                            <h4>Tips: Använd datumstämpel</h4>
+                            <p>
+                                Genom att inkludera datum i filnamnet (t.ex. <code>251226</code> 
+                                för 2025-12-26) blir det tydligt när datan exporterades.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pros-cons">
+                        <ul class="pros">
+                            <li>✅ Omedelbar effekt</li>
+                            <li>✅ Gamla sökresultat leder till 404</li>
+                            <li>✅ Enkelt att göra</li>
+                        </ul>
+                        <ul class="cons">
+                            <li>⚠️ Måste uppdatera alla referenser i koden</li>
+                            <li>⚠️ Förhindrar inte framtida indexering</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METOD 6: LÖSENORDSSKYDD -->
+        <section>
+            <div class="section-header">
+                <h2>🔐 Metod 6: Lösenordsskydd</h2>
+            </div>
+            <div class="section-body">
+                <div class="method-card">
+                    <h3>
+                        <span>Kräv autentisering för åtkomst</span>
+                        <span class="badge hard">Avancerad</span>
+                    </h3>
+                    <p>
+                        Konfigurerar servern att kräva användarnamn och lösenord för att 
+                        komma åt vissa filer eller mappar.
+                    </p>
+
+                    <h4 style="margin-top: 20px; margin-bottom: 10px;">För Apache-server:</h4>
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>.htaccess</span>
+                            <span class="filetype">Apache</span>
+                        </div>
+                        <div class="code-body">
+<pre><span class="comment"># Lösenordsskydd för datafiler</span>
+&lt;FilesMatch "\.(md|csv|json)$"&gt;
+    AuthType Basic
+    AuthName "Skyddad data"
+    AuthUserFile /path/to/.htpasswd
+    Require valid-user
+&lt;/FilesMatch&gt;</pre>
+                        </div>
+                    </div>
+
+                    <div class="alert-box warning">
+                        <span class="icon">⚠️</span>
+                        <div class="content">
+                            <h4>Komplex setup</h4>
+                            <p>
+                                Lösenordsskydd kräver att du skapar en <code>.htpasswd</code>-fil 
+                                med krypterade lösenord och har tillgång till serverns konfiguration.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SAMMANFATTNING -->
+        <div class="summary-box">
+            <h3>📌 Rekommenderad strategi för denna webbplats</h3>
+            <ol>
+                <li>
+                    <strong>Skapa robots.txt</strong> — Lägg till blockeringsregler för 
+                    <code>.md</code>, <code>.csv</code>, och <code>.json</code> i rotmappen.
+                </li>
+                <li>
+                    <strong>Flytta datafiler</strong> — Skapa en <code>/data/</code>-mapp 
+                    och flytta dit alla känsliga filer.
+                </li>
+                <li>
+                    <strong>Byt filnamn</strong> — Om filerna redan är indexerade, byt 
+                    namn på dem så att gamla sökresultat ger 404-fel.
+                </li>
+                <li>
+                    <strong>Uppdatera JavaScript</strong> — Se till att alla 
+                    <code>fetch()</code>-anrop pekar på de nya filnamnen/sökvägarna.
+                </li>
+            </ol>
+        </div>
+
+        <!-- JÄMFÖRELSETABELL -->
+        <section>
+            <div class="section-header">
+                <h2>⚖️ Metodjämförelse</h2>
+            </div>
+            <div class="section-body">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Metod</th>
+                            <th>Svårighetsgrad</th>
+                            <th>JS fungerar?</th>
+                            <th>Säkerhetsnivå</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>robots.txt</td>
+                            <td class="check">Enkel</td>
+                            <td class="check">✅ Ja</td>
+                            <td>⭐⭐☆ (begäran)</td>
+                        </tr>
+                        <tr>
+                            <td>X-Robots-Tag</td>
+                            <td>Medel</td>
+                            <td class="check">✅ Ja</td>
+                            <td>⭐⭐⭐ (stark)</td>
+                        </tr>
+                        <tr>
+                            <td>Blockera åtkomst</td>
+                            <td class="cross">Avancerad</td>
+                            <td class="cross">❌ Nej</td>
+                            <td>⭐⭐⭐ (helt säker)</td>
+                        </tr>
+                        <tr>
+                            <td>Flytta till /data/</td>
+                            <td class="check">Enkel</td>
+                            <td class="check">✅ Ja</td>
+                            <td>⭐⭐☆ (organiserat)</td>
+                        </tr>
+                        <tr>
+                            <td>Byt filnamn</td>
+                            <td class="check">Enkel</td>
+                            <td class="check">✅ Ja</td>
+                            <td>⭐⭐☆ (bryter gamla länkar)</td>
+                        </tr>
+                        <tr>
+                            <td>Lösenordsskydd</td>
+                            <td class="cross">Avancerad</td>
+                            <td class="cross">❌ Nej</td>
+                            <td>⭐⭐⭐ (helt säker)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TA REDA PÅ SERVERTYP -->
+        <section>
+            <div class="section-header">
+                <h2>🔍 Hur tar jag reda på vilken server jag har?</h2>
+            </div>
+            <div class="section-body">
+                <p style="margin-bottom: 15px;">
+                    För att veta om du har Apache eller nginx, kör detta kommando i terminalen:
+                </p>
+                
+                <div class="code-example">
+                    <div class="code-header">
+                        <span>Terminal / PowerShell</span>
+                        <span class="filetype">CMD</span>
+                    </div>
+                    <div class="code-body">
+<pre><span class="comment"># Windows PowerShell</span>
+Invoke-WebRequest -Uri "https://kentlundgren.se" -Method HEAD | Select-Object -ExpandProperty Headers
+
+<span class="comment"># Eller med curl (om installerat)</span>
+curl -I https://kentlundgren.se</pre>
+                    </div>
+                </div>
+
+                <p style="margin-top: 15px;">
+                    Leta efter raden <code>Server:</code> i svaret. Den visar t.ex. 
+                    <code>Apache/2.4</code> eller <code>nginx/1.18</code>.
+                </p>
+
+                <div class="alert-box info">
+                    <span class="icon">💡</span>
+                    <div class="content">
+                        <h4>Vanliga webbhotell i Sverige</h4>
+                        <p>
+                            De flesta svenska webbhotell (Loopia, One.com, Binero) använder 
+                            <strong>Apache</strong> och stödjer <code>.htaccess</code>-filer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>
+            Guide för <a href="https://bjerredskallbadhus.se/" target="_blank">Bjerreds Saltsjöbad</a> • 
+            Skapad: 2025-12-26
+        </p>
+        <p style="margin-top: 10px;">
+            <a href="index.html">← Tillbaka till medlemsstatistik</a> · 
+            <a href="dataformat.html">Dataformat</a>
+        </p>
+    </footer>
+
+</body>
+</html>
+
