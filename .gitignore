@@ -11,3 +11,9 @@ desktop.ini
 # Fil med riktiga namn för anonymiserade besökardata (Bjerreds Saltsjöbad m.fl.)
 PRIVAT-*.json
 PRIVAT-*.txt
+# Rådata med personuppgifter – Bjerreds Saltsjöbad, Medlemmar
+# Dessa filer innehåller riktiga namn och ska ALDRIG pushas till GitHub
+BjerredsSaltsjobad/medlemmar/medlemsdata*
+BjerredsSaltsjobad/medlemmar/Subscription-Active-*.xlsx
+# Data-mapp med fullständiga namnlistor – Bjerreds Saltsjöbad, Medlemmar
+BjerredsSaltsjobad/medlemmar/data/
