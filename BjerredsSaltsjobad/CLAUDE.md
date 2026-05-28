@@ -1,131 +1,272 @@
 # CLAUDE.md – Bjerreds Saltsjöbad
 
-Denna fil beskriver projektet och dess arbetssätt för Claude (Cowork) och Cursor.
+*Version 2026-05-28*
+
+Denna fil är projektets **minne** – den beskriver arkitektur, beslut och aktuell status
+för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att tappa tråden.
+
+---
+
+## Regel: Uppdatera CLAUDE.md efter varje större session
+
+> **INSTRUKTION TILL CLAUDE:** När en session innehållit skapande av nya filer,
+> strukturella förändringar, principbeslut (t.ex. anonymisering, .gitignore-regler)
+> eller uppdatering av befintliga sidor – uppdatera denna fil innan sessionen avslutas.
+> Fråga Kent om det är oklart vad som är "stort nog" att dokumentera.
+>
+> Syftet är att en ny session ska kunna börja med att läsa denna fil och direkt förstå:
+> - Vilka sidor som finns och vad de gör
+> - Vilka designbeslut som tagits och varför
+> - Vad som är känslig data och hur den hanteras
+> - Vad som gjordes senast och vad som kan vara nästa steg
+
+---
+
+## Ändringslogg
+
+| Datum | Vad gjordes |
+|---|---|
+| 2026-05-28 | Lagt till `engangsintraden.html` med anonymiserade engångsinträden (B001–B185) |
+| 2026-05-28 | Lagt till `PRIVAT-namnmapping.json` lokalt (ej i repo) + .gitignore-regler |
+| 2026-05-28 | `inpasseringar/index.html`: nav-länk till engangsintraden.html tillagd |
+| 2026-05-28 | `BjerredsSaltsjobad/index.html`: nav-kort för Medlemmar tillagt |
+| 2026-05-28 | `BjerredsSaltsjobad/README.md`: mappstruktur utökad med alla undermappar |
+| 2026-05-28 | `medlemmar/` flyttad till BjerredsSaltsjobad/; README uppdaterad (v3.1) |
+| 2026-05-28 | `medlemmar/index.html`: tillbakalänk till startsidan tillagd i headern |
+| 2026-05-28 | `medlemmar/index.html`: GitHub-länk tillagd (nedre vänstra hörnet) |
+| 2026-05-28 | `medlemmar/index.html`: initialer borttagna ur november-datan (bara förnamn kvar) |
+| 2026-05-28 | `.gitignore`: datafiler med personuppgifter i `medlemmar/` blockerade |
+| 2026-05-28 | Datafiler med riktiga namn: 8 filer avregistrerade med `git rm --cached` |
+| 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
+
+---
 
 ## Projektbeskrivning
 
-Webbsida med entréskylt och inpasseringsstatistik för **Bjerreds Saltsjöbad** (kallbadhus och bastu i Bjärred utanför Lund).  
-Webbplats: https://bjerredskallbadhus.se  
+Webbsida med entréskylt och statistik för **Bjerreds Saltsjöbad** (kallbadhus och bastu i Bjärred utanför Lund).
+Webbplats: https://bjerredskallbadhus.se
 GitHub Pages: https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/
+
+---
 
 ## Mappstruktur
 
 ```
 BjerredsSaltsjobad/
-├── CLAUDE.md              ← denna fil
-├── README.md
-├── index.html             ← nav-sida / landningssida (rot)
-├── inpassering/           ← digitala entrésyltar
-│   ├── index.html         ← skylt-sida (gamla skylten + knappar till digitala)
-│   ├── skylt.html         ← digital entréskylt, svenska (A4/A5-utskrift)
-│   ├── skylt_eng.html     ← digital entréskylt, engelska (A4/A5-utskrift)
-│   └── gammal_skylt.jpg   ← foto på den gamla fysiska skylten
-└── inpasseringar/         ← inpasseringsstatistik
-    ├── index.html         ← statistik med diagram (Chart.js)
-    ├── data.html          ← redigerbar datatabell (Firebase-kopplad, steg 7 klart)
-    └── databas.html       ← Firebase-arbetsdokument: checklista, config, migrationsskript
+├── CLAUDE.md                  ← denna fil (projektminne)
+├── README.md                  ← beskrivning och direktlänkar för GitHub
+├── index.html                 ← nav-sida / landningssida (rot) – 3 kort: Entréskylt, Inpassering, Medlemmar
+├── inpassering/               ← digitala entrésyltar
+│   ├── index.html             ← skylt-sida (gamla skylten + knappar till digitala)
+│   ├── skylt.html             ← digital entréskylt, svenska (A4/A5-utskrift)
+│   ├── skylt_eng.html         ← digital entréskylt, engelska (A4/A5-utskrift)
+│   └── gammal_skylt.jpg       ← foto på den gamla fysiska skylten
+├── inpasseringar/             ← inpasseringsstatistik och datahantering
+│   ├── index.html             ← statistik med diagram (Chart.js) + Firebase-kopplad
+│   ├── data.html              ← redigerbar datatabell (Firebase, inloggning krävs för skrivning)
+│   ├── engangsintraden.html   ← linjediagram: engångsinträden 2026 (anonymiserade)
+│   ├── databas.html           ← Firebase-arbetsdokument
+│   └── PRIVAT-namnmapping.json  ← LOKAL FIL ENBART – ingår INTE i repot (se .gitignore)
+└── medlemmar/                 ← medlemsstatistik och visualisering
+    ├── index.html             ← interaktivt diagram: nyregistreringar + ackumulerad tillväxt
+    ├── GitHub.html            ← guide för Git och GitHub
+    ├── dataformat.html        ← information om dataformat
+    ├── privatadata.html       ← hantering av privat data (sida om GDPR-principer)
+    ├── nyamedlemmar.js        ← trippelklick-funktion (läser data/md_komplett_251226.md lokalt)
+    ├── kopiera_datafiler.ps1  ← PowerShell-script för lokal filkopiering
+    ├── data/                  ← LOKAL MAPP ENBART – ingår INTE i repot (se .gitignore)
+    │   ├── md_komplett_251226.md  ← fullständig namnlista (1252 poster) – lokal
+    │   ├── md_251226.json         ← samma data, JSON-format – lokal
+    │   └── md_summary_251226.md   ← sammanfattning – lokal
+    ├── .gitignore             ← blockerar datafiler med personuppgifter
+    └── README.md              ← beskrivning och direktlänkar (v3.1, 2026-05-28)
+
+# OBS: Följande filer SAKNAS i repot (lokal enbart, blockerade av .gitignore):
+#   inpasseringar/PRIVAT-namnmapping.json
+#   medlemmar/medlemsdata.json, medlemsdata_rå.csv, medlemsdata_komplett.md,
+#   medlemsdata_sammanfattning.md, Subscription-Active-20251223.xlsx
+#   medlemmar/data/ (hela mappen)
 ```
 
-## Parallell utvecklingsmiljö
+---
 
-Projektet används i **två verktyg simultaneously**:
+## Navigation mellan sidor
+
+| Sida | Navigation |
+|---|---|
+| `index.html` (rot) | Hub-sida med 3 nav-kort: Entréskylt, Inpasseringsstatistik, Medlemsstatistik |
+| `inpassering/index.html` | Breadcrumb: `🏠 Bjerreds Saltsjöbad › Entréskylt` (länk till `../`) |
+| `inpassering/skylt.html` | `← Entréskylt`-länk i utskriftsraden (döljs vid utskrift) |
+| `inpassering/skylt_eng.html` | `← Entry signs`-länk i utskriftsraden |
+| `inpasseringar/index.html` | `🏠 Startsidan`-knapp + `📊 Visa data`-knapp + `👤 Engångsinträden`-knapp |
+| `inpasseringar/data.html` | `🏠 Startsidan` + `← Statistik` i headern |
+| `inpasseringar/engangsintraden.html` | Länk tillbaka till `index.html` i inpasseringar/ |
+| `medlemmar/index.html` | `← Bjerreds Saltsjöbad`-länk i headerbanderollet + `{ } GitHub`-knapp (nedre vänster) |
+
+Alla sidor har en diskret `{ } GitHub`-länk fixerad i nedre vänstra hörnet (CLAUDE.md-konvention).
+
+---
+
+## inpasseringar/engangsintraden.html – Engångsinträden 2026
+
+Skapad 2026-05-27. Visar engångsinträden (Wondr-köp utan medlemskap) per månad.
+
+**Anonymisering:** Besökarnamn ersatta med koder B001–B185.
+- Koden är konsekvent: samma person får alltid samma kod oavsett session
+- Mappningsfilen `PRIVAT-namnmapping.json` ligger ENBART lokalt i `inpasseringar/`
+- Nästa lediga kod: **B186** (uppdatera i PRIVAT-namnmapping.json vid ny datainläsning)
+
+**Data:** t.o.m. 27 maj 2026 · 248 besök totalt · 185 unika besökare
+
+**Funktioner:**
+- Linjediagram (Chart.js) med en linje per månad
+- Tre statistikkort: totalt antal besök, unika besökare, månaden med flest besök
+- Valbar tabell för återkommande besökare (döljs/visas med knapp)
+- Infobox: förklarar anonymisering och datakälla
+
+**Teknisk notering:** Rå-datan är hårdkodad i JavaScript-arrayen `ENGANGS_RAWDATA` med koderna (inte namn). `.gitignore` i ClaudeCowork-roten blockerar `PRIVAT-*.json` och `PRIVAT-*.txt`.
+
+---
+
+## medlemmar/ – Medlemsstatistik
+
+Verktyg för att visualisera tillväxten av aktiva Wondr-medlemmar.
+Live: https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/medlemmar/
+
+**Aktuell statistik (maj 2026):**
+
+| Typ | Antal |
+|-----|-------|
+| Familjemedlemskap | 446 |
+| Enskilda medlemskap | 884 |
+| **Totalt** | **1 330** |
+| Netto nya efter bastuöppning (juli 2025) | 773 |
+
+**Diagram:** Månadsvis statistik 2025–2026. Standardfilter: "År 2026". Y-axeln hanterar negativa nettoförändringar (familjemedlemskap minskar 2026).
+
+**Trippelklick-funktion:** Klick × 3 på en stapel öppnar modal med förnamn + bokningsantal.
+- **November 2025:** Hårdkodat direkt i `index.html` – ENBART förnamn (initialer borttagna 2026-05-28)
+- **Övriga månader:** Laddas dynamiskt från `data/md_komplett_251226.md` (lokal fil – ej i repot)
+
+---
+
+## Personuppgifter och anonymisering
+
+> **Viktigt:** Dessa regler gäller för hela projektet.
+
+### .gitignore-regler (ClaudeCowork-roten)
+```
+PRIVAT-*.json       # Privata mappningsfiler (engångsinträden)
+PRIVAT-*.txt        # Privata textfiler
+BjerredsSaltsjobad/medlemmar/medlemsdata*           # Namnlistor från Wondr
+BjerredsSaltsjobad/medlemmar/Subscription-Active-*.xlsx  # Excel-export
+BjerredsSaltsjobad/medlemmar/data/                  # Hela data-mappen
+```
+
+### Vad som publicerats och vad som är lokalt
+
+| Var? | Typ av data | Anonymisering |
+|---|---|---|
+| `inpasseringar/engangsintraden.html` (GitHub) | Engångsinträden 2026 | Koder B001–B185 (ingen koppling till namn i repot) |
+| `inpasseringar/PRIVAT-namnmapping.json` (LOKALT) | Kod → riktigt namn | Lokal fil, aldrig i repot |
+| `medlemmar/index.html` (GitHub) | November 2025 – namnlista | Enbart förnamn (initialer borttagna 2026-05-28) |
+| `medlemmar/data/` (LOKALT) | Fullständig namnlista (1 252 poster) | Lokal mapp, aldrig i repot |
+
+### Nästa steg vid ny datainläsning (engångsinträden)
+1. Öppna `PRIVAT-namnmapping.json` och notera `nasta_lediga_kod` (nu B186)
+2. Tilldela nya besökare koder från B186 uppåt
+3. Uppdatera `PRIVAT-namnmapping.json` med de nya mappningarna och ny `nasta_lediga_kod`
+4. Uppdatera `ENGANGS_RAWDATA` i `engangsintraden.html` med nya poster (bara koder, inga namn)
+
+---
+
+## Parallell utvecklingsmiljö
 
 | Verktyg | Roll |
 |---|---|
 | **Claude Cowork** | AI-assisterad filgenerering, datavisualisering, innehållsarbete |
-| **Cursor** | Kodredigering, finjustering, versionshantering |
+| **Cursor** | Kodredigering, finjustering, versionshantering (Git + GitHub) |
 
-Cursor är kopplat till **Git och GitHub**. Filer som skapas i Cowork committtas sedan via Cursor och publiceras på **GitHub Pages**.
+Cursor är kopplat till **Git och GitHub**. Filer skapas/redigeras i Cowork och committtas sedan via Cursor och publiceras på **GitHub Pages**.
 
-## Regler för filer som skapas i Cowork
+---
 
-- Alla filer ska vara **självständiga** (inga server-side beroenden, inga relativa importer som kräver en byggprocess).
-- Använd **CDN-länkar** (Cloudflare cdnjs) för externa bibliotek, inte npm-paket.
-- **GitHub Pages-kompatibelt**: inga absoluta sökvägar, inga backend-anrop.
-- Undvik temporära scratch-filer i projektmappen – de hamnar i Git-historiken.
-- Kommentarer och variabelnamn skrivs på **svenska** (eller engelska om teknisk term saknas på svenska).
+## Regler för filer som skapas
+
+- Alla filer ska vara **självständiga** (inga server-side beroenden, ingen byggprocess)
+- Använd **CDN-länkar** (Cloudflare cdnjs eller jsDelivr) för externa bibliotek
+- **GitHub Pages-kompatibelt**: inga absoluta sökvägar, inga backend-anrop
+- Undvik temporära scratch-filer i projektmappen – de hamnar i Git-historiken
+- Kommentarer och variabelnamn skrivs på **svenska** (engelska vid teknisk term)
+- **UTF-8 alltid:** Filer med svenska tecken skapas via PowerShell (Write-verktyget förstör å/ä/ö)
+- **Personuppgifter:** Inga riktiga namn i filer som går till GitHub – se avsnittet om anonymisering
+
+---
 
 ## Prisstrategi 2026 – Wondr-appen
 
-Föreningen har medvetet satt ett **lägre pris för Wondr-appen (100 kr)** jämfört med övriga metoder (120 kr). Strategin är att få badare att registrera sig i Wondr-systemet, eftersom det ger föreningen bättre kontroll och lägre transaktionskostnader på sikt.
+Föreningen har medvetet satt ett **lägre pris för Wondr-appen (100 kr)** jämfört med övriga metoder (120 kr). Strategin är att få badare att registrera sig i Wondr-systemet.
 
 **Flöde för engångsbadare via Wondr:**
 1. Registrera sig på https://bjerredssaltsjobad.wondr.se/register
-2. Välj **"Engångsinträde"** (se även "Enskilt medlemskap" och "Familjemedlemskap" för återkommande badare)
+2. Välj **"Engångsinträde"**
 3. Betala 100 kr – dörren öppnas direkt via appen
 
-**Viktigt för framtida prisjusteringar:** Om priset ändras ska det uppdateras konsekvent i `inpassering/skylt.html` OCH `inpassering/skylt_eng.html`. Wondr-priset ska alltid vara lägre än övriga metoder för att behålla incitamentet.
+**Viktigt:** Om priset ändras ska det uppdateras i `inpassering/skylt.html` OCH `inpassering/skylt_eng.html`. Wondr-priset ska alltid vara lägre.
+
+---
 
 ## Entréskylt – inpassering/skylt.html + skylt_eng.html
 
-> **⚠️ Regel:** Varje gång `skylt.html` (svenska) uppdateras ska `skylt_eng.html` (engelska) alltid uppdateras med motsvarande ändringar på engelska. De två filerna ska alltid hållas i synk.
+> **Regel:** När `skylt.html` uppdateras ska `skylt_eng.html` alltid uppdateras parallellt.
 
-- Tre betalmetoder visas: **Wondr-appen** (100 kr), **SMS** (120 kr), **Swish/Kort** (120 kr)
-- **Coincode-appen är borttagen** – fungerar ej enligt Björn (föreningens inpasseringsansvarig), borttagen 2026-05-14
-- Språkknapp uppe till höger i headern växlar mellan svenska och engelska
-- Utskriftsrad ovanför skylten med knappar för **A4** och **A5** – format sätts dynamiskt via JS (`printSign(format)`) och döljs vid utskrift
-- `inpassering/index.html` visar den gamla fysiska skylten (foto) + knappar till de digitala versionerna
+- Tre betalmetoder: **Wondr-appen** (100 kr), **SMS** (120 kr), **Swish/Kort** (120 kr)
+- **Coincode-appen borttagen** (fungerar ej, borttagen 2026-05-14)
+- Språkknapp uppe till höger växlar svenska/engelska
+- Utskriftsrad med knappar för **A4** och **A5** – döljs vid utskrift
 
-## Navigation mellan sidor
-
-Konsekvent navigationssystem (lagt till 2026-05-14):
-
-| Sida | Navigation |
-|---|---|
-| `index.html` (rot) | Hub-sida, inga knappar behövs |
-| `inpassering/index.html` | Breadcrumb: `🏠 Bjerreds Saltsjöbad › Entréskylt` (länk till `../`) |
-| `inpassering/skylt.html` | `← Entréskylt`-länk till vänster i utskriftsraden (döljs vid utskrift) |
-| `inpassering/skylt_eng.html` | `← Entry signs`-länk till vänster i utskriftsraden |
-| `inpasseringar/index.html` | `🏠 Startsidan`-knapp i headern (bredvid befintlig "Visa data") |
-| `inpasseringar/data.html` | `🏠 Startsidan` + `← Statistik` i headern |
+---
 
 ## Teknikstack – inpasseringar/index.html
 
 - **Chart.js 4.4** (cdnjs) – linjediagram och stapeldiagram
 - Eget inline Canvas-plugin för ombyggnadsmarkeringen (feb–jul 2025)
-- **localStorage** för att spara dataändringar mellan sessioner utan backend
-- Responsiv CSS med CSS-variabler
 - **Firebase Realtime Database** – live-data via `onValue()`, BASE_DATA som fallback
-- **Data-källeindikator** i headern: grön prick "Live från Firebase · datum" eller orange "Lokal backup (BASE_DATA)"
+- Data-källeindikator i headern: grön prick "Live från Firebase" eller orange "Lokal backup"
 
 ## Diagramfärger – inpasseringar/index.html
 
-Kategorierna har namngivna färger i konstanten `KATEGORI_FÄRGER` (inte indexbaserad palett):
-
 | Kategori | Färg | Motivering |
 |---|---|---|
-| Restaurangen / Restaurangen/badbiljetter | Grön `#2ecc71` | Neutral val |
-| SMS-biljetter / SMS/Swish-biljetter | Röd `#e74c3c` | Neutral val |
+| Restaurangen / Restaurangen/badbiljetter | Grön `#2ecc71` | Neutral |
+| SMS-biljetter / SMS/Swish-biljetter | Röd `#e74c3c` | Neutral |
 | Medlemmar – armband | Blå `#3498db` | Matchar de fysiska **blå** armbanden |
-| Medlemmar – Wonder/Wondr | Orange `#f39c12` | Neutral val |
+| Medlemmar – Wonder/Wondr | Orange `#f39c12` | Neutral |
 
-> **⚠️ Regel:** Om nya kategorier läggs till ska de läggas till i `KATEGORI_FÄRGER` med en motiverad färg. Okända kategorier faller automatiskt tillbaka på `CAT_COLORS`-paletten.
+> **Regel:** Nya kategorier läggs till i `KATEGORI_FÄRGER` med motiverad färg.
+
+---
 
 ## Data – viktig kontext
 
 - **2024**: Komplett helårsdata (tre kategorier: Restaurangen, SMS-biljetter, Armband)
-- **2025**: Bastun stängd för ombyggnad **mitten februari – mitten juli 2025** → 0-värden i mars–juni är korrekta, inte saknade
-- **2025**: Nytt inpasseringssystem **Wondr** lanserades juli 2025 → ny kategori "Medlemmar – Wonder" från jul 2025
-- **2026**: Armbanden fasades ut **1 februari 2026** → Armband-kategorin har låga värden jan–mar
+- **2025**: Bastun stängd **mitten feb – mitten jul 2025** → 0-värden i mars–juni är korrekta
+- **2025**: **Wondr** lanserades juli 2025 → ny kategori "Medlemmar – Wonder" från jul 2025
+- **2026**: Armbanden fasades ut **1 februari 2026**
 - **2026 april**: Alla kategorier ifyllda (2026-05-15): Restaurangen 359, SMS/Swish 913, Armband 90, Wonder 3 293
 
-## Uppdatera data
+---
+
+## Uppdatera inpasseringsdata
 
 ### Primärt (via Firebase – direkt i webbläsaren, ingen kod):
-Öppna `inpasseringar/data.html` → logga in → klicka på en cell → skriv nytt värde → tryck Enter.  
-Ändringen sparas direkt i Firebase och syns för **alla** inloggade användare utan sidladdning.  
-Kräver ett registrerat konto (se avsnittet **Bjuda in nya användare** nedan).
+Öppna `inpasseringar/data.html` → logga in → klicka cell → skriv nytt värde → Enter.
 
-### Fallback – direkt i koden (för Git-commit):
-Öppna `inpasseringar/index.html` i Cursor och redigera `BASE_DATA`-objektet i `<script>`-blocket.  
-Strukturen är: `BASE_DATA[år][kategori][månadsindex]` där 0 = januari, 11 = december.  
-`null` = data saknas, `0` = bekräftat noll (t.ex. stängd period).
+> **OBS:** `BASE_DATA` finns i **både** `inpasseringar/index.html` och `inpasseringar/data.html`. Uppdatera alltid båda om du redigerar direkt i koden.
 
-> **⚠️ OBS:** `BASE_DATA` finns i **både** `inpasseringar/index.html` och `inpasseringar/data.html`. Uppdatera alltid båda filerna samtidigt.
+---
 
 ## Firebase-backend – status och konfiguration
-
-Inpasseringsdata kopplas till **Firebase Realtime Database** så att auktoriserade föreningsmedlemmar kan uppdatera siffror direkt i webbgränssnittet utan att Kent behöver committa kod.
 
 **Status (2026-05-15): Alla 8 steg klara – i produktion ✅**
 
@@ -140,21 +281,11 @@ Inpasseringsdata kopplas till **Firebase Realtime Database** så att auktorisera
 | 7 | data.html omskriven att läsa/skriva mot Firebase | ✅ |
 | 8 | Testat på GitHub Pages – live-synk bekräftad | ✅ |
 
-**Firebase-konfiguration:** Finns i `inpasseringar/data.html` och `inpasseringar/databas.html` (i `<script>`-blocket). Hämtas från Firebase Console → Project settings → Your apps om den behöver återskapas.
+**Firebase Console:** https://console.firebase.google.com/project/skylt-e0c45
 
-**Viktiga principer:**
-- `BASE_DATA` ska **alltid behållas** hårdkodad som fallback – data kan aldrig gå förlorad om Firebase inte nås.
-- Firebase är ett lager ovanpå: läs från Firebase om tillgängligt, annars falla tillbaka på `BASE_DATA`.
-- **Autentisering krävs för skrivning** (Firebase Authentication, e-post/lösenord). Läsning är öppen för alla.
-- SDK v11.0.0 (ES-moduler) via CDN – inga npm-beroenden.
-
-**Authorized domains (Firebase Authentication → Settings):**
-- `localhost` – default, för lokal testning
-- `skylt-e0c45.firebaseapp.com` – default
-- `skylt-e0c45.web.app` – default
-- `kentlundgren.github.io` – **tillagd 2026-05-15** (krävs för inloggning från GitHub Pages)
-
-**OBS – kategorinamn med snedstreck:** Kategorier som `"Restaurangen/badbiljetter"` lagras som nästlad sökväg i Firebase (`Restaurangen > badbiljetter`). Läskoden i data.html hanterar detta genom att traversera sökvägen utifrån BASE_DATA-kategorinamnen.
+**Authorized domains (Firebase Authentication):**
+- `localhost` – lokal testning
+- `kentlundgren.github.io` – tillagd 2026-05-15
 
 **Datastruktur i Firebase:**
 ```
@@ -166,58 +297,18 @@ bjerred-inpasseringar/
   senast-uppdaterad: "2026-05-15"
 ```
 
-**Kents Firebase-erfarenhet – två tekniker:**
+**OBS – snedstreck i kategorinamn:** `"Restaurangen/badbiljetter"` lagras som nästlade noder i Firebase. Läsfunktionen `tolkFirebaseSnapshot()` i data.html hanterar detta korrekt.
 
-1. **Firestore** – "skylt"-projektet (skylt-e0c45), https://kentlundgren.github.io/Bjerred-skylt/. SDK v10.7.0 (compat). Dokumentbaserad databas, används för trivselregler/röster.
-
-2. **Realtime Database** – quiz-projektet https://kentlundgren.se/program/quiz/16B/. SDK v11.0.0 (ES-moduler). JSON-träd, passar BASE_DATA-strukturen bättre för inpasseringsdata.
-
-**Firebase Console:** https://console.firebase.google.com/project/skylt-e0c45
-
-**Arbetsdokument:** `inpasseringar/databas.html` – levande dokument med checklista, firebaseConfig, Firestore vs Realtime Database-jämförelse, och migrationssskript med lösenordsruta.
-
-## Vad som gjordes i Steg 7 – data.html omskriven för Firebase
-
-Hela JavaScript-blocket i `inpasseringar/data.html` skrevs om till `<script type="module">` för att kunna importera Firebase SDK direkt från Googles CDN utan byggprocess.
-
-**Läsning – onValue() ersätter localStorage:**
-Tidigare läste sidan data från `localStorage` (webbläsarens lokala lagring – bara synlig på den egna datorn). Nu använder sidan `onValue()` från Firebase SDK, som prenumererar på noden `bjerred-inpasseringar/data` i Realtime Database. Det innebär att tabellen uppdateras automatiskt i realtid varje gång någon annan sparar ett värde – utan att man behöver ladda om sidan.
-
-**Skrivning – set() ersätter localStorage.setItem():**
-När en cell redigeras skrivs det nya värdet till Firebase med `set()`. Ändringen syns direkt för alla som har sidan öppen.
-
-**BASE_DATA som fallback:**
-`BASE_DATA` (den hårdkodade grunddatan) finns kvar i koden och renderas direkt vid sidladdning medan Firebase-anslutningen upprättas. Om Firebase av någon anledning inte kan nås faller sidan automatiskt tillbaka på BASE_DATA. Ingen data kan gå förlorad.
-
-**Snedstreck i kategorinamn – ett tekniskt specialfall:**
-Under migrationen (Steg 6) skrevs kategorier som `"Restaurangen/badbiljetter"` till Firebase med snedstrecket som sökvägsavgränsare, vilket skapade nästlade noder (`Restaurangen → badbiljetter`) i stället för ett platt nyckelnamn. Den nya funktionen `tolkFirebaseSnapshot()` hanterar detta korrekt: den delar upp kategorinamnet på snedstreck och traverserar Firebase-trädet steg för steg.
-
-**Inloggningsmodal – visas automatiskt vid redigering:**
-Sidan har ett inbyggt inloggningsformulär som poppar upp automatiskt när en icke-inloggad användare klickar på en cell. E-postfältet är redigerbart (flera användare stöds). Lösenordsåterställning sker direkt i modalen via länken "Glömt lösenordet?" – Firebase skickar ett återställningsmail. Efter lyckad inloggning öppnas den cell som triggade inloggningen direkt. En inloggad användare visas med grön bock och e-postadress i sidhuvudet.
-
-**CSP-meta för GitHub Pages:**
-En `Content-Security-Policy`-metatag lades till så att webbläsaren tillåter Firebase WebSocket-anslutningar (`wss://*.firebasedatabase.app`) även när sidan körs från GitHub Pages statiska hosting.
+---
 
 ## Bjuda in nya användare till data.html
 
-Det är hela poängen med Firebase-backenden: **flera personer på olika enheter kan uppdatera data direkt**, utan att Kent behöver committa kod. Inpasseringsansvariga i föreningen kan lägga in månadens siffror direkt i webbläsaren – på mobil eller dator.
-
-### Steg 1 – Registrera användaren i Firebase Console
-1. Gå till [console.firebase.google.com/project/skylt-e0c45](https://console.firebase.google.com/project/skylt-e0c45)
-2. Authentication → Users → **Add user**
-3. Fyll i personens e-postadress och ett tillfälligt lösenord
-4. Klicka **Add user**
-
-### Steg 2 – Skicka välkomstbrevet
-1. Öppna `inpasseringar/data.html`
-2. Klicka på den diskreta knappen **✉ Bjud in** längst ned till vänster (bredvid `{ } GitHub`)
-3. Fyll i namn, e-postadress och det tillfälliga lösenordet
-4. Klicka **📋 Kopiera text** och klistra in i ett mail eller SMS
-
-Mottagaren kan sedan byta till ett eget lösenord via länken "Glömt lösenordet?" i inloggningsrutan.
+1. Firebase Console → Authentication → Users → **Add user** (e-post + tillfälligt lösenord)
+2. Öppna `inpasseringar/data.html` → klicka **✉ Bjud in** (nedre vänster) → fyll i uppgifter → kopiera text → skicka via mail
 
 ### Aktiva användare (2026-05-15)
-| Användare | Roll | Tillagd |
-|---|---|---|
-| `lundgren.kent@gmail.com` | Administratör | 2026-05-15 |
-| `bjorn.syren1@gmail.com` | Björn Syren – inpasseringsansvarig | 2026-05-15 |
+
+| Användare | Roll |
+|---|---|
+| `lundgren.kent@gmail.com` | Administratör |
+| `bjorn.syren1@gmail.com` | Björn Syren – inpasseringsansvarig |
