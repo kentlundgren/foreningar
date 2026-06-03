@@ -698,6 +698,29 @@
       .legend { padding: 0.6rem 1rem; gap: 0.8rem; }
       .info-panel { margin: 0.8rem; }
     }
+
+    /* ---- Uppdatering 2026-06-03: stilar for exkluderade rader ---- */
+    /* Rad som ej räknas i totalen (t.ex. Engångsbadare – Wondr) */
+    tr.rad-exkluderad        { background: #f0fdf4; }
+    tr.rad-exkluderad td     { color: #3d7a57; font-style: italic; }
+    /* TOT-cellen på en exkluderad rad */
+    .cell-exkl-tot {
+      background: #dcfce7;
+      color:      #3d7a57;
+      font-style: italic;
+      text-align: center;
+      font-size:  0.85em;
+      cursor:     default;
+    }
+    /* Fotnot under tabellen */
+    .fotnot-exkluderad {
+      font-size:   0.78rem;
+      color:       var(--muted);
+      padding:     0.4rem 0.5rem 0.6rem;
+      font-style:  italic;
+      max-width:   900px;
+      line-height: 1.55;
+    }
   </style>
 </head>
 <body>
@@ -1060,10 +1083,22 @@
     2026: {
       'Restaurangen/badbiljetter': [ 643,  665,  600,  359, null, null, null, null, null, null, null, null],
       'SMS/Swish-biljetter':       [1114,  751, 1006,  913, null, null, null, null, null, null, null, null],
+      /* Uppdatering 2026-06-03: Engångsbadare via Wondr – bokförs separat, räknas EJ med i totalsumman */
+      'Engångsbadare – Wondr':     [  17,   13,   38,   31,  173, null, null, null, null, null, null, null],
       'Medlemmar – armband':       [ 492,  119,   95,   90, null, null, null, null, null, null, null, null],
       'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, null, null, null, null, null, null, null, null]
     }
   };
+
+  /* ================================================================
+     EXKLUDERA_FRAN_TOTAL – kategorier som visas i tabellen (för
+     bokföring) men INTE räknas med i TOTALT-raden eller kolumn-
+     summorna. Engångsbadare via Wondr antas vara registrerade som
+     korttidsmedlemmar (upp till 1 dygn) och ingår troligen redan i
+     "Medlemmar – Wondr". Se fotnot under varje tabell.
+     Uppdatering 2026-06-03: konstant skapad
+     ================================================================ */
+  const EXKLUDERA_FRAN_TOTAL = new Set(['Engångsbadare – Wondr']);
 
   /* Månadsnamn */
   const MONTHS      = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
@@ -1519,9 +1554,10 @@
     const yearData = data[year] || {};
     const cats     = Object.keys(yearData);
 
-    /* Räkna totalt för hela året (exkl. null) */
+    /* Räkna totalt för hela året (exkl. null och exkluderade kategorier) */
     let grandTotal = 0;
-    for (const vals of Object.values(yearData)) {
+    for (const [cat, vals] of Object.entries(yearData)) {
+      if (EXKLUDERA_FRAN_TOTAL.has(cat)) continue;
       vals.forEach(v => { if (v !== null) grandTotal += v; });
     }
 
@@ -1563,8 +1599,11 @@
     const colPartial = new Array(12).fill(false); /* Om >=1 kategori saknar värde */
 
     for (const cat of cats) {
-      const vals = yearData[cat];
-      const row  = document.createElement('tr');
+      const vals       = yearData[cat];
+      /* Uppdatering 2026-06-03: kolla om kategorin är exkluderad från totalen */
+      const exkluderad = EXKLUDERA_FRAN_TOTAL.has(cat);
+      const row        = document.createElement('tr');
+      if (exkluderad) row.className = 'rad-exkluderad';
 
       /* Kategorinamncell (ej redigerbar) */
       const catTd       = document.createElement('td');
@@ -1587,22 +1626,21 @@
           /* ---- Saknas ---- */
           td.className   = 'cell-null';
           td.textContent = '–';
-          colPartial[m]  = true;
+          /* Exkluderade kategorier påverkar inte kolumntotalen */
+          if (!exkluderad) colPartial[m] = true;
 
         } else if (val === 0) {
           /* ---- Bekräftat noll ---- */
           td.className   = 'cell-zero';
           td.textContent = '0';
-          colHasVal[m]   = true;
-          colSums[m]    += 0;
+          if (!exkluderad) { colHasVal[m] = true; colSums[m] += 0; }
 
         } else {
           /* ---- Normalt värde ---- */
           td.className   = 'cell-data';
           td.textContent = val.toLocaleString('sv-SE');
           rowTotal      += val;
-          colHasVal[m]   = true;
-          colSums[m]    += val;
+          if (!exkluderad) { colHasVal[m] = true; colSums[m] += val; }
         }
 
         /* Klickhändelse öppnar redigering (eller inloggning) */
@@ -1611,9 +1649,16 @@
       }
 
       /* Radtotal (TOT kolumnen) */
-      const totTd       = document.createElement('td');
-      totTd.className   = 'cell-row-tot';
-      totTd.textContent = rowTotal > 0 ? rowTotal.toLocaleString('sv-SE') : '–';
+      const totTd = document.createElement('td');
+      if (exkluderad) {
+        /* Exkluderad rad: grön cell med asterisk – ingår ej i TOTALT */
+        totTd.className   = 'cell-exkl-tot';
+        totTd.textContent = rowTotal > 0 ? rowTotal.toLocaleString('sv-SE') + ' *' : '–';
+        totTd.title       = 'Ingår inte i TOTALT-raden – se fotnot nedan';
+      } else {
+        totTd.className   = 'cell-row-tot';
+        totTd.textContent = rowTotal > 0 ? rowTotal.toLocaleString('sv-SE') : '–';
+      }
       row.appendChild(totTd);
 
       tbody.appendChild(row);
@@ -1673,6 +1718,22 @@
     wrap.appendChild(table);
     section.appendChild(wrap);
     section.appendChild(hint);
+
+    /* Uppdatering 2026-06-03: fotnot om exkluderade kategorier */
+    const exklCats = cats.filter(c => EXKLUDERA_FRAN_TOTAL.has(c));
+    if (exklCats.length > 0) {
+      const fotnot     = document.createElement('p');
+      fotnot.className = 'fotnot-exkluderad';
+      fotnot.innerHTML =
+        '* <strong>Engångsbadare \u2013 Wondr</strong> visas i tabellen enbart för ' +
+        'bokföring och räknas <em>inte</em> med i TOTALT-raden. ' +
+        'Anledning: Wondr-systemet registrerar engångsbadare som korttidsmedlemmar ' +
+        '(tillfälligt medlemskap upp till 1 dygn), vilket troligen innebär att de ' +
+        'redan ingår i raden \u201cMedlemmar \u2013 Wondr\u201d. ' +
+        'Genom att hålla dessa separata undviks dubbelräkning. ' +
+        '<em>Notera att detta är ett antagande som ännu inte bekräftats (juni 2026).</em>';
+      section.appendChild(fotnot);
+    }
 
     return section;
   }
