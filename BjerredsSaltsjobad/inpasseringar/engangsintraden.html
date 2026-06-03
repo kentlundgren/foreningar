@@ -97,7 +97,7 @@
 <header>
   <div>
     <h1>🌊 Bjerreds Saltsjöbad</h1>
-    <p>Engångsinträden 2026 – 248 besökare t.o.m. 27 maj</p>
+    <p>Engångsinträden 2026 – månadsstatistik</p>
   </div>
   <div class="header-actions">
     <a href="index.html" class="btn-nav">← Inpasseringsstatistik</a>
@@ -111,42 +111,46 @@
     <div class="summary-card">
       <div class="label">Totalt sålda biljetter</div>
       <div class="value" id="card-total">–</div>
-      <div class="sub">1 jan – 27 maj 2026</div>
+      <div class="sub">jan–maj 2026 (alla månader)</div>
     </div>
     <div class="summary-card green">
       <div class="label">Unika besökare</div>
       <div class="value" id="card-unique">–</div>
-      <div class="sub">Distinkta anonymiserade koder</div>
+      <div class="sub">Detaljdata 1 jan – 27 maj</div>
     </div>
     <div class="summary-card accent">
-      <div class="label">Återkommande besökare</div>
+      <div class="label">Återkommande (jan–27 maj)</div>
       <div class="value" id="card-returning">–</div>
-      <div class="sub">Besökare med 2 eller fler biljetter</div>
+      <div class="sub">2+ biljetter, detaljperioden</div>
     </div>
   </div>
 
-  <!-- Notering om partiell maj-data -->
-  <div class="partial-note">
-    ⚠️ <strong>Maj är inte komplett:</strong> Datan täcker 1 januari – 27 maj 2026.
-    Majsiffran i diagrammet (149 biljetter) är alltså inte hela månaden – maj fortsätter.
+  <!-- Uppdatering 2026-06-03: övergång till förenklad rapportering -->
+  <div class="info-box" style="border-left-color:#27ae60;background:#f0fdf4;">
+    📊 <strong>Övergång till förenklad rapportering fr.o.m. maj 2026:</strong>
+    Sedan maj 2026 registreras enbart totalt antal engångsbadare per månad
+    (de som betalat 100 kr via Wondr-appen). Den mer detaljerade analysen med
+    anonymiserade besökarkoder gjordes för jan–apr 2026 men är för tidskrävande
+    att fortsätta med. Tabellen över återkommande besökare (längst ned) gäller
+    därför enbart den detaljerade perioden 1 jan – 27 maj 2026.
   </div>
 
-  <!-- Förklaring av anonymisering -->
+  <!-- Om datan -->
   <div class="info-box">
-    <strong>Om datan och anonymiseringen:</strong>
-    Totalt <strong>248 biljetter</strong> såldes till <strong>185 unika besökare</strong> under perioden
-    1 januari – 27 maj 2026. Inga riktiga namn förekommer i denna fil – varje person är
-    ersatt med en permanent kod (B001–B185) som är konsekvent genom hela datasetet.
-    Samma kod = samma person. Den privata mappningen (kod ↔ namn) förvaras separat.
+    <strong>Om datan:</strong>
+    Diagrammet visar totalt antal engångsinträden (100 kr/inträde via Wondr) per månad 2026.
+    För perioden 1 jan – 27 maj finns detaljdata med anonymiserade koder B001–B185 –
+    totalt <strong>248 biljetter</strong> till <strong>185 unika besökare</strong>.
+    Fr.o.m. maj (komplett: 173 inträden) redovisas enbart månadsantal.
+    Den privata kodmappningen förvaras separat och ingår inte i denna fil.
   </div>
 
   <!-- Linjediagram -->
   <div class="chart-section">
     <h2>Engångsinträden per månad – 2026</h2>
     <p class="subtitle">
-      Heldragen blå linje = totalt sålda biljetter ·
-      Streckad grön linje = unika besökare (distinct kod) per månad ·
-      <em>Maj = t.o.m. 27 maj (ej hela månaden)</em>
+      Totalt antal engångsinträden (100 kr via Wondr) per månad 2026.
+      <em>Jan–apr: detaljdata med anonymiserade koder · Maj (komplett): enkelt månadsantal.</em>
     </p>
     <div class="chart-wrapper">
       <canvas id="engångsChart"></canvas>
@@ -157,8 +161,8 @@
   <div class="return-section">
     <h2>Återkommande besökare (anonymiserade)</h2>
     <p class="subtitle">
-      Besökare som förekommer mer än en gång i datasetet.
-      Samma anonymiserade kod = samma person.
+      Besökare med fler än ett besök under <strong>1 jan – 27 maj 2026</strong> (detaljperioden).
+      Fr.o.m. maj (komplett) används enkel räkning – ingen mer detaljerad analys görs.
     </p>
     <button class="toggle-btn" id="toggle-btn" onclick="toggleReturning()">▼ Visa återkommande besökare</button>
     <div id="return-table-container" style="display:none">Bearbetar data…</div>
@@ -169,7 +173,7 @@
 <footer>
   Data: Bjerreds Saltsjöbad ·
   <a href="https://bjerredskallbadhus.se/" target="_blank" rel="noopener">bjerredskallbadhus.se</a>
-  <div class="page-version">📋 Engångsinträden 2026 · Uppdaterad: 2026-05-27 · Data t.o.m. 27 maj</div>
+  <div class="page-version">📋 Engångsinträden 2026 · Uppdaterad: 2026-06-03 · Förenklad rapportering fr.o.m. maj</div>
 </footer>
 
 <a href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad"
@@ -463,6 +467,16 @@ function toDisplay(code) {
 }
 
 /* ================================================================
+   SIMPLE_MANADSDATA – Uppdatering 2026-06-03
+   Enkla månadsantal for månader dar detaljdata (B-koder) saknas.
+   Format: { månadsindex (0=jan, 4=maj): antal }
+   Lägg till framtida månader här: 5:juni, 6:juli, osv.
+   ================================================================ */
+const SIMPLE_MANADSDATA = {
+  4: 173  /* Maj 2026 – komplett månadsantal (hela månaden) */
+};
+
+/* ================================================================
    MÅNADSAGGREGERING
    Eftersom datan är pre-anonymiserad behövs inget mappningsbygge.
    monthlyCounts  = totalt antal biljetter (poster) per månad
@@ -494,27 +508,41 @@ const returning = Object.entries(visitorDates)
   .sort((a, b) => b[1].length - a[1].length);
 
 /* ================================================================
+   KOMBINERADE MÅNADSANTAL
+   Jan–apr räknas från ENGANGS_RAWDATA.
+   Maj+ hämtas från SIMPLE_MANADSDATA (skriver over RAWDATA-räkning).
+   Uppdatering 2026-06-03
+   ================================================================ */
+const combinedCounts = [...monthlyCounts]; /* kopia av RAWDATA-räkning */
+for (const [idx, val] of Object.entries(SIMPLE_MANADSDATA)) {
+  combinedCounts[parseInt(idx)] = val; /* SIMPLE_MANADSDATA har företräde */
+}
+const totalAll = combinedCounts.reduce((sum, v) => sum + v, 0);
+
+/* ================================================================
    FYLL SAMMANFATTNINGSKORT
    ================================================================ */
 const uniqueCount = new Set(ENGANGS_RAWDATA.map(([id, date, code]) => code)).size;
-document.getElementById('card-total').textContent     = ENGANGS_RAWDATA.length.toLocaleString('sv-SE');
+document.getElementById('card-total').textContent     = totalAll.toLocaleString('sv-SE');
 document.getElementById('card-unique').textContent    = uniqueCount.toLocaleString('sv-SE');
 document.getElementById('card-returning').textContent = returning.length;
 
 /* ================================================================
-   LINJEDIAGRAM
+   LINJEDIAGRAM – Uppdatering 2026-06-03
+   En dataset: kombinerade månadsantal (RAWDATA jan–apr, SIMPLE maj+).
+   Tooltip visar vilken datakälla som gäller för varje månad.
    ================================================================ */
 const MONTHS_SV = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
 
-const lastMonth   = ENGANGS_RAWDATA.reduce((max, [id, date]) =>
+/* Sista månaden med data – tar hänsyn till både RAWDATA och SIMPLE */
+const lastMonthRaw    = ENGANGS_RAWDATA.reduce((max, [id, date]) =>
   Math.max(max, parseInt(date.substring(5, 7)) - 1), 0);
+const lastMonthSimple = Object.keys(SIMPLE_MANADSDATA).map(Number)
+  .reduce((a, b) => Math.max(a, b), -1);
+const lastMonth = Math.max(lastMonthRaw, lastMonthSimple);
 
 const chartLabels = MONTHS_SV.slice(0, lastMonth + 1);
-const chartTotal  = monthlyCounts.slice(0, lastMonth + 1);
-const chartUniq   = monthlyUnique.slice(0, lastMonth + 1);
-
-/* Lägg till "(t.o.m. 27)" på Maj-etiketten */
-chartLabels[chartLabels.length - 1] = 'Maj*';
+const chartData   = combinedCounts.slice(0, lastMonth + 1);
 
 const ctx = document.getElementById('engångsChart').getContext('2d');
 new Chart(ctx, {
@@ -523,28 +551,18 @@ new Chart(ctx, {
     labels: chartLabels,
     datasets: [
       {
-        label: 'Sålda biljetter (totalt)',
-        data: chartTotal,
+        label: 'Engångsinträden per månad',
+        data: chartData,
         borderColor: '#2e86c1',
         backgroundColor: 'rgba(46,134,193,0.12)',
         borderWidth: 2.5,
         pointRadius: 7,
         pointHoverRadius: 9,
-        pointBackgroundColor: '#2e86c1',
+        /* Grön punkt = SIMPLE-data, blå = detaljdata */
+        pointBackgroundColor: chartData.map((_, i) =>
+          SIMPLE_MANADSDATA[i] !== undefined ? '#27ae60' : '#2e86c1'
+        ),
         fill: true,
-        tension: 0.3
-      },
-      {
-        label: 'Unika besökare',
-        data: chartUniq,
-        borderColor: '#27ae60',
-        backgroundColor: 'rgba(39,174,96,0.06)',
-        borderWidth: 2,
-        borderDash: [6, 3],
-        pointRadius: 6,
-        pointHoverRadius: 8,
-        pointBackgroundColor: '#27ae60',
-        fill: false,
         tension: 0.3
       }
     ]
@@ -557,15 +575,12 @@ new Chart(ctx, {
       legend: { position: 'top', labels: { boxWidth: 16, padding: 16, font: { size: 13 } } },
       tooltip: {
         callbacks: {
-          title: (items) => {
-            const label = items[0].label;
-            return label === 'Maj*' ? 'Maj (t.o.m. 27 maj)' : label;
-          },
-          afterBody: (items) => {
-            const tot  = items.find(i => i.datasetIndex === 0)?.raw ?? 0;
-            const uniq = items.find(i => i.datasetIndex === 1)?.raw ?? 0;
-            const diff = tot - uniq;
-            return diff > 0 ? ['Dubbelposter / återbesök: ' + diff] : [];
+          /* Fotnot i tooltip: tala om vilken typ av data det är */
+          footer: (items) => {
+            const mIdx = items[0]?.dataIndex ?? -1;
+            return SIMPLE_MANADSDATA[mIdx] !== undefined
+              ? 'Källa: enkelt månadsantal (fr.o.m. maj 2026)'
+              : 'Källa: detaljdata med anonymiserade besökarkoder';
           }
         }
       }
@@ -575,7 +590,7 @@ new Chart(ctx, {
       y: {
         beginAtZero: true,
         grid: { color: 'rgba(0,0,0,0.06)' },
-        title: { display: true, text: 'Antal', font: { size: 12 } }
+        title: { display: true, text: 'Antal engångsinträden', font: { size: 12 } }
       }
     }
   }
