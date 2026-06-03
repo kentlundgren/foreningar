@@ -140,6 +140,13 @@
       transition: background 0.18s;
     }
     #auth-status button:hover { background: rgba(255,255,255,0.28); }
+    /* Uppdatering 2026-06-03: synkroniseringsknapp – grönare nyans */
+    #sync-btn {
+      background: rgba(39,174,96,0.25) !important;
+      border-color: rgba(39,174,96,0.6) !important;
+    }
+    #sync-btn:hover { background: rgba(39,174,96,0.45) !important; }
+    #sync-btn:disabled { opacity: 0.55; cursor: wait; }
 
     /* Data-källeindikator under rubriken (identisk med index.html) */
     #data-källa {
@@ -773,6 +780,12 @@
     <button id="auth-btn" style="display:none;" onclick="hanteraAuthKnapp()">
       Logga in
     </button>
+    <!-- Uppdatering 2026-06-03: Synkroniseringsknapp – visas bara när inloggad -->
+    <button id="sync-btn" style="display:none;"
+            onclick="syncBaseDataTillFirebase()"
+            title="Skickar BASE_DATA-värden som saknas i Firebase">
+      📥 Synka till Firebase
+    </button>
   </div>
 </header>
 
@@ -1349,23 +1362,98 @@
      användaren är inloggad eller inte.
      ================================================================ */
   function uppdateraInloggningsstatus(user) {
-    const label = document.getElementById('auth-label');
-    const btn   = document.getElementById('auth-btn');
+    const label   = document.getElementById('auth-label');
+    const btn     = document.getElementById('auth-btn');
+    const syncBtn = document.getElementById('sync-btn');
     if (!label || !btn) return;
 
     if (user) {
-      /* Inloggad – visa e-postadress och Logga ut-knapp */
-      label.textContent = `✅ ${user.email}`;
+      /* Inloggad – visa e-postadress, Logga ut-knapp och sync-knapp */
+      label.textContent = '\u2705 ' + user.email;
       btn.textContent   = 'Logga ut';
       btn.style.display = 'inline-block';
+      /* Uppdatering 2026-06-03: visa sync-knappen enbart när inloggad */
+      if (syncBtn) syncBtn.style.display = 'inline-block';
     } else {
-      /* Ej inloggad – dolt (login triggas via cell-klick) */
+      /* Ej inloggad */
       label.textContent = 'Ej inloggad';
       btn.textContent   = 'Logga in';
       btn.style.display = 'inline-block';
+      if (syncBtn) syncBtn.style.display = 'none';
     }
   }
 
+  /* ================================================================
+     syncBaseDataTillFirebase() – Uppdatering 2026-06-03
+     Läser BASE_DATA och skickar värden som SAKNAS i Firebase.
+     Skriver aldrig över Firebase-värden som redan finns.
+     Visar en dialog med hur många värden som synkroniserades.
+     ================================================================ */
+  window.syncBaseDataTillFirebase = async function() {
+    if (!currentUser) {
+      alert('Du m\u00e5ste vara inloggad f\u00f6r att synkronisera.');
+      return;
+    }
+
+    const syncBtn = document.getElementById('sync-btn');
+    if (syncBtn) { syncBtn.disabled = true; syncBtn.textContent = '\u23f3 Synkar\u2026'; }
+
+    try {
+      /* L\u00e4s hela Firebase-noden p\u00e5 en g\u00e5ng f\u00f6r att minimera requests */
+      const fbSnap = await get(ref(db, 'bjerred-inpasseringar/data'));
+      const fbData = fbSnap.exists() ? fbSnap.val() : {};
+
+      let skickade = 0;
+      let hoppades = 0;
+
+      for (const [year, kategorier] of Object.entries(BASE_DATA)) {
+        for (const [kategori, manader] of Object.entries(kategorier)) {
+          /* Navigera Firebase-tr\u00e4det (hanterar snedstreck i kategorinamn) */
+          const delar = kategori.split('/');
+
+          for (let m = 0; m < 12; m++) {
+            const basVal = manader[m];
+            if (basVal === null) { hoppades++; continue; } /* null = hoppa \u00f6ver */
+
+            /* Kolla om Firebase redan har ett v\u00e4rde f\u00f6r denna cell */
+            let fbNod = fbData[String(year)];
+            for (const del of delar) { fbNod = fbNod?.[del]; }
+            const fbVal = fbNod?.[m];
+            const harVarde = fbVal !== undefined && fbVal !== null && fbVal !== 'null';
+
+            if (harVarde) { hoppades++; continue; } /* Firebase har redan v\u00e4rde */
+
+            /* Skriv till Firebase */
+            const sokv\u00e4g = 'bjerred-inpasseringar/data/' + year + '/' + kategori + '/' + m;
+            await set(ref(db, sokv\u00e4g), basVal);
+            skickade++;
+          }
+        }
+      }
+
+      /* Uppdatera tidsstämpeln om n\u00e5got skickades */
+      if (skickade > 0) {
+        await set(
+          ref(db, 'bjerred-inpasseringar/senast-uppdaterad'),
+          new Date().toLocaleDateString('sv-SE')
+        );
+      }
+
+      const msg = skickade > 0
+        ? '\u2705 Klart! ' + skickade + ' v\u00e4rden synkroniserades fr\u00e5n BASE_DATA till Firebase.\n'
+          + '(' + hoppades + ' v\u00e4rden hoppades \u00f6ver \u2013 null eller redan i Firebase.)'
+        : '\u2139\ufe0f Ingen ny data att synkronisera \u2013 Firebase har redan alla BASE_DATA-v\u00e4rden.';
+
+      alert(msg);
+      showToast(skickade > 0 ? '\u2705 ' + skickade + ' v\u00e4rden sparade!' : '\u2139\ufe0f Redan synkat');
+
+    } catch (err) {
+      alert('Fel vid synkronisering: ' + err.message);
+      console.error(err);
+    } finally {
+      if (syncBtn) { syncBtn.disabled = false; syncBtn.textContent = '\ud83d\udce5 Synka till Firebase'; }
+    }
+  };
 
   /* ================================================================
      hanteraAuthKnapp()
