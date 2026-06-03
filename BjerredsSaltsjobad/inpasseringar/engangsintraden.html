@@ -90,6 +90,27 @@
       .return-table th, .return-table td { padding: 0.5rem 0.6rem; }
       .return-table { font-size: 0.80rem; }
     }
+
+    /* ---- Uppdatering 2026-06-03: data-källeindikator (identisk med index.html/data.html) ---- */
+    #data-källa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      margin-top: 0.25rem;
+      opacity: 0.82;
+      font-weight: 400;
+      color: rgba(255,255,255,0.75);
+    }
+    #data-källa-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #a0aec0;   /* Grå = ansluter */
+      display: inline-block;
+      flex-shrink: 0;
+      transition: background 0.4s;
+    }
   </style>
 </head>
 <body>
@@ -98,6 +119,10 @@
   <div>
     <h1>🌊 Bjerreds Saltsjöbad</h1>
     <p>Engångsinträden 2026 – månadsstatistik</p>
+    <div id="data-källa">
+      <span id="data-källa-dot"></span>
+      <span id="data-källa-text">Ansluter till Firebase…</span>
+    </div>
   </div>
   <div class="header-actions">
     <a href="index.html" class="btn-nav">← Inpasseringsstatistik</a>
@@ -183,7 +208,32 @@
    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.65'"
 >{ } GitHub</a>
 
-<script>
+<script type="module">
+/*
+ * ================================================================
+ *  FIREBASE SDK – imports (Uppdatering 2026-06-03)
+ *  Läser månadsdata live från samma nod som data.html:
+ *  bjerred-inpasseringar/data/2026/Engångsbadare – Wondr
+ * ================================================================
+ */
+import { initializeApp, getApps }
+  from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+import { getDatabase, ref, onValue, get }
+  from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyBbAX6EFxbW1VIcSYQ3Zqbr3v733sGMYD8",
+  authDomain:        "skylt-e0c45.firebaseapp.com",
+  projectId:         "skylt-e0c45",
+  storageBucket:     "skylt-e0c45.firebasestorage.app",
+  messagingSenderId: "653653642598",
+  appId:             "1:653653642598:web:29e332c87fed1cd9f34ca7",
+  databaseURL:       "https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app"
+};
+
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
 /*
  * ================================================================
  *  ENGÅNGSINTRÄDEN 2026 – PRE-ANONYMISERAD DATA
@@ -467,13 +517,13 @@ function toDisplay(code) {
 }
 
 /* ================================================================
-   SIMPLE_MANADSDATA – Uppdatering 2026-06-03
+   simpleManadsdata – Uppdatering 2026-06-03
    Enkla månadsantal for månader dar detaljdata (B-koder) saknas.
    Format: { månadsindex (0=jan, 4=maj): antal }
    Lägg till framtida månader här: 5:juni, 6:juli, osv.
    ================================================================ */
-const SIMPLE_MANADSDATA = {
-  4: 173  /* Maj 2026 – komplett månadsantal (hela månaden) */
+let simpleManadsdata = {
+  4: 173  /* Maj 2026 – komplett månadsantal (fallback tills Firebase svarar) */
 };
 
 /* ================================================================
@@ -508,94 +558,147 @@ const returning = Object.entries(visitorDates)
   .sort((a, b) => b[1].length - a[1].length);
 
 /* ================================================================
-   KOMBINERADE MÅNADSANTAL
-   Jan–apr räknas från ENGANGS_RAWDATA.
-   Maj+ hämtas från SIMPLE_MANADSDATA (skriver over RAWDATA-räkning).
-   Uppdatering 2026-06-03
+   KONSTANTER FOR DIAGRAM (Uppdatering 2026-06-03)
    ================================================================ */
-const combinedCounts = [...monthlyCounts]; /* kopia av RAWDATA-räkning */
-for (const [idx, val] of Object.entries(SIMPLE_MANADSDATA)) {
-  combinedCounts[parseInt(idx)] = val; /* SIMPLE_MANADSDATA har företräde */
-}
-const totalAll = combinedCounts.reduce((sum, v) => sum + v, 0);
-
-/* ================================================================
-   FYLL SAMMANFATTNINGSKORT
-   ================================================================ */
+const MONTHS_SV   = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
 const uniqueCount = new Set(ENGANGS_RAWDATA.map(([id, date, code]) => code)).size;
-document.getElementById('card-total').textContent     = totalAll.toLocaleString('sv-SE');
-document.getElementById('card-unique').textContent    = uniqueCount.toLocaleString('sv-SE');
-document.getElementById('card-returning').textContent = returning.length;
+let   engångChart = null; /* Chart.js-instans – null tills render() körs */
 
 /* ================================================================
-   LINJEDIAGRAM – Uppdatering 2026-06-03
-   En dataset: kombinerade månadsantal (RAWDATA jan–apr, SIMPLE maj+).
-   Tooltip visar vilken datakälla som gäller för varje månad.
+   RENDER() – Uppdatering 2026-06-03
+   Beräknar kombinerade månadsantal och uppdaterar kort + diagram.
+   Anropas direkt (fallbackdata) och igen när Firebase svarar.
    ================================================================ */
-const MONTHS_SV = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
+function render() {
+  /* Jan–apr från ENGANGS_RAWDATA, maj+ från simpleManadsdata */
+  const combined = [...monthlyCounts];
+  for (const [idx, val] of Object.entries(simpleManadsdata)) {
+    combined[parseInt(idx)] = val;
+  }
+  const totalAll = combined.reduce((s, v) => s + v, 0);
 
-/* Sista månaden med data – tar hänsyn till både RAWDATA och SIMPLE */
-const lastMonthRaw    = ENGANGS_RAWDATA.reduce((max, [id, date]) =>
-  Math.max(max, parseInt(date.substring(5, 7)) - 1), 0);
-const lastMonthSimple = Object.keys(SIMPLE_MANADSDATA).map(Number)
-  .reduce((a, b) => Math.max(a, b), -1);
-const lastMonth = Math.max(lastMonthRaw, lastMonthSimple);
+  /* Sammanfattningskort */
+  document.getElementById('card-total').textContent     = totalAll.toLocaleString('sv-SE');
+  document.getElementById('card-unique').textContent    = uniqueCount.toLocaleString('sv-SE');
+  document.getElementById('card-returning').textContent = returning.length;
 
-const chartLabels = MONTHS_SV.slice(0, lastMonth + 1);
-const chartData   = combinedCounts.slice(0, lastMonth + 1);
+  /* Beräkna sista månaden med data */
+  const lastRaw    = ENGANGS_RAWDATA.reduce((mx, [, d]) =>
+    Math.max(mx, parseInt(d.substring(5,7)) - 1), 0);
+  const lastSimple = Object.keys(simpleManadsdata).map(Number).reduce((a,b) => Math.max(a,b), -1);
+  const last       = Math.max(lastRaw, lastSimple);
 
-const ctx = document.getElementById('engångsChart').getContext('2d');
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: chartLabels,
-    datasets: [
-      {
-        label: 'Engångsinträden per månad',
-        data: chartData,
-        borderColor: '#2e86c1',
-        backgroundColor: 'rgba(46,134,193,0.12)',
-        borderWidth: 2.5,
-        pointRadius: 7,
-        pointHoverRadius: 9,
-        /* Grön punkt = SIMPLE-data, blå = detaljdata */
-        pointBackgroundColor: chartData.map((_, i) =>
-          SIMPLE_MANADSDATA[i] !== undefined ? '#27ae60' : '#2e86c1'
-        ),
-        fill: true,
-        tension: 0.3
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { position: 'top', labels: { boxWidth: 16, padding: 16, font: { size: 13 } } },
-      tooltip: {
-        callbacks: {
-          /* Fotnot i tooltip: tala om vilken typ av data det är */
-          footer: (items) => {
-            const mIdx = items[0]?.dataIndex ?? -1;
-            return SIMPLE_MANADSDATA[mIdx] !== undefined
-              ? 'Källa: enkelt månadsantal (fr.o.m. maj 2026)'
-              : 'Källa: detaljdata med anonymiserade besökarkoder';
+  const labels     = MONTHS_SV.slice(0, last + 1);
+  const vals       = combined.slice(0, last + 1);
+  /* Grön punkt = enkelt månadsantal, blå = detaljdata */
+  const ptColors   = vals.map((_, i) => simpleManadsdata[i] !== undefined ? '#27ae60' : '#2e86c1');
+
+  if (engångChart) {
+    /* Uppdatera befintligt diagram utan att rita om hela Canvas */
+    engångChart.data.labels                           = labels;
+    engångChart.data.datasets[0].data                = vals;
+    engångChart.data.datasets[0].pointBackgroundColor = ptColors;
+    engångChart.update();
+  } else {
+    /* Skapa diagram vid första render() */
+    const ctx = document.getElementById('eng\u00e5ngsChart').getContext('2d');
+    engångChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Eng\u00e5ngsintr\u00e4den per m\u00e5nad',
+          data:  vals,
+          borderColor:          '#2e86c1',
+          backgroundColor:      'rgba(46,134,193,0.12)',
+          borderWidth:          2.5,
+          pointRadius:          7,
+          pointHoverRadius:     9,
+          pointBackgroundColor: ptColors,
+          fill:                 true,
+          tension:              0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 16, padding: 16, font: { size: 13 } } },
+          tooltip: {
+            callbacks: {
+              footer: items => {
+                const i = items[0]?.dataIndex ?? -1;
+                return simpleManadsdata[i] !== undefined
+                  ? 'K\u00e4lla: enkelt m\u00e5nadsantal (fr.o.m. maj 2026)'
+                  : 'K\u00e4lla: detaljdata med anonymiserade bes\u00f6karkoder';
+              }
+            }
           }
+        },
+        scales: {
+          x: { grid: { color: 'rgba(0,0,0,0.05)' } },
+          y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.06)' },
+               title: { display: true, text: 'Antal eng\u00e5ngsintr\u00e4den', font: { size: 12 } } }
         }
       }
-    },
-    scales: {
-      x: { grid: { color: 'rgba(0,0,0,0.05)' } },
-      y: {
-        beginAtZero: true,
-        grid: { color: 'rgba(0,0,0,0.06)' },
-        title: { display: true, text: 'Antal engångsinträden', font: { size: 12 } }
-      }
-    }
+    });
   }
-});
+}
 
+/* ================================================================
+   INITIAL RENDER – visa sidan direkt med fallbackdata
+   ================================================================ */
+render();
+
+/* ================================================================
+   FIREBASE-LYSSNARE – Uppdatering 2026-06-03
+   Läser från bjerred-inpasseringar/data/2026/Eng\u00e5ngsbadare – Wondr
+   (samma nod som data.html skriver till).
+   ================================================================ */
+onValue(
+  ref(db, 'bjerred-inpasseringar/data/2026/Eng\u00e5ngsbadare \u2013 Wondr'),
+
+  /* Succe: Firebase nådd */
+  async (snapshot) => {
+    const dot  = document.getElementById('data-k\u00e4lla-dot');
+    const text = document.getElementById('data-k\u00e4lla-text');
+
+    /* Tidsstämpel från Firebase */
+    let senast = '';
+    try {
+      const ts = await get(ref(db, 'bjerred-inpasseringar/senast-uppdaterad'));
+      senast   = ts.val() || '';
+    } catch(e) { /* ignorera */ }
+
+    if (snapshot.exists()) {
+      const fb = snapshot.val();
+      /* Uppdatera simpleManadsdata med Firebase-värden för maj och framåt */
+      for (let m = 4; m < 12; m++) {
+        const v = fb[m];
+        if (v !== undefined && v !== null && v !== 'null') simpleManadsdata[m] = Number(v);
+      }
+      /* Grön prick – live */
+      if (dot)  dot.style.background = '#68d391';
+      if (text) text.textContent =
+        'Live fr\u00e5n Firebase \u00b7 ' + (senast || new Date().toLocaleDateString('sv-SE'));
+    } else {
+      /* Noden finns inte i Firebase ännu */
+      if (dot)  dot.style.background = '#f6ad55';
+      if (text) text.textContent = 'Lokal fallbackdata \u2013 inte sparad i Firebase \u00e4nnu';
+    }
+    render(); /* Rita om diagrammet med uppdaterad data */
+  },
+
+  /* Fel: Firebase ej nådd */
+  err => {
+    const dot  = document.getElementById('data-k\u00e4lla-dot');
+    const text = document.getElementById('data-k\u00e4lla-text');
+    if (dot)  dot.style.background = '#f6ad55';
+    if (text) text.textContent = 'Lokal fallbackdata (Firebase ej n\u00e5dd)';
+    console.warn('Firebase-fel:', err.message);
+  }
+);
 /* ================================================================
    TOGGLE – VISA/DÖlJ TABELLEN
    ================================================================ */

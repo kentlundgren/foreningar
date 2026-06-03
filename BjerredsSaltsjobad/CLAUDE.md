@@ -37,6 +37,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-05-28 | `medlemmar/index.html`: initialer borttagna ur november-datan (bara förnamn kvar) |
 | 2026-05-28 | `.gitignore`: datafiler med personuppgifter i `medlemmar/` blockerade |
 | 2026-05-28 | Datafiler med riktiga namn: 8 filer avregistrerade med `git rm --cached` |
+| 2026-06-03 | Förklaring av dubbel datalagring (BASE_DATA + Firebase) tillagd |
 | 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
 
 ---
