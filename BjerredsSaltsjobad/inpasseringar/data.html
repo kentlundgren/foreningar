@@ -1249,10 +1249,10 @@
       return;
     }
     /* Bygg listan */
-    lista.innerHTML = gaps.map(g =>
-      <li><strong> /  / </strong> +
-       =  (finns i Firebase, saknas i BASE_DATA)</li>
-    ).join('');
+    lista.innerHTML = gaps.map(function(g) {
+      return '<li><strong>' + g.year + ' / ' + g.kategori + ' / ' + MÅNADSNAMN[g.månad] + '</strong>'
+           + ' = ' + g.value + ' (finns i Firebase, saknas i BASE_DATA)</li>';
+    }).join('');
     banner.style.display = 'block';
     banner.removeAttribute('open');
   }
