@@ -1253,8 +1253,9 @@
       return '<li><strong>' + g.year + ' / ' + g.kategori + ' / ' + MÅNADSNAMN[g.månad] + '</strong>'
            + ' = ' + g.value + ' (finns i Firebase, saknas i BASE_DATA)</li>';
     }).join('');
+    /* Visa bannern utfälld direkt – användaren ser hela listan utan att klicka */
     banner.style.display = 'block';
-    banner.removeAttribute('open');
+    banner.setAttribute('open', '');
   }
 
 
