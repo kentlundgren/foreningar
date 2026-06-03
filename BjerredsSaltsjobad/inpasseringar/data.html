@@ -504,6 +504,37 @@
       color: #7d4e00;
     }
 
+    /* Uppdatering 2026-06-03: notis för Firebase-värden som saknas i BASE_DATA */
+    #gap-banner {
+      display: none;
+      background: #fff8e1;
+      border: 1px solid #f9a825;
+      border-left: 5px solid #f57f17;
+      border-radius: 6px;
+      padding: 0.8rem 1rem;
+      margin: 0.8rem 1rem 0;
+      font-size: 0.83rem;
+      color: #4a3000;
+      line-height: 1.6;
+    }
+    #gap-banner summary {
+      cursor: pointer;
+      font-weight: 700;
+      list-style: none;
+    }
+    #gap-banner summary::before { content: '⚠️ '; }
+    #gap-banner ul { margin: 0.4rem 0 0 1.2rem; padding: 0; }
+    #gap-banner li { margin: 0.15rem 0; }
+    #gap-banner .gap-close {
+      float: right; cursor: pointer; font-size: 1rem; line-height: 1;
+      color: #888; margin-left: 0.5rem;
+    }
+    #gap-banner .gap-close:hover { color: #333; }
+    #gap-banner .gap-action {
+      display: inline-block; margin-top: 0.5rem;
+      font-style: italic; color: #7d4e00;
+    }
+
     /* ============================================================
        INLOGGNINGSMODAL
        Visas när en icke-inloggad användare försöker redigera en cell.
@@ -885,6 +916,19 @@
   </div>
 </div>
 
+<!-- Uppdatering 2026-06-03: Firebase-gap-banner – visas om Firebase har värden som saknas i BASE_DATA -->
+<details id="gap-banner">
+  <summary>
+    <span class="gap-close" onclick="event.preventDefault();document.getElementById('gap-banner').style.display='none'">✕</span>
+    Firebase har värden som inte finns i BASE_DATA
+  </summary>
+  <ul id="gap-list"></ul>
+  <span class="gap-action">
+    Uppdatera BASE_DATA i data.html med dessa värden för att slippa fördröjning vid sidomladdning.
+    Använd sedan "📥 Synka till Firebase" för att verifiera.
+  </span>
+</details>
+
 <!-- Färgförklaring -->
 <div class="legend">
   <strong>Färgförklaring:</strong>
@@ -1112,12 +1156,12 @@
     /* ---- 2026 -------------------------------------------------- */
     /* null = saknas (gulmarkerat i ursprungstabellen)              */
     2026: {
-      'Restaurangen/badbiljetter': [ 643,  665,  600,  359, null, null, null, null, null, null, null, null],
+      'Restaurangen/badbiljetter': [ 643,  665,  600,  359,  417, null, null, null, null, null, null, null],
       'SMS/Swish-biljetter':       [1114,  751, 1006,  913, null, null, null, null, null, null, null, null],
       /* Uppdatering 2026-06-03: Engångsbadare via Wondr – bokförs separat, räknas EJ med i totalsumman */
       'Engångsbadare – Wondr':     [  17,   13,   38,   31,  173, null, null, null, null, null, null, null],
       'Medlemmar – armband':       [ 492,  119,   95,   90, null, null, null, null, null, null, null, null],
-      'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, null, null, null, null, null, null, null, null]
+      'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, 3417, null, null, null, null, null, null, null]
     }
   };
 
@@ -1164,6 +1208,57 @@
 
 
   /* ================================================================
+     detectFirebaseGaps()
+     Jämför firebaseData med BASE_DATA och returnerar en lista av
+     celler där Firebase har ett värde men BASE_DATA har null.
+     Anropas efter att Firebase-data hämtats, för att varna om att
+     BASE_DATA bör uppdateras (annars syns en fördröjning vid reload).
+     ================================================================ */
+  const MÅNADSNAMN = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
+
+  function detectFirebaseGaps() {
+    if (!firebaseData) return [];
+    const gaps = [];
+    for (const [yearStr, kategorier] of Object.entries(firebaseData)) {
+      const year = parseInt(yearStr, 10);
+      for (const [kategori, månader] of Object.entries(kategorier)) {
+        if (!månader) continue;
+        for (let m = 0; m < 12; m++) {
+          const fbVal = månader[m];
+          /* Hoppa över null/undefined/"null" (saknade Firebase-värden) */
+          if (fbVal === null || fbVal === undefined || fbVal === 'null') continue;
+          /* Kontrollera om BASE_DATA har null för samma cell */
+          const bdVal = BASE_DATA[year]?.[kategori]?.[m];
+          if (bdVal === null || bdVal === undefined) {
+            gaps.push({ year, kategori, månad: m, value: fbVal });
+          }
+        }
+      }
+    }
+    return gaps;
+  }
+
+  function visaGapNotis() {
+    const banner = document.getElementById('gap-banner');
+    const lista  = document.getElementById('gap-list');
+    if (!banner || !lista) return;
+    const gaps = detectFirebaseGaps();
+    if (gaps.length === 0) {
+      /* Allt är synkat – dölj bannern */
+      banner.style.display = 'none';
+      return;
+    }
+    /* Bygg listan */
+    lista.innerHTML = gaps.map(g =>
+      <li><strong> /  / </strong> +
+       =  (finns i Firebase, saknas i BASE_DATA)</li>
+    ).join('');
+    banner.style.display = 'block';
+    banner.removeAttribute('open');
+  }
+
+
+  /* ================================================================
      FIREBASE REALTIME DATABASE – DATALYSSNARE
      onValue() prenumererar på ändringar under noden
      'bjerred-inpasseringar/data'. Varje gång data ändras i Firebase
@@ -1198,6 +1293,9 @@
 
       /* Rendera tabellerna med den nya datan */
       renderAll();
+
+      /* Uppdatering 2026-06-03: visa notis om Firebase har värden som saknas i BASE_DATA */
+      visaGapNotis();
     },
 
     /* Fel-callback – Firebase ej nådd */
