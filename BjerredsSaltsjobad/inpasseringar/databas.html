@@ -1509,7 +1509,8 @@
         Hur det såg ut före fixen
       </h3>
       <pre style="background:#f9f2f4;border:1px solid #ddd;border-radius:6px;
-                  padding:0.9rem;font-size:0.82rem;overflow-x:auto;margin-top:0.6rem;"><code>// GAMMAL kod – ersätter hela arrayen med Firebase
+                  padding:0.9rem;font-size:0.82rem;overflow-x:auto;margin-top:0.6rem;
+                  color:#24292e;"><code>// GAMMAL kod – ersätter hela arrayen med Firebase
 for (const [kategori, månader] of Object.entries(kategorier)) {
   data[year][kategori] = månader;   // null-värden från Firebase skriver över BASE_DATA
 }</code></pre>
@@ -1518,7 +1519,8 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
         Hur det fungerar efter fixen (2026-06-03)
       </h3>
       <pre style="background:#f0fdf4;border:1px solid #a9dfbf;border-radius:6px;
-                  padding:0.9rem;font-size:0.82rem;overflow-x:auto;margin-top:0.6rem;"><code>// NY kod – merge på månads-nivå
+                  padding:0.9rem;font-size:0.82rem;overflow-x:auto;margin-top:0.6rem;
+                  color:#24292e;"><code>// NY kod – merge på månads-nivå
 for (const [kategori, månader] of Object.entries(kategorier)) {
   if (!data[year][kategori]) {
     // Kategorin saknas i BASE_DATA – använd Firebase-arrayen direkt

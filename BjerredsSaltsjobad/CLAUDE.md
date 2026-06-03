@@ -1,6 +1,6 @@
 # CLAUDE.md – Bjerreds Saltsjöbad
 
-*Version 2026-05-28*
+*Version 2026-06-03*
 
 Denna fil är projektets **minne** – den beskriver arkitektur, beslut och aktuell status
 för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att tappa tråden.
@@ -38,6 +38,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-05-28 | `.gitignore`: datafiler med personuppgifter i `medlemmar/` blockerade |
 | 2026-05-28 | Datafiler med riktiga namn: 8 filer avregistrerade med `git rm --cached` |
 | 2026-06-03 | Förklaring av dubbel datalagring (BASE_DATA + Firebase) tillagd |
+| 2026-06-03 | Regel tillagd: aldrig diffus/osynlig text – ljusa kodblockar kräver explicit mörk color |
 | 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
 
 ---
@@ -201,6 +202,7 @@ Cursor är kopplat till **Git och GitHub**. Filer skapas/redigeras i Cowork och 
 - Kommentarer och variabelnamn skrivs på **svenska** (engelska vid teknisk term)
 - **UTF-8 alltid:** Filer med svenska tecken skapas via PowerShell (Write-verktyget förstör å/ä/ö)
 - **Personuppgifter:** Inga riktiga namn i filer som går till GitHub – se avsnittet om anonymisering
+- **Textkontrast – aldrig diffus text:** När ett pre- eller kodblock med ljus bakgrund skapas (t.ex. #f9f2f4, #f0fdf4) *måste* color sättas explicit till mörkt (t.ex. color:#24292e). Den globala pre-stilen är avsedd för mörk bakgrund och skapar annars osynlig text. Kontrollera alltid att kodtext syns tydligt mot vald bakgrundsfärg.
 
 ---
 
