@@ -1359,6 +1359,228 @@
     </div>
   </div>
 
+
+  <!-- ============================================================
+       NYTT KORT – Uppdatering 2026-06-03
+       Lärdom: skillnaden mellan BASE_DATA och Firebase
+       ============================================================ -->
+  <div class="card" style="border-top: 4px solid #27ae60;">
+    <div class="card-header" style="background: linear-gradient(135deg,#1e8449,#27ae60);">
+      💡 Lärdom 2026-06-03 – BASE_DATA och Firebase är två separata saker
+    </div>
+    <div class="card-body">
+
+      <p>
+        I samband med att en ny datakategori (<strong>Engångsbadare – Wondr</strong>)
+        lades till i <code>data.html</code> uppstod en förvirring som ledde till en
+        viktig insikt om hur systemet verkligen fungerar.
+      </p>
+
+      <div class="info-ruta" style="border-color:#27ae60;background:#f0fdf4;margin-top:1rem;">
+        <strong>Kärnan i insikten:</strong><br>
+        Det finns <em>två separata lagringsplatser</em> för inpasseringsdata.
+        De synkroniseras <strong>inte</strong> automatiskt med varandra.
+      </div>
+
+      <!-- Jämförelsetabell -->
+      <table class="struktur" style="margin-top:1rem;">
+        <thead>
+          <tr>
+            <th>Lagring</th>
+            <th>Vad är det?</th>
+            <th>Hur uppdateras det?</th>
+            <th>Grön prick?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BASE_DATA</strong></td>
+            <td>
+              JavaScript-konstant hårdkodad direkt i HTML-filerna
+              (<code>data.html</code>, <code>index.html</code>).
+              Det är <em>vanlig kod</em> – inte browser-localStorage
+              och inte Firebase.
+            </td>
+            <td>Redigera filen i Cursor → commit → push</td>
+            <td style="text-align:center">❌ Nej (orange)</td>
+          </tr>
+          <tr>
+            <td><strong>Firebase</strong></td>
+            <td>
+              Realtidsdatabas online. Alla sidor med
+              <span style="color:#27ae60;font-weight:600;">grön prick</span>
+              läser härifrån. Firebase-data har alltid företräde
+              över BASE_DATA.
+            </td>
+            <td>
+              Öppna <code>data.html</code> → logga in →
+              klicka en cell → skriv värdet → tryck Enter.
+              <em>Ändringen syns direkt för alla.</em>
+            </td>
+            <td style="text-align:center">✅ Ja</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top:1.5rem;color:var(--primary);font-size:1rem;">
+        🔶 Vad händer när en ny kategori läggs till i BASE_DATA?
+      </h3>
+      <p style="margin-top:0.5rem;">
+        När en ny rad läggs till i koden (t.ex. <code>'Engångsbadare – Wondr'</code>)
+        syns värden direkt i tabellen – men de kommer från BASE_DATA, inte Firebase.
+        Indikatorn i sidhuvudet visar då
+        <span style="color:#e67e22;font-weight:600;">● orange: Lokal fallbackdata</span>
+        tills data aktivt sparas till Firebase.
+      </p>
+
+      <h3 style="margin-top:1.2rem;color:var(--primary);font-size:1rem;">
+        ✅ Hur sparar man data till Firebase?
+      </h3>
+      <p style="margin-top:0.5rem;"><strong>Metod 1 – Manuell cell-klick (alltid tillgänglig):</strong></p>
+      <ol style="margin:0.5rem 0 0.75rem 1.4rem;line-height:1.9;">
+        <li>Öppna <code>data.html</code> och logga in</li>
+        <li>Klicka på en cell i den nya kategorins rad</li>
+        <li>Skriv in värdet i rutan som dyker upp</li>
+        <li>Tryck <strong>Enter</strong> – värdet sparas direkt i Firebase</li>
+        <li>Upprepa för varje månad</li>
+      </ol>
+
+      <p><strong>Metod 2 – Synkroniseringsknapp (tillagd 2026-06-03):</strong></p>
+      <p style="margin-top:0.3rem;">
+        När man är inloggad i <code>data.html</code> visas en grön knapp
+        <strong>📥 Synka till Firebase</strong> i sidhuvudet.
+        Den läser igenom hela BASE_DATA, jämför med vad Firebase redan har,
+        och skickar enbart de värden som saknas.
+        Befintliga Firebase-värden skrivs aldrig över.
+        Perfekt för att initiera en ny kategori med ett klick.
+      </p>
+
+      <div class="info-ruta" style="border-color:#e67e22;background:#fef9e7;margin-top:1rem;">
+        <strong>🔑 Nyckelinsikt att komma ihåg:</strong><br>
+        Att värden <em>visas</em> i tabellen på <code>data.html</code> betyder
+        <strong>inte</strong> att de är sparade i Firebase. De kan komma från BASE_DATA.
+        Kontrollera alltid indikatorn i sidhuvudet:
+        grön prick = Firebase, orange prick = lokal fallback.
+      </div>
+
+      <h3 style="margin-top:1.2rem;color:var(--primary);font-size:1rem;">
+        📊 Konkret exempel – Engångsbadare Wondr, 3 juni 2026
+      </h3>
+      <p style="margin-top:0.5rem;">
+        Kategorin lades till i BASE_DATA med värden jan=17, feb=13, mar=38,
+        apr=31, maj=173. Trots att tabellen visade dessa siffror var de
+        <em>inte</em> i Firebase. Indikatorn visade orange.
+        Problemet löstes när ett värde (1 173 som testvalue) skrevs in manuellt
+        via cell-klick i <code>data.html</code> – då bytte indikatorn till
+        grön och <code>engangsintraden.html</code> uppdaterades direkt.
+      </p>
+
+      <p style="margin-top:0.6rem;color:var(--muted);font-size:0.85rem;">
+        <em>Dokumenterat: 2026-06-03</em>
+      </p>
+
+    </div>
+  </div>
+  <!-- ============================================================
+       Lärdom: loadData()-buggen – BASE_DATA som månadsvis fallback
+       ============================================================ -->
+  <div class="card" style="border-top: 4px solid #c0392b;margin-bottom:2rem;">
+    <div class="card-header" style="background: linear-gradient(135deg,#922b21,#c0392b);">
+      🐛 Lärdom 2026-06-03 – loadData()-buggen: BASE_DATA som månadsvis fallback
+    </div>
+    <div class="card-body">
+
+      <p>
+        Strax efter att kategori-synken fungerade (se lärdomen ovan) uppstod ett
+        nytt problem: Jan–apr försvann ur tabellen för <strong>Engångsbadare – Wondr</strong>
+        direkt efter att maj sparats i Firebase. Det såg ut som att siffror gick
+        förlorade, men egentligen var det en bugg i hur <code>loadData()</code>
+        blandade ihop Firebase och BASE_DATA.
+      </p>
+
+      <div class="info-ruta" style="border-color:#c0392b;background:#fdedec;margin-top:1rem;">
+        <strong>Buggens kärna:</strong><br>
+        <code>loadData()</code> ersatte hela månadsarryen för en kategori med
+        Firebase-arrayen. Men Firebase-arrayen innehöll bara maj (ett verkligt värde)
+        och null för jan–apr. Dessa null skrev över BASE_DATA:s jan–apr-värden.
+      </div>
+
+      <h3 style="margin-top:1.5rem;color:var(--primary);font-size:1rem;">
+        Hur det såg ut före fixen
+      </h3>
+      <pre style="background:#f9f2f4;border:1px solid #ddd;border-radius:6px;
+                  padding:0.9rem;font-size:0.82rem;overflow-x:auto;margin-top:0.6rem;"><code>// GAMMAL kod – ersätter hela arrayen med Firebase
+for (const [kategori, månader] of Object.entries(kategorier)) {
+  data[year][kategori] = månader;   // null-värden från Firebase skriver över BASE_DATA
+}</code></pre>
+
+      <h3 style="margin-top:1.2rem;color:var(--primary);font-size:1rem;">
+        Hur det fungerar efter fixen (2026-06-03)
+      </h3>
+      <pre style="background:#f0fdf4;border:1px solid #a9dfbf;border-radius:6px;
+                  padding:0.9rem;font-size:0.82rem;overflow-x:auto;margin-top:0.6rem;"><code>// NY kod – merge på månads-nivå
+for (const [kategori, månader] of Object.entries(kategorier)) {
+  if (!data[year][kategori]) {
+    // Kategorin saknas i BASE_DATA – använd Firebase-arrayen direkt
+    data[year][kategori] = månader;
+  } else {
+    // Kategorin finns i BASE_DATA – slå ihop månad för månad
+    for (let m = 0; m < 12; m++) {
+      if (månader[m] !== null) {
+        data[year][kategori][m] = månader[m]; // Firebase vinner
+      }
+      // månader[m] === null: behåll BASE_DATA (gör ingenting)
+    }
+  }
+}</code></pre>
+
+      <!-- Visuellt exempel -->
+      <h3 style="margin-top:1.5rem;color:var(--primary);font-size:1rem;">
+        Konkret exempel – januari till maj
+      </h3>
+      <table class="struktur" style="margin-top:0.6rem;font-size:0.88rem;">
+        <thead>
+          <tr>
+            <th>Källa</th>
+            <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>Maj</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BASE_DATA</td>
+            <td>17</td><td>13</td><td>38</td><td>31</td><td>173</td>
+          </tr>
+          <tr>
+            <td>Firebase (bara maj sparad)</td>
+            <td style="color:#c0392b;">null</td>
+            <td style="color:#c0392b;">null</td>
+            <td style="color:#c0392b;">null</td>
+            <td style="color:#c0392b;">null</td>
+            <td>1173</td>
+          </tr>
+          <tr style="background:#f0fdf4;font-weight:600;">
+            <td>Resultat efter fix</td>
+            <td>17</td><td>13</td><td>38</td><td>31</td><td style="color:#27ae60;">1173</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:0.5rem;font-size:0.83rem;color:var(--muted);">
+        Firebase-värdet 1173 används för maj. BASE_DATA 173 används ej för maj.
+        Jan–apr hämtas från BASE_DATA eftersom Firebase har null för dem.
+      </p>
+
+      <div class="info-ruta" style="border-color:#27ae60;background:#f0fdf4;margin-top:1rem;">
+        <strong>Principen:</strong> Firebase har alltid företräde – men bara där Firebase
+        faktiskt har ett värde (inte null). BASE_DATA fungerar som en per-månad-fallback,
+        inte som en allt-eller-inget-reserv.
+      </div>
+
+      <p style="margin-top:0.8rem;color:var(--muted);font-size:0.85rem;">
+        <em>Dokumenterat och fixat: 2026-06-03</em>
+      </p>
+
+    </div>
+  </div>
 </main><!-- slut main -->
 
 

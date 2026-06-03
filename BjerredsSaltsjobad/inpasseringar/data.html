@@ -802,61 +802,79 @@
 
     <h4>Data lagras i molnet (Firebase)</h4>
     <p>
-      Den här sidan läser data från <strong>Firebase Realtime Database</strong> – ett moln­baserat system.
-      Det innebär att alla som öppnar sidan ser <em>samma</em> siffror, oavsett dator eller webbläsare.
+      Den här sidan läser data från <strong>Firebase Realtime Database</strong> – ett molnbaserat
+      system. Alla som öppnar sidan ser <em>samma</em> siffror, oavsett dator eller webbläsare.
       Uppdateringar syns direkt för alla.
+      Indikatorn i sidhuvudet visar status:
+      <span style="color:#27ae60;font-weight:600;">● grön</span> = live från Firebase,
+      <span style="color:#e67e22;font-weight:600;">● orange</span> = lokal fallback (BASE_DATA).
     </p>
 
     <h4>Vem kan skriva in siffror?</h4>
     <p>
-      För att <strong>redigera</strong> ett värde behöver du logga in med
-      ditt föreningskonto (e-post och lösenord). Klicka på valfri cell – om
-      du inte är inloggad visas ett inloggnings­formulär automatiskt.
-    </p>
-    <p>
-      <strong>Alla</strong> kan läsa och se statistiken utan att logga in.
-      Det är bara skrivning som kräver behörighet.
+      För att <strong>redigera</strong> ett värde behöver du logga in med ditt föreningskonto
+      (e-post och lösenord). Klicka på valfri cell – om du inte är inloggad visas ett
+      inloggningsformulär automatiskt.
+      <strong>Alla</strong> kan läsa statistiken utan inloggning.
     </p>
 
     <h4>Ny användare – så här skaffar du tillgång</h4>
-    <p>
-      För att få redigeringsbehörighet behöver Kent lägga till dig som användare
-      i systemet. Gör så här:
-    </p>
     <ol style="padding-left:1.4rem; margin:0.4rem 0 0.6rem; line-height:1.8;">
       <li>Kontakta <strong>Kent Lundgren</strong> och be om att få ett konto.</li>
-      <li>
-        Kent registrerar din e-postadress i systemet –
-        du behöver inte göra något just nu.
-      </li>
+      <li>Kent registrerar din e-postadress i systemet.</li>
       <li>
         Öppna den här sidan, klicka på valfri cell och välj
-        <em>"Glömt lösenordet? Skicka återställningslänk"</em>
-        i inloggningsrutan. Skriv in din e-postadress och klicka på länken.
+        <em>"Glömt lösenordet? Skicka återställningslänk"</em>.
+        Skriv din e-postadress och klicka på länken du får.
       </li>
       <li>
-        Du får ett mail från Firebase (avsändare: <em>noreply@skylt-e0c45.firebaseapp.com</em>).
-        Kolla skräppost om det inte dyker upp inom någon minut.
-        Klicka på länken i mailet och välj ett eget lösenord.
+        Du får ett mail från <em>noreply@skylt-e0c45.firebaseapp.com</em>
+        (kolla skräppost). Välj ett eget lösenord via länken.
       </li>
-      <li>Logga in på den här sidan med din e-post och det nya lösenordet.</li>
+      <li>Logga in – nu kan du klicka på valfri cell och skriva in värden.</li>
     </ol>
-    <p>
-      När du är inloggad kan du klicka på valfri cell och skriva in ett värde.
-      Ändringen sparas direkt i molnet och syns för alla.
-    </p>
 
     <h4>Hur tar jag bort ett felaktigt värde och gör cellen gul igen?</h4>
     <p>
-      Logga in → klicka på cellen → radera siffran i rutan →
-      tryck <strong>Enter</strong>. Cellen blir gul igen (data saknas) och
-      ändringen sparas i Firebase.
+      Logga in → klicka på cellen → radera siffran → tryck <strong>Enter</strong>.
+      Cellen blir gul igen och ändringen sparas i Firebase.
+    </p>
+
+    <!-- Uppdatering 2026-06-03: ny sektion om BASE_DATA och synkknapp -->
+    <h4>BASE_DATA och Firebase – två separata lagringsplatser</h4>
+    <p>
+      Sidan använder <em>två</em> datakällor som <strong>inte</strong> synkroniseras automatiskt:
+    </p>
+    <ul style="padding-left:1.4rem; margin:0.4rem 0 0.6rem; line-height:1.8;">
+      <li>
+        <strong>Firebase</strong> (primär) – värden sparade via cell-klick. Visas med
+        <span style="color:#27ae60;font-weight:600;">grön prick</span>.
+      </li>
+      <li>
+        <strong>BASE_DATA</strong> (reserv) – värden hårdkodade i filen. Visas med
+        <span style="color:#e67e22;font-weight:600;">orange prick</span> om Firebase
+        inte nås, eller för månader där Firebase inte har data ännu.
+        Det är <em>inte</em> browser-localStorage – det är vanlig kod i HTML-filen.
+      </li>
+    </ul>
+    <p>
+      Om en cell visar ett värde men pricken är orange, betyder det att värdet
+      kommer från BASE_DATA och <em>inte</em> är sparat i Firebase.
+    </p>
+
+    <h4>📥 Synkronisera BASE_DATA till Firebase (ett klick)</h4>
+    <p>
+      När du är inloggad visas en grön knapp <strong>📥 Synka till Firebase</strong>
+      i sidhuvudet. Den jämför BASE_DATA med Firebase och skickar enbart de värden
+      som saknas i Firebase. Befintliga Firebase-värden skrivs aldrig över.
+      Perfekt för att initiera en ny kategori utan att klicka varje cell manuellt.
     </p>
 
     <h4>Vad händer om Firebase inte kan nås?</h4>
     <p>
-      Sidan faller automatiskt tillbaka på <code>BASE_DATA</code> – den grunddata som
-      är hårdkodad i filen. Inga siffror kan gå förlorade.
+      Sidan faller automatiskt tillbaka på <code>BASE_DATA</code>. Varje månad har
+      sin egen fallback – om Firebase har maj men inte jan, används BASE_DATA
+      enbart för januari. Inga siffror kan gå förlorade.
     </p>
 
     <div class="warn">
@@ -1308,8 +1326,24 @@
       if (!data[year]) data[year] = {};
 
       for (const [kategori, månader] of Object.entries(kategorier)) {
-        /* Firebase-data skriver över BASE_DATA för denna kategori */
-        data[year][kategori] = månader;
+        /* Uppdatering 2026-06-03: Merge på månads-nivå istället för att ersätta
+           hela arrayen. Firebase överskriver bara månader med faktiska värden
+           (ej null). Månader som är null i Firebase behåller sitt BASE_DATA-värde.
+           Bakgrund: Utan denna fix försvann jan–apr ur Engångsbadare-raden när
+           enbart maj sparats i Firebase – loadData() nullade ut BASE_DATA. */
+        if (!data[year][kategori]) {
+          /* Kategorin saknas i BASE_DATA – använd Firebase-arrayen direkt */
+          data[year][kategori] = månader;
+        } else {
+          /* Kategorin finns i BASE_DATA – slå ihop månad för månad */
+          for (let m = 0; m < 12; m++) {
+            if (månader[m] !== null) {
+              /* Firebase har ett värde – skriv över BASE_DATA */
+              data[year][kategori][m] = månader[m];
+            }
+            /* Firebase har null – behåll BASE_DATA-värdet (gör ingenting) */
+          }
+        }
       }
     }
 
