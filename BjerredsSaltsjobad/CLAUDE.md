@@ -42,6 +42,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-06-05 | Länk till Wondr-statistik (inpasseringar/data.html) tillagd bredvid "Membermar – Wonder" |
 | 2026-06-05 | Länk till Wondr ekonomirapport tillagd bredvid "Engångsbadare – Wondr" |
 | 2026-06-05 | Regel tillagd: systemet heter Wondr (inte Wonder) – se avsnittet Systemnomenklatur |
+| 2026-06-05 | Regel tillagd: filer i README.md ska vara klickbara länkare |
 | 2026-06-05 | Skill `bjerred-firebase-sync` skapad – månadssynk BASE_DATA/Firebase |
 | 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
 
@@ -325,6 +326,28 @@ bjerred-inpasseringar/
 ```
 
 **OBS – snedstreck i kategorinamn:** `"Restaurangen/badbiljetter"` lagras som nästlade noder i Firebase. Läsfunktionen `tolkFirebaseSnapshot()` i data.html hanterar detta korrekt.
+
+---
+
+## Regel: Klickbara fillänkar i README.md
+
+> **INSTRUKTION TILL CLAUDE:** När du lägger till eller uppdaterar en tabell i `README.md`
+> som refererar till filer i projektet, ska filnamnen alltid vara **klickbara relativa länkar**
+> – inte bara kodformaterade filnamn.
+>
+> **Rätt format** (klickbar på GitHub):
+> ```
+> | [CLAUDE.md](CLAUDE.md) | Beskrivning |
+> | [inpasseringar/data.html](inpasseringar/data.html) | Beskrivning |
+> ```
+>
+> **Fel format** (ej klickbar):
+> ```
+> | `CLAUDE.md` | Beskrivning |
+> | CLAUDE.md   | Beskrivning |
+> ```
+>
+> Använd alltid relativa sökvägar (fungerar på GitHub). Använd **aldrig** `computer://`-sökvägar i .md-filer.
 
 ---
 
