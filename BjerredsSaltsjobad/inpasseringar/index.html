@@ -636,11 +636,11 @@ const BASE_DATA = {
   /* -- 2026 ---------------------------------------------------- */
   /* null = saknas (gulmarkerat i originaltabellen)                */
   2026: {
-    'Restaurangen/badbiljetter': [ 643,  665,  600,  359, null, null, null, null, null, null, null, null],
+    /* Uppdatering 2026-06-05: maj-data tillagd för alla kategorier (hämtat från Firebase) */
+    'Restaurangen/badbiljetter': [ 643,  665,  600,  359,  417, null, null, null, null, null, null, null],
     'SMS/Swish-biljetter':       [1114,  751, 1006,  913,  777, null, null, null, null, null, null, null],
-    /* Uppdatering 2026-06-05: maj-data tillagd (hämtat från Firebase) */
     'Medlemmar – armband':       [ 492,  119,   95,   90,   55, null, null, null, null, null, null, null],
-    'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, null, null, null, null, null, null, null, null]
+    'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, 3417, null, null, null, null, null, null, null]
   }
 };
 
@@ -900,6 +900,13 @@ function buildMainDatasets(data) {
 
 let catChartInst      = null;   /* Referens till Chart.js-instansen */
 let activeCategoryYear = 2026;  /* Aktuellt valt år i flikarna      */
+
+/* Uppdatering 2026-06-05: _activeData lagrar senast inläst dataset
+   (Firebase eller BASE_DATA). Annotationskontrollen läser alltid
+   härifrån i stället för att anropa loadData() direkt – det gör att
+   "ej komplett"-bubblan försvinner så snart Firebase rapporterar
+   kompletta data för en månad. */
+let _activeData = null;
 
 /**
  * Ritar eller uppdaterar kategoriuppdelningsdiagrammet.
@@ -1257,8 +1264,10 @@ const closurePlugin = {
        beräknad på partiell data, och rita en textbubbla med pil.
        ================================================================ */
 
-    /* Hitta ofullständiga månader dynamiskt ur den laddade datan */
-    const currentData = loadData();
+    /* Hitta ofullständiga månader dynamiskt ur den laddade datan.
+       Läser _activeData (Firebase om tillgänglig, annars BASE_DATA)
+       så att bubblan försvinner när Firebase har kompletta värden. */
+    const currentData = _activeData || loadData();
     const incompletePoints = []; /* { year, monthIdx, px, py } */
 
     chart.data.datasets.forEach((dataset, dsIdx) => {
@@ -1468,6 +1477,9 @@ window.applyFirebaseData = function(fbSnapshot, senast) {
   /* Transformera till BASE_DATA-format */
   const data = tolkFBData(fbSnapshot);
 
+  /* Spara som aktivt dataset – annotationskontrollen läser härifrån */
+  _activeData = data;
+
   /* Uppdatera diagram och sammanfattningskort */
   refreshCharts(data);
   updateSummaryCards(data);
@@ -1485,7 +1497,8 @@ window.applyFirebaseData = function(fbSnapshot, senast) {
  * @param {string} [felmeddelande]  - Valfritt tekniskt felmeddelande
  */
 window.visaFallback = function(felmeddelande) {
-  /* Diagrammen visar redan BASE_DATA från init() – inget behöver göras */
+  /* Diagrammen visar redan BASE_DATA från init() – sätt _activeData */
+  _activeData = loadData();
   document.getElementById('data-källa-dot').style.background  = '#f6ad55'; /* orange */
   document.getElementById('data-källa-text').textContent =
     'Lokal backup (BASE_DATA) – Firebase ej nådd';
