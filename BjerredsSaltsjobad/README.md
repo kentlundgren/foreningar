@@ -79,7 +79,7 @@ Det här är hela poängen med Firebase-backenden: **flera personer på olika en
 - **2025**: Bastun stängd för ombyggnad mitten februari – mitten juli → 0-värden i mars–juni är korrekta
 - **2025**: Nytt system **Wondr** lanserades juli 2025 → ny kategori från jul 2025
 - **2026**: Armband fasades ut 1 februari 2026
-- **2026 april**: Restaurangen och Armband saknas (null) – väntar på indata
+- **2026 maj**: Alla kategorier ifyllda (uppdaterat 2026-06-05)
 
 ---
 
@@ -140,4 +140,17 @@ Inpasseringsdata lagras i **Firebase Realtime Database** (projekt: `skylt-e0c45`
 
 ---
 
-## Senast uppdaterad: 2026-05-28
+## AI-verktyg och projektminne
+
+Det här projektet använder Claude (via Cursor) för AI-assisterad kodning och dataanalys.
+
+| Fil | Syfte |
+|---|---|
+| `CLAUDE.md` | AI-agentens projektminne – regler, status, ändringslogg. Läses automatiskt av Claude varje session. |
+| `RULES-OVERVIEW.md` | Register över alla aktiva regler och skills för projektet. |
+| `.cursor/skills/bjerred-firebase-sync/SKILL.md` | Skill för månadssynk: jämför BASE_DATA mot Firebase och rapporterar avvikelser. |
+
+**Använda skillet:** Säg till Claude: *"Kör månadssynken för Bjerreds inpasseringsdata"* – inget annat behövs.
+---
+
+## Senast uppdaterad: 2026-06-05

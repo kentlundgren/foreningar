@@ -1796,6 +1796,94 @@ function kopieraSkript() {
     knapp.textContent = '🔌 Testa Firebase-anslutning';
   };
 
+
+<!-- ============================================================
+     SEKTION 9 – BASE_DATA OCH FIREBASE: SYNKRONISERING
+     Tillagd 2026-06-05 som lärandesektion om dubbel datalagring
+     och hur man kontrollerar att de är i synk.
+     ============================================================ -->
+<div class="card" id="synk-sektion">
+  <h2>9. BASE_DATA och Firebase – varför finns båda, och hur hålls de i synk?</h2>
+
+  <h3>Bakgrund – varför två datakällor?</h3>
+  <p>
+    <code>data.html</code> och <code>index.html</code> läser inpasseringsdata från
+    <strong>Firebase Realtime Database</strong>. Men om Firebase är nere, om nätverket
+    är trasigt, eller om sidan laddas innan Firebase hinner svara – vad händer då?
+  </p>
+  <p>
+    Svaret är <strong>BASE_DATA</strong>: ett hårdkodat JavaScript-objekt i HTML-filen
+    som innehåller alla kända värden. Det fungerar som ett <em>offline-skyddsnät</em>.
+    Sidan visar alltid rätt siffror – antingen live från Firebase (grön prick ●) eller
+    från BASE_DATA (orange prick ●).
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Egenskap</th><th>Firebase Realtime Database</th><th>BASE_DATA (i HTML-filen)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Vad det är</td><td>Molndatabas hos Google</td><td>Hårdkodat JS-objekt i koden</td></tr>
+      <tr><td>Uppdateras av</td><td>Inloggade användare via cell-klick</td><td>Utvecklaren (Kent/Claude) via kodredigering</td></tr>
+      <tr><td>Kräver internet</td><td>Ja</td><td>Nej</td></tr>
+      <tr><td>Synkar automatiskt</td><td>–</td><td>Nej – måste uppdateras manuellt</td></tr>
+      <tr><td>Prioritet</td><td>Primär (Firebase vinner)</td><td>Fallback (används om Firebase saknar data)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Hur kan de gå ur synk?</h3>
+  <p>
+    Det vanligaste scenariot: en föreningsmedlem loggar in och fyller i ett nytt månads­värde
+    direkt i webbläsaren. Värdet sparas i Firebase – men BASE_DATA i HTML-filen uppdateras
+    inte automatiskt. Vid nästa sidladdning visar Firebase rätt siffra (grön prick), men
+    om Firebase är nere visas det gamla BASE_DATA-värdet (null = gul cell).
+  </p>
+
+  <h3>Kontrollera synken via Firebase REST API</h3>
+  <p>
+    Firebase Realtime Database har ett öppet REST API. Eftersom läsreglerna är
+    <code>read = true</code> kan vem som helst (och Claude!) hämta hela datan utan
+    inloggning – man lägger bara till <code>.json</code> i slutet av nod-URL:en:
+  </p>
+  <div class="kod-block">
+    <code>https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app/bjerred-inpasseringar/data.json</code>
+  </div>
+  <p style="margin-top:0.7rem">
+    Claude kan köra detta kommando direkt via PowerShell och jämföra svaret mot BASE_DATA.
+    Resultatet visar exakt vilka celler som avviker – och med vilket värde.
+  </p>
+
+  <h3>Månadsrutin – Cursor Skill</h3>
+  <p>
+    För att göra synk-kontrollen enkel och repeterbar finns ett
+    <strong>Cursor Agent Skill</strong> installerat:
+  </p>
+  <div class="kod-block">
+    <code>C:\Users\kentl\.cursor\skills\bjerred-firebase-sync\SKILL.md</code>
+  </div>
+  <p style="margin-top:0.7rem">
+    Skillet innehåller det kompletta PowerShell-skriptet och en checklista.
+    Säg till Claude i början av varje månad:
+  </p>
+  <blockquote style="border-left:4px solid var(--secondary);padding:0.6rem 1rem;
+                     background:#eaf4fb;border-radius:0 6px 6px 0;margin:0.7rem 0;
+                     font-style:italic;font-size:0.9rem;">
+    "Kör månadssynken för Bjerreds inpasseringsdata"
+  </blockquote>
+  <p>
+    Claude läser då skillet, hämtar Firebase-data och rapporterar avvikelser –
+    och uppdaterar BASE_DATA i båda HTML-filerna om något saknas.
+  </p>
+
+  <h3>Teknisk not – varför BASE_DATA finns i <em>två</em> filer</h3>
+  <p>
+    <code>data.html</code> (redigeringsvyn) och <code>index.html</code> (statistikdiagrammet)
+    är helt fristående HTML-sidor utan gemensam JS-modul. Båda behöver BASE_DATA som fallback,
+    därför finns det kopierat i båda filerna. Det är ett medvetet val för att hålla sidorna
+    enkla och driftsäkra – men det innebär att du <strong>alltid måste uppdatera båda</strong>
+    när BASE_DATA ändras.
+  </p>
+</div>
 </script>
 </body>
 </html>

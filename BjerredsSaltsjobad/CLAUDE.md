@@ -42,6 +42,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-06-05 | Länk till Wondr-statistik (inpasseringar/data.html) tillagd bredvid "Membermar – Wonder" |
 | 2026-06-05 | Länk till Wondr ekonomirapport tillagd bredvid "Engångsbadare – Wondr" |
 | 2026-06-05 | Regel tillagd: systemet heter Wondr (inte Wonder) – se avsnittet Systemnomenklatur |
+| 2026-06-05 | Skill `bjerred-firebase-sync` skapad – månadssynk BASE_DATA/Firebase |
 | 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
 
 ---
@@ -324,6 +325,20 @@ bjerred-inpasseringar/
 ```
 
 **OBS – snedstreck i kategorinamn:** `"Restaurangen/badbiljetter"` lagras som nästlade noder i Firebase. Läsfunktionen `tolkFirebaseSnapshot()` i data.html hanterar detta korrekt.
+
+---
+
+## Månadsrutin – BASE_DATA/Firebase-synkronisering
+
+> **PÅMINNELSE TILL CLAUDE:** I början av varje ny månad, påminn Kent:
+>
+> *"Vill du att jag kör månadssynken? Jag jämför BASE_DATA i HTML-filerna mot Firebase
+> och säger till om något saknas."*
+>
+> **Hur:** Läs skill-filen och följ stegen:
+> `C:\Users\kentl\.cursor\skills\bjerred-firebase-sync\SKILL.md`
+>
+> **Filer som berörs:** `inpasseringar/data.html` + `inpasseringar/index.html` (BASE_DATA måste alltid vara identisk i båda)
 
 ---
 
