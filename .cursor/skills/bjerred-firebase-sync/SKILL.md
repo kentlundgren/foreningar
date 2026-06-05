@@ -1,6 +1,6 @@
 ---
 name: bjerred-firebase-sync
-description: Check and synchronize BASE_DATA in Bjerreds Saltsjobad inpasseringar files against Firebase Realtime Database. Use when Kent asks to check if BASE_DATA is in sync with Firebase, when new monthly data needs to be added, or as a monthly maintenance task for the Bjerreds project.
+description: Check and synchronize BASE_DATA and data.md in Bjerreds Saltsjobad inpasseringar files against Firebase Realtime Database. Use when Kent asks to check if BASE_DATA is in sync with Firebase, when new monthly data needs to be added, run monthly sync, or update inpasseringar data.
 ---
 
 # Bjerreds Saltsjobad – BASE_DATA/Firebase Sync Check
@@ -15,12 +15,13 @@ GET https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app/bjerred-i
 
 No authentication required (read = true in Firebase rules).
 
-## Files that contain BASE_DATA (must always be identical)
+## Files to keep in sync (all three must match)
 
-- `BjerredsSaltsjobad/inpasseringar/data.html`
-- `BjerredsSaltsjobad/inpasseringar/index.html`
+- `BjerredsSaltsjobad/inpasseringar/data.html` – BASE_DATA array (fallback cache)
+- `BjerredsSaltsjobad/inpasseringar/index.html` – BASE_DATA array (identical copy)
+- `BjerredsSaltsjobad/inpasseringar/data.md` – human-readable reference table (GitHub-visible)
 
-**IMPORTANT**: Always update both files when changing BASE_DATA.
+**IMPORTANT**: Always update all three files when new monthly data is added.
 
 ## Step-by-step sync check
 
@@ -105,6 +106,25 @@ For each DIFF line where Firebase has a value and BASE_DATA has null:
 1. Update both `data.html` and `index.html` – the BASE_DATA arrays at month index 0=Jan … 11=Dec
 2. Update the BASE_DATA in this skill file (the $base hashtable above)
 3. Reload the page to verify the green "Live from Firebase" indicator still shows
+
+### Step 3b – Update data.md
+
+After updating BASE_DATA, update `inpasseringar/data.md` to reflect the new values:
+
+1. Open `BjerredsSaltsjobad/inpasseringar/data.md`
+2. In the table for the relevant year, replace `–` with the new value for the updated month(s)
+3. Recalculate the row total (TOT column) for each affected category
+4. Recalculate the TOTALT row for each affected month column
+5. Update "Senast uppdaterad: **YYYY-MM-DD**" at the top of the file
+6. Use PowerShell to write the file (Swedish characters require it)
+
+**Format rules for data.md:**
+- Use space as thousands separator for numbers >= 1000 (e.g. `1 114` not `1114`)
+- Missing data: `–` (en-dash)
+- Zero (confirmed closed): `0`
+- Row totals in bold: `**23 541**`
+- TOTALT row in bold: `**4 876**`
+- Engångsbadare – Wondr row in italics (excluded from total): `*17*`
 
 ### Step 4 – Update CLAUDE.md
 

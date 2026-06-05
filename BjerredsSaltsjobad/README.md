@@ -22,7 +22,8 @@ BjerredsSaltsjobad/
 │   ├── index.html           ← Webbapp med diagram och månadsvis statistik (Chart.js)
 │   ├── data.html            ← Redigerbar datatabell kopplad till Firebase Realtime Database
 │   ├── engangsintraden.html ← Linjediagram: engångsinträden 2026 (anonymiserade)
-│   └── databas.html         ← Arbetsdokument: Firebase-checklista, config, migrationsskript
+│   ├── databas.html         ← Arbetsdokument: Firebase-checklista, config, migrationsskript
+│   └── data.md              ← Läsbar referenstabell med all inpasseringsdata (backup)
 └── medlemmar/               ← Medlemsstatistik och visualisering
     ├── index.html           ← Interaktivt diagram: nyregistreringar och ackumulerad tillväxt
     ├── GitHub.html          ← Guide för Git och GitHub
