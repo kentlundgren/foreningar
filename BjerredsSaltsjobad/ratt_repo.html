@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rätt repo i Cursor – parallella repon och agentisk AI</title>
+  <style>
+    :root {
+      --primary:   #1a5276;
+      --secondary: #2e86c1;
+      --accent:    #e67e22;
+      --bg:        #f4f6f9;
+      --card:      #ffffff;
+      --text:      #2c3e50;
+      --muted:     #7f8c8d;
+      --border:    #dde1e7;
+      --green:     #1e8449;
+      --red:       #922b21;
+      --yellow:    #FFF9C4;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1.4rem 2rem 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    header h1 { font-size: 1.6rem; font-weight: 800; }
+    header p.sub { font-size: 0.92rem; opacity: 0.85; margin-top: 0.3rem; }
+    .page-version {
+      font-size: 0.75rem;
+      opacity: 0.65;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    /* ============================================================
+       MAIN
+       ============================================================ */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    /* ============================================================
+       KORT
+       ============================================================ */
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.6rem 1.8rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+    .card h2 {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .card h3 {
+      font-size: 1rem;
+      color: var(--secondary);
+      margin: 1.1rem 0 0.5rem;
+    }
+    .card p { margin-bottom: 0.7rem; }
+    .card ul, .card ol {
+      padding-left: 1.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .card li { margin-bottom: 0.4rem; }
+
+    /* ============================================================
+       BADGE-ETIKETTER
+       ============================================================ */
+    .badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      margin-right: 0.3rem;
+      vertical-align: middle;
+    }
+    .badge-ja   { background: #d5f5e3; color: var(--green); }
+    .badge-nej  { background: #fadbd8; color: var(--red);   }
+    .badge-obs  { background: #fdebd0; color: #784212;      }
+    .badge-tips { background: #d6eaf8; color: #1a5276;      }
+
+    /* ============================================================
+       TABELL
+       ============================================================ */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    th {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      font-size: 0.82rem;
+    }
+    td {
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #f8f9fa; }
+    tr:hover td { background: #eaf4fb; }
+
+    /* ============================================================
+       KODBLOCK
+       ============================================================ */
+    pre {
+      background: #2c3e50;
+      color: #ecf0f1;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      font-size: 0.87rem;
+      margin: 0.7rem 0;
+    }
+    code { font-family: 'Consolas', 'Courier New', monospace; }
+
+    /* ============================================================
+       STEG-GUIDE
+       ============================================================ */
+    .steps { counter-reset: step; }
+    .step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .step-num {
+      counter-increment: step;
+      min-width: 2rem;
+      height: 2rem;
+      background: var(--secondary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .step-body strong { display: block; margin-bottom: 0.2rem; color: var(--primary); }
+
+    /* ============================================================
+       VARNINGSRUTA
+       ============================================================ */
+    .alert {
+      border-left: 4px solid var(--accent);
+      background: #fef3e2;
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 0.8rem 0;
+      font-size: 0.92rem;
+    }
+    .alert strong { color: #784212; }
+
+    /* ============================================================
+       GITHUB-LÄNK (fixerad nedre vänster)
+       ============================================================ */
+    .github-link {
+      position: fixed; bottom: 1rem; left: 1rem;
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--primary);
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.3rem 0.65rem; text-decoration: none;
+      transition: background 0.15s, box-shadow 0.15s; z-index: 50;
+    }
+    .github-link:hover {
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      text-decoration: none;
+    }
+
+    /* ============================================================
+       RESPONSIV
+       ============================================================ */
+    @media (max-width: 600px) {
+      main { padding: 1rem; }
+      header { padding: 1rem; }
+      th, td { padding: 0.4rem 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Rätt repo i Cursor – parallella repon och agentisk AI</h1>
+  <p class="sub">
+    En guide till workspace-gränser, möjligheter och bästa praxis
+    när du arbetar med flera GitHub-repon i Cursor
+  </p>
+  <p class="page-version">📋 Revision 2025 · Status v1.0 · Senast uppdaterad: 2026-06-05</p>
+</header>
+
+<main>
+
+  <!-- ============================================================
+       SEKTION 1 – BAKGRUND OCH FRÅGESTÄLLNING
+       ============================================================ -->
+  <div class="card">
+    <h2>Bakgrund – varför uppstår frågan?</h2>
+    <p>
+      Kent arbetar med <strong>två separata GitHub-repon</strong> för Bjerreds Saltsjöbad:
+    </p>
+    <table>
+      <thead>
+        <tr><th>Repo</th><th>Innehåll</th><th>GitHub Pages</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>kentlundgren/foreningar</code></td>
+          <td>Inpasseringsstatistik, entréskylt, medlemmar</td>
+          <td>kentlundgren.github.io/foreningar/BjerredsSaltsjobad/</td>
+        </tr>
+        <tr>
+          <td><code>kentlundgren/Bjerred-el</code></td>
+          <td>Elenergianalys, beläggningsgrad, Firebase</td>
+          <td>kentlundgren.github.io/Bjerred-el/</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.8rem">
+      Cursor öppnades i mappen
+      <code>ClaudeCowork/BjerredsSaltsjobad/</code> (som är
+      kopplad till <code>foreningar</code>-repot) men frågan om öppettider
+      berör koden i <code>Bjerred-el</code>-repot. Det är alltså
+      <strong>fel workspace</strong> för den uppgiften.
+    </p>
+  </div>
+
+  <!-- ============================================================
+       SEKTION 2 – VAD ÄR ETT "WORKSPACE" I CURSOR?
+       ============================================================ -->
+  <div class="card">
+    <h2>Vad är ett "workspace" i Cursor?</h2>
+    <p>
+      När du öppnar en mapp i Cursor (<em>File → Open Folder</em>) blir den
+      mappen ditt <strong>workspace</strong>. Det har flera konsekvenser:
+    </p>
+    <ul>
+      <li>
+        <span class="badge badge-ja">Läses</span>
+        Kontextfiler (<code>CLAUDE.md</code>, <code>.cursor/rules/</code>)
+        läses automatiskt från workspace-mappen och alla dess undermappar.
+      </li>
+      <li>
+        <span class="badge badge-ja">Visas</span>
+        Filträdet i editorn, Source Control-panelen och git-statusen
+        gäller workspace-repot.
+      </li>
+      <li>
+        <span class="badge badge-nej">Inte automatiskt</span>
+        CLAUDE.md och regler i <em>andra</em> repon på datorn läses
+        <strong>inte</strong> – agenten känner inte till dem om de inte
+        anges explicit.
+      </li>
+    </ul>
+    <div class="alert">
+      <strong>Konsekvens:</strong> Om du arbetar i ett repo men frågan berör ett
+      annat repo kan agenten svara rätt innehållsmässigt (tack vare
+      internet-sökning och shell-åtkomst), men den manuella kontexten
+      (regler, CLAUDE.md) från rätt projekt saknas.
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SEKTION 3 – VAD KAN AGENTEN GÖRA UTANFÖR WORKSPACE?
+       ============================================================ -->
+  <div class="card">
+    <h2>Vad kan agenten göra utanför sitt workspace?</h2>
+    <p>
+      En Cursor-agent (t.ex. Claude Sonnet 4.6) har tillgång till
+      <strong>shell-kommandon</strong> och kan därmed arbeta långt utanför
+      workspace-mappen. Så här ser möjlighetskartan ut:
+    </p>
+    <table>
+      <thead>
+        <tr><th>Förmåga</th><th>Inom workspace</th><th>Utanför workspace</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Läsa filer</td>
+          <td><span class="badge badge-ja">Ja – via Read-verktyget</span></td>
+          <td><span class="badge badge-ja">Ja – via absolut sökväg</span></td>
+        </tr>
+        <tr>
+          <td>Skriva/redigera filer</td>
+          <td><span class="badge badge-ja">Ja – direkt</span></td>
+          <td><span class="badge badge-ja">Ja – via absolut sökväg</span></td>
+        </tr>
+        <tr>
+          <td>Hämta filer från GitHub</td>
+          <td>–</td>
+          <td><span class="badge badge-ja">Ja – via raw.githubusercontent.com</span></td>
+        </tr>
+        <tr>
+          <td>Klona git-repo</td>
+          <td>–</td>
+          <td><span class="badge badge-ja">Ja – via git clone i shell</span></td>
+        </tr>
+        <tr>
+          <td>git add / commit / push</td>
+          <td><span class="badge badge-obs">Ja – men kräver Kents godkännande</span></td>
+          <td><span class="badge badge-obs">Ja – men kräver Kents godkännande</span></td>
+        </tr>
+        <tr>
+          <td>Läsa CLAUDE.md / .cursor/rules automatiskt</td>
+          <td><span class="badge badge-ja">Ja – automatiskt</span></td>
+          <td><span class="badge badge-nej">Nej – måste anges manuellt</span></td>
+        </tr>
+        <tr>
+          <td>Visa diff i Cursor UI</td>
+          <td><span class="badge badge-ja">Ja</span></td>
+          <td><span class="badge badge-nej">Nej – syns inte i Source Control</span></td>
+        </tr>
+        <tr>
+          <td>Söka med Grep / Glob-verktyg</td>
+          <td><span class="badge badge-ja">Ja – effektivt</span></td>
+          <td><span class="badge badge-obs">Begränsat – kräver explicit sökväg</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Vad hände i denna session (exempel)</h3>
+    <p>
+      Agenten befann sig i <code>foreningar</code>-workspace men hittade koden
+      i <code>Bjerred-el</code> via tre steg:
+    </p>
+    <ol>
+      <li>Sökte i agent-transkripter och hittade URL:en <code>kentlundgren.github.io/Bjerred-el/</code></li>
+      <li>Hämtade JS-filen direkt från GitHub (<code>raw.githubusercontent.com</code>)</li>
+      <li>Klonade repot till <code>C:\Users\kentl\Downloads\Bjerred-el\</code> och redigerade filerna där</li>
+    </ol>
+    <p>
+      Det <em>fungerade</em> men är inte optimalt – diff:en syns inte i Cursor
+      UI, och CLAUDE.md för <code>Bjerred-el</code> lästes aldrig in automatiskt.
+    </p>
+  </div>
+
+  <!-- ============================================================
+       SEKTION 4 – VARFÖR "RÄTT REPO" SPELAR ROLL
+       ============================================================ -->
+  <div class="card">
+    <h2>Varför är "rätt repo" viktigt?</h2>
+
+    <h3>1. Kontextfiler läses automatiskt</h3>
+    <p>
+      Om du öppnar <code>Bjerred-el</code> i Cursor läser agenten
+      automatiskt <code>CLAUDE.md</code> och <code>.cursor/rules/</code>
+      för det repot. Det ger rätt regler, rätt namnkonventioner och
+      rätt historik – utan att du behöver förklara dem.
+    </p>
+
+    <h3>2. Source Control-panelen fungerar</h3>
+    <p>
+      Du kan granska diff:en visuellt i Cursor innan du commitar.
+      Ändringar i ett klonat repo i <code>Downloads</code> syns
+      <strong>inte</strong> i Cursor UI – du måste starta ett separat
+      terminalfönster för att se dem.
+    </p>
+
+    <h3>3. Agenten "vet" var den befinner sig</h3>
+    <p>
+      I rätt workspace hittar agenten filer via relativa sökvägar,
+      förstår projektets struktur direkt och behöver inte gissa sig
+      till var koden finns.
+    </p>
+
+    <h3>4. Risk för misstag minskar</h3>
+    <p>
+      Att redigera filer i ett klonat <code>Downloads</code>-repo
+      som aldrig committades är en risk – om du glömmer att pusha
+      försvinner arbetet. I rätt workspace är det tydligare.
+    </p>
+  </div>
+
+  <!-- ============================================================
+       SEKTION 5 – REKOMMENDERAT ARBETSFLÖDE
+       ============================================================ -->
+  <div class="card">
+    <h2>Rekommenderat arbetsflöde för flera repon</h2>
+
+    <h3>Alternativ A – Separata Cursor-fönster (enklast)</h3>
+    <p>
+      Öppna ett Cursor-fönster per repo. Byt fönster när du byter uppgift.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Klona repot till en permanent mapp (en gång)</strong>
+          <pre><code>cd C:\Users\kentl\OneDrive\AI\Claude
+git clone https://github.com/kentlundgren/Bjerred-el.git</code></pre>
+          Välj en permanent plats – inte Downloads.
+          Förslagsvis: <code>C:\Users\kentl\OneDrive\AI\Claude\Bjerred-el\</code>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Öppna mappen i Cursor</strong>
+          Gå till <em>File → Open Folder</em> och välj
+          <code>C:\Users\kentl\OneDrive\AI\Claude\Bjerred-el\</code>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Starta ny session med rätt startprompt</strong>
+          <pre><code>Jag fortsätter arbetet med Bjerred-el.
+Läs gärna dessa filer för kontext:
+• CLAUDE.md – projektinstruktion
+• README.md – projektöversikt
+• fore_och_efter_ombyggnad.js – huvudlogik
+
+Nästa uppgift: [beskriv uppgiften]</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <h3>Alternativ B – Multi-root workspace (avancerat)</h3>
+    <p>
+      Cursor stöder att flera mappar läggs till i <em>samma</em> workspace.
+      Då syns båda repona i filträdet och git-statusen.
+    </p>
+    <ol>
+      <li>Öppna det primära repot (<code>foreningar</code>)</li>
+      <li>Välj <em>File → Add Folder to Workspace</em></li>
+      <li>Lägg till <code>Bjerred-el</code>-mappen</li>
+      <li>Spara workspace-filen (<code>.code-workspace</code>)</li>
+    </ol>
+    <div class="alert">
+      <strong>Obs:</strong> Multi-root workspace är kraftfullt men kan förvirra
+      agenten om de två repona har motstridiga CLAUDE.md-regler.
+      Använd det med försiktighet och berätta alltid för agenten
+      vilket av repona som gäller för aktuell uppgift.
+    </div>
+
+    <h3>Alternativ C – Vad agenten kan göra utan klon (nödlösning)</h3>
+    <p>
+      Om du befinner dig i fel workspace och inte vill byta kan agenten:
+    </p>
+    <ul>
+      <li>Hämta filer direkt från GitHub via raw-URL</li>
+      <li>Klona repot temporärt (t.ex. i Downloads)</li>
+      <li>Göra ändringar och visa commit-kommandon som du kör manuellt</li>
+    </ul>
+    <p>
+      <span class="badge badge-obs">Nödlösning</span>
+      Det fungerar men är opraktiskt – diff syns inte i Cursor UI
+      och risken för att glömma commit/push ökar.
+    </p>
+  </div>
+
+  <!-- ============================================================
+       SEKTION 6 – SAMMANFATTNING / TUMREGLER
+       ============================================================ -->
+  <div class="card">
+    <h2>Tumregler – snabbguide</h2>
+    <table>
+      <thead>
+        <tr><th>Situation</th><th>Rekommendation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ny uppgift i annat repo</td>
+          <td><span class="badge badge-tips">Byt</span> Öppna rätt mapp i Cursor (File → Open Folder)</td>
+        </tr>
+        <tr>
+          <td>Jobbar med två repon parallellt</td>
+          <td><span class="badge badge-tips">Separata fönster</span> Ett Cursor-fönster per repo</td>
+        </tr>
+        <tr>
+          <td>Snabb fix i annat repo utan att byta</td>
+          <td><span class="badge badge-obs">Nödlösning</span> Klona temporärt, men commit manuellt efteråt</td>
+        </tr>
+        <tr>
+          <td>Ny session – påminn agenten</td>
+          <td><span class="badge badge-tips">Startprompt</span> Ange repo, CLAUDE.md och aktuell uppgift</td>
+        </tr>
+        <tr>
+          <td>Agent verkar röra fel filer</td>
+          <td><span class="badge badge-nej">Avbryt</span> Kontrollera vilket workspace som är öppet</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert" style="margin-top:1rem">
+      <strong>Viktigaste insikten:</strong> Agenten är mäktig nog att
+      arbeta utanför workspace – men projektminnet (CLAUDE.md, regler,
+      context) aktiveras <em>bara</em> i rätt workspace.
+      "Rätt repo" handlar därför mest om att <strong>du</strong>
+      ska se rätt diff och slippa manuella omvägar.
+    </div>
+  </div>
+
+</main>
+
+<!-- GitHub-länk, fixerad nedre vänster -->
+<a class="github-link"
+   href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad"
+   target="_blank" rel="noopener"
+   aria-label="Visa källkod på GitHub">
+  { } GitHub
+</a>
+
+</body>
+</html>
