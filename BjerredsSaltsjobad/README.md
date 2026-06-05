@@ -149,7 +149,7 @@ Det här projektet använder Claude (via Cursor) för AI-assisterad kodning och 
 |---|---|
 | [CLAUDE.md](CLAUDE.md) | AI-agentens projektminne – regler, status, ändringslogg. Läses automatiskt av Claude varje session. |
 | [RULES-OVERVIEW.md](RULES-OVERVIEW.md) | Register över alla aktiva regler och skills för projektet. |
-| [.cursor/skills/bjerred-firebase-sync/SKILL.md](.cursor/skills/bjerred-firebase-sync/SKILL.md) | Skill för månadssynk: jämför BASE_DATA mot Firebase och rapporterar avvikelser. |
+| [.cursor/skills/bjerred-firebase-sync/SKILL.md](.cursor/skills/bjerred-firebase-sync/SKILL.md) | Skill för månadssynk: hämtar data från Firebase, jämför mot BASE_DATA i data.html/index.html och uppdaterar data.md. Kör varje månad. |
 
 **Använda skillet:** Säg till Claude: *"Kör månadssynken för Bjerreds inpasseringsdata"* – inget annat behövs.
 ---
