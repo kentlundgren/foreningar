@@ -202,6 +202,27 @@
     /* ============================================================
        RESPONSIV
        ============================================================ */
+    table a { color: var(--secondary); text-decoration: none; }
+    table a:hover { text-decoration: underline; color: var(--primary); }
+
+    /* Kompakta länk-knappar i tabellcell */
+    .link-btns { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .link-btn {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      font-size: 0.78rem; font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: #f0f6ff;
+      color: var(--secondary);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .link-btn:hover { background: var(--secondary); color: #fff; text-decoration: none; }
+    .link-btn.live { background: #e9f7ef; color: var(--green); border-color: #a9dfbf; }
+    .link-btn.live:hover { background: var(--green); color: #fff; }
+
     @media (max-width: 600px) {
       main { padding: 1rem; }
       header { padding: 1rem; }
@@ -232,18 +253,28 @@
     </p>
     <table>
       <thead>
-        <tr><th>Repo</th><th>Innehåll</th><th>GitHub Pages</th></tr>
+        <tr><th>Repo</th><th>Innehåll</th><th>Källkod &amp; Live-sida</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td><code>kentlundgren/foreningar</code></td>
+          <td><code>kentlundgren/<strong>foreningar</strong></code></td>
           <td>Inpasseringsstatistik, entréskylt, medlemmar</td>
-          <td>kentlundgren.github.io/foreningar/BjerredsSaltsjobad/</td>
+          <td>
+            <div class="link-btns">
+              <a class="link-btn" href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad" target="_blank" rel="noopener">{ } Källkod</a>
+              <a class="link-btn live" href="https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/" target="_blank" rel="noopener">&#9654; Live</a>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>kentlundgren/Bjerred-el</code></td>
+          <td><code>kentlundgren/<strong>Bjerred-el</strong></code></td>
           <td>Elenergianalys, beläggningsgrad, Firebase</td>
-          <td>kentlundgren.github.io/Bjerred-el/</td>
+          <td>
+            <div class="link-btns">
+              <a class="link-btn" href="https://github.com/kentlundgren/Bjerred-el" target="_blank" rel="noopener">{ } Källkod</a>
+              <a class="link-btn live" href="https://kentlundgren.github.io/Bjerred-el/index.html" target="_blank" rel="noopener">&#9654; Live</a>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
