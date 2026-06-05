@@ -1834,7 +1834,16 @@
          "Membermar – Wonder" är historisk och matchar Firebase-datan;
          byt inte nyckeln utan att migrera Firebase-data samtidigt.
          • "Eng\u00e5ngsbadare – Wondr"   → ekonomirapport (betalda eng\u00e5ngsbelopp)
-         • "Membermar – Wonder/Wondr" → inpasseringsstatistik per m\u00e5nad */
+         • "Membermar – Wonder/Wondr" → inpasseringsstatistik per m\u00e5nad
+
+         Uppdatering 2026-06-05: VISNINGSNAMN döljer den historiska felstavningen
+         "Wonder" i databasnyckeln – tabellen visar "Wondr" utan att Firebase-
+         nycklarna behöver ändras. Lägg till fler mappningar här vid behov. */
+      const VISNINGSNAMN = {
+        'Medlemmar \u2013 Wonder': 'Medlemmar \u2013 Wondr'
+      };
+      const visaCat = VISNINGSNAMN[cat] || cat;
+
       const WONDR_STAT_URL =
         'https://bjerredssaltsjobad.wondr.se/w_report/reports/report/CheckIn/Statistics2' +
         '?data%5Bgrouping%5D=month';
@@ -1855,7 +1864,7 @@
 
       if (wondrURL) {
         catTd.innerHTML =
-          cat +
+          visaCat +
           ' <a href="' + wondrURL + '"' +
           '   target="_blank" rel="noopener"' +
           '   title="' + wondrTitel + '"' +
@@ -1863,7 +1872,7 @@
           '          vertical-align:middle;margin-left:0.3rem;"' +
           '   onclick="event.stopPropagation()">&#x2197;</a>';
       } else {
-        catTd.textContent = cat;
+        catTd.textContent = visaCat;
       }
 
       row.appendChild(catTd);
