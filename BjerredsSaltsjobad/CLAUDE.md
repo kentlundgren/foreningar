@@ -1,6 +1,6 @@
 # CLAUDE.md – Bjerreds Saltsjöbad
 
-*Version 2026-06-03*
+*Version 2026-06-05*
 
 Denna fil är projektets **minne** – den beskriver arkitektur, beslut och aktuell status
 för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att tappa tråden.
@@ -203,6 +203,7 @@ Cursor är kopplat till **Git och GitHub**. Filer skapas/redigeras i Cowork och 
 - **UTF-8 alltid:** Filer med svenska tecken skapas via PowerShell (Write-verktyget förstör å/ä/ö)
 - **Personuppgifter:** Inga riktiga namn i filer som går till GitHub – se avsnittet om anonymisering
 - **Textkontrast – aldrig diffus text:** När ett pre- eller kodblock med ljus bakgrund skapas (t.ex. #f9f2f4, #f0fdf4) *måste* color sättas explicit till mörkt (t.ex. color:#24292e). Den globala pre-stilen är avsedd för mörk bakgrund och skapar annars osynlig text. Kontrollera alltid att kodtext syns tydligt mot vald bakgrundsfärg.
+- **Kopifiler ignoreras:** Filer med `copy` eller `kopia` i filnamnet (t.ex. `index copy.html`, `data_kopia.html`) är arbetskopior och ska aldrig analyseras, sökas i eller uppdateras vid sessionsarbete. Arbeta alltid med originalfilen.
 
 ---
 
