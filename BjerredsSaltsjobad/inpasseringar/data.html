@@ -1827,8 +1827,45 @@
       if (exkluderad) row.className = 'rad-exkluderad';
 
       /* Kategorinamncell (ej redigerbar) */
-      const catTd       = document.createElement('td');
-      catTd.textContent = cat;
+      const catTd = document.createElement('td');
+
+      /* Uppdatering 2026-06-05: Wondr-källlänkar bredvid kategorinamn.
+         OBS – systemet heter Wondr (inte Wonder). Databasnyckeln
+         "Membermar – Wonder" är historisk och matchar Firebase-datan;
+         byt inte nyckeln utan att migrera Firebase-data samtidigt.
+         • "Eng\u00e5ngsbadare – Wondr"   → ekonomirapport (betalda eng\u00e5ngsbelopp)
+         • "Membermar – Wonder/Wondr" → inpasseringsstatistik per m\u00e5nad */
+      const WONDR_STAT_URL =
+        'https://bjerredssaltsjobad.wondr.se/w_report/reports/report/CheckIn/Statistics2' +
+        '?data%5Bgrouping%5D=month';
+      const WONDR_PAY_URL =
+        'https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Payment/BookkeptOrderRows';
+
+      let wondrURL   = null;
+      let wondrTitel = '';
+      if (cat.includes('Eng\u00e5ngsbadare')) {
+        /* Engångsbadare – Wondr: länk till ekonomirapporten */
+        wondrURL   = WONDR_PAY_URL;
+        wondrTitel = 'Visa ekonomirapport i Wondr (betalda eng\u00e5ngsbelopp)';
+      } else if (cat.includes('Wonder') || cat.includes('Wondr')) {
+        /* Membermar – Wonder (historisk nyckel) / Wondr: länk till statistiken */
+        wondrURL   = WONDR_STAT_URL;
+        wondrTitel = 'Visa inpasseringsstatistik i Wondr (m\u00e5nad f\u00f6r m\u00e5nad)';
+      }
+
+      if (wondrURL) {
+        catTd.innerHTML =
+          cat +
+          ' <a href="' + wondrURL + '"' +
+          '   target="_blank" rel="noopener"' +
+          '   title="' + wondrTitel + '"' +
+          '   style="font-size:0.75rem;color:var(--secondary);text-decoration:none;' +
+          '          vertical-align:middle;margin-left:0.3rem;"' +
+          '   onclick="event.stopPropagation()">&#x2197;</a>';
+      } else {
+        catTd.textContent = cat;
+      }
+
       row.appendChild(catTd);
 
       let rowTotal = 0;

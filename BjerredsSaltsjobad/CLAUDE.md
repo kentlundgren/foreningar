@@ -39,6 +39,9 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-05-28 | Datafiler med riktiga namn: 8 filer avregistrerade med `git rm --cached` |
 | 2026-06-03 | Förklaring av dubbel datalagring (BASE_DATA + Firebase) tillagd |
 | 2026-06-03 | Regel tillagd: aldrig diffus/osynlig text – ljusa kodblockar kräver explicit mörk color |
+| 2026-06-05 | Länk till Wondr-statistik (inpasseringar/data.html) tillagd bredvid "Membermar – Wonder" |
+| 2026-06-05 | Länk till Wondr ekonomirapport tillagd bredvid "Engångsbadare – Wondr" |
+| 2026-06-05 | Regel tillagd: systemet heter Wondr (inte Wonder) – se avsnittet Systemnomenklatur |
 | 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
 
 ---
@@ -248,6 +251,25 @@ Föreningen har medvetet satt ett **lägre pris för Wondr-appen (100 kr)** jäm
 | Medlemmar – Wonder/Wondr | Orange `#f39c12` | Neutral |
 
 > **Regel:** Nya kategorier läggs till i `KATEGORI_FÄRGER` med motiverad färg.
+
+---
+
+
+---
+
+## Systemnomenklatur – Wondr (inte Wonder)
+
+> **INSTRUKTION TILL CLAUDE:** Systemet för betalning och inpasseringsrapportering heter
+> **Wondr** – stavat med litet r, utan e sist. URL: https://bjerredssaltsjobad.wondr.se/
+>
+> Databasenyckeln 'Membermar – Wonder' i BASE_DATA och Firebase är **historisk och felstavad**.
+> Byt den inte utan att samtidigt migrera Firebase-datan – annars tappas live-data.
+>
+> Wondr-rapporter som används:
+> | Rapport | URL |
+> |---|---|
+> | Inpasseringsstatistik per månad (Membermar – Wondr) | /w_report/reports/report/CheckIn/Statistics2?data%5Bgrouping%5D=month |
+> | Ekonomirapport – betalda engångsbelopp (Engångsbadare – Wondr) | /w_report/reports/report/Payment/BookkeptOrderRows |
 
 ---
 
