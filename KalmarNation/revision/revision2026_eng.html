@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Audit of Kalmar Nation's annual accounts 2026 – project overview and review status." />
+  <title>Kalmar Nation – audit 2026</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 99px;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+    }
+    .badge-ok     { background: #c6f6d5; color: #22543d; }
+    .badge-warn   { background: #fefcbf; color: #744210; }
+    .badge-open   { background: #bee3f8; color: #2a4365; }
+    .badge-sample { background: #fbd38d; color: #7b341e; }
+    @media (prefers-color-scheme: dark) {
+      .badge-ok     { background: #276749; color: #c6f6d5; }
+      .badge-warn   { background: #7b4710; color: #fefcbf; }
+      .badge-open   { background: #2b4c7e; color: #bee3f8; }
+      .badge-sample { background: #7b341e; color: #fbd38d; }
+    }
+    .meta {
+      font-size: 0.82rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .page-version {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      margin-top: 0.65rem;
+      opacity: 0.72;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      letter-spacing: 0.01em;
+    }
+    .ai-note {
+      font-size: 0.82rem;
+      opacity: 0.6;
+      border-top: 1px solid var(--border);
+      margin-top: 2.5rem;
+      padding-top: 0.75rem;
+    }
+    .row-group-header td {
+      background: #e8f0fb !important;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-top: 2px solid #4a7ab5;
+      padding: 0.55rem 0.7rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .row-group-header td { background: #1e3258 !important; }
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+    .row-sub td:first-child { padding-left: 2.4rem; font-size: 0.86rem; }
+    .row-sub td { font-size: 0.86rem; }
+    .sum-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 0.75rem;
+    }
+    .sum-table th,
+    .sum-table td {
+      text-align: left;
+      padding: 0.45rem 0.7rem;
+      border: 1px solid var(--border);
+    }
+    .sum-table th {
+      background: var(--accent);
+      color: #fff;
+    }
+    .sum-table tr:nth-child(even) td {
+      background: rgba(0,0,0,0.03);
+    }
+    @media (prefers-color-scheme: dark) {
+      .sum-table tr:nth-child(even) td {
+        background: rgba(255,255,255,0.04);
+      }
+    }
+    .upcoming-box {
+      background: rgba(190,227,248,0.18);
+      border-left: 4px solid #4a90d9;
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header>
+    <a class="lang-btn" href="revision2026.html">🇸🇪 På svenska</a>
+    <h1>Kalmar Nation – audit 2026</h1>
+    <p class="lead">
+      Financial review (lay auditor) of <strong>Kalmar Nation's</strong> annual accounts
+      for the financial year <strong>2026</strong>, Lund. The audit will commence in early 2027
+      once the annual accounts have been finalised.
+    </p>
+    <p class="page-version">
+      📋 Audit 2026 &nbsp;·&nbsp; Status v1.0 &nbsp;·&nbsp; Last updated: 2026-06-08
+    </p>
+  </header>
+
+  <main id="content">
+
+    <!-- ===== About the review ===== -->
+    <section aria-labelledby="about-heading">
+      <h2 id="about-heading">About the review</h2>
+      <div class="card">
+        <div class="upcoming-box">
+          <strong>The audit of the 2026 annual accounts will take place in early 2027.</strong><br>
+          Kalmar Nation's financial year runs 1 January – 31 December 2026. The annual accounts
+          are finalised by the PQe and submitted to the auditor after the new year. This page
+          will be updated as the review progresses.
+        </div>
+        <p>
+          An audit is an independent check of the association's finances – a bit like having
+          an outsider double-check that the cash book adds up. The audit covers two parts:
+          <strong>accounts review</strong> and <strong>governance review</strong>.
+        </p>
+        <p>
+          <a href="generellt_eng.html">Read an accessible guide on how auditing works →</a>
+        </p>
+        <p>
+          <a href="stadgar_eng.html">Kalmar Nation statutes – what they mean for the audit →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Documents already available ===== -->
+    <section aria-labelledby="documents-heading">
+      <h2 id="documents-heading">Documents already available</h2>
+      <div class="card">
+        <p>The following documents are already available for the 2026 financial year:</p>
+        <ul>
+          <li>
+            <a href="2026/Resultatrapport__20260101-20261231_KALMAR_NATION_260427.pdf" target="_blank">
+              Income report 2026-01-01–2026-12-31 (260427)
+            </a>
+          </li>
+          <li>
+            <a href="2026/Balansrapport__20260101-20261231_KALMAR_NATION_260427.pdf" target="_blank">
+              Balance report 2026-01-01–2026-12-31 (260427)
+            </a>
+          </li>
+        </ul>
+        <p class="meta">
+          Note: these reports are preliminary and were produced during 2026. The final annual
+          accounts will be prepared at the close of the financial year (December 2026 – January 2027).
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Review status ===== -->
+    <section aria-labelledby="status-heading">
+      <h2 id="status-heading">Review status</h2>
+      <div class="card">
+        <p>
+          Below are all parts of the audit and how far the work has progressed.
+          <span class="badge badge-ok">Approved</span> = complete with no issues &nbsp;
+          <span class="badge badge-warn">Warning</span> = something needs investigating &nbsp;
+          <span class="badge badge-open">Open</span> = not yet started or awaiting documentation
+        </p>
+
+        <table class="sum-table" aria-label="Status per review item">
+          <thead>
+            <tr><th>What is reviewed – 10 steps (mirroring <a href="generellt_eng.html" style="color:#fff;text-decoration:underline;">generellt_eng.html</a>)</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+
+            <!-- ── STEP 1 – Risk assessment ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">1</span>Risk assessment before the review</td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Statute review and risk assessment</strong>
+                <div class="meta">Statutes reviewed. Risks identified: personnel changes, financial developments, internal controls. Carried out once the accounts are received.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting accounts</span></td>
+            </tr>
+
+            <!-- ── STEP 2 – Bank reconciliation ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">2</span>Bank reconciliation</td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Bank reconciliation SEB as of 2026-12-31</strong>
+                <div class="meta">The bank's account summary as of 31 December 2026 will be reconciled against the balance sheet's bank accounts.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting documents</span></td>
+            </tr>
+
+            <!-- ── STEP 3a – Result = change in equity ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">3a</span>Result = change in equity – initial check</td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Consistency check: result = change in equity</strong>
+                <div class="meta">Basic check that the year's result exactly explains the change in equity. Opening item: the 2025 result (SEK 645,263) must be posted in the 2026 books: debit 2099 / credit 2010.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting accounts</span></td>
+            </tr>
+
+            <!-- ── STEP 3b – Final confirmation ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">3b</span>Final confirmation of the result</td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Verification against final accounts</strong>
+                <div class="meta">Preliminary result confirmed against the finalised annual accounts. Any late adjustments identified and reviewed.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting accounts</span></td>
+            </tr>
+
+            <!-- ── STEP 4 – Continuity check ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">4</span>Continuity check – CB = OB next year</td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Continuity CB 2025 = OB 2026</strong>
+                <div class="meta">Confirmed in the 2025 audit: OB 2026 matches CB 2025 on all accounts. Opening balance check confirmed.</div>
+              </td>
+              <td><span class="badge badge-ok">Pre-confirmed (2025 audit)</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Continuity CB 2026 = OB 2027</strong>
+                <div class="meta">Checked when the January 2027 report is available.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting January 2027 report</span></td>
+            </tr>
+
+            <!-- ── STEP 5 – Sample checks ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">5</span>Sample checks on vouchers <span class="badge badge-sample">Voucher list</span></td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Sample checks – supplier invoices, payments, manual entries</strong>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">Voucher list requested from PQe (Fortnox: Bookkeeping → Reports → Voucher list, period 2026-01-01–2026-12-31, export as Excel). Samples selected from series A, U and M.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting voucher list</span></td>
+            </tr>
+
+            <!-- ── STEP 6 – Comparative analysis ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">6</span>Comparative analysis year by year</td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Multi-year analysis 2024–2026</strong>
+                <div class="meta">How have revenues, costs and equity developed? Comparison with 2025 (revenue SEK 4.3m, result SEK 645,263) and 2024. Follow-up on open items from 2025: older receivables SEK 42,961 (2022–2024), consumables (+112% in 2025).</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting accounts</span></td>
+            </tr>
+
+            <!-- ── STEP 7 – Receivables ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">7</span>Receivables – age analysis and doubtful debts <span class="badge badge-sample">Voucher list</span></td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Receivables analysis – open item from the 2025 audit</strong>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">
+                  Outstanding prior-year receivables of <strong>SEK 42,961</strong> remained as of 2025-12-31 (2022: SEK 13,151; 2023: SEK 9,257; 2024 excl. tobacco machine: ~SEK 20,553). These must be reviewed and valued in the 2026 audit. Have they been settled, written off, or do they remain?<br>
+                  Negative balances on officeholder accounts (1602, 1603, 1605, total −SEK 1,498.75 as of 2025-12-31): check that reclassification to a liability account has been made, or that the Seniors Board's resolution on kuratels sweaters has been reflected in the bookkeeping.
+                </div>
+              </td>
+              <td><span class="badge badge-open">Awaiting accounts and accounts receivable ledger</span></td>
+            </tr>
+
+            <!-- ── STEP 8 – Fraud check ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">8</span>Fraud check <span class="badge badge-sample">Voucher list</span></td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Series overview and review of unusual transactions</strong>
+                <span class="badge badge-sample">Voucher list</span>
+                <div class="meta">Review of all voucher series. The Y-series (manual year-end entries) is reviewed with the lesson from 2025 in mind (entry Y2): check that no circular entries are present.</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting voucher list</span></td>
+            </tr>
+
+            <!-- ── STEP 9 – Governance review ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">9</span>Governance review – the board's management</td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Review of activity report and board decisions</strong>
+                <div class="meta">Activity report for 2026 requested. Check that the board acted in accordance with the statutes. Ambition for the 2026 audit: supplement with a review of board meeting minutes (not carried out in 2025).</div>
+              </td>
+              <td><span class="badge badge-open">Awaiting activity report</span></td>
+            </tr>
+
+            <!-- ── STEP 10 – Audit report ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">10</span>Full audit report</td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Audit report for the 2026 financial year</strong>
+                <div class="meta">Prepared once the review is complete. Presented at the Nation Meeting in 2027.</div>
+              </td>
+              <td><span class="badge badge-open">Not started</span></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Discreet note about CLAUDE.md -->
+    <p class="ai-note">
+      The technical instruction that governs how the AI assistant acts as auditor is found in
+      <a href="CLAUDE.md">CLAUDE.md</a>. That file is written for the AI model – detailed and technical –
+      and is not primarily intended as easy reading for non-accountants. To understand the
+      audit process in a simple way, read the <a href="generellt_eng.html">guide to auditing</a> instead.
+    </p>
+
+  </main>
+
+  <footer>
+    <p>Kalmar Nation · audit · <span id="footer-year"></span> · <a href="index.html">Audit overview</a></p>
+  </footer>
+
+  <a class="github-link"
+     href="https://github.com/kentlundgren/foreningar/tree/main/KalmarNation/revision"
+     target="_blank" rel="noopener"
+     aria-label="View source on GitHub">
+    { } GitHub
+  </a>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

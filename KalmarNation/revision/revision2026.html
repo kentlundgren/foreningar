@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Revision av Kalmar Nations bokslut 2026 – projektöversikt och granskningsstatus." />
+  <title>Kalmar Nation – revision 2026</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Statusmärken */
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 99px;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+    }
+    .badge-ok     { background: #c6f6d5; color: #22543d; }
+    .badge-warn   { background: #fefcbf; color: #744210; }
+    .badge-open   { background: #bee3f8; color: #2a4365; }
+    .badge-sample { background: #fbd38d; color: #7b341e; }
+    @media (prefers-color-scheme: dark) {
+      .badge-ok     { background: #276749; color: #c6f6d5; }
+      .badge-warn   { background: #7b4710; color: #fefcbf; }
+      .badge-open   { background: #2b4c7e; color: #bee3f8; }
+      .badge-sample { background: #7b341e; color: #fbd38d; }
+    }
+    .meta {
+      font-size: 0.82rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .page-version {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      margin-top: 0.65rem;
+      opacity: 0.72;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      letter-spacing: 0.01em;
+    }
+    .ai-note {
+      font-size: 0.82rem;
+      opacity: 0.6;
+      border-top: 1px solid var(--border);
+      margin-top: 2.5rem;
+      padding-top: 0.75rem;
+    }
+    .row-group-header td {
+      background: #e8f0fb !important;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-top: 2px solid #4a7ab5;
+      padding: 0.55rem 0.7rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .row-group-header td { background: #1e3258 !important; }
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+    .row-sub td:first-child { padding-left: 2.4rem; font-size: 0.86rem; }
+    .row-sub td { font-size: 0.86rem; }
+    .sum-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 0.75rem;
+    }
+    .sum-table th,
+    .sum-table td {
+      text-align: left;
+      padding: 0.45rem 0.7rem;
+      border: 1px solid var(--border);
+    }
+    .sum-table th {
+      background: var(--accent);
+      color: #fff;
+    }
+    .sum-table tr:nth-child(even) td {
+      background: rgba(0,0,0,0.03);
+    }
+    @media (prefers-color-scheme: dark) {
+      .sum-table tr:nth-child(even) td {
+        background: rgba(255,255,255,0.04);
+      }
+    }
+    /* Plakatbox – startsida för ett kommande revisionsår */
+    .upcoming-box {
+      background: rgba(190,227,248,0.18);
+      border-left: 4px solid #4a90d9;
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#innehall">Hoppa till innehåll</a>
+
+  <header>
+    <a class="lang-btn" href="revision2026_eng.html">🇬🇧 In English</a>
+    <h1>Kalmar Nation – revision 2026</h1>
+    <p class="lead">
+      Ekonomisk granskning (lekmannarevision) av <strong>Kalmar Nations</strong> bokslut
+      för räkenskapsåret <strong>2026</strong>, Lund. Revisionen påbörjas i början av 2027
+      när bokslutet är färdigställt.
+    </p>
+    <p class="page-version">
+      📋 Revision 2026 &nbsp;·&nbsp; Status v1.0 &nbsp;·&nbsp; Senast uppdaterad: 2026-06-08
+    </p>
+  </header>
+
+  <main id="innehall">
+
+    <!-- ===== Om granskningen ===== -->
+    <section aria-labelledby="om-heading">
+      <h2 id="om-heading">Om granskningen</h2>
+      <div class="card">
+        <div class="upcoming-box">
+          <strong>Revision av 2026 års bokslut genomförs i början av 2027.</strong><br>
+          Kalmar Nations räkenskapsår löper 1 januari–31 december 2026. Bokslutet
+          färdigställs av PQe och lämnas till revisorn efter nyår. Denna sida uppdateras
+          löpande när granskningen påbörjas och fortskrider.
+        </div>
+        <p>
+          En revision är en oberoende genomgång av föreningens ekonomi – ungefär som att en
+          utomstående person dubbelkollar att kassaboken stämmer. Revisionen görs i två delar:
+          <strong>räkenskapsgranskning</strong> och <strong>förvaltningsgranskning</strong>.
+        </p>
+        <p>
+          <a href="generellt.html">Läs en lättläst guide om hur revision går till →</a>
+        </p>
+        <p>
+          <a href="stadgar.html">Kalmar Nations stadgar – vad de innebär för revisionen →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Tillgängliga underlag (redan mottagna) ===== -->
+    <section aria-labelledby="underlag-heading">
+      <h2 id="underlag-heading">Redan mottagna underlag</h2>
+      <div class="card">
+        <p>Följande dokument finns redan tillgängliga för räkenskapsåret 2026:</p>
+        <ul>
+          <li>
+            <a href="2026/Resultatrapport__20260101-20261231_KALMAR_NATION_260427.pdf" target="_blank">
+              Resultatrapport 2026-01-01–2026-12-31 (260427)
+            </a>
+          </li>
+          <li>
+            <a href="2026/Balansrapport__20260101-20261231_KALMAR_NATION_260427.pdf" target="_blank">
+              Balansrapport 2026-01-01–2026-12-31 (260427)
+            </a>
+          </li>
+        </ul>
+        <p class="meta">
+          Obs: dessa rapporter är preliminära och utskrivna under 2026. Det slutgiltiga
+          bokslutet tas fram vid räkenskapsårets slut (december 2026–januari 2027).
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Granskningsstatus ===== -->
+    <section aria-labelledby="status-heading">
+      <h2 id="status-heading">Granskningsstatus</h2>
+      <div class="card">
+        <p>
+          Nedan visas alla delar som ingår i revisionen och hur långt arbetet kommit.
+          <span class="badge badge-ok">Godkänd</span> = klart utan anmärkning &nbsp;
+          <span class="badge badge-warn">Varning</span> = något behöver utredas &nbsp;
+          <span class="badge badge-open">Öppen</span> = ej påbörjad eller inväntar underlag
+        </p>
+
+        <table class="sum-table" aria-label="Status per granskningsmoment">
+          <thead>
+            <tr><th>Vad granskas – 10 steg (speglar <a href="generellt.html" style="color:#fff;text-decoration:underline;">generellt.html</a>)</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+
+            <!-- ── STEG 1 – Riskbedömning ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">1</span>Riskbedömning inför granskningen</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Stadgegranskning och riskbedömning</strong>
+                <div class="meta">Stadgar granskas. Risker identifieras: personbyten, ekonomiska förändringar, intern kontroll. Genomförs när bokslutet mottagits.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar bokslut</span></td>
+            </tr>
+
+            <!-- ── STEG 2 – Bankavstämning ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">2</span>Bankavstämning</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Bankavstämning SEB per 2026-12-31</strong>
+                <div class="meta">Bankens engagemangssammanställning per 31 december 2026 stäms av mot balansräkningens bankkonton.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar underlag</span></td>
+            </tr>
+
+            <!-- ── STEG 3a – Resultat = förändring av eget kapital ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">3a</span>Resultat = förändring av eget kapital – initial kontroll</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Sambandskontroll: resultat = förändring av eget kapital</strong>
+                <div class="meta">Grundläggande kontroll att årets resultat exakt förklarar förändringen i eget kapital. Öppningspunkt: vinstdisposition av 2025 års resultat (645 263 kr) ska vara bokförd i 2026 års böcker: debet 2099 / kredit 2010.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar bokslut</span></td>
+            </tr>
+
+            <!-- ── STEG 3b – Slutgiltig bekräftelse ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">3b</span>Slutgiltig bekräftelse av resultatet</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Kontroll mot slutgiltigt bokslut</strong>
+                <div class="meta">Preliminärt resultat bekräftas mot det slutgiltiga bokslutet. Eventuella sena justeringar identifieras och granskas.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar bokslut</span></td>
+            </tr>
+
+            <!-- ── STEG 4 – Kontinuitetskontroll ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">4</span>Kontinuitetskontroll – UB = IB nästa år</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Kontinuitet UB 2025 = IB 2026</strong>
+                <div class="meta">Kontrollerat i 2025 års revision: IB 2026 stämmer mot UB 2025 på samtliga konton. Öppningskontroll bekräftad.</div>
+              </td>
+              <td><span class="badge badge-ok">Förbekräftad (2025 rs revision)</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Kontinuitet UB 2026 = IB 2027</strong>
+                <div class="meta">Kontrolleras när januarirapporten 2027 finns tillgänglig.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar januarirapport 2027</span></td>
+            </tr>
+
+            <!-- ── STEG 5 – Stickprov ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">5</span>Stickprov på verifikationer <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Stickprov – leverantörsfakturor, utbetalningar, manuella poster</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Verifikationslista begärs från PQe (Fortnox: Bokföring → Rapporter → Verifikationslista, period 2026-01-01–2026-12-31, exportera som Excel). Stickprov väljs från serierna A, U och M.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar verifikationslista</span></td>
+            </tr>
+
+            <!-- ── STEG 6 – Jämförelseanalys ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">6</span>Jämförelseanalys år för år</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Flerårsanalys 2024–2026</strong>
+                <div class="meta">Hur har intäkter, kostnader och eget kapital utvecklats? Jämförelse mot 2025 (intäkter 4,3 mkr, resultat 645 263 kr) och 2024. Uppföljning av öppna punkter från 2025: äldre fordringar 42 961 kr (2022–2024), förbrukningsmaterial (+112 % 2025).</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar bokslut</span></td>
+            </tr>
+
+            <!-- ── STEG 7 – Fordringar ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">7</span>Fordringar – åldersanalys och osäkra fordringar <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Fordringsanalys – öppen punkt från 2025 års revision</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">
+                  Äldre fordringar om <strong>42 961 kr</strong> kvarstod per 2025-12-31 (2022: 13 151 kr; 2023: 9 257 kr; 2024 exkl. tobaksautomat: ~20 553 kr). Dessa ska redovisas och värderas i 2026 års revision. Har de reglerats, skrivits av eller kvarstår de?<br>
+                  Negativa saldon på kuratelskonton (1602, 1603, 1605, totalt −1 498,75 kr per 2025-12-31): kontrollera att omklassificering till skuldkonto skett, eller att seniorskollegiets beslut om kuratelströjor i representationsbudgeten har omhändertagits bokföringsmässigt.
+                </div>
+              </td>
+              <td><span class="badge badge-open">Inväntar bokslut och kundreskontra</span></td>
+            </tr>
+
+            <!-- ── STEG 8 – Bedrägerikontroll ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">8</span>Bedrägerikontroll <span class="badge badge-sample">Verifikationslista</span></td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Serieöversikt och granskning av ovanliga transaktioner</strong>
+                <span class="badge badge-sample">Verifikationslista</span>
+                <div class="meta">Genomgång av alla verifikationsserier. Kontroll av Y-serien (manuella bokslutsverifikationer) – lärdomen från 2025 (vernr Y2) ska tillämpas: kontrollera att inga cirkulära bokningar förekommer.</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar verifikationslista</span></td>
+            </tr>
+
+            <!-- ── STEG 9 – Förvaltningsgranskning ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">9</span>Förvaltningsgranskning – styrelsens arbete</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Granskning av verksamhetsberättelse och styrelsebeslut</strong>
+                <div class="meta">Verksamhetsberättelse för 2026 begärs. Kontroll att styrelsen agerat enligt stadgarna. Ambition för 2026 rs revision: komplettera med granskning av styrelsemötesprotokoll (ej genomfört 2025).</div>
+              </td>
+              <td><span class="badge badge-open">Inväntar verksamhetsberättelse</span></td>
+            </tr>
+
+            <!-- ── STEG 10 – Revisionsberättelse ── -->
+            <tr class="row-group-header">
+              <td><span class="step-num">10</span>Fullständig revisionsberättelse</td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+            <tr class="row-sub">
+              <td>
+                <strong>Revisionsberättelse för räkenskapsåret 2026</strong>
+                <div class="meta">Upprättas när granskningen är genomförd. Presenteras på nationsmötet 2027.</div>
+              </td>
+              <td><span class="badge badge-open">Ej påbörjad</span></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Diskret notering om CLAUDE.md -->
+    <p class="ai-note">
+      Den tekniska instruktionen som styr hur AI-assistenten ska agera som revisor finns i
+      <a href="CLAUDE.md">CLAUDE.md</a>. Den filen är skriven för AI-modellen – detaljrik och teknisk –
+      och inte i första hand avsedd som lättläst text för icke-ekonomer. Vill du förstå
+      revisionsprocessen på ett enkelt sätt, läs i stället <a href="generellt.html">guiden om revision</a>.
+    </p>
+
+  </main>
+
+  <footer>
+    <p>Kalmar Nation · revision · <span id="footer-year"></span> · <a href="index.html">Revisionsöversikt</a></p>
+  </footer>
+
+  <a class="github-link"
+     href="https://github.com/kentlundgren/foreningar/tree/main/KalmarNation/revision"
+     target="_blank" rel="noopener"
+     aria-label="Visa källkod på GitHub">
+    { } GitHub
+  </a>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
