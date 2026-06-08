@@ -14,6 +14,8 @@ Varje ändring i en svensk HTML-fil **ska alltid speglas** i motsvarande engelsk
 |--------------------------|-------------------------------|-----------------------------------|
 | index.html               | index_eng.html                | —                                 |
 | generellt.html           | generellt_eng.html            | —                                 |
+| revision2025.html        | revision2025_eng.html         | —                                 |
+| revision2026.html        | revision2026_eng.html         | —                                 |
 | 1990/1990_2025.html      | 1990/1990_2025_eng.html       | Se nedan – partiell spegling      |
 
 ## Undantag: 1990_2025_eng.html speglar bara Del 1
@@ -36,12 +38,20 @@ kulturellt betingad på ett sätt som inte är meningsfullt att översätta.
 - Del 2 (nostalgisk jämförelse) – finns bara på svenska
 - Navigationsankaret till #kreativ – finns bara i index.html, inte i index_eng.html
 
+## Tillkommande revisionsår
+
+När ett nytt revisionsår läggs till (t.ex. revision2027.html) ska:
+1. Motsvarande engelsk fil skapas direkt (revision2027_eng.html)
+2. Det nya filparet läggas till i tabellen ovan i denna fil
+3. Årsnavigeringen (.year-nav) uppdateras i **samtliga** berörda revisionsår (föregående och nytt år)
+
 ## Vad som ska synkas (generellt för alla filpar)
 - Avsnitt som läggs till eller tas bort
 - Ändringar i struktur och layout
 - Uppdateringar av faktainnehåll (siffror, datum, status)
 - Nya sektioner, tabeller, listor
 - Ändringar i footer, header, navigation
+- Årsnavigering (.year-nav) – struktur och HTML-entiteter ska vara identiska; länktext och href-target anpassas till respektive språk
 
 ## Vad som INTE ska synkas (generellt)
 - Själva texten (den ska översättas, inte kopieras)
@@ -50,8 +60,8 @@ kulturellt betingad på ett sätt som inte är meningsfullt att översätta.
 - Interna länktexter (t.ex. "← Tillbaka" vs "← Back")
 
 ## Arbetsflöde
-1. Ändring görs i t.ex. generellt.html
-2. Motsvarande ändring görs omedelbart i generellt_eng.html
+1. Ändring görs i t.ex. revision2026.html
+2. Motsvarande ändring görs omedelbart i revision2026_eng.html
 3. Båda filerna committas i samma commit
 
-*Senast uppdaterad: 2026-04-06*
+*Senast uppdaterad: 2026-06-08*
