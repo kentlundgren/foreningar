@@ -1,3 +1,9 @@
+> [!NOTE]
+> **Global och forbattrad version finns.**
+> Den 2026-06-24 skapades ett komplett, globalt firebase-backend-paket med Storage, invoice-example och starkare regler.
+> Global sokvag: `C:\Users\kentl\.cursor\skills\firebase-backend\`
+> Paketet innehaller: SKILL.md, reference-rtdb.md, reference-firestore.md, reference-storage.md (NY), invoice-analysis-example.md (NY).
+> Anvand den globala versionen for nya projekt. Denna lokala fil ar aldre och saknar Storage-referensen.
 # Realtime Database – kodmallar och mönster
 
 *Skapad: 2026-06-23 · Senast uppdaterad: 2026-06-23*
