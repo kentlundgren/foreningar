@@ -41,13 +41,14 @@ Plats: `C:\Users\kentl\.cursor\skills\`
 |---|---|---|
 | `bjerred-firebase-sync/` | Jämför BASE_DATA mot Firebase Realtime Database och rapporterar avvikelser. Uppdaterar data.html och index.html om något saknas. | "Kör månadssynken" / "Kontrollera Firebase-synken" |
 
-### Projektskills – kopierade till detta projekt
+### Projektskills – lokala i detta projekt
 
 Plats: `BjerredsSaltsjobad/.cursor/skills/`
 
-| Mapp | Samma som personlig skill ovan |
-|---|---|
-| `bjerred-firebase-sync/` | Identisk kopia – syns i Cursor filträdet |
+| Mapp | Vad den gör | Aktiveras när du säger... |
+|---|---|---|
+| `bjerred-firebase-sync/` | Jämför BASE_DATA mot Firebase RTDB; månadssynk för inpasseringar. | "Kör månadssynken" / "Kontrollera Firebase-synken" |
+| `firebase-backend/` | Generell setup av Firebase-backend (RTDB + Firestore, Auth, rules, migration) för statiska webbappar. Kan kopieras till `~/.cursor/skills/` när den är mogen. | "Koppla till Firebase" / "Skapa databas-backend" / "Firebase-setup" |
 
 ---
 
@@ -64,4 +65,4 @@ Om du vill att Claude ska *göra* något specifikt på begäran → skill.
 
 ---
 
-## Senast uppdaterad: 2026-06-05
+## Senast uppdaterad: 2026-06-23

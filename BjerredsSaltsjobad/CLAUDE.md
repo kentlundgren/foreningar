@@ -1,6 +1,6 @@
 # CLAUDE.md – Bjerreds Saltsjöbad
 
-*Version 2026-06-05*
+*Version 2026-06-23*
 
 Denna fil är projektets **minne** – den beskriver arkitektur, beslut och aktuell status
 för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att tappa tråden.
@@ -45,6 +45,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-06-05 | Regel tillagd: filer i README.md ska vara klickbara länkare |
 | 2026-06-05 | `inpasseringar/data.md` skapad – läsbar referenstabell med all inpasseringsdata |
 | 2026-06-05 | Skill `bjerred-firebase-sync` skapad – månadssynk BASE_DATA/Firebase |
+| 2026-06-23 | Skill `firebase-backend` skapad lokalt – generell Firebase-setup (RTDB + Firestore), se `.cursor/skills/firebase-backend/SKILL.md` |
 | 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
 
 ---
