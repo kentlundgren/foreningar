@@ -26,6 +26,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 
 | Datum | Vad gjordes |
 |---|---|
+| 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
 | 2026-05-28 | Lagt till `engangsintraden.html` med anonymiserade engångsinträden (B001–B185) |
 | 2026-05-28 | Lagt till `PRIVAT-namnmapping.json` lokalt (ej i repo) + .gitignore-regler |
 | 2026-05-28 | `inpasseringar/index.html`: nav-länk till engangsintraden.html tillagd |
@@ -46,7 +47,6 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-06-05 | `inpasseringar/data.md` skapad – läsbar referenstabell med all inpasseringsdata |
 | 2026-06-05 | Skill `bjerred-firebase-sync` skapad – månadssynk BASE_DATA/Firebase |
 | 2026-06-23 | Skill `firebase-backend` skapad lokalt – generell Firebase-setup (RTDB + Firestore), se `.cursor/skills/firebase-backend/SKILL.md` |
-| 2026-05-15 | Firebase Realtime Database i produktion – alla 8 steg klara |
 
 ---
 
