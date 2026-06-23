@@ -1,6 +1,8 @@
 ---
 name: bjerred-firebase-sync
 description: Check and synchronize BASE_DATA and data.md in Bjerreds Saltsjobad inpasseringar files against Firebase Realtime Database. Use when Kent asks to check if BASE_DATA is in sync with Firebase, when new monthly data needs to be added, run monthly sync, or update inpasseringar data.
+created: 2026-06-05
+updated: 2026-06-05
 ---
 
 # Bjerreds Saltsjobad – BASE_DATA/Firebase Sync Check

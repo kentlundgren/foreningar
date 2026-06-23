@@ -5,6 +5,8 @@ description: >
   Covers Realtime Database and Firestore, Auth, security rules, read/write
   patterns, migration, and CSP. Use when Kent asks to connect an app to
   Firebase, create a database backend, or integrate read/write with login.
+created: 2026-06-23
+updated: 2026-06-23
 ---
 
 # Firebase backend – setup för statiska webbappar

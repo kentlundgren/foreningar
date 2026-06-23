@@ -1,5 +1,7 @@
 # Realtime Database – kodmallar och mönster
 
+*Skapad: 2026-06-23 · Senast uppdaterad: 2026-06-23*
+
 Platshållare att ersätta per projekt:
 
 | Platshållare | Exempel |
