@@ -1159,10 +1159,11 @@
       'Restaurangen/badbiljetter': [ 643,  665,  600,  359,  417, null, null, null, null, null, null, null],
       'SMS/Swish-biljetter':       [1114,  751, 1006,  913,  777, null, null, null, null, null, null, null],
       /* Uppdatering 2026-06-03: Engångsbadare via Wondr – bokförs separat, räknas EJ med i totalsumman */
-      'Engångsbadare – Wondr':     [  17,   13,   38,   31,  173, null, null, null, null, null, null, null],
+      /* Uppdatering 2026-08-02: juli (128) hårdkodad – 131 poster à +100 kr, 3 poster à −100 kr = netto 128 betalande, 12 800 kr */
+      'Engångsbadare – Wondr':     [  17,   13,   38,   31,  173, null,  128, null, null, null, null, null],
       /* Uppdatering 2026-06-05: maj-data tillagd (hämtat från Firebase) */
       'Medlemmar – armband':       [ 492,  119,   95,   90,   55, null, null, null, null, null, null, null],
-      'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, 3417, null, null, null, null, null, null, null]
+      'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, 3417, null, 3635, null, null, null, null, null]
     }
   };
 
@@ -1909,6 +1910,15 @@
           td.textContent = val.toLocaleString('sv-SE');
           rowTotal      += val;
           if (!exkluderad) { colHasVal[m] = true; colSums[m] += val; }
+        }
+
+        /* Uppdatering 2026-08-02: tooltip för Engångsbadare – Wondr, juli 2026.
+           Förklarar beräkningen: 131 poster à +100 kr och 3 poster à -100 kr = 128 netto. */
+        if (year === 2026 && cat.includes('Eng\u00e5ngsbadare') && m === 6 && val !== null) {
+          td.title  = '131 poster \u00e0 +100\u00a0kr och 3 poster \u00e0 \u2212100\u00a0kr'
+                    + ' \u2192 netto 128 betalande eng\u00e5ngsbadare'
+                    + ' \u00b7 Inbetalt: 12\u00a0800\u00a0kr';
+          td.style.cursor = 'help';
         }
 
         /* Klickhändelse öppnar redigering (eller inloggning) */
