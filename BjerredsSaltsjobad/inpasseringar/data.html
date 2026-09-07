@@ -1155,15 +1155,17 @@
 
     /* ---- 2026 -------------------------------------------------- */
     /* null = saknas (gulmarkerat i ursprungstabellen)              */
+    /* Uppdatering 2026-09-07: jun–aug hårdkodade (hämtat från Firebase). */
+    /* Aug för Restaurangen/badbiljetter saknas fortfarande (förblir null/gul). */
     2026: {
-      'Restaurangen/badbiljetter': [ 643,  665,  600,  359,  417, null, null, null, null, null, null, null],
-      'SMS/Swish-biljetter':       [1114,  751, 1006,  913,  777, null, null, null, null, null, null, null],
+      'Restaurangen/badbiljetter': [ 643,  665,  600,  359,  417,  316,  392, null, null, null, null, null],
+      'SMS/Swish-biljetter':       [1114,  751, 1006,  913,  777,  445,  394,  475, null, null, null, null],
       /* Uppdatering 2026-06-03: Engångsbadare via Wondr – bokförs separat, räknas EJ med i totalsumman */
       /* Uppdatering 2026-08-02: juli (128) hårdkodad – 131 poster à +100 kr, 3 poster à −100 kr = netto 128 betalande, 12 800 kr */
-      'Engångsbadare – Wondr':     [  17,   13,   38,   31,  173, null,  128, null, null, null, null, null],
+      'Engångsbadare – Wondr':     [  17,   13,   38,   31,  173,  104,  128,  153, null, null, null, null],
       /* Uppdatering 2026-06-05: maj-data tillagd (hämtat från Firebase) */
-      'Medlemmar – armband':       [ 492,  119,   95,   90,   55, null, null, null, null, null, null, null],
-      'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, 3417, null, 3635, null, null, null, null, null]
+      'Medlemmar – armband':       [ 492,  119,   95,   90,   55,   42,   35,   19, null, null, null, null],
+      'Medlemmar – Wonder':        [2627, 2445, 3663, 3293, 3417, 3312, 3635, 4099, null, null, null, null]
     }
   };
 
