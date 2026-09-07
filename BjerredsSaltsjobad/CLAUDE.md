@@ -47,6 +47,8 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-06-05 | `inpasseringar/data.md` skapad – läsbar referenstabell med all inpasseringsdata |
 | 2026-06-05 | Skill `bjerred-firebase-sync` skapad – månadssynk BASE_DATA/Firebase |
 | 2026-06-23 | Skill `firebase-backend` skapad lokalt – generell Firebase-setup (RTDB + Firestore), se `.cursor/skills/firebase-backend/SKILL.md` |
+| 2026-09-07 | `inpasseringar/data.html` + `index.html`: BASE_DATA 2026 hårdkodad t.o.m. augusti (jun–aug från Firebase). Aug för Restaurangen/badbiljetter saknas fortfarande (null) |
+| 2026-09-07 | `inpasseringar/index.html`: kategoridiagrammet markerar nu "preliminära" månader – gul notis under diagrammet + `preliminaryMarks`-plugin som ritar en "Preliminärt"-etikett över ofullständiga staplar. Dynamiskt: försvinner när alla kategorier för månaden är inrapporterade |
 
 ---
 
@@ -241,7 +243,12 @@ Föreningen har medvetet satt ett **lägre pris för Wondr-appen (100 kr)** jäm
 ## Teknikstack – inpasseringar/index.html
 
 - **Chart.js 4.4** (cdnjs) – linjediagram och stapeldiagram
-- Eget inline Canvas-plugin för ombyggnadsmarkeringen (feb–jul 2025)
+- Eget inline Canvas-plugin `closureShading` för ombyggnadsmarkeringen (feb–jul 2025)
+  och "ej komplett"-bubblan på linjediagrammet
+- Eget inline Canvas-plugin `preliminaryMarks` (2026-09-07) – "Preliminärt"-etikett
+  över ofullständiga staplar i kategoridiagrammet. Månaderna kommer från
+  `catChartInst._prelimMonths` som `showCategoryChart()` fyller i; notisen under
+  diagrammet byggs av `uppdateraPrelimNotis()`
 - **Firebase Realtime Database** – live-data via `onValue()`, BASE_DATA som fallback
 - Data-källeindikator i headern: grön prick "Live från Firebase" eller orange "Lokal backup"
 

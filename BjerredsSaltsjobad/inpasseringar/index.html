@@ -173,6 +173,20 @@
       gap: 0.5rem;
     }
 
+    /* Uppdatering 2026-09-07: notis under kategoridiagrammet när en
+       månad ännu inte har alla kategorier inrapporterade (preliminär).
+       Fylls i dynamiskt av showCategoryChart() – döljs när allt är inne. */
+    .prelim-note {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-bdr);
+      border-radius: 6px;
+      padding: 0.6rem 1rem;
+      font-size: 0.82rem;
+      color: var(--warn-txt);
+      margin-top: 0.9rem;
+      line-height: 1.5;
+    }
+
     /* Flikar för årsval i kategorigrafen */
     .year-tabs {
       display: flex;
@@ -474,6 +488,8 @@
     <div class="chart-wrapper">
       <canvas id="categoryChart"></canvas>
     </div>
+    <!-- Uppdatering 2026-09-07: dynamisk preliminär-notis (fylls av showCategoryChart) -->
+    <div class="prelim-note" id="prelimNote" hidden></div>
   </div>
 
   <!-- ============================================================
@@ -930,6 +946,23 @@ function showCategoryChart(year, tabEl) {
   const yearData = data[year] || {};
   const cats     = Object.keys(yearData);
 
+  /* ------------------------------------------------------------------
+     Uppdatering 2026-09-07: hitta "preliminära" månader.
+     En månad är preliminär när minst en kategori saknar värde (null)
+     samtidigt som minst en annan kategori HAR rapporterat. Stapeln
+     visas då för lågt och kan komma att växa när resten fylls i.
+     (Månader där ALLT är null – t.ex. kommande månader – räknas inte.)
+     ------------------------------------------------------------------ */
+  const prelimMånader = [];   /* [{ idx, månad, saknas: [kategorinamn] }] */
+  for (let m = 0; m < 12; m++) {
+    const saknas   = cats.filter(c => yearData[c][m] === null);
+    const harNågot = cats.some(c => yearData[c][m] !== null);
+    if (harNågot && saknas.length > 0) {
+      prelimMånader.push({ idx: m, månad: MONTHS_FULL[m], saknas });
+    }
+  }
+  uppdateraPrelimNotis(prelimMånader);
+
   /* Bygg en dataset per kategori */
   const datasets = cats.map((cat, i) => {
     /* Använd namngiven färg om kategorin finns i KATEGORI_FÄRGER,
@@ -962,6 +995,8 @@ function showCategoryChart(year, tabEl) {
         interaction: { mode: 'index' },
         plugins: {
           legend: { position: 'top' },
+          /* Uppdatering 2026-09-07: aktivera markören för preliminära månader */
+          preliminaryMarks: { enabled: true },
           title: {
             display:  true,
             text:     `Inpasseringar per kategori – ${year}`,
@@ -986,6 +1021,40 @@ function showCategoryChart(year, tabEl) {
       }
     });
   }
+
+  /* Uppdatering 2026-09-07: lämna över vilka månadsindex som är preliminära
+     till canvas-pluginet preliminaryMarks (läser catChartInst._prelimMonths). */
+  catChartInst._prelimMonths = new Set(prelimMånader.map(p => p.idx));
+  catChartInst.update();
+}
+
+/* ------------------------------------------------------------------
+   uppdateraPrelimNotis()
+   Visar/döljer den gula notisen under kategoridiagrammet. Texten
+   byggs av de faktiska luckorna, så den försvinner av sig själv när
+   alla kategorier för månaden är inrapporterade (i Firebase eller
+   BASE_DATA).
+   ------------------------------------------------------------------ */
+function uppdateraPrelimNotis(prelimMånader) {
+  const el = document.getElementById('prelimNote');
+  if (!el) return;
+
+  if (!prelimMånader || prelimMånader.length === 0) {
+    el.hidden    = true;
+    el.innerHTML = '';
+    return;
+  }
+
+  /* En mening per preliminär månad, t.ex.
+     "Augusti saknar ännu Restaurangen/badbiljetter". */
+  const delar = prelimMånader.map(p =>
+    `<strong>${p.månad}</strong> saknar ännu ${p.saknas.join(', ')}`
+  );
+
+  el.hidden    = false;
+  el.innerHTML =
+    '⚠️&nbsp;<strong>Preliminära värden:</strong> ' + delar.join('; ') +
+    '. Staplarna för dessa månader är ofullständiga och kan komma att öka.';
 }
 
 /* ================================================================
@@ -1410,6 +1479,110 @@ function drawIncompleteAnnotation(ctx, px, py, year, monthIdx, chartArea) {
 
 /* Registrera pluginet globalt – Chart.js anropar det automatiskt */
 Chart.register(closurePlugin);
+
+
+/* ================================================================
+   PLUGIN: preliminaryMarks (Uppdatering 2026-09-07)
+
+   Ritar en liten "Preliminärt"-etikett med nedåtpil ovanför de
+   staplar i kategoridiagrammet där någon kategori ännu saknar värde.
+   Kolumnen tonas dessutom svagt gul, på samma sätt som ombyggnads-
+   fältet, så att det syns direkt att stapeln är ofullständig.
+
+   Aktiveras bara för de diagram som sätter
+   options.plugins.preliminaryMarks.enabled = true (kategoridiagrammet).
+   Vilka månader som är preliminära läses från chart._prelimMonths,
+   en Set med månadsindex som showCategoryChart() fyller i.
+   ================================================================ */
+const preliminaryMarksPlugin = {
+  id: 'preliminaryMarks',
+
+  afterDatasetsDraw(chart) {
+    /* Är pluginet aktiverat för det här diagrammet? */
+    const opts = chart.options.plugins.preliminaryMarks;
+    if (!opts || !opts.enabled) return;
+
+    /* Vilka månader ska markeras? */
+    const månader = chart._prelimMonths;
+    if (!månader || månader.size === 0) return;
+
+    const { ctx, chartArea, scales } = chart;
+    if (!chartArea || !scales.x || !scales.y) return;
+
+    månader.forEach(m => {
+      /* Stapelns x-mitt hämtas från första datasetets stapelelement */
+      const bar0 = chart.getDatasetMeta(0)?.data?.[m];
+      if (!bar0) return;
+      const x = bar0.x;
+
+      /* Toppen av den staplade stapeln = högsta (minsta y) segmentet */
+      let yTop = chartArea.bottom;
+      chart.data.datasets.forEach((_, di) => {
+        const el = chart.getDatasetMeta(di)?.data?.[m];
+        if (el && el.y < yTop) yTop = el.y;
+      });
+
+      /* Halva stapelbredden (för den gula kolumntoningen) */
+      const halvbredd = (bar0.width ? bar0.width : 20) * 0.62;
+
+      /* ---- Svag gul kolumntoning, klippt till diagramarean ---- */
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(chartArea.left, chartArea.top, chartArea.width, chartArea.height);
+      ctx.clip();
+      ctx.fillStyle = 'rgba(243, 156, 18, 0.10)';
+      ctx.fillRect(x - halvbredd, chartArea.top, halvbredd * 2, chartArea.height);
+      ctx.restore();
+
+      /* ---- Etikett "Preliminärt" med liten pil ned mot stapeln ---- */
+      const txt = 'Preliminärt';
+      ctx.save();
+      ctx.font = 'bold 10px "Segoe UI", system-ui, sans-serif';
+      const w = ctx.measureText(txt).width + 14;
+      const h = 18;
+
+      /* Placera ovanför stapeln, men aldrig utanför diagramarean */
+      let bx = x - w / 2;
+      let by = yTop - h - 9;
+      if (by < chartArea.top + 2) by = chartArea.top + 2;
+      bx = Math.max(chartArea.left + 2, Math.min(bx, chartArea.right - w - 2));
+
+      /* Ruta med rundade hörn */
+      ctx.fillStyle   = 'rgba(254, 249, 231, 0.96)';
+      ctx.strokeStyle = 'rgba(243, 156, 18, 0.75)';
+      ctx.lineWidth   = 1;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(bx, by, w, h, 4);
+      else               ctx.rect(bx, by, w, h);
+      ctx.fill();
+      ctx.stroke();
+
+      /* Liten triangel-pil från rutans underkant mot stapeltoppen
+         (bara när rutan faktiskt sitter ovanför stapeln) */
+      if (by + h < yTop) {
+        ctx.beginPath();
+        ctx.moveTo(x - 4, by + h);
+        ctx.lineTo(x + 4, by + h);
+        ctx.lineTo(x,     by + h + 5);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(254, 249, 231, 0.96)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(243, 156, 18, 0.75)';
+        ctx.stroke();
+      }
+
+      /* Texten */
+      ctx.fillStyle    = '#7d6608';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(txt, bx + w / 2, by + h / 2 + 0.5);
+      ctx.restore();
+    });
+  }
+};
+
+/* Registrera preliminär-markören globalt */
+Chart.register(preliminaryMarksPlugin);
 
 /* ================================================================
    FIREBASE-INTEGRATION
