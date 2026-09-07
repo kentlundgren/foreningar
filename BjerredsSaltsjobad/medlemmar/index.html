@@ -7,11 +7,20 @@
     
     <!-- 
     =========================================================================
-    MEDLEMSUTVECKLING - STATISTIKVERKTYG (Version 3.0)
+    MEDLEMSUTVECKLING - STATISTIKVERKTYG (Version 3.2)
     =========================================================================
     Skapad: 2025-12-23
-    Uppdaterad: 2026-05-28
-    
+    Uppdaterad: 2026-09-07
+
+    Ändringar i version 3.2 (2026-09-07):
+    - Lagt till månadsdata för jun–aug 2026
+    - Totallinjen (jun 1335, jul 1336, aug 1326): källa Wondr Subscribers/Count2
+    - Familj/enskilt jun–aug är OSÄKER (ingen split i Count2):
+      aug från Wondr Subscription/Active, jun–jul interpolerat maj→aug
+    - Osäkra linjesegment ritas streckade + ihåliga punkter (segment.borderDash)
+    - Stapeldiagrammet: jun–aug visas som en enda stapel "Total nettoförändring"
+    - Statistikkort, fotnot och rubrik uppdaterade till aug 2026
+
     Ändringar i version 3.0 (2026-05-28):
     - Lagt till månadsdata för jan–maj 2026 (källa: Wondr Subscribers/Count2)
     - Nytt tidsfilter "År 2026" tillagt
@@ -802,7 +811,7 @@
                ← Bjerreds Saltsjöbad
             </a>
             <h1>📊 Medlemsutveckling</h1>
-            <p>Statistik uppdaterad med 2026-data (jan–maj 2026)</p>
+            <p>Statistik uppdaterad med 2026-data (jan–aug 2026)</p>
         </div>
 
         <!-- INLEDNING med beskrivning av verktyget -->
@@ -889,24 +898,34 @@
         <!-- STATISTIK-SAMMANFATTNING med nyckeltal -->
         <!-- UPPDATERING 2026-05-28: Nyckeltal uppdaterade till maj 2026-värden
              Familj: 451→446, Singel: 759→884, Totalt: 1210→1330, Nya efter bastu: 653→773 -->
+        <!-- UPPDATERING 2026-09-07: Nyckeltal till aug 2026.
+             Totalt (1326) = Wondr Count2, sista aug. Familj (445) / Enskilt (861)
+             = Wondr Subscription/Active sista aug, exkl. gratismedlemmar och
+             "registrering av familjemedlemmar" – markerade med * (uppskattade,
+             annan rapport). Netto efter bastu = 1326 − 557 (jun 2025) = 769. -->
         <div class="stats-summary">
             <div class="stat-card family">
-                <div class="stat-number">446</div>
-                <div class="stat-label">Familjemedlemskap (maj 2026)</div>
+                <div class="stat-number">445&thinsp;*</div>
+                <div class="stat-label">Familjemedlemskap (aug 2026)</div>
             </div>
             <div class="stat-card single">
-                <div class="stat-number">884</div>
-                <div class="stat-label">Enskilda medlemskap (maj 2026)</div>
+                <div class="stat-number">861&thinsp;*</div>
+                <div class="stat-label">Enskilda medlemskap (aug 2026)</div>
             </div>
             <div class="stat-card total">
-                <div class="stat-number">1 330</div>
-                <div class="stat-label">Totalt antal (maj 2026)</div>
+                <div class="stat-number">1 326</div>
+                <div class="stat-label">Totalt antal (aug 2026)</div>
             </div>
             <div class="stat-card highlight">
-                <div class="stat-number">773</div>
+                <div class="stat-number">769</div>
                 <div class="stat-label">Netto nya efter bastuöppning</div>
             </div>
         </div>
+        <p style="padding: 0 var(--container-padding) 5px; margin-top: -10px;
+                  font-size: 0.8rem; color: var(--text-muted);">
+            * Uppdelningen familj/enskilt för juni–aug 2026 är uppskattad (annan
+            Wondr-rapport än totalen) och visas streckad i diagrammet.
+        </p>
 
         <!-- KONTROLLPANEL för att växla diagramtyp -->
         <div class="controls">
@@ -951,22 +970,37 @@
         <!-- UPPDATERING 2026-05-28: Lagt till länk till rapporten "Subscribers/Count2" i Wondr -->
         <div class="footnote">
             <p>
-                <strong>Not:</strong> I statistiken ovan ingår inte följande kategorier: 
-                7 st "Registrering av familjemedlemmar" (mellanstation innan fullständig registrering), 
-                34 gratismedlemmar samt 1 engångsinträde. 
-                <span class="warning">Obs: Endast 1 engångsinträde registrerat – detta bör undersökas vidare.</span>
+                <strong>Not:</strong> I statistiken ovan ingår inte följande kategorier
+                (siffror per sista aug 2026):
+                6 st "Registrering av familjemedlemmar" (mellanstation innan fullständig registrering),
+                36 gratismedlemmar samt 5 engångsinträden.
+            </p>
+            <!-- UPPDATERING 2026-09-07: förklaring av streckade linjer jun–aug 2026 -->
+            <p style="margin-top: 10px;">
+                <strong class="warning">Streckade linjer (juni–aug 2026):</strong>
+                Totallinjen bygger på Wondr-rapporten <em>Subscribers/Count2</em> och är säker
+                (aktiva medlemmar vid månadsslut: juni 1&nbsp;335, juli 1&nbsp;336, aug 1&nbsp;326 –
+                <a href="bilder/medlemmar_202603_202608.jpg" target="_blank" rel="noopener">se skärmdump av rapporten →</a>).
+                Den rapporten ger däremot ingen uppdelning på familj/enskilt. Uppdelningen för
+                augusti är hämtad från rapporten <em>Subscription/Active</em> (sista aug), och
+                juni–juli är linjärt interpolerade mellan maj och aug. Familj- och
+                enskilt-linjerna för dessa månader visas därför streckade och summerar inte
+                exakt till totallinjen (rapporterna räknar olika).
             </p>
             <p style="margin-top: 10px;">
-                <strong>Källa (2024–2025):</strong> Wondr medlemsexport, 2025-12-23. 
+                <strong>Källa (2024–2025):</strong> Wondr medlemsexport, 2025-12-23.
                 Se <a href="https://wondr.cc/sv-se/hem" target="_blank">wondr.cc</a> för mer information om systemet.
             </p>
             <p style="margin-top: 10px;">
-                <strong>Källa (2026, jan–maj):</strong> Aktuell medlemsstatistik kan hämtas direkt från Wondr-rapporten: 
-                <a href="https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2" 
-                   target="_blank" rel="noopener" style="font-weight: bold;">
-                    Öppna medlemsräknaren i Wondr →
-                </a>
-                (kräver inloggning). Värden visar aktiva medlemmar vid månadsslutet.
+                <strong>Källa (2026, jan–aug):</strong> Aktuell medlemsstatistik kan hämtas direkt från Wondr-rapporterna
+                <a href="https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2"
+                   target="_blank" rel="noopener" style="font-weight: bold;">Subscribers/Count2</a>
+                (totaler och förändring per månad – <a href="bilder/medlemmar_202603_202608.jpg" target="_blank" rel="noopener">skärmdump mars–aug 2026</a>) och
+                <a href="https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscription/Active"
+                   target="_blank" rel="noopener" style="font-weight: bold;">Subscription/Active</a>
+                (uppdelning per medlemskapstyp).
+                Wondr-rapporterna kräver inloggning; skärmdumpen är öppen för alla.
+                Värden visar aktiva medlemmar vid månadsslutet.
             </p>
         </div>
 
@@ -1119,7 +1153,30 @@
             {period: '2026-02', familj_ny: 0,   enskild_ny: 58, familj_ack: 462, enskild_ack: 844, total_ack: 1306},
             {period: '2026-03', familj_ny: -2,  enskild_ny: 16, familj_ack: 460, enskild_ack: 860, total_ack: 1320},
             {period: '2026-04', familj_ny: -2,  enskild_ny: 12, familj_ack: 458, enskild_ack: 872, total_ack: 1330},
-            {period: '2026-05', familj_ny: -12, enskild_ny: 12, familj_ack: 446, enskild_ack: 884, total_ack: 1330}
+            {period: '2026-05', familj_ny: -12, enskild_ny: 12, familj_ack: 446, enskild_ack: 884, total_ack: 1330},
+
+            // =========================================================================
+            // UPPDATERING 2026-09-07: Lagt till jun–aug 2026
+            //
+            // TOTALEN (total_ack) är säker – källa: Wondr Subscribers/Count2 ("Resultat"),
+            // månadsslut:  jun 1335 (netto 0), jul 1336 (netto +1), aug 1326 (netto -10).
+            // total_ny = total nettoförändring den månaden (Nya − Avslutad enligt Count2).
+            //
+            // SPLITEN familj/enskilt är OSÄKER (osäker_split: true) och ritas streckad:
+            //   - Count2 ger ingen uppdelning familj/enskilt.
+            //   - aug: hämtat från Wondr Subscription/Active (sista aug), exkl. gratismedlemmar
+            //     och "registrering av familjemedlemmar":
+            //       familj  = 445  (Familjemedlemskap-fortlöpande)
+            //       enskilt = 861  (580 "Enskilt - ett år" + 281 "Enskilt-fortlöpande")
+            //   - jun/jul: linjärt interpolerat mellan maj (446 / 884) och aug (445 / 861).
+            //   OBS: familj_ack + enskild_ack summerar därför inte exakt till total_ack för
+            //   dessa månader (olika Wondr-rapporter) – det är avsikten med streckningen.
+            //
+            // familj_ny/enskild_ny saknas jun–aug (ingen split på nyregistreringar) → null.
+            // =========================================================================
+            {period: '2026-06', familj_ny: null, enskild_ny: null, total_ny: 0,   familj_ack: 446, enskild_ack: 876, total_ack: 1335, osäker_split: true},
+            {period: '2026-07', familj_ny: null, enskild_ny: null, total_ny: 1,   familj_ack: 445, enskild_ack: 869, total_ack: 1336, osäker_split: true},
+            {period: '2026-08', familj_ny: null, enskild_ny: null, total_ny: -10, familj_ack: 445, enskild_ack: 861, total_ack: 1326, osäker_split: true}
         ];
 
         /*
@@ -1374,11 +1431,45 @@
                         borderWidth: 2
                     }
                 ];
+
+                // UPPDATERING 2026-09-07: För jun–aug 2026 saknas uppdelning
+                // familj/enskilt på nyregistreringar. Visa istället en enda stapel
+                // med total nettoförändring (Nya − Avslutad enligt Wondr Count2).
+                // Läggs bara till om filtret faktiskt innehåller sådana månader.
+                if (data.some(d => d.total_ny !== undefined && d.total_ny !== null)) {
+                    datasets.push({
+                        label: 'Total nettoförändring (uppdelning saknas)',
+                        data: data.map(d => (d.total_ny !== undefined && d.total_ny !== null) ? d.total_ny : null),
+                        backgroundColor: 'rgba(128, 90, 213, 0.55)',
+                        borderColor: 'rgba(128, 90, 213, 1)',
+                        borderWidth: 2,
+                        // Diagonalt mönsterintryck går inte utan plugin – markera med streckad kant istället
+                        borderDash: [6, 4]
+                    });
+                }
             } else {
                 // Ackumulerad utveckling - linjediagram med area-fyllning
                 chartType = 'line';
                 chartTitle = 'Ackumulerad medlemsutveckling';
-                
+
+                /*
+                UPPDATERING 2026-09-07: streckad linje för osäker uppdelning.
+                För jun–aug 2026 (d.osäker_split) har vi ingen säker uppdelning
+                familj/enskilt. Segmenten som LEDER IN i eller LIGGER I det
+                intervallet ritas streckade, och punkterna ritas ihåliga (vit
+                fyllning). Totallinjen påverkas inte – den bygger på Count2.
+
+                Chart.js "segment.borderDash" får en callback per linjesegment;
+                ctx.p1DataIndex = index för segmentets slutpunkt.
+                */
+                const osäkerSegment = ctx => {
+                    const slut = data[ctx.p1DataIndex];
+                    return (slut && slut.osäker_split) ? [6, 5] : undefined;
+                };
+                // Ihåliga punkter för de osäkra månaderna (arrayvärde per punkt)
+                const punktFyll = solidFärg => data.map(d => d.osäker_split ? '#ffffff' : solidFärg);
+                const punktRing  = solidFärg => data.map(() => solidFärg);
+
                 datasets = [
                     {
                         label: 'Totalt antal',
@@ -1402,6 +1493,9 @@
                         tension: 0.3,
                         pointRadius: isMobile() ? 2 : 4,
                         pointHoverRadius: isMobile() ? 4 : 6,
+                        pointBackgroundColor: punktFyll('rgba(66, 153, 225, 1)'),
+                        pointBorderColor: punktRing('rgba(66, 153, 225, 1)'),
+                        segment: { borderDash: osäkerSegment },
                         order: 2
                     },
                     {
@@ -1414,6 +1508,9 @@
                         tension: 0.3,
                         pointRadius: isMobile() ? 2 : 4,
                         pointHoverRadius: isMobile() ? 4 : 6,
+                        pointBackgroundColor: punktFyll('rgba(72, 187, 120, 1)'),
+                        pointBorderColor: punktRing('rgba(72, 187, 120, 1)'),
+                        segment: { borderDash: osäkerSegment },
                         order: 3
                     }
                 ];
@@ -1428,7 +1525,8 @@
             const ctx = document.getElementById('membershipChart').getContext('2d');
             
             // Beräkna max- och min-värde för y-axeln med lite marginal
-            const allValues = datasets.flatMap(ds => ds.data);
+            // UPPDATERING 2026-09-07: filtrera bort null (jun–aug saknar split-data)
+            const allValues = datasets.flatMap(ds => ds.data).filter(v => v !== null && v !== undefined);
             const maxValue = Math.max(...allValues);
             const minValue = Math.min(...allValues);
             const yMax = Math.ceil(maxValue * 1.15 / 100) * 100;  // Runda upp till närmaste hundratal + 15%
@@ -1501,11 +1599,24 @@
                             // Anpassad tooltip-formatering
                             callbacks: {
                                 label: function(context) {
+                                    // UPPDATERING 2026-09-07: hoppa över tomma punkter
+                                    // (jun–aug saknar split på nyregistreringar)
+                                    const y = context.parsed.y;
+                                    if (y === null || y === undefined || Number.isNaN(y)) {
+                                        return undefined;
+                                    }
                                     let label = context.dataset.label || '';
                                     if (label) {
                                         label += ': ';
                                     }
-                                    label += context.parsed.y.toLocaleString('sv-SE');
+                                    label += y.toLocaleString('sv-SE');
+                                    // Markera osäker familj/enskilt-uppdelning (jun–aug 2026)
+                                    const rad = filterData(currentTimeFilter)[context.dataIndex];
+                                    const ärSplitserie = context.dataset.label === 'Enskilt medlemskap'
+                                                       || context.dataset.label === 'Familjemedlemskap';
+                                    if (rad && rad.osäker_split && ärSplitserie) {
+                                        label += ' (uppskattat)';
+                                    }
                                     return label;
                                 }
                             }

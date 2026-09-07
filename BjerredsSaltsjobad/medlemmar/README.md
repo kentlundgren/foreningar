@@ -1,6 +1,6 @@
 # Bjerreds Saltsjöbad – Medlemmar
 
-*Senast uppdaterad: 2026-05-28*
+*Senast uppdaterad: 2026-09-07*
 
 ## Direktlänkar
 
@@ -26,16 +26,21 @@ Systemet innehåller:
 > **OBS – Personuppgifter:** Rådata och namnlistor från Wondr lagras
 > enbart lokalt och ingår inte i detta repo (se `.gitignore`).
 
-## Aktuell statistik (maj 2026)
+## Aktuell statistik (aug 2026)
 
 | Typ | Antal |
 |-----|-------|
-| Familjemedlemskap | 446 |
-| Enskilda medlemskap | 884 |
-| **Totalt** | **1 330** |
-| Netto nya efter bastuöppning (juli 2025) | 773 |
+| Familjemedlemskap | 445 * |
+| Enskilda medlemskap | 861 * |
+| **Totalt** | **1 326** |
+| Netto nya efter bastuöppning (juli 2025) | 769 |
 
-Källa: [Wondr Subscribers/Count2](https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2) *(kräver inloggning)*
+Totalen kommer från [Wondr Subscribers/Count2](https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscribers/Count2)
+([skärmdump mars–aug 2026](bilder/medlemmar_202603_202608.jpg) – öppen för alla, Wondr-rapporten kräver inloggning).
+\* Uppdelningen familj/enskilt för juni–aug 2026 är **uppskattad** – Count2 ger ingen
+split, så augusti är hämtad från [Wondr Subscription/Active](https://bjerredssaltsjobad.wondr.se/w_report/reports/report/Subscription/Active)
+(exkl. gratismedlemmar och "registrering av familjemedlemmar") och juni–juli är
+interpolerade. Dessa linjer visas streckade i diagrammet. *(Båda rapporterna kräver inloggning.)*
 
 ## Projektstruktur
 
@@ -81,6 +86,14 @@ cd foreningar/BjerredsSaltsjobad/medlemmar
 > för att visa enskilda medlemmar per månad.
 
 ## Versionshistorik
+
+- **v3.2** (2026-09-07)
+  - Månadsdata för jun–aug 2026 tillagd
+  - Totallinjen (jun 1335, jul 1336, aug 1326): källa Wondr Subscribers/Count2
+  - Uppdelningen familj/enskilt jun–aug är osäker (ingen split i Count2) –
+    aug från Wondr Subscription/Active, jun–jul interpolerat – och ritas streckad
+  - Stapeldiagrammet: jun–aug som en enda stapel "Total nettoförändring"
+  - Statistikkort, fotnot och rubrik uppdaterade till aug 2026
 
 - **v3.1** (2026-05-28)
   - Datafiler med personuppgifter borttagna från GitHub

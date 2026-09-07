@@ -49,6 +49,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-06-23 | Skill `firebase-backend` skapad lokalt – generell Firebase-setup (RTDB + Firestore), se `.cursor/skills/firebase-backend/SKILL.md` |
 | 2026-09-07 | `inpasseringar/data.html` + `index.html`: BASE_DATA 2026 hårdkodad t.o.m. augusti (jun–aug från Firebase). Aug för Restaurangen/badbiljetter saknas fortfarande (null) |
 | 2026-09-07 | `inpasseringar/index.html`: kategoridiagrammet markerar nu "preliminära" månader – gul notis under diagrammet + `preliminaryMarks`-plugin som ritar en "Preliminärt"-etikett över ofullständiga staplar. Dynamiskt: försvinner när alla kategorier för månaden är inrapporterade |
+| 2026-09-07 | `medlemmar/index.html` (v3.2): månadsdata jun–aug 2026 tillagd. Totallinjen från Wondr Count2 (jun 1335, jul 1336, aug 1326). Familj/enskilt jun–aug osäker (ingen split i Count2) – aug från Wondr Subscription/Active exkl. gratis + registrering av familjemedl., jun–jul interpolerat – ritas streckad med ihåliga punkter (`segment.borderDash`). Stapeldiagrammet: jun–aug som en stapel "Total nettoförändring". Statistikkort → aug 2026. Fotnoten länkar Count2-referensen till `bilder/medlemmar_202603_202608.jpg` (öppen källa, Wondr kräver inloggning) |
 
 ---
 
@@ -144,16 +145,25 @@ Skapad 2026-05-27. Visar engångsinträden (Wondr-köp utan medlemskap) per mån
 Verktyg för att visualisera tillväxten av aktiva Wondr-medlemmar.
 Live: https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/medlemmar/
 
-**Aktuell statistik (maj 2026):**
+**Aktuell statistik (aug 2026):**
 
 | Typ | Antal |
 |-----|-------|
-| Familjemedlemskap | 446 |
-| Enskilda medlemskap | 884 |
-| **Totalt** | **1 330** |
-| Netto nya efter bastuöppning (juli 2025) | 773 |
+| Familjemedlemskap | 445 * |
+| Enskilda medlemskap | 861 * |
+| **Totalt** | **1 326** |
+| Netto nya efter bastuöppning (juli 2025) | 769 |
+
+\* Totalen = Wondr Count2 (säker). Familj/enskilt jun–aug = uppskattad (aug från
+Wondr Subscription/Active exkl. gratis + registrering av familjemedl., jun–jul
+interpolerat maj→aug). Ritas streckad i diagrammet. Maj-värdena var 446 / 884 / 1 330.
 
 **Diagram:** Månadsvis statistik 2025–2026. Standardfilter: "År 2026". Y-axeln hanterar negativa nettoförändringar (familjemedlemskap minskar 2026).
+
+**Osäker split jun–aug 2026:** Datarader med `osäker_split: true` ritas streckade
+(familj/enskilt-linjerna) eftersom Count2 inte ger någon uppdelning. Vid nästa
+uppdatering: om Wondr Subscription/Active får explicit familj/enskilt per månad,
+ersätt de interpolerade jun/jul-värdena och ta bort `osäker_split`-flaggan.
 
 **Trippelklick-funktion:** Klick × 3 på en stapel öppnar modal med förnamn + bokningsantal.
 - **November 2025:** Hårdkodat direkt i `index.html` – ENBART förnamn (initialer borttagna 2026-05-28)
