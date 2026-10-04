@@ -13,6 +13,11 @@ Avläst 2026-10-04, utifrån. Versionsnummer är de som sidans egen HTML anger.
 
 Även `www.` på de två omdirigeringsdomänerna ger 301 till samma mål.
 
+### Användning av e-post per domän (kompletterat 2026-10-04)
+- `kallbadhus.se`: publika adresser `info@` och `felanmalan@` (sidfoten på webbplatsen) och **avsändaradress i Wondr** (validerad domän). Kritisk.
+- `bjerredssaltsjobad.se`: Microsoft 365 är konfigurerat; vilka adresser som används är okänt.
+- `bjerredskallbadhus.se`: MX `smtp.rzone.de`; om adresser används är okänt. Restaurangens kontaktadress på sidan är en Gmail-adress.
+
 ### Anmärkningar
 - Båda omdirigeringsdomänerna har SPF-posten `v=spf1 +a +mx +ip4:152.115.36.105 +include:spf.protection.outlook.com -all`. På `kallbadhus.se` är MX hos Google men SPF tillåter Microsoft. Det är en **inkonsekvens** att reda ut om e-post används där: SPF bör matcha den tjänst som faktiskt skickar.
 - `bjerredssaltsjobad.se` har en TXT-post `MS=…`, vilket är Microsofts domänverifiering för Microsoft 365.

@@ -12,22 +12,32 @@ Senast avläst: **2026-10-04**. Allt nedan är avläst utifrån (DNS, HTTP-svar,
 ## Kortversion
 
 - Den riktiga webbplatsen är **`https://bjerredskallbadhus.se/`**. Det är en **WordPress-sajt** (tema Celina, byggd med Elementor, WooCommerce och Bookly). Den ligger på en annan leverantör än fakturan i frågan.
-- **`kallbadhus.se`** och **`bjerredssaltsjobad.se`** (inklusive `www.`) svarar med **301-omdirigering** till `https://bjerredskallbadhus.se/`. De är alltså inga egna webbplatser.
+- **`kallbadhus.se`** och **`bjerredssaltsjobad.se`** (inklusive `www.`) svarar med **301-omdirigering** till `https://bjerredskallbadhus.se/`. De har alltså ingen egen webbplats, men se nästa punkter: de är ändå i bruk.
 - Båda omdirigeringsdomänerna använder namnservrar hos **Intendit** (`ns1/ns2.intendit.se`).
-- **Viktigt:** båda har även **e-post kopplad**. `bjerredssaltsjobad.se` pekar MX mot Microsoft 365 (Exchange Online) och `kallbadhus.se` pekar MX mot Google. Att säga upp eller låta domänerna löpa ut kan alltså stänga av e-postadresser, inte bara omdirigeringen.
-- Wondr (betalning/inpassering) ligger på en egen subdomän hos Wondr: `bjerredssaltsjobad.wondr.se`. Den är inte beroende av de två domänerna i DNS-hänseende, men kontrollera om utskick eller tryckt material använder dem.
+- **`kallbadhus.se` är kritisk, inte bara en skyddsdomän.** Den används som e-postdomän på tre sätt:
+  1. **Publika kontaktadresser på webbplatsen** (sidfoten): `info@kallbadhus.se` (Föreningen: medlemskap, frågor) och `felanmalan@kallbadhus.se` (Felanmälan: åtgärder och reparationer). Sidans restaurangadress är en Gmail-adress och påverkas inte.
+  2. **Avsändare för Wondr.** I Wondr (Inställningar → Kommunikation → E-post) är *Global sender address* `info@kallbadhus.se` och *Validated domains* är `kallbadhus.se`. Alla utskick från Wondr går alltså ut från den domänen. Källa: skärmdump av Wondrs inställningar, 2026-10-04.
+  3. **MX pekar mot Google**, så adresserna är sannolikt riktiga brevlådor.
+  Wondrs validering av domänen innebär sannolikt särskilda DNS-poster (typiskt DKIM) som ligger hos den som sköter DNS (idag Intendit). Vilka poster det är: OKÄNT.
+- **`bjerredssaltsjobad.se`** har MX mot Microsoft 365 (Exchange Online) och en `MS=`-verifieringspost, så e-post används sannolikt även där. Vilka adresser: OKÄNT.
+- Att säga upp, låta löpa ut eller flytta DNS för någon av dem utan att kopiera poster kan alltså stoppa Wondr-mejl (bekräftelser, kvitton, lösenordsåterställning), göra publika kontaktadresser döda och få mejl att studsa eller hamna i skräppost.
+- Wondr (betalning/inpassering) ligger på en egen subdomän hos Wondr: `bjerredssaltsjobad.wondr.se`. Själva webbadressen är inte beroende av de två domänerna, men dess utskick är det (se ovan).
 
 ## Rekommendation om domänerna (preliminär)
 
 1. **Säg inte upp något än.** Kartlägg först vilka e-postadresser och vilka system som använder domänerna (se checklistan).
-2. **Behåll båda som skyddsdomäner** om e-post eller tryckt material använder dem. De kostar lite per år jämfört med risken att någon annan tar över ett namn som är kopplat till föreningen.
+2. **Behåll `kallbadhus.se` – den är i aktiv användning** (publika adresser och Wondr-avsändare). Behåll även `bjerredssaltsjobad.se` så länge e-post eller tryckt material använder den, och som skydd mot att någon annan tar över namnet. Kostnaden är liten jämfört med följderna.
 3. **Vid leverantörsbyte: flytta domänerna (transfer)**, säg inte upp dem. Se till att domäninnehavaren är föreningen och inte en enskild person.
-4. **Dokumentera allt som ändras** i `references/observationslogg.md` med datum.
+4. **Kopiera alla DNS-poster** (MX, SPF, DKIM, verifieringsposter) till den nya leverantören *innan* namnservrarna byts. Testa sedan ett Wondr-mejl och ett mejl till `info@kallbadhus.se`.
+5. **Dokumentera allt som ändras** i `references/observationslogg.md` med datum.
 
 ### Checklista före uppsägning eller byte
 - [ ] Vem är registrerad innehavare för varje domän? (OKÄNT, se nedan)
 - [ ] Vilka e-postadresser finns på `@bjerredssaltsjobad.se` och `@kallbadhus.se`? Vem äger Microsoft 365- respektive Google-kontot?
 - [ ] Vad levererar Intendit utöver domäner (webbhotell, e-post, DNS)? Vilket avtal ska sägas upp och när?
+- [ ] Vilka exakta DNS-poster kräver Wondr för den validerade domänen `kallbadhus.se`? (fråga Wondr eller läs valideringen i Wondrs inställningar)
+- [ ] Vem äger brevlådorna `info@kallbadhus.se` och `felanmalan@kallbadhus.se` (Google-konto), och vem läser dem?
+- [ ] Skickar Wondr, Wordpress-sajtens formulär (Contact Form 7, MetForm, Bookly) eller andra system mejl från någon av domänerna?
 - [ ] Finns länkar till domänerna i tryckt material, skyltar, QR-koder, sociala medier, Wondr-texter eller bokningsmejl?
 - [ ] Vem hanterar DNS idag, och vem får ändra den?
 - [ ] Var och hos vem är `bjerredskallbadhus.se` registrerad, och när förnyas den?
@@ -51,6 +61,9 @@ Detaljer i [references/teknik.md](references/teknik.md).
 - Vem som administrerar WordPress, vem som har hosting-avtalet för `bjerredskallbadhus.se` och vad det kostar.
 - Om WooCommerce/Bookly används, och hur uppdateringar och säkerhetskopior sköts.
 - Vilket avtal som just faktureras av Intendit utöver de två domänerna.
+- Vem som äger och betalar det som tyder på ett **Google Workspace**-konto för `kallbadhus.se` (MX mot Google; styrelsen läser `info@` och `felanmalan@` i Gmails webbgränssnitt). Kontot finns inte på Intendits faktura. Förlorad åtkomst till kontot vid personbyte i styrelsen är en risk.
+- Förklaring: **MX** (*Mail eXchanger*) är den DNS-post som anger vilken server som tar emot post för en domän. Den som är **namnserver** för domänen (idag Intendit) styr MX- och övriga poster.
+- Vilka DNS-poster som validerar `kallbadhus.se` för Wondr. En sökning 2026-10-04 efter vanliga DKIM-väljare och `_dmarc` hittade inget, men det är inget bevis (väljarnamnen är okända). Domänens SPF-post nämner inget Wondr-specifikt och DMARC-post saknas, vilket kan påverka hur säkert mejlen når fram.
 
 ## Så underhåller du den här skillen
 
