@@ -50,6 +50,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-09-07 | `inpasseringar/data.html` + `index.html`: BASE_DATA 2026 hårdkodad t.o.m. augusti (jun–aug från Firebase). Aug för Restaurangen/badbiljetter saknas fortfarande (null) |
 | 2026-09-07 | `inpasseringar/index.html`: kategoridiagrammet markerar nu "preliminära" månader – gul notis under diagrammet + `preliminaryMarks`-plugin som ritar en "Preliminärt"-etikett över ofullständiga staplar. Dynamiskt: försvinner när alla kategorier för månaden är inrapporterade |
 | 2026-09-07 | `medlemmar/index.html` (v3.2): månadsdata jun–aug 2026 tillagd. Totallinjen från Wondr Count2 (jun 1335, jul 1336, aug 1326). Familj/enskilt jun–aug osäker (ingen split i Count2) – aug från Wondr Subscription/Active exkl. gratis + registrering av familjemedl., jun–jul interpolerat – ritas streckad med ihåliga punkter (`segment.borderDash`). Stapeldiagrammet: jun–aug som en stapel "Total nettoförändring". Statistikkort → aug 2026. Fotnoten länkar Count2-referensen till `bilder/medlemmar_202603_202608.jpg` (öppen källa, Wondr kräver inloggning) |
+| 2026-10-04 | Skill `bjerred-webbplats` skapad (verktygsneutral, i `.agents/skills/`, pekare i `.claude/skills/`, `AGENTS.md` i roten): hur bjerredskallbadhus.se är byggd, domänkarta för kallbadhus.se och bjerredssaltsjobad.se (omdirigeringar, e-post hos Microsoft 365/Google), checklista inför leverantörsbyte |
 
 ---
 
@@ -58,6 +59,8 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 Webbsida med entréskylt och statistik för **Bjerreds Saltsjöbad** (kallbadhus och bastu i Bjärred utanför Lund).
 Webbplats: https://bjerredskallbadhus.se
 GitHub Pages: https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/
+
+> **Webbplats och domäner:** vid frågor om hur bjerredskallbadhus.se är byggd, om domänerna `kallbadhus.se` och `bjerredssaltsjobad.se`, DNS, e-post, hosting eller leverantörsbyte – läs skillen [.agents/skills/bjerred-webbplats/SKILL.md](.agents/skills/bjerred-webbplats/SKILL.md) (verktygsneutral, delas av flera AI-verktyg; pekare i `.claude/skills/`).
 
 ---
 
