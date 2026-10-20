@@ -1583,6 +1583,33 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
 
     </div>
   </div>
+  <!-- ============================================================
+       10. JÄMFÖRELSE MED SUPABASE (korsreferens, tillagd 2026-10-20)
+       Samma sorts uppgift – att låta många läsare uppdatera en gemensam
+       sida – löstes i Samrådsguiden (repot Codex) med Supabase i stället
+       för Firebase. Beskrivningen där jämför med den här sidan.
+       ============================================================ -->
+  <div class="card" id="jamfor-supabase">
+    <div class="card-header">🔀 Jämförelse med Supabase</div>
+    <div class="card-body">
+      <p>
+        Samma sorts uppgift, att låta många läsare uppdatera en gemensam sida, har också
+        lösts med <strong>Supabase</strong> i Samrådsguiden: läsare ordnar om en rangordning
+        av frågor utan inloggning, och sidan visar gruppens gemensamma ordning direkt.
+        Beskrivningen finns i
+        <a href="https://github.com/kentlundgren/Codex/blob/main/Fritid/NF/Samradsguiden/supabase.md" target="_blank" rel="noopener">supabase.md</a>
+        och innehåller en
+        <a href="https://github.com/kentlundgren/Codex/blob/main/Fritid/NF/Samradsguiden/supabase.md#jamforelse" target="_blank" rel="noopener">jämförelse mellan Firebase och Supabase</a>
+        som utgår från den här sidan.
+      </p>
+      <div class="info-ruta">
+        <strong>Kort skillnad.</strong> Här ligger datan i ett JSON-träd (Realtime Database) och
+        användare bjuds in med inloggning. I Supabase är det vanliga tabeller, hela uppsättningen
+        är en SQL-fil som körs en gång, och rangordningen kräver ingen inloggning.
+        Uppgiften är olika, så jämförelsen gäller främst vad som krävs för varje uppgift.
+      </div>
+    </div>
+  </div>
 </main><!-- slut main -->
 
 
