@@ -1589,9 +1589,10 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
        och hur man kontrollerar att de är i synk.
        ============================================================ -->
   <div class="card" id="synk-sektion">
-    <h2>9. BASE_DATA och Firebase – varför finns båda, och hur hålls de i synk?</h2>
+    <div class="card-header">🔄 9. BASE_DATA och Firebase – varför finns båda, och hur hålls de i synk?</div>
+    <div class="card-body">
   
-    <h3>Bakgrund – varför två datakällor?</h3>
+    <h3 style="margin-top:1.2rem;color:var(--primary);font-size:1rem;">Bakgrund – varför två datakällor?</h3>
     <p>
       <code>data.html</code> och <code>index.html</code> läser inpasseringsdata från
       <strong>Firebase Realtime Database</strong>. Men om Firebase är nere, om nätverket
@@ -1604,7 +1605,7 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
       från BASE_DATA (orange prick ●).
     </p>
   
-    <table>
+    <table class="struktur" style="margin-top:1rem;">
       <thead>
         <tr><th>Egenskap</th><th>Firebase Realtime Database</th><th>BASE_DATA (i HTML-filen)</th></tr>
       </thead>
@@ -1617,7 +1618,7 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
       </tbody>
     </table>
   
-    <h3>Hur kan de gå ur synk?</h3>
+    <h3 style="margin-top:1.2rem;color:var(--primary);font-size:1rem;">Hur kan de gå ur synk?</h3>
     <p>
       Det vanligaste scenariot: en föreningsmedlem loggar in och fyller i ett nytt månads­värde
       direkt i webbläsaren. Värdet sparas i Firebase – men BASE_DATA i HTML-filen uppdateras
@@ -1625,7 +1626,7 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
       om Firebase är nere visas det gamla BASE_DATA-värdet (null = gul cell).
     </p>
   
-    <h3>Kontrollera synken via Firebase REST API</h3>
+    <h3 style="margin-top:1.2rem;color:var(--primary);font-size:1rem;">Kontrollera synken via Firebase REST API</h3>
     <p>
       Firebase Realtime Database har ett öppet REST API. Eftersom läsreglerna är
       <code>read = true</code> kan vem som helst (och Claude!) hämta hela datan utan
@@ -1639,7 +1640,7 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
       Resultatet visar exakt vilka celler som avviker – och med vilket värde.
     </p>
   
-    <h3>Månadsrutin – Cursor Skill</h3>
+    <h3 style="margin-top:1.2rem;color:var(--primary);font-size:1rem;">Månadsrutin – Cursor Skill</h3>
     <p>
       För att göra synk-kontrollen enkel och repeterbar finns ett
       <strong>Cursor Agent Skill</strong> installerat:
@@ -1651,17 +1652,15 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
       Skillet innehåller det kompletta PowerShell-skriptet och en checklista.
       Säg till Claude i början av varje månad:
     </p>
-    <blockquote style="border-left:4px solid var(--secondary);padding:0.6rem 1rem;
-                       background:#eaf4fb;border-radius:0 6px 6px 0;margin:0.7rem 0;
-                       font-style:italic;font-size:0.9rem;">
+    <div class="info-ruta"><em>
       "Kör månadssynken för Bjerreds inpasseringsdata"
-    </blockquote>
+    </em></div>
     <p>
       Claude läser då skillet, hämtar Firebase-data och rapporterar avvikelser –
       och uppdaterar BASE_DATA i båda HTML-filerna om något saknas.
     </p>
   
-    <h3>Teknisk not – varför BASE_DATA finns i <em>två</em> filer</h3>
+    <h3 style="margin-top:1.2rem;color:var(--primary);font-size:1rem;">Teknisk not – varför BASE_DATA finns i <em>två</em> filer</h3>
     <p>
       <code>data.html</code> (redigeringsvyn) och <code>index.html</code> (statistikdiagrammet)
       är helt fristående HTML-sidor utan gemensam JS-modul. Båda behöver BASE_DATA som fallback,
@@ -1669,6 +1668,7 @@ for (const [kategori, månader] of Object.entries(kategorier)) {
       enkla och driftsäkra – men det innebär att du <strong>alltid måste uppdatera båda</strong>
       när BASE_DATA ändras.
     </p>
+    </div>
   </div>
 
   <!-- ============================================================
