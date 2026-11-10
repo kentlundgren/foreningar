@@ -132,6 +132,10 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 
 ---
 
+## Månadsrapport
+
+Skriver Kent nyckelordet **månadsrapport** (eventuellt med månad), eller frågar "vad har jag gjort den här månaden?": läs skillen [kent-manadsrapport](https://github.com/kentlundgren/AI-teknik/blob/main/.claude/skills/kent-manadsrapport/SKILL.md) och följ den. Den räknar projekt över alla Kents repon och kräver att du kan köra Python och Git på hans dator. Färdiga rapporter finns i [Manadsrapport/](https://github.com/kentlundgren/AI-teknik/blob/main/Manadsrapport/README.md). Lokalt ligger skillen i `C:\Users\kentl\OneDrive\AI\AI-teknik\.claude\skills\kent-manadsrapport`. Committa och pusha inte på eget initiativ.
+
 ## Kodkommentarer
 
 > **INSTRUKTION TILL CLAUDE:** När du skriver kod (HTML, JavaScript, CSS, Python eller annat) ska du alltid kommentera koden i detalj – förklara vad varje avsnitt gör och varför. Kommentarerna ska vara tillräckligt utförliga för att Kent ska kunna förstå och underhålla koden utan att behöva fråga.

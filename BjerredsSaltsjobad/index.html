@@ -5,7 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bjerreds Saltsjöbad</title>
 
+  <!-- Delningsbild (Open Graph) – visas när länken delas på LinkedIn, Facebook, X m.fl. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="sv_SE">
+  <meta property="og:site_name" content="Bjerreds Saltsjöbad">
+  <meta property="og:title" content="Bjerreds Saltsjöbad – kallbad, inpassering och elförbrukning">
+  <meta property="og:description" content="Entréskylt, inpasseringsstatistik, medlemmar och elförbrukning för kallbadhuset i Bjärred.">
+  <meta property="og:url" content="https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/">
+  <meta property="og:image" content="https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/og-teknik.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Kallbadhus på pålar, en kortläsare med bock och ett stapeldiagram med blixt, med texten Bjerreds Saltsjöbad">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bjerreds Saltsjöbad – kallbad, inpassering och elförbrukning">
+  <meta name="twitter:description" content="Entréskylt, inpasseringsstatistik, medlemmar och elförbrukning för kallbadhuset i Bjärred.">
+  <meta name="twitter:image" content="https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/og-teknik.jpg">
+
   <!--
+    UPPDATERING 2026-11-10: delningsbild (og-teknik.jpg), hörnparet { } GitHub + </> teknik (modal).
     index.html – Landningssida / nav-sida för Bjerreds Saltsjöbad
     Innehåller enbart navigering till undersidorna.
     Förberedd för att ta emot mer information längre fram.
@@ -132,6 +149,47 @@
       color: var(--muted);
     }
     footer a { color: var(--muted); }
+    /* ============================================================
+       HÖRNPAR – { } GitHub nere till vänster, </> teknik nere till höger
+       (samma mönster som Bjerred-el och AI-teknik/Presentationer/Nr1)
+       ============================================================ */
+    .corner {
+      position: fixed; bottom: 14px;
+      font-family: "Courier New", Courier, monospace; font-size: 0.78rem;
+      color: var(--dark); background: #fff; border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.3rem 0.7rem;
+      text-decoration: none; cursor: pointer;
+      opacity: 0.55; transition: opacity 0.2s ease; z-index: 1000;
+    }
+    .corner:hover, .corner:focus-visible { opacity: 1; }
+    .corner-left  { left: 14px; }
+    .corner-right { right: 14px; }
+    @media (max-width: 600px) { .corner { bottom: 10px; } .corner-left { left: 10px; } .corner-right { right: 10px; } }
+
+    /* Teknik-modal: mörk halvtransparent bakgrund, visas när .show läggs på */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.6); overflow-y: auto; padding: 5vh 1rem;
+    }
+    .modal-overlay.show { display: block; }
+    .modal {
+      position: relative; background: #fff; border-radius: 14px;
+      max-width: 640px; margin: 0 auto; padding: 1.6rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .modal h2 { font-size: 1.25rem; margin-bottom: 0.4rem; }
+    .modal h3.avsnitt { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 1.1rem 0 0.5rem; }
+    .modal .intro { color: var(--muted); font-size: 0.9rem; }
+    .modal-close {
+      position: absolute; top: 0.6rem; right: 0.9rem; background: none; border: none;
+      font-size: 1.8rem; line-height: 1; color: #888; cursor: pointer;
+    }
+    .modal-close:hover { color: var(--dark); }
+    .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    @media (max-width: 560px) { .tech-grid { grid-template-columns: 1fr; } }
+    .tech-card { background: var(--sand); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.8rem; }
+    .tech-card h4 { font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .tech-card p { font-size: 0.82rem; color: #444; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -203,27 +261,47 @@
 </footer>
 
 <!-- ================================================================
-     DISKRET GITHUB-LÄNK – nedre vänstra hörnet
-     Visar källkoden i repot utan att störa sidans layout.
+     HÖRNPAR: { } GitHub (nedre vänster) och </> teknik (nedre höger)
      ================================================================ -->
-<a href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad"
-   target="_blank"
-   rel="noopener"
-   title="Källkod på GitHub"
-   style="
-     position: fixed;
-     bottom: 0.6rem;
-     left: 1rem;
-     font-size: 0.72rem;
-     color: #7f8c8d;
-     text-decoration: none;
-     opacity: 0.65;
-     transition: opacity 0.2s;
-     z-index: 50;
-   "
-   onmouseover="this.style.opacity='1'"
-   onmouseout="this.style.opacity='0.65'"
->{ } GitHub</a>
+<a class="corner corner-left" href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad" target="_blank" rel="noopener">{ } GitHub</a>
+<button type="button" class="corner corner-right" id="techBtn" aria-label="Tekniköversikt">&lt;/&gt; teknik</button>
+
+<!-- Teknik-modal: öppnas av knappen ovan, stängs med ×, klick utanför eller Escape -->
+<div class="modal-overlay" id="techModal" role="dialog" aria-modal="true" aria-labelledby="techTitel">
+  <div class="modal">
+    <button type="button" class="modal-close" id="techClose" aria-label="Stäng">&times;</button>
+    <h2 id="techTitel">Hur den här sidan är byggd</h2>
+    <p class="intro">Startsidan är en enkel navigeringssida. Statistiken och diagrammen finns på undersidorna.</p>
+
+    <h3 class="avsnitt" id="Tekniken">Tekniken</h3>
+    <div class="tech-grid">
+      <div class="tech-card"><h4>En enda HTML-fil</h4><p>All CSS ligger i filen. Sidan använder inga bibliotek, inget byggsteg och ingen JavaScript utöver modalen.</p></div>
+      <div class="tech-card"><h4>GitHub Pages</h4><p>Sidan publiceras som statiska filer från mappen <code>BjerredsSaltsjobad</code> i repot <code>foreningar</code>. Ingen server körs och inga uppgifter skickas någonstans från den här sidan.</p></div>
+      <div class="tech-card"><h4>Undersidorna</h4><p>Inpasseringsstatistiken och medlemsstatistiken ritas med Chart.js (diagram). Inpasseringsdata läses från Firebase Realtime Database, med en lokal kopia som reserv.</p></div>
+      <div class="tech-card"><h4>Elförbrukning</h4><p>Elsidorna ligger i ett eget repo, <code>Bjerred-el</code>, och öppnas i ny flik.</p></div>
+      <div class="tech-card"><h4>Delningsbilden</h4><p>Bilden <code>og-teknik.jpg</code> (1200 × 630 px) visar kallbad, inpassering och elförbrukning. Den är ritad med Python-biblioteket Pillow och används i sidans Open Graph-taggar.</p></div>
+    </div>
+
+    <h3 class="avsnitt" id="Metoden">Metoden</h3>
+    <div class="tech-grid">
+      <div class="tech-card"><h4>Ett kort per undersida</h4><p>Varje del av projektet (entréskylt, inpassering, medlemmar, el) har ett kort med egen färgkant. Nya delar läggs till som nya kort.</p></div>
+      <div class="tech-card"><h4>Personuppgifter</h4><p>Namnlistor och andra personuppgifter ligger inte i repot. Engångsbesök visas med koder i stället för namn.</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Öppna/stäng teknik-modalen (knapp, ×, klick utanför rutan, Escape)
+  (function () {
+    var overlay = document.getElementById('techModal');
+    function oppna() { overlay.classList.add('show'); }
+    function stang() { overlay.classList.remove('show'); }
+    document.getElementById('techBtn').addEventListener('click', oppna);
+    document.getElementById('techClose').addEventListener('click', stang);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) stang(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') stang(); });
+  })();
+</script>
 
 <!-- ================================================================
      DISKRET LÄNK TILL WORKSPACE-GUIDE – nedre högra hörnet

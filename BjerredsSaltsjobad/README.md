@@ -13,6 +13,7 @@ Webbapplikationer för Bjerreds Saltsjöbad – en badanläggning i Skåne.
 ```
 BjerredsSaltsjobad/
 ├── index.html               ← Landningssida – startpunkt för hela projektet
+├── og-teknik.jpg            ← Delningsbild (Open Graph, 1200×630): kallbad, inpassering, elförbrukning
 ├── inpassering/             ← Digitala entrésyltar (hur man betalar & kommer in)
 │   ├── index.html           ← Skylt-sida med foto av gamla skylten + knappar till digitala
 │   ├── skylt.html           ← Entréskylt på svenska (A4/A5-utskrift)
