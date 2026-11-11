@@ -54,6 +54,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-10-18 | BASE_DATA: sep 2026 + aug Restaurangen/badbiljetter synkad från Firebase i `inpasseringar/index.html` och `data.html` |
 | 2026-11-11 | BASE_DATA: okt 2026 (SMS/Swish 653, armband 5, Wondr 3 589, Engångsbadare 419) synkad från Firebase i `index.html` och `data.html`; `data.md` uppdaterad jun–okt (okt preliminär, Restaurangen saknas); skillens `$base` uppdaterad |
 | 2026-11-11 | `inpasseringar/index.html`: borttaget "+ Lägg till / uppdatera data", inmatningsmodalen, "Återställ originaldata" och localStorage-overrides (rester från före Firebase); "Senast uppdaterad" läser Firebase-datumet. Inmatning sker bara i `data.html` |
+| 2026-11-11 | `inpasseringar/engangsintraden.html`: delningsbild `og-engangsintraden.jpg` + Open Graph/Twitter-taggar (bara antal per månad, inga koder) |
 | 2026-11-11 | `inpasseringar/index.html`: delningsbild `og-inpasseringar.jpg` + Open Graph/Twitter-taggar |
 
 ---
