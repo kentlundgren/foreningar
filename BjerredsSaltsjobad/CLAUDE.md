@@ -52,6 +52,8 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-09-07 | `medlemmar/index.html` (v3.2): månadsdata jun–aug 2026 tillagd. Totallinjen från Wondr Count2 (jun 1335, jul 1336, aug 1326). Familj/enskilt jun–aug osäker (ingen split i Count2) – aug från Wondr Subscription/Active exkl. gratis + registrering av familjemedl., jun–jul interpolerat – ritas streckad med ihåliga punkter (`segment.borderDash`). Stapeldiagrammet: jun–aug som en stapel "Total nettoförändring". Statistikkort → aug 2026. Fotnoten länkar Count2-referensen till `bilder/medlemmar_202603_202608.jpg` (öppen källa, Wondr kräver inloggning) |
 | 2026-10-04 | Skill `bjerred-webbplats` skapad (verktygsneutral, i `.agents/skills/`, pekare i `.claude/skills/`, `AGENTS.md` i roten): hur bjerredskallbadhus.se är byggd, domänkarta för kallbadhus.se och bjerredssaltsjobad.se (omdirigeringar, e-post hos Microsoft 365/Google), checklista inför leverantörsbyte |
 | 2026-10-18 | BASE_DATA: sep 2026 + aug Restaurangen/badbiljetter synkad från Firebase i `inpasseringar/index.html` och `data.html` |
+| 2026-11-11 | BASE_DATA: okt 2026 (SMS/Swish 653, armband 5, Wondr 3 589, Engångsbadare 419) synkad från Firebase i `index.html` och `data.html`; `data.md` uppdaterad jun–okt (okt preliminär, Restaurangen saknas); skillens `$base` uppdaterad |
+| 2026-11-11 | `inpasseringar/index.html`: delningsbild `og-inpasseringar.jpg` + Open Graph/Twitter-taggar |
 
 ---
 
