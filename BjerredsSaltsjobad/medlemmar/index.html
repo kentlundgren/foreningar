@@ -7,10 +7,13 @@
     
     <!-- 
     =========================================================================
-    MEDLEMSUTVECKLING - STATISTIKVERKTYG (Version 3.3)
+    MEDLEMSUTVECKLING - STATISTIKVERKTYG (Version 3.4)
     =========================================================================
     Skapad: 2025-12-23
-    Uppdaterad: 2026-11-11
+    Uppdaterad: 2026-11-12
+
+    Ändringar i version 3.4 (2026-11-12):
+    - Diskret länk "GitHub-guide" (till GitHub.html) strax till höger om { } GitHub-knappen nere till vänster
 
     Ändringar i version 3.3 (2026-11-11):
     - Hörnparet { } GitHub (nere till vänster) + </> teknik (modal, nere till höger)
@@ -772,7 +775,15 @@
     .corner:hover, .corner:focus-visible { opacity: 1; }
     .corner-left  { left: 14px; }
     .corner-right { right: 14px; }
-    @media (max-width: 600px) { .corner { bottom: 10px; } .corner-left { left: 10px; } .corner-right { right: 10px; } }
+    /* Mycket diskret länk till Git & GitHub-guiden, strax till höger om { } GitHub-knappen (tillagd 2026-11-12) */
+    .corner-guide {
+      position: fixed; bottom: 14px; left: 118px;
+      font-family: "Courier New", Courier, monospace; font-size: 0.7rem; line-height: 1.3;
+      padding: 0.3rem 0.2rem; color: #2c3e50; text-decoration: none;
+      opacity: 0.35; transition: opacity 0.2s ease; z-index: 1000;
+    }
+    .corner-guide:hover, .corner-guide:focus-visible { opacity: 1; text-decoration: underline; }
+    @media (max-width: 600px) { .corner { bottom: 10px; } .corner-left { left: 10px; } .corner-right { right: 10px; } .corner-guide { bottom: 10px; left: 114px; } }
     .tm-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.6); overflow-y: auto; padding: 5vh 1rem; }
     .tm-overlay.show { display: block; }
     .tm-box { position: relative; background: #fff; color: #2c3e50; border-radius: 14px; max-width: 640px; margin: 0 auto; padding: 1.6rem; box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.5; text-align: left; }
@@ -1080,6 +1091,7 @@
                 </p>
             </div>
         </div>
+
     </div>
 
     <!-- 
@@ -1967,6 +1979,7 @@
      HÖRNPAR: { } GitHub (nedre vänster) och </> teknik (nedre höger)
      ================================================================ -->
 <a class="corner corner-left" href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad/medlemmar" target="_blank" rel="noopener">{ } GitHub</a>
+<a class="corner-guide" href="GitHub.html" title="Git &amp; GitHub-guide: hur projektet versionshanteras och publiceras">GitHub-guide</a>
 <button type="button" class="corner corner-right" id="techBtn" aria-label="Tekniköversikt">&lt;/&gt; teknik</button>
 
 <!-- Teknik-modal: öppnas av knappen ovan, stängs med ×, klick utanför eller Escape -->
