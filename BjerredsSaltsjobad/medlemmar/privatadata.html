@@ -462,7 +462,39 @@
                 font-size: 1.4rem;
             }
         }
-    </style>
+    
+
+    /* ============================================================
+       HÖRNPAR – { } GitHub nere till vänster, </> teknik nere till höger
+       (samma mönster som BjerredsSaltsjobad/index.html; klassnamnen tm-* undviker krock med sidans egna .modal)
+       ============================================================ */
+    .corner {
+      position: fixed; bottom: 14px;
+      font-family: "Courier New", Courier, monospace; font-size: 0.78rem; line-height: 1.3;
+      color: #2c3e50; background: #fff; border: 1px solid #dde1e7;
+      border-radius: 999px; padding: 0.3rem 0.7rem;
+      text-decoration: none; cursor: pointer;
+      opacity: 0.55; transition: opacity 0.2s ease; z-index: 1000;
+    }
+    .corner:hover, .corner:focus-visible { opacity: 1; }
+    .corner-left  { left: 14px; }
+    .corner-right { right: 14px; }
+    @media (max-width: 600px) { .corner { bottom: 10px; } .corner-left { left: 10px; } .corner-right { right: 10px; } }
+    .tm-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.6); overflow-y: auto; padding: 5vh 1rem; }
+    .tm-overlay.show { display: block; }
+    .tm-box { position: relative; background: #fff; color: #2c3e50; border-radius: 14px; max-width: 640px; margin: 0 auto; padding: 1.6rem; box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.5; text-align: left; }
+    .tm-box h2 { font-size: 1.25rem; margin: 0 0 0.4rem; color: #1a5276; }
+    .tm-box h3.tm-sec { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: #7f8c8d; margin: 1.1rem 0 0.5rem; }
+    .tm-box .tm-intro { color: #7f8c8d; font-size: 0.9rem; margin: 0; }
+    .tm-close { position: absolute; top: 0.6rem; right: 0.9rem; background: none; border: none; font-size: 1.8rem; line-height: 1; color: #888; cursor: pointer; }
+    .tm-close:hover { color: #2c3e50; }
+    .tm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    @media (max-width: 560px) { .tm-grid { grid-template-columns: 1fr; } }
+    .tm-card { background: #f4f6f9; border: 1px solid #dde1e7; border-radius: 8px; padding: 0.7rem 0.8rem; }
+    .tm-card h4 { font-size: 0.9rem; margin: 0 0 0.25rem; color: #2c3e50; }
+    .tm-card p { font-size: 0.82rem; color: #444; line-height: 1.4; margin: 0; }
+    .tm-card code { font-size: 0.78rem; }
+  </style>
 </head>
 <body>
 
@@ -1006,6 +1038,46 @@ curl -I https://kentlundgren.se</pre>
             <a href="dataformat.html">Dataformat</a>
         </p>
     </footer>
+
+<!-- ================================================================
+     HÖRNPAR: { } GitHub (nedre vänster) och </> teknik (nedre höger)
+     ================================================================ -->
+<a class="corner corner-left" href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad/medlemmar" target="_blank" rel="noopener">{ } GitHub</a>
+<button type="button" class="corner corner-right" id="techBtn" aria-label="Tekniköversikt">&lt;/&gt; teknik</button>
+
+<!-- Teknik-modal: öppnas av knappen ovan, stängs med ×, klick utanför eller Escape -->
+<div class="tm-overlay" id="techModal" role="dialog" aria-modal="true" aria-labelledby="techTitel">
+  <div class="tm-box">
+    <button type="button" class="tm-close" id="techClose" aria-label="Stäng">&times;</button>
+    <h2 id="techTitel">Hur den här sidan är byggd</h2>
+    <p class="tm-intro">En guide om hur man hindrar att personnamn i datafiler hamnar i Googles sökresultat.</p>
+
+    <h3 class="tm-sec" id="Tekniken">Tekniken</h3>
+    <div class="tm-grid">
+      <div class="tm-card"><h4>En HTML-fil</h4><p>Sidan är en enda fil med egen CSS, utan byggsteg. Den publiceras som statiska filer på GitHub Pages från mappen <code>BjerredsSaltsjobad/medlemmar</code> i repot <code>foreningar</code>.</p></div>
+      <div class="tm-card"><h4>Ingen JavaScript</h4><p>Sidan är ren HTML och CSS. Kodexemplen visas som text.</p></div>
+    </div>
+
+    <h3 class="tm-sec" id="Metoden">Metoden</h3>
+    <div class="tm-grid">
+      <div class="tm-card"><h4>Sex metoder</h4><p><code>robots.txt</code>, en <code>X-Robots-Tag</code>-header, att blockera extern åtkomst, att flytta filer till en privat mapp, att byta filnamn och lösenordsskydd.</p></div>
+      <div class="tm-card"><h4>Problemet först</h4><p>Guiden börjar med varför publicerade datafiler kan indexeras och varför det är ett problem för medlemsregister.</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Öppna/stäng teknik-modalen (knapp, ×, klick utanför rutan, Escape)
+  (function () {
+    var overlay = document.getElementById('techModal');
+    function oppna() { overlay.classList.add('show'); }
+    function stang() { overlay.classList.remove('show'); }
+    document.getElementById('techBtn').addEventListener('click', oppna);
+    document.getElementById('techClose').addEventListener('click', stang);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) stang(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') stang(); });
+  })();
+</script>
 
 </body>
 </html>

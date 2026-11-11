@@ -54,6 +54,8 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-10-18 | BASE_DATA: sep 2026 + aug Restaurangen/badbiljetter synkad från Firebase i `inpasseringar/index.html` och `data.html` |
 | 2026-11-11 | BASE_DATA: okt 2026 (SMS/Swish 653, armband 5, Wondr 3 589, Engångsbadare 419) synkad från Firebase i `index.html` och `data.html`; `data.md` uppdaterad jun–okt (okt preliminär, Restaurangen saknas); skillens `$base` uppdaterad |
 | 2026-11-11 | `inpasseringar/index.html`: borttaget "+ Lägg till / uppdatera data", inmatningsmodalen, "Återställ originaldata" och localStorage-overrides (rester från före Firebase); "Senast uppdaterad" läser Firebase-datumet. Inmatning sker bara i `data.html` |
+| 2026-11-11 | Hörnparet `{ } GitHub` + `</> teknik` (modal) tillagt på `inpassering/index.html`, `inpasseringar/data.html`, `inpasseringar/databas.html`, `medlemmar/index.html` (v3.3), `medlemmar/GitHub.html`, `dataformat.html`, `privatadata.html`, `brev_till_Wondr_260105.html` och `ratt_repo.html` (v1.1). Gamla `.github-link` borttagna. Knappen Bjud in på `inpasseringar/data.html` flyttad till höger om hörnparet. `medlemmar/index.html` länkar nu till GitHub.html, dataformat.html, privatadata.html och brevet via teknik-modalen |
+| 2026-11-11 | Borttagna: `inpassering/data.html` (avkapad, aldrig hel, ersatt av `inpasseringar/data.html`) och `medlemmar/medlemmar.html` (tom). Båda finns kvar i git-historiken |
 | 2026-11-11 | `inpasseringar/engangsintraden.html`: delningsbild `og-engangsintraden.jpg` + Open Graph/Twitter-taggar (bara antal per månad, inga koder) |
 | 2026-11-11 | `inpasseringar/index.html`: delningsbild `og-inpasseringar.jpg` + Open Graph/Twitter-taggar |
 
@@ -123,7 +125,7 @@ BjerredsSaltsjobad/
 | `inpasseringar/engangsintraden.html` | Länk tillbaka till `index.html` i inpasseringar/ |
 | `medlemmar/index.html` | `← Bjerreds Saltsjöbad`-länk i headerbanderollet + `{ } GitHub`-knapp (nedre vänster) |
 
-Alla sidor ska ha hörnparet: en diskret `{ } GitHub`-länk nere till vänster och en `</> teknik`-knapp (modal) nere till höger. Nya .html-filer får båda från start (se `foreningar/CLAUDE.md` och skillen `kent-bygg-sidor`, regel 6). Klart: `index.html`, `inpasseringar/index.html` och `inpasseringar/engangsintraden.html`. Övriga sidor har bara GitHub-länken eller inget par ännu.
+Alla sidor ska ha hörnparet: en diskret `{ } GitHub`-länk nere till vänster och en `</> teknik`-knapp (modal) nere till höger. Nya .html-filer får båda från start (se `foreningar/CLAUDE.md` och skillen `kent-bygg-sidor`, regel 6). Alla sidor har paret utom utskriftssidorna `skylt.html` och `skylt_eng.html` (rot och `inpassering/`). Modalens klassnamn är `tm-*` (utom på startsidan och de två sidor som skapades först), för att inte krocka med sidors egna `.modal`.
 
 ---
 
