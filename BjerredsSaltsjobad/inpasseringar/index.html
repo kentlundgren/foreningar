@@ -983,6 +983,15 @@ function periodText(p, versalStart = true) {
   return `${start} ${p.start.y} – ${MONTHS_FULL[p.slut.m].toLowerCase()} ${p.slut.y}`;
 }
 
+/** "+6 628 (+12,8 %)" – förändring av värde mot referens, med riktigt minustecken. */
+function förändring(värde, ref) {
+  const diff   = värde - ref;
+  const proc   = ref ? (diff / ref) * 100 : 0;
+  const tecken = diff > 0 ? '+' : '';
+  return `${tecken}${diff.toLocaleString('sv-SE')} ` +
+         `(${tecken}${proc.toFixed(1).replace('.', ',').replace('-', '−')} %)`;
+}
+
 /** Fyller kortet för löpande årstal och dess förklaring/jämförelse. */
 function uppdateraLåtKort(data) {
   const valEl = document.getElementById('lat-value');
@@ -1023,14 +1032,10 @@ function uppdateraLåtKort(data) {
     'och går därför att jämföra med 2024 och 2025.</p>';
 
   if (föreg) {
-    const diff = nu.summa - föreg.summa;
-    const proc = föreg.summa ? (diff / föreg.summa) * 100 : 0;
-    const tecken = diff > 0 ? '+' : '';
     html +=
       `<p><strong>Föregående LÅT</strong> (${periodText(föreg, false)}): ` +
       `${föreg.summa.toLocaleString('sv-SE')}.<br>` +
-      `<strong>Skillnad:</strong> ${tecken}${diff.toLocaleString('sv-SE')} ` +
-      `(${tecken}${proc.toFixed(1).replace('.', ',').replace('-', '−')} %).</p>` +
+      `<strong>Skillnad:</strong> ${förändring(nu.summa, föreg.summa)}.</p>` +
       '<p>Har badet varit öppet hela tiden i båda perioderna bör de två talen ligga nära varandra. ' +
       'En stor skillnad tyder på en verklig förändring, en stängning eller ofullständig data.</p>';
     if (nu.harNoll || föreg.harNoll) {
@@ -1039,6 +1044,21 @@ function uppdateraLåtKort(data) {
     }
   } else {
     html += '<p>Det finns inte tillräckligt med hela månader för att jämföra med föregående LÅT.</p>';
+  }
+
+  /* Uppdatering 2026-11-12: jämförelse med 2024, sista hela året före ombyggnaden 2025.
+     Visas bara om alla 12 månader i 2024 är kompletta i datan. */
+  const hel2024 = Array.from({ length: 12 }, (_, m) => ärHelMånad(data, 2024, m)).every(Boolean);
+  if (hel2024) {
+    const ref = yearTotal(data, 2024);
+    html +=
+      `<p><strong>Jämfört med 2024</strong> (${ref.toLocaleString('sv-SE')} inpasseringar, ` +
+      'sista hela året före ombyggnaden 2025):<br>' +
+      `• LÅT: ${förändring(nu.summa, ref)}` +
+      (föreg ? `<br>• Föregående LÅT: ${förändring(föreg.summa, ref)}` : '') +
+      '</p>' +
+      '<p>Antalet gäller inpasseringar, inte antal personer. Alla kategorier räknas ihop ' +
+      '(armband och Wondr ingår båda).</p>';
   }
 
   if (utanför.length) {
