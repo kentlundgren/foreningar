@@ -6,8 +6,8 @@ Uppdateras varje månad när ny data läggs in – parallellt med BASE_DATA i `d
 **Källa:** Firebase Realtime Database (projekt `skylt-e0c45`)
 **Synkstatus kontrolleras med:** `.cursor/skills/bjerred-firebase-sync/SKILL.md`
 
-Senast uppdaterad: **2026-06-05**
-Dataperiod: **Januari 2024 – Maj 2026**
+Senast uppdaterad: **2026-11-11**
+Dataperiod: **Januari 2024 – Oktober 2026**
 
 ---
 
@@ -15,14 +15,16 @@ Dataperiod: **Januari 2024 – Maj 2026**
 
 | Kategori | Jan | Feb | Mar | Apr | Maj | Jun | Jul | Aug | Sep | Okt | Nov | Dec | TOT 2026 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Restaurangen/badbiljetter | 643 | 665 | 600 | 359 | 417 | – | – | – | – | – | – | – | **2 684** |
-| SMS/Swish-biljetter | 1 114 | 751 | 1 006 | 913 | 777 | – | – | – | – | – | – | – | **4 561** |
-| *Engångsbadare – Wondr \** | *17* | *13* | *38* | *31* | *173* | – | – | – | – | – | – | – | *272 \** |
-| Medlemmar – armband | 492 | 119 | 95 | 90 | 55 | – | – | – | – | – | – | – | **851** |
-| Medlemmar – Wondr | 2 627 | 2 445 | 3 663 | 3 293 | 3 417 | – | – | – | – | – | – | – | **15 445** |
-| **TOTALT** | **4 876** | **3 980** | **5 364** | **4 655** | **4 666** | – | – | – | – | – | – | – | **23 541** |
+| Restaurangen/badbiljetter | 643 | 665 | 600 | 359 | 417 | 316 | 392 | 505 | 554 | – | – | – | **4 451** † |
+| SMS/Swish-biljetter | 1 114 | 751 | 1 006 | 913 | 777 | 445 | 394 | 475 | 585 | 653 | – | – | **7 113** |
+| *Engångsbadare – Wondr \** | *17* | *13* | *38* | *31* | *173* | *104* | *128* | *153* | *247* | *419* | – | – | *1 323 \** |
+| Medlemmar – armband | 492 | 119 | 95 | 90 | 55 | 42 | 35 | 19 | 7 | 5 | – | – | **959** |
+| Medlemmar – Wondr | 2 627 | 2 445 | 3 663 | 3 293 | 3 417 | 3 312 | 3 635 | 4 099 | 3 850 | 3 589 | – | – | **33 930** |
+| **TOTALT** | **4 876** | **3 980** | **5 364** | **4 655** | **4 666** | **4 115** | **4 456** | **5 098** | **4 996** | **4 247** † | – | – | **46 453** |
 
 \* *Engångsbadare – Wondr räknas inte med i TOTALT (ingår troligen redan i Medlemmar – Wondr).*
+
+† *Oktober 2026 är preliminär: Restaurangen/badbiljetter saknas ännu i Firebase och ingår därför inte i oktobersumman.*
 
 ---
 
