@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inpasseringar – Bjerreds Saltsjöbad</title>
 
+  <!-- UPPDATERING 2026-11-12: tredje sammanfattningskortet visar Löpande årstal (LÅT) – senaste 12 hela månaderna – med förklaring och jämförelse mot föregående LÅT vid hovring/fokus/tryck. -->
   <!-- UPPDATERING 2026-11-11: hörnparet { } GitHub + </> teknik (modal) tillagt; knappen "Lägg till / uppdatera data", inmatningsmodalen, "Återställ originaldata"
        och localStorage-overrides borttagna (rester från före Firebase). Inmatning görs i data.html. -->
   <!-- Delningsbild (Open Graph) – UPPDATERING 2026-11-11: og-inpasseringar.jpg (månadstotaler 2024–2026) -->
@@ -134,6 +135,27 @@
       font-size: 0.78rem;
       color: var(--muted);
     }
+
+    /* Löpande årstal (LÅT) – kort med förklaring/jämförelse vid hovring, fokus eller tryck */
+    #lat-card { position: relative; cursor: help; }
+    #lat-card:focus-visible { outline: 2px solid var(--c2026); outline-offset: 2px; }
+    #lat-card .info-i { color: var(--muted); font-size: 0.9em; margin-left: 0.15rem; }
+    .lat-tip {
+      display: none;
+      position: absolute; right: 0; top: calc(100% + 8px);
+      width: min(380px, 86vw);
+      background: #fff; color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      font-size: 0.82rem; line-height: 1.5; font-weight: 400;
+      text-transform: none; letter-spacing: 0;
+      z-index: 30; cursor: default;
+    }
+    .lat-tip p { margin: 0 0 0.55rem; }
+    .lat-tip p:last-child { margin-bottom: 0; }
+    .lat-tip .lat-warn { color: var(--warn-txt); background: var(--warn-bg); border-left: 3px solid var(--warn-bdr); padding: 0.35rem 0.5rem; border-radius: 4px; }
+    #lat-card:hover .lat-tip, #lat-card:focus .lat-tip, #lat-card.tip-open .lat-tip { display: block; }
 
     /* ============================================================
        DIAGRAMSEKTIONER (gemensam kortlayout)
@@ -378,10 +400,14 @@
       <div class="value" id="total-2025">–</div>
       <div class="sub">Inkl. ombyggnadsperiod (noll-månader)</div>
     </div>
-    <div class="summary-card y2026">
-      <div class="label">Totalt 2026 (hittills)</div>
-      <div class="value" id="total-2026">–</div>
-      <div class="sub" id="detail-2026">Januari – ?</div>
+    <!-- Uppdatering 2026-11-12: Löpande årstal (LÅT) i stället för "Totalt 2026 (hittills)".
+         Fylls av updateSummaryCards(). Förklaring och jämförelse visas vid hovring,
+         tangentbordsfokus eller tryck (id lat-tip). -->
+    <div class="summary-card y2026" id="lat-card" tabindex="0" aria-describedby="lat-tip">
+      <div class="label">Löpande årstal (LÅT) <span class="info-i" aria-hidden="true">ⓘ</span></div>
+      <div class="value" id="lat-value">–</div>
+      <div class="sub" id="lat-sub">Senaste 12 hela månaderna</div>
+      <div class="lat-tip" id="lat-tip" role="tooltip"></div>
     </div>
   </div>
 
@@ -898,16 +924,139 @@ function updateSummaryCards(data) {
     yearTotal(data, 2024).toLocaleString('sv-SE');
   document.getElementById('total-2025').textContent =
     yearTotal(data, 2025).toLocaleString('sv-SE');
-  document.getElementById('total-2026').textContent =
-    yearTotal(data, 2026).toLocaleString('sv-SE');
 
-  /* Räkna ut sista månaden med data i 2026 */
-  const arr2026    = monthlyTotals(data, 2026);
-  const lastMonIdx = arr2026.reduce((last, v, i) => (v !== null ? i : last), -1);
-  document.getElementById('detail-2026').textContent =
-    lastMonIdx >= 0 ? `Januari – ${MONTHS_FULL[lastMonIdx]}` : 'Inga data';
-
+  /* Uppdatering 2026-11-12: tredje kortet visar Löpande årstal (LÅT) */
+  uppdateraLåtKort(data);
 }
+
+/* ================================================================
+   LÖPANDE ÅRSTAL (LÅT) – Uppdatering 2026-11-12
+   LÅT = summan av de 12 senaste HELA månaderna. En månad är hel när
+   ALLA kategorier för året har värde (samma regel som "Preliminärt"
+   i kategoridiagrammet). Jämförs med föregående LÅT, som är samma
+   period förskjuten en månad bakåt.
+   ================================================================ */
+
+/** Sant när alla kategorier för året har ett värde (inte null) i månad m. */
+function ärHelMånad(data, y, m) {
+  const kat = Object.values(data[y] || {});
+  return kat.length > 0 && kat.every(arr => arr[m] !== null && arr[m] !== undefined);
+}
+
+/** Senaste hela månaden i hela datasetet som { y, m }, eller null. */
+function senasteHelaMånad(data) {
+  const år = Object.keys(data).map(Number).sort((a, b) => b - a);
+  for (const y of år) {
+    for (let m = 11; m >= 0; m--) {
+      if (ärHelMånad(data, y, m)) return { y, m };
+    }
+  }
+  return null;
+}
+
+/**
+ * Summerar de 12 månaderna som slutar på slut = { y, m }.
+ * Returnerar null om någon av månaderna saknar fullständig data.
+ * harNoll = sant om någon månad har 0 inpasseringar (stängt).
+ */
+function räknaLåt(data, slut) {
+  const slutIdx = slut.y * 12 + slut.m;
+  let summa = 0, harNoll = false;
+  for (let k = 11; k >= 0; k--) {
+    const idx = slutIdx - k;
+    const y = Math.floor(idx / 12), m = idx % 12;
+    if (!ärHelMånad(data, y, m)) return null;
+    const tot = monthlyTotals(data, y)[m];
+    if (tot === 0) harNoll = true;
+    summa += tot;
+  }
+  const startIdx = slutIdx - 11;
+  return {
+    summa, harNoll, slut,
+    start: { y: Math.floor(startIdx / 12), m: startIdx % 12 }
+  };
+}
+
+/** "Oktober 2025 – september 2026" */
+function periodText(p, versalStart = true) {
+  const start = versalStart ? MONTHS_FULL[p.start.m] : MONTHS_FULL[p.start.m].toLowerCase();
+  return `${start} ${p.start.y} – ${MONTHS_FULL[p.slut.m].toLowerCase()} ${p.slut.y}`;
+}
+
+/** Fyller kortet för löpande årstal och dess förklaring/jämförelse. */
+function uppdateraLåtKort(data) {
+  const valEl = document.getElementById('lat-value');
+  const subEl = document.getElementById('lat-sub');
+  const tipEl = document.getElementById('lat-tip');
+
+  const slut = senasteHelaMånad(data);
+  const nu   = slut ? räknaLåt(data, slut) : null;
+  if (!nu) {
+    valEl.textContent = '–';
+    subEl.textContent = 'För få hela månader för ett helt år';
+    tipEl.innerHTML = '<p><strong>Löpande årstal (LÅT)</strong> är summan av de senaste 12 hela månaderna. Det finns ännu inte tolv hela månader i datan.</p>';
+    return;
+  }
+
+  valEl.textContent = nu.summa.toLocaleString('sv-SE');
+  subEl.textContent = periodText(nu);
+
+  /* Föregående LÅT: slutar en månad tidigare */
+  const föregSlut = { y: slut.m === 0 ? slut.y - 1 : slut.y, m: (slut.m + 11) % 12 };
+  const föreg = räknaLåt(data, föregSlut);
+
+  /* Månader efter den senaste hela som redan har delvis data (preliminära) */
+  const utanför = [];
+  for (let k = 1; k <= 12; k++) {
+    const idx = slut.y * 12 + slut.m + k;
+    const y = Math.floor(idx / 12), m = idx % 12;
+    const kat = Object.entries(data[y] || {});
+    const saknas = kat.filter(([, arr]) => arr[m] === null || arr[m] === undefined).map(([n]) => n);
+    if (kat.length && saknas.length > 0 && saknas.length < kat.length) {
+      utanför.push(`${MONTHS_FULL[m]} ${y} (saknar ännu ${saknas.join(', ')})`);
+    }
+  }
+
+  let html =
+    '<p><strong>Löpande årstal (LÅT)</strong> är summan av inpasseringarna under de senaste ' +
+    '12 hela månaderna. Det ger alltid ett helt år, även när kalenderåret inte är slut, ' +
+    'och går därför att jämföra med 2024 och 2025.</p>';
+
+  if (föreg) {
+    const diff = nu.summa - föreg.summa;
+    const proc = föreg.summa ? (diff / föreg.summa) * 100 : 0;
+    const tecken = diff > 0 ? '+' : '';
+    html +=
+      `<p><strong>Föregående LÅT</strong> (${periodText(föreg, false)}): ` +
+      `${föreg.summa.toLocaleString('sv-SE')}.<br>` +
+      `<strong>Skillnad:</strong> ${tecken}${diff.toLocaleString('sv-SE')} ` +
+      `(${tecken}${proc.toFixed(1).replace('.', ',').replace('-', '−')} %).</p>` +
+      '<p>Har badet varit öppet hela tiden i båda perioderna bör de två talen ligga nära varandra. ' +
+      'En stor skillnad tyder på en verklig förändring, en stängning eller ofullständig data.</p>';
+    if (nu.harNoll || föreg.harNoll) {
+      html += '<p class="lat-warn">⚠️ Minst en av perioderna innehåller månader med 0 inpasseringar ' +
+              '(stängt), så jämförelsen är inte rättvis.</p>';
+    }
+  } else {
+    html += '<p>Det finns inte tillräckligt med hela månader för att jämföra med föregående LÅT.</p>';
+  }
+
+  if (utanför.length) {
+    html += '<p>Ingår inte än: ' + utanför.join('; ') +
+            '. Månaden räknas med så snart alla kategorier är inrapporterade.</p>';
+  }
+  tipEl.innerHTML = html;
+}
+
+/* Tryck/klick på LÅT-kortet visar eller döljer förklaringen (för pekskärm).
+   Klick utanför eller Escape stänger. Hovring och fokus sköts av CSS. */
+(function () {
+  const kort = document.getElementById('lat-card');
+  if (!kort) return;
+  kort.addEventListener('click', () => kort.classList.toggle('tip-open'));
+  document.addEventListener('click', e => { if (!kort.contains(e.target)) kort.classList.remove('tip-open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') kort.classList.remove('tip-open'); });
+})();
 
 /* ================================================================
    UPPDATERA BÅDA DIAGRAMMEN MED NY DATA
