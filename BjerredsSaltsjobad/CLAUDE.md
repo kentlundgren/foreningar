@@ -123,7 +123,7 @@ BjerredsSaltsjobad/
 | `inpasseringar/engangsintraden.html` | Länk tillbaka till `index.html` i inpasseringar/ |
 | `medlemmar/index.html` | `← Bjerreds Saltsjöbad`-länk i headerbanderollet + `{ } GitHub`-knapp (nedre vänster) |
 
-Alla sidor har en diskret `{ } GitHub`-länk fixerad i nedre vänstra hörnet (CLAUDE.md-konvention).
+Alla sidor ska ha hörnparet: en diskret `{ } GitHub`-länk nere till vänster och en `</> teknik`-knapp (modal) nere till höger. Nya .html-filer får båda från start (se `foreningar/CLAUDE.md` och skillen `kent-bygg-sidor`, regel 6). Klart: `index.html`, `inpasseringar/index.html` och `inpasseringar/engangsintraden.html`. Övriga sidor har bara GitHub-länken eller inget par ännu.
 
 ---
 

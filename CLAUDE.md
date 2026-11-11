@@ -16,6 +16,7 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 | 2026-04-20 | Regel uppdaterad: GitHub-knappen ska använda rgba() på bakgrunden, inte opacity på hela elementet (fungerar annars inte mot mörk sidfot). |
 | 2026-04-20 | Regel tillagd: Kent hanterar alltid git commit och push till GitHub själv – Claude ska aldrig committa eller pusha utan explicit uppmaning. |
 | 2026-05-11 | Regel tillagd: Claude ska alltid kontrollera att Kent befinner sig i rätt projekt och rätt mapp innan CLAUDE.md eller projektfiler uppdateras. |
+| 2026-11-11 | Nytt avsnitt: hörnparet `{ } GitHub` (vänster) + `</> teknik` (höger, modal) ska finnas på varje ny .html-fil. |
 
 ---
 
@@ -75,10 +76,26 @@ Projektspecifika CLAUDE.md-filer kan lägga till eller precisera regler, men des
 
 ---
 
+## Hörnparet – GitHub nere till vänster och teknik-modal nere till höger, på varje ny .html-fil
+
+> **INSTRUKTION TILL CLAUDE:** Varje ny `.html`-fil och varje ny projektmapp med en
+> startsida ska från start ha **båda** hörnknapparna, utan att Kent behöver be om det:
+> - nedre **vänster:** `{ } GitHub`, länk till projektmappen (beskrivs nedan)
+> - nedre **höger:** `</> teknik`, knapp som öppnar en modal om sidans egen uppbyggnad
+>   (delarna "Tekniken" och "Metoden", bara sådant som är sant för just den sidan)
+>
+> Det gäller även sidor som bara är innehåll, och när en befintlig sida som saknar
+> paret ändras: lägg då till det som saknas. Kopiera CSS, HTML och JavaScript från
+> `BjerredsSaltsjobad/index.html` eller `AI-teknik/Presentationer/10/`. Detaljer:
+> regel 6 i skillen `kent-bygg-sidor`.
+
+---
+
 ## GitHub-länk – alltid projektspecifik, fixerad nere till vänster
 
 > **INSTRUKTION TILL CLAUDE:** Alla webbsidor ska ha en diskret GitHub-länk
 > som är **fixerad i nedre vänstra hörnet** på sidan – inte inuti `<footer>`.
+> (Den ska alltid följas av teknik-knappen nere till höger, se avsnittet ovan.)
 >
 > **Placering och HTML** (placeras precis före `</body>`, efter `<script>`-taggar):
 > ```html

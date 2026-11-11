@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Engångsinträden 2026 – Bjerreds Saltsjöbad</title>
 
+  <!-- UPPDATERING 2026-11-11: hörnparet { } GitHub + </> teknik (modal) tillagt. -->
   <!-- Delningsbild (Open Graph) – UPPDATERING 2026-11-11: og-engangsintraden.jpg (antal engångsbesök per månad, inga koder eller namn) -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sv_SE">
@@ -127,6 +128,47 @@
       flex-shrink: 0;
       transition: background 0.4s;
     }
+    /* ============================================================
+       HÖRNPAR – { } GitHub nere till vänster, </> teknik nere till höger
+       (samma mönster som BjerredsSaltsjobad/index.html och AI-teknik/Presentationer/10)
+       ============================================================ */
+    .corner {
+      position: fixed; bottom: 14px;
+      font-family: "Courier New", Courier, monospace; font-size: 0.78rem;
+      color: var(--text); background: #fff; border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.3rem 0.7rem;
+      text-decoration: none; cursor: pointer;
+      opacity: 0.55; transition: opacity 0.2s ease; z-index: 1000;
+    }
+    .corner:hover, .corner:focus-visible { opacity: 1; }
+    .corner-left  { left: 14px; }
+    .corner-right { right: 14px; }
+    @media (max-width: 600px) { .corner { bottom: 10px; } .corner-left { left: 10px; } .corner-right { right: 10px; } }
+
+    /* Teknik-modal: mörk halvtransparent bakgrund, visas när .show läggs på */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.6); overflow-y: auto; padding: 5vh 1rem;
+    }
+    .modal-overlay.show { display: block; }
+    .modal {
+      position: relative; background: #fff; border-radius: 14px;
+      max-width: 640px; margin: 0 auto; padding: 1.6rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .modal h2 { font-size: 1.25rem; margin-bottom: 0.4rem; color: var(--primary); }
+    .modal h3.avsnitt { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 1.1rem 0 0.5rem; }
+    .modal .intro { color: var(--muted); font-size: 0.9rem; }
+    .modal-close {
+      position: absolute; top: 0.6rem; right: 0.9rem; background: none; border: none;
+      font-size: 1.8rem; line-height: 1; color: #888; cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text); }
+    .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    @media (max-width: 560px) { .tech-grid { grid-template-columns: 1fr; } }
+    .tech-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.8rem; }
+    .tech-card h4 { font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .tech-card p { font-size: 0.82rem; color: #444; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -216,12 +258,49 @@
   <div class="page-version">📋 Engångsinträden 2026 · Uppdaterad: 2026-06-03 · Förenklad rapportering fr.o.m. maj</div>
 </footer>
 
-<a href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad"
-   target="_blank" rel="noopener" title="Källkod på GitHub"
-   style="position:fixed;bottom:0.6rem;left:1rem;font-size:0.72rem;color:#7f8c8d;
-          text-decoration:none;opacity:0.65;transition:opacity 0.2s;z-index:50;"
-   onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.65'"
->{ } GitHub</a>
+<!-- ================================================================
+     HÖRNPAR: { } GitHub (nedre vänster) och </> teknik (nedre höger)
+     ================================================================ -->
+<a class="corner corner-left" href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad/inpasseringar" target="_blank" rel="noopener">{ } GitHub</a>
+<button type="button" class="corner corner-right" id="techBtn" aria-label="Tekniköversikt">&lt;/&gt; teknik</button>
+
+<!-- Teknik-modal: öppnas av knappen ovan, stängs med ×, klick utanför eller Escape -->
+<div class="modal-overlay" id="techModal" role="dialog" aria-modal="true" aria-labelledby="techTitel">
+  <div class="modal">
+    <button type="button" class="modal-close" id="techClose" aria-label="Stäng">&times;</button>
+    <h2 id="techTitel">Hur den här sidan är byggd</h2>
+    <p class="intro">Sidan visar hur många engångsbesök kallbadhuset haft per månad 2026. Besökarna visas med koder, aldrig med namn.</p>
+
+    <h3 class="avsnitt" id="Tekniken">Tekniken</h3>
+    <div class="tech-grid">
+      <div class="tech-card"><h4>En HTML-fil</h4><p>Sidan är en enda fil med egen CSS och egen JavaScript, utan byggsteg. Den publiceras som statiska filer på GitHub Pages från mappen <code>BjerredsSaltsjobad/inpasseringar</code> i repot <code>foreningar</code>.</p></div>
+      <div class="tech-card"><h4>Diagrammet</h4><p>Linjediagrammet ritas med Chart.js 4.4.1, som laddas från cdnjs. Blå punkter är månader med detaljdata, gröna är månader med bara ett totalt antal.</p></div>
+      <div class="tech-card"><h4>Månadsantal från Firebase</h4><p>Från maj och framåt läses antalet live från Firebase Realtime Database (Googles molndatabas, SDK 11.0.0), noden <code>Engångsbadare – Wondr</code>. Märket i sidhuvudet visar om det gick.</p></div>
+      <div class="tech-card"><h4>Reservkopia</h4><p>Januari–april finns inbyggda i sidan som en lista med en rad per besök. Maj finns som reservvärde tills Firebase svarar. Om Firebase inte nås visas det som finns i sidan och märket blir orange.</p></div>
+      <div class="tech-card"><h4>Delningsbilden</h4><p>Bilden <code>og-engangsintraden.jpg</code> (1200 × 630 px) visar antal besök per månad som ett linjediagram. Den är ritad med Python-biblioteket Pillow och används i sidans Open Graph-taggar.</p></div>
+    </div>
+
+    <h3 class="avsnitt" id="Metoden">Metoden</h3>
+    <div class="tech-grid">
+      <div class="tech-card"><h4>Koder i stället för namn</h4><p>Varje besökare har en kod, B001 och uppåt. Filen som kopplar koder till namn ligger bara lokalt och finns aldrig i repot.</p></div>
+      <div class="tech-card"><h4>Återkommande besökare</h4><p>Av koderna kan man se vilka som kommit mer än en gång. Det gäller bara månaderna med detaljdata, eftersom senare månader bara har ett totalt antal.</p></div>
+      <div class="tech-card"><h4>Ingår redan i Wondr</h4><p>Engångsbadarna ingår troligen redan i antalet Wondr-besök på inpasseringssidan. De visas separat här och räknas inte med i dess totalsumma.</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Öppna/stäng teknik-modalen (knapp, ×, klick utanför rutan, Escape)
+  (function () {
+    var overlay = document.getElementById('techModal');
+    function oppna() { overlay.classList.add('show'); }
+    function stang() { overlay.classList.remove('show'); }
+    document.getElementById('techBtn').addEventListener('click', oppna);
+    document.getElementById('techClose').addEventListener('click', stang);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) stang(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') stang(); });
+  })();
+</script>
 
 <script type="module">
 /*
