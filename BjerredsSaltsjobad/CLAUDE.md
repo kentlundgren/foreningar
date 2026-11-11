@@ -55,6 +55,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-11-11 | BASE_DATA: okt 2026 (SMS/Swish 653, armband 5, Wondr 3 589, Engångsbadare 419) synkad från Firebase i `index.html` och `data.html`; `data.md` uppdaterad jun–okt (okt preliminär, Restaurangen saknas); skillens `$base` uppdaterad |
 | 2026-11-11 | `inpasseringar/index.html`: borttaget "+ Lägg till / uppdatera data", inmatningsmodalen, "Återställ originaldata" och localStorage-overrides (rester från före Firebase); "Senast uppdaterad" läser Firebase-datumet. Inmatning sker bara i `data.html` |
 | 2026-11-11 | Hörnparet `{ } GitHub` + `</> teknik` (modal) tillagt på `inpassering/index.html`, `inpasseringar/data.html`, `inpasseringar/databas.html`, `medlemmar/index.html` (v3.3), `medlemmar/GitHub.html`, `dataformat.html`, `privatadata.html`, `brev_till_Wondr_260105.html` och `ratt_repo.html` (v1.1). Gamla `.github-link` borttagna. Knappen Bjud in på `inpasseringar/data.html` flyttad till höger om hörnparet. `medlemmar/index.html` länkar nu till GitHub.html, dataformat.html, privatadata.html och brevet via teknik-modalen |
+| 2026-11-12 | Nytt avsnitt "Tolka inpasseringar – före och efter ombyggnaden 2025": vad en inpassering är, kapacitet 36 → 54, de två jämförelsebaserna (+11,0 % månadspar, +12,8 % LÅT mot 2024), trängselslutsatsen och dess förutsättningar, samt antagandena på analyssidan i Bjerred-el |
 | 2026-11-12 | `inpasseringar/index.html`: tredje sammanfattningskortet är nu **Löpande årstal (LÅT)** = de 12 senaste hela månaderna (hel = alla kategorier har värde, samma regel som "Preliminärt"). Förklaring och jämförelse med föregående LÅT visas vid hovring, fokus eller tryck. Funktioner: `senasteHelaMånad`, `räknaLåt`, `uppdateraLåtKort`. Nu okt 2025–sep 2026 = 58 340 mot 58 688 (−348, −0,6 %). Förklaringen jämför även LÅT och föregående LÅT mot 2024 (51 712, sista hela året före ombyggnaden): +12,8 % respektive +13,5 % |
 | 2026-11-12 | `medlemmar/index.html` (v3.4): diskret länk "GitHub-guide" (till `GitHub.html`) strax till höger om `{ } GitHub`-knappen nere till vänster |
 | 2026-11-11 | Borttagna: `inpassering/data.html` (avkapad, aldrig hel, ersatt av `inpasseringar/data.html`) och `medlemmar/medlemmar.html` (tom). Båda finns kvar i git-historiken |
@@ -313,6 +314,53 @@ Föreningen har medvetet satt ett **lägre pris för Wondr-appen (100 kr)** jäm
 - **2025**: **Wondr** lanserades juli 2025 → ny kategori "Medlemmar – Wonder" från jul 2025
 - **2026**: Armbanden fasades ut **1 februari 2026**
 - **2026 april**: Alla kategorier ifyllda (2026-05-15): Restaurangen 359, SMS/Swish 913, Armband 90, Wonder 3 293
+
+---
+
+## Tolka inpasseringar – före och efter ombyggnaden 2025
+
+> **INSTRUKTION TILL CLAUDE:** Läs detta avsnitt innan du skriver text eller bygger beräkningar som
+> jämför inpasseringar före och efter ombyggnaden, eller som säger något om hur trångt det är i bastun.
+
+**Vad en inpassering är (bekräftat av Kent 2026-11-12).** En inpassering är en gång genom grinden. 2024
+öppnade armbandet grinden, nu öppnar Wondr-appen den (och SMS-, Swish- och restaurangbiljetter).
+Samma person räknas varje gång hen kommer, även flera gånger samma dag. Det är besöken som fyller bastun,
+så inpasseringar är rätt mått för belastning. Vi säger fortsatt **inpasseringar** (eller besök), aldrig
+"antal personer" eller "unika besökare". Några nyckelinnehavare går inte via grinden, men antalet antas
+vara ungefär detsamma 2024 och nu.
+
+**Kapacitet.** Före: 18 badare per bastu × 2 bastuer = 36. Efter: 27 × 2 = 54 (**+50 %**). "Bastun är 50 %
+större" betyder alltså högsta antal badare. Ombyggnaden: stängt mitten av februari till mitten av juli 2025,
+därför är mars–juni 2025 noll i datan och sanna nollor.
+
+**Två jämförelsebaser som ger olika procenttal, förklara alltid vilken som avses:**
+
+| Bas | Jämförelse | Resultat |
+|---|---|---|
+| Samma kalendermånad (analyssidan i Bjerred-el) | aug 2024–jan 2025 mot aug 2025–jan 2026, sex månadspar | 27 807 → 30 878 = **+11,0 %** (per månad: +6,8, +3,3, +16,5, +21,4, +17,1, +2,2 %) |
+| LÅT mot helåret 2024 (kortet på inpasseringssidan) | okt 2025–sep 2026 = 58 340 mot 51 712 | **+12,8 %** (föregående LÅT, sep 2025–aug 2026: 58 688 = +13,5 %) |
+
+Båda är rimliga men mäter olika perioder. Månadsparen undviker att jämföra mot månader då badet var stängt;
+LÅT ger ett helt år. Blanda inte ihop dem i samma mening. Siffrorna gäller 2026-11-12 och ändras när data kommer.
+
+**Trängsel.** Besök per kapacitet blir ungefär 1,13 / 1,5 ≈ **0,75** (cirka 25 % lägre belastning) med LÅT mot
+2024, och 1,11 / 1,5 ≈ 0,74 med månadsparen. Slutsatsen "mindre trångt" förutsätter att:
+1. vistelsetiden per besök är lika lång som före (osäkert, vi har ingen mätning),
+2. besöken är lika jämnt fördelade över dygn och år (årssiffran är ett medelvärde, trängsel känns vid toppar),
+3. alla inpasseringar är badare (analyssidan antar detta).
+
+**Analyssidan i Bjerred-el** ([live](https://kentlundgren.github.io/Bjerred-el/fore_och_efter_ombyggnad.html),
+repot `Bjerred-el`, läst 2026-11-12) gör beläggningsberäkningen och läser inpasseringarna ur samma Firebase som
+den här sidan. Dess antaganden:
+- 50 % herrar / 50 % damer (två bastuer), alla inpasseringar = badare
+- drifttid 14 timmar per dag (öppet 06–22 minus 2 timmars städning); **från 1 maj 2026 14,5 timmar** (07:30–22:00)
+- antagen vistelsetid per besök: 1 timme som standard, justerbar. Beläggningen är proportionell mot den
+- formel: `(inpasseringar/2 ÷ (timmar × dagar)) × vistelsetid ÷ (kapacitet/2) × 100`, alltså **genomsnittlig** andel
+  av maxkapaciteten, inte toppbelastning
+- visar bl.a. att fler besökare ändå ger lägre beläggning när kapaciteten är större, vilket är samma slutsats som ovan
+
+**När du ändrar kategorier eller nycklar i Firebase** påverkar det även analyssidan i Bjerred-el, som läser
+samma data. Där gäller live-sidan, inte en lokal kopia: en äldre lokal kopia av repot anger andra drifttimmar.
 
 ---
 
