@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trängsel i bastun – Bjerreds Saltsjöbad</title>
+
+  <!-- Delningsbild (Open Graph) – visas när länken delas på LinkedIn, Facebook, X m.fl. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="sv_SE">
+  <meta property="og:site_name" content="Bjerreds Saltsjöbad">
+  <meta property="og:title" content="Trängsel i bastun – före och efter ombyggnaden">
+  <meta property="og:description" content="Bastun fick 50 % fler platser, besöken ökade med cirka 13 %. Så ser det ut när man räknar på hur fullt det är, före och efter ombyggnaden.">
+  <meta property="og:url" content="https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/trangsel.html">
+  <meta property="og:image" content="https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/og-trangsel.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Två bastur med bänkplatser: den gamla med 18 platser fullsatt, den nya med 27 platser där samma skara fyller två tredjedelar">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Trängsel i bastun – före och efter ombyggnaden">
+  <meta name="twitter:description" content="Bastun fick 50 % fler platser, besöken ökade med cirka 13 %. Så ser det ut när man räknar på hur fullt det är, före och efter ombyggnaden.">
+  <meta name="twitter:image" content="https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/og-trangsel.jpg">
+
+  <!--
+    ============================================================
+    trangsel.html – Trängsel i bastun, före och efter ombyggnaden 2025
+    VERSION 1.0 · 2026-11-12  (konstanterna VERSION och VERSIONSDATUM i skriptet nedan)
+    UPPDATERING 2026-11-12: sidan skapad.
+
+    Vad sidan gör:
+      Läser inpasseringar ur Firebase (REST, ingen inloggning), räknar ut
+      LÅT (löpande årstal = de 12 senaste hela månaderna) och jämför med 2024
+      (sista hela året före ombyggnaden). Visar hur fullt det är i bastun, i
+      snitt, med uttalade antaganden som besökaren själv kan ändra.
+
+    Beräkning (samma som analyssidan i Bjerred-el):
+      badare per timme i en bastu = (inpasseringar / 2) / drifttimmar
+      snittbadare i bastun        = badare per timme × vistelsetid
+      snittbeläggning             = snittbadare / platser per bastu
+    Antaganden: 50/50 herrar/damer (två bastuer), alla inpasseringar = badare,
+    14 drifttimmar per dag (14,5 från 1 maj 2026), lika lång vistelse före/efter
+    om inte reglaget "stannar längre nu" ändras.
+
+    Inga personuppgifter: bara summerade antal per månad.
+    Beroenden: Chart.js 4.4.1 (cdnjs). Inget byggsteg, ingen skrivning till databasen.
+    ============================================================
+  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <style>
+    /* ============================================================
+       DESIGNSYSTEM – samma färger som övriga inpasseringssidor
+       ============================================================ */
+    :root {
+      --primary:   #1a5276;
+      --secondary: #2e86c1;
+      --accent:    #e67e22;
+      --bg:        #f4f6f9;
+      --card:      #ffffff;
+      --text:      #2c3e50;
+      --muted:     #7f8c8d;
+      --border:    #dde1e7;
+      --fore:      #3498db;   /* 2024 – före ombyggnaden */
+      --efter:     #27ae60;   /* LÅT – efter ombyggnaden */
+      --note-bg:   #eaf3fb;   /* blå notering */
+      --note-bdr:  #2e86c1;
+      --warn-bg:   #fef9e7;
+      --warn-bdr:  #f39c12;
+      --warn-txt:  #7d6608;
+      --input-bg:  #FFF9C4;   /* gult bara på inmatningsfält */
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+    a { color: var(--secondary); }
+
+    /* ---------- Sidhuvud ---------- */
+    header { background: var(--primary); color: #fff; padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+    header h1 { font-size: 1.5rem; font-weight: 800; }
+    header p { font-size: 0.85rem; opacity: 0.8; margin-top: 0.15rem; }
+    .data-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; opacity: 0.9; margin-top: 0.35rem; }
+    .data-badge .dot { width: 9px; height: 9px; border-radius: 50%; background: #f6ad55; }
+    .header-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .btn-nav { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 0.55rem 1rem; border-radius: 6px; font-size: 0.86rem; text-decoration: none; white-space: nowrap; }
+    .btn-nav:hover { background: rgba(255,255,255,0.28); }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 1.6rem 1.2rem 5rem; }
+    section { margin-bottom: 2rem; }
+    h2 { font-size: 1.3rem; color: var(--primary); margin-bottom: 0.3rem; scroll-margin-top: 1rem; }
+    h2 .anchor, h3 .anchor, .obj-title .anchor { color: var(--muted); text-decoration: none; font-weight: 400; margin-left: 0.35rem; opacity: 0; transition: opacity 0.15s; }
+    h2:hover .anchor, h3:hover .anchor, .obj-title:hover .anchor, .anchor:focus { opacity: 1; }
+    .lead { color: var(--muted); margin-bottom: 1rem; }
+    .card { background: var(--card); border-radius: 12px; padding: 1.3rem 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+
+    /* ---------- Notiser ---------- */
+    .note { background: var(--note-bg); border-left: 4px solid var(--note-bdr); border-radius: 6px; padding: 0.8rem 1rem; font-size: 0.9rem; margin: 1rem 0; }
+    .note.warn { background: var(--warn-bg); border-left-color: var(--warn-bdr); color: var(--warn-txt); }
+    .felruta { display: none; background: #fdecea; border-left: 4px solid #e74c3c; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+
+    /* ---------- Förklaringar vid hovring, fokus och tryck ---------- */
+    .term { position: relative; border-bottom: 1px dotted var(--muted); cursor: help; }
+    .term:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; border-radius: 3px; }
+    .term .tip { display: none; position: absolute; left: 0; top: calc(100% + 6px); width: min(320px, 80vw); background: #fff; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.85rem; box-shadow: 0 8px 24px rgba(0,0,0,0.18); font-size: 0.82rem; font-weight: 400; line-height: 1.45; text-transform: none; letter-spacing: 0; z-index: 40; cursor: default; }
+    .term:hover .tip, .term:focus .tip, .term.open .tip { display: block; }
+
+    /* ---------- Reglage (gult bara på inmatningsfält) ---------- */
+    .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .control label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+    .control .hint { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .control .row { display: flex; gap: 0.6rem; align-items: center; }
+    .control input[type=range] { flex: 1; accent-color: var(--accent); }
+    .control input[type=number] { width: 4.6rem; padding: 0.35rem 0.4rem; border: 1px solid var(--border); border-radius: 6px; background: var(--input-bg); font-size: 0.95rem; color: var(--text); }
+    .control .unit { font-size: 0.82rem; color: var(--muted); min-width: 1.6rem; }
+
+    /* ---------- Bastubarometern ---------- */
+    .bastus { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    .bastu { background: var(--card); border-radius: 12px; padding: 1.1rem 1.2rem 1.3rem; box-shadow: 0 2px 6px rgba(0,0,0,0.07); border-top: 6px solid var(--border); }
+    .bastu.fore  { border-top-color: var(--fore); }
+    .bastu.efter { border-top-color: var(--efter); }
+    .bastu h3 { font-size: 1.05rem; }
+    .bastu .period { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.6rem; }
+    .bastu-svg { width: 100%; height: auto; display: block; border-radius: 10px; }
+    .steam { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; opacity: 0.0; animation: ånga 4s ease-in-out infinite; }
+    .steam.s2 { animation-delay: 1.3s; } .steam.s3 { animation-delay: 2.6s; }
+    @keyframes ånga { 0% { opacity: 0; transform: translateY(8px); } 40% { opacity: 0.75; } 100% { opacity: 0; transform: translateY(-14px); } }
+    @media (prefers-reduced-motion: reduce) { .steam { animation: none; opacity: 0.45; } html { scroll-behavior: auto; } }
+    .meter { height: 16px; background: #e9edf2; border-radius: 999px; overflow: hidden; margin: 0.8rem 0 0.3rem; }
+    .meter > span { display: block; height: 100%; border-radius: 999px; transition: width 0.4s ease, background 0.3s; }
+    .meter-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); }
+    .bastu .stor { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+    .bastu .rad { font-size: 0.9rem; margin-top: 0.25rem; }
+    .overflow-badge { display: none; margin-top: 0.5rem; background: #fdecea; color: #922b21; border-radius: 6px; padding: 0.4rem 0.6rem; font-size: 0.85rem; font-weight: 600; }
+    .verdict { margin-top: 1rem; background: var(--card); border-radius: 12px; padding: 1rem 1.3rem; box-shadow: 0 2px 6px rgba(0,0,0,0.07); font-size: 1.05rem; text-align: center; }
+    .verdict strong { color: var(--primary); }
+
+    /* ---------- Tre stora tal ---------- */
+    .tal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .tal .kort { background: var(--card); border-radius: 12px; padding: 1.1rem 1.3rem; box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+    .tal .etikett { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+    .tal .par { font-size: 1.5rem; font-weight: 800; margin: 0.3rem 0 0.1rem; letter-spacing: -0.02em; }
+    .tal .par .pil { color: var(--muted); font-weight: 400; margin: 0 0.25rem; }
+    .tal .forandring { font-size: 0.95rem; font-weight: 700; color: var(--efter); }
+    .tal .liten { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* ---------- Fullsatt-kvällen ---------- */
+    .fullsatt .rad { display: grid; grid-template-columns: 7.5rem 1fr 3.5rem; gap: 0.7rem; align-items: center; margin: 0.5rem 0; font-size: 0.9rem; }
+    .fullsatt .stapel { height: 22px; background: #e9edf2; border-radius: 6px; overflow: hidden; }
+    .fullsatt .stapel > span { display: block; height: 100%; }
+
+    /* ---------- Diagram och tabell ---------- */
+    .obj-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; scroll-margin-top: 1rem; }
+    .chart-wrap { position: relative; height: 320px; margin-top: 0.6rem; }
+    .tabell-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.6rem; }
+    th, td { padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); text-align: right; }
+    th:first-child, td:first-child { text-align: left; }
+    th { background: #eef2f6; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    td.upp { font-weight: 700; color: var(--primary); }
+    ul.ant { margin: 0.4rem 0 0.4rem 1.2rem; font-size: 0.92rem; }
+    ul.ant li { margin: 0.25rem 0; }
+
+    footer { text-align: center; padding: 1.2rem; font-size: 0.78rem; color: var(--muted); }
+
+    /* ---------- Hörnpar och teknik-modal (samma mönster som övriga sidor) ---------- */
+    .corner { position: fixed; bottom: 14px; font-family: "Courier New", Courier, monospace; font-size: 0.78rem; line-height: 1.3; color: var(--text); background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 0.3rem 0.7rem; text-decoration: none; cursor: pointer; opacity: 0.55; transition: opacity 0.2s ease; z-index: 1000; }
+    .corner:hover, .corner:focus-visible { opacity: 1; }
+    .corner-left { left: 14px; } .corner-right { right: 14px; }
+    @media (max-width: 600px) { .corner { bottom: 10px; } .corner-left { left: 10px; } .corner-right { right: 10px; } }
+    .tm-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.6); overflow-y: auto; padding: 5vh 1rem; }
+    .tm-overlay.show { display: block; }
+    .tm-box { position: relative; background: #fff; color: var(--text); border-radius: 14px; max-width: 640px; margin: 0 auto; padding: 1.6rem; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .tm-box h2 { font-size: 1.25rem; margin: 0 0 0.4rem; color: var(--primary); }
+    .tm-box h3.tm-sec { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 1.1rem 0 0.5rem; }
+    .tm-box .tm-intro { color: var(--muted); font-size: 0.9rem; }
+    .tm-close { position: absolute; top: 0.6rem; right: 0.9rem; background: none; border: none; font-size: 1.8rem; line-height: 1; color: #888; cursor: pointer; }
+    .tm-close:hover { color: var(--text); }
+    .tm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    .tm-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.8rem; }
+    .tm-card h4 { font-size: 0.9rem; margin: 0 0 0.25rem; }
+    .tm-card p { font-size: 0.82rem; color: #444; line-height: 1.4; }
+
+    @media (max-width: 800px) {
+      .controls, .bastus, .tal { grid-template-columns: 1fr; }
+      header { padding: 1rem; }
+      .tm-grid { grid-template-columns: 1fr; }
+      .fullsatt .rad { grid-template-columns: 5.5rem 1fr 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🔥 Trängsel i bastun</h1>
+    <p>Före och efter ombyggnaden 2025</p>
+    <div class="data-badge"><span class="dot" id="badge-dot"></span><span id="badge-text">Hämtar inpasseringar från Firebase…</span></div>
+  </div>
+  <div class="header-actions">
+    <a href="../" class="btn-nav">🏠 Startsidan</a>
+    <a href="index.html" class="btn-nav">📊 Inpasseringsstatistik</a>
+  </div>
+</header>
+
+<main>
+  <noscript><div class="note warn">JavaScript är avstängt. Sidan räknar och ritar med JavaScript, så siffror och bilder visas inte. Källdatan finns på <a href="index.html">inpasseringsstatistiken</a>.</div></noscript>
+  <div class="felruta" id="felruta"><strong>Det gick inte att hämta inpasseringarna.</strong> Sidan läser dem live från Firebase och har ingen reservkopia. Försök igen om en stund eller se <a href="data.html">datatabellen</a>.</div>
+
+  <section id="intro">
+    <h2>Fler badare – men mer plats. Stämmer det?<a class="anchor" href="#intro" aria-label="Länk till rubriken">#</a></h2>
+    <p class="lead">Bastun fick 50 % fler platser vid ombyggnaden 2025. Har det blivit mer eller mindre trångt, när fler besöker den? Här räknar vi på det, före och efter, och du kan själv ändra antagandena.</p>
+    <div class="note">
+      <strong>Läs så här.</strong> En <span class="term" tabindex="0" role="button">inpassering<span class="tip" role="tooltip">En gång genom grinden. Armbandet öppnade grinden 2024, nu öppnar Wondr-appen (eller en biljett) den. Samma person räknas varje gång hen kommer, även flera gånger samma dag. Det är besöken som fyller bastun.</span></span> är ett besök. Siffrorna gäller 2024, som var det sista hela året före ombyggnaden, mot det senaste hela året efter, <span class="term" tabindex="0" role="button">LÅT<span class="tip" role="tooltip">Löpande årstal: summan av de 12 senaste hela månaderna. Det ger alltid ett helt år, även när kalenderåret inte är slut. En månad är hel när alla kategorier är inrapporterade.</span></span> <strong id="lat-period">…</strong>.
+    </div>
+  </section>
+
+  <section id="bastubarometern">
+    <h2>Bastubarometern<a class="anchor" href="#bastubarometern" aria-label="Länk till rubriken">#</a></h2>
+    <p class="lead">Så många badare är det i snitt i en bastu, jämfört med antal platser. Bänkarna fylls av de antaganden du väljer här.</p>
+
+    <div class="card">
+      <div class="controls">
+        <div class="control">
+          <label for="stay-num">Vistelse per besök</label>
+          <div class="hint">Hur länge stannar en badare i bastun, i snitt? Ett antagande, vi har ingen mätning.</div>
+          <div class="row"><input type="range" id="stay-range" min="0.5" max="3" step="0.25" value="2" aria-label="Vistelse per besök, reglage"><input type="number" id="stay-num" min="0.5" max="3" step="0.25" value="2"><span class="unit">tim</span></div>
+        </div>
+        <div class="control">
+          <label for="extra-num">Stannar man längre nu?</label>
+          <div class="hint">0 % = lika länge som före ombyggnaden. Prova om rymligare bastu ger längre bad.</div>
+          <div class="row"><input type="range" id="extra-range" min="0" max="60" step="5" value="0" aria-label="Längre vistelse efter ombyggnaden, reglage"><input type="number" id="extra-num" min="0" max="60" step="5" value="0"><span class="unit">%</span></div>
+        </div>
+        <div class="control">
+          <label for="peak-num">Toppstund: gånger snittet</label>
+          <div class="hint">1× är en genomsnittlig timme. Vad händer en kväll då det är 2–4 gånger fler?</div>
+          <div class="row"><input type="range" id="peak-range" min="1" max="4" step="0.25" value="1" aria-label="Toppstund, reglage"><input type="number" id="peak-num" min="1" max="4" step="0.25" value="1"><span class="unit">×</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bastus">
+      <div class="bastu fore" id="bastu-fore">
+        <h3>2024 – den gamla bastun</h3>
+        <div class="period">Sista hela året före ombyggnaden</div>
+        <div id="svg-fore"></div>
+        <div class="meter"><span id="meter-fore"></span></div>
+        <div class="meter-label"><span>0 %</span><span>fullt = 100 %</span></div>
+        <div class="stor" id="stor-fore">–</div>
+        <div class="rad" id="rad-fore"></div>
+        <div class="overflow-badge" id="over-fore"></div>
+      </div>
+      <div class="bastu efter" id="bastu-efter">
+        <h3>Nu – den nya bastun</h3>
+        <div class="period" id="period-efter">Senaste hela året efter ombyggnaden</div>
+        <div id="svg-efter"></div>
+        <div class="meter"><span id="meter-efter"></span></div>
+        <div class="meter-label"><span>0 %</span><span>fullt = 100 %</span></div>
+        <div class="stor" id="stor-efter">–</div>
+        <div class="rad" id="rad-efter"></div>
+        <div class="overflow-badge" id="over-efter"></div>
+      </div>
+    </div>
+    <div class="verdict" id="verdict">–</div>
+    <div class="note warn"><strong>Snitt är inte topp.</strong> Trängsel känns på lördagskvällar och mitt i vintern, inte i snitt över året. Vi har bara månadssiffror och inga timdata för 2024, så topparna kan vi inte jämföra. Reglaget <em>Toppstund</em> är ett exempel, inte en mätning.</div>
+    <div class="note" id="brytpunkt"></div>
+  </section>
+
+  <section id="tre-tal">
+    <h2>Tre tal att minnas<a class="anchor" href="#tre-tal" aria-label="Länk till rubriken">#</a></h2>
+    <div class="tal">
+      <div class="kort"><div class="etikett">Inpasseringar per dag</div><div class="par" id="tal-dag">–</div><div class="forandring" id="tal-dag-f"></div><div class="liten">Per dag, eftersom 2024 hade 366 dagar</div></div>
+      <div class="kort"><div class="etikett">Platser i bastuerna</div><div class="par">36<span class="pil">→</span>54</div><div class="forandring">+50 %</div><div class="liten">18 + 18 före, 27 + 27 efter</div></div>
+      <div class="kort"><div class="etikett">Plats per inpassering</div><div class="par" id="tal-plats">–</div><div class="forandring" id="tal-plats-f"></div><div class="liten">Platser delat med inpasseringar per dag</div></div>
+    </div>
+  </section>
+
+  <section id="fullsatt" class="fullsatt">
+    <h2>Fullsatt-kvällen<a class="anchor" href="#fullsatt" aria-label="Länk till rubriken">#</a></h2>
+    <div class="card">
+      <p>Tänk dig en kväll då den gamla bastun var fullsatt: <strong>18 badare</strong>, varje bänkplats upptagen. Samma skara i den nya bastun med 27 platser:</p>
+      <div class="rad"><span>Gamla bastun</span><div class="stapel"><span style="width:100%;background:var(--fore)"></span></div><strong>100 %</strong></div>
+      <div class="rad"><span>Nya bastun</span><div class="stapel"><span style="width:66.7%;background:var(--efter)"></span></div><strong>67 %</strong></div>
+      <p style="font-size:0.9rem;color:var(--muted)">Nio platser är över. Det är ren kapacitet och beror inte på några antaganden.</p>
+    </div>
+  </section>
+
+  <section id="manad-for-manad">
+    <h2>Månad för månad<a class="anchor" href="#manad-for-manad" aria-label="Länk till rubriken">#</a></h2>
+    <p class="lead">Samma kalendermånad jämförs med samma månad ett år senare. Före ombyggnaden är augusti 2024–januari 2025, efter är augusti 2025–januari 2026. Då undviker vi månaderna när badet var stängt 2025. Det är samma bas som i <a href="https://kentlundgren.github.io/Bjerred-el/fore_och_efter_ombyggnad.html">elanalysen före och efter ombyggnaden</a>.</p>
+    <div class="card">
+      <div class="obj-title" id="diagram-1">Diagram 1. Snittbeläggning per månad, före och efter ombyggnaden<a class="anchor" href="#diagram-1" aria-label="Länk till diagrammet">#</a></div>
+      <div style="font-size:0.82rem;color:var(--muted)">Med reglagens värden ovan. Linjen vid 100 % är full bastu.</div>
+      <div class="chart-wrap"><canvas id="chart-manad" role="img" aria-label="Stapeldiagram över snittbeläggning per månad före och efter ombyggnaden"></canvas></div>
+      <div class="note" id="par-sammanfattning" style="margin-bottom:0"></div>
+    </div>
+  </section>
+
+  <section id="sa-raknar-vi">
+    <h2>Så räknar vi<a class="anchor" href="#sa-raknar-vi" aria-label="Länk till rubriken">#</a></h2>
+    <div class="card">
+      <p><span class="term" tabindex="0" role="button">Snittbeläggning<span class="tip" role="tooltip">Genomsnittlig andel av platserna som är upptagna under en timme. Räknas ut som snittbadare i bastun delat med antal platser per bastu. Det är ett medelvärde över alla öppna timmar, inte en toppnivå.</span></span> är antal badare i bastun i snitt, delat med platserna. Beräkningen går så här:</p>
+      <ul class="ant">
+        <li>Hälften av inpasseringarna antas vara herrar och hälften damer, eftersom det finns två bastuer. Alla inpasseringar antas vara badare.</li>
+        <li><span class="term" tabindex="0" role="button">Drifttimmar<span class="tip" role="tooltip">Antal timmar per dag som bastun är i bruk. Öppet 06–22 är 16 timmar, minus 2 timmars städning ger 14 timmar. Från 1 maj 2026 öppnar badet 07:30 och städningen sker före öppning, vilket ger 14,5 timmar. Källa: Bjerreds Saltsjöbad, Badet.</span></span> är 14 per dag, och 14,5 per dag från och med 1 maj 2026.</li>
+        <li>Snittbadare per bastu = (inpasseringar ÷ 2) ÷ drifttimmar × vistelsetid. Dividerat med platser per bastu (18 före, 27 efter) ger det beläggningen.</li>
+        <li>Vistelsetiden är densamma före och efter om du inte flyttar reglaget <em>Stannar man längre nu?</em>. Den relativa skillnaden mellan före och efter påverkas då inte av vilken vistelsetid du väljer, bara nivån.</li>
+      </ul>
+      <div class="obj-title" id="tabell-1" style="margin-top:1rem">Tabell 1. Beräkningen steg för steg<a class="anchor" href="#tabell-1" aria-label="Länk till tabellen">#</a></div>
+      <div class="tabell-wrap"><table>
+        <thead><tr><th>Steg</th><th id="th-fore">2024</th><th id="th-efter">LÅT</th><th>Förändring</th></tr></thead>
+        <tbody id="tabell-body"></tbody>
+      </table></div>
+      <p style="font-size:0.85rem;color:var(--muted);margin-top:0.8rem">
+        Källor: inpasseringar från <a href="index.html">inpasseringsstatistiken</a> (Firebase). Kapacitet, drifttimmar och metod från <a href="https://kentlundgren.github.io/Bjerred-el/fore_och_efter_ombyggnad.html">elanalysen före och efter ombyggnaden</a>. Öppettider: <a href="https://bjerredskallbadhus.se/">bjerredskallbadhus.se</a>.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Data: Bjerreds Saltsjöbad · <a href="https://bjerredskallbadhus.se/" target="_blank" rel="noopener">bjerredskallbadhus.se</a><br>
+  <span id="versionsrad">Version 1.0 · 2026-11-12</span>
+</footer>
+
+<!-- ================================================================
+     HÖRNPAR: { } GitHub (nedre vänster) och </> teknik (nedre höger)
+     ================================================================ -->
+<a class="corner corner-left" href="https://github.com/kentlundgren/foreningar/tree/main/BjerredsSaltsjobad/inpasseringar" target="_blank" rel="noopener">{ } GitHub</a>
+<button type="button" class="corner corner-right" id="techBtn" aria-label="Tekniköversikt">&lt;/&gt; teknik</button>
+
+<div class="tm-overlay" id="techModal" role="dialog" aria-modal="true" aria-labelledby="techTitel">
+  <div class="tm-box">
+    <button type="button" class="tm-close" id="techClose" aria-label="Stäng">&times;</button>
+    <h2 id="techTitel">Hur den här sidan är byggd</h2>
+    <p class="tm-intro">Sidan räknar ut hur fullt det är i bastun, i snitt, före och efter ombyggnaden. Allt räknas i din webbläsare.</p>
+
+    <h3 class="tm-sec" id="Tekniken">Tekniken</h3>
+    <div class="tm-grid">
+      <div class="tm-card"><h4>En HTML-fil</h4><p>Sidan är en enda fil med egen CSS och egen JavaScript, utan byggsteg. Den publiceras som statiska filer på GitHub Pages från mappen <code>BjerredsSaltsjobad/inpasseringar</code> i repot <code>foreningar</code>.</p></div>
+      <div class="tm-card"><h4>Data live från Firebase</h4><p>Inpasseringarna läses vid sidladdning ur Firebase Realtime Database via dess öppna REST-adress, utan inloggning och utan att skriva något. Sidan har ingen reservkopia, så den visar ett felmeddelande om Firebase inte nås.</p></div>
+      <div class="tm-card"><h4>Räknas om själv</h4><p>LÅT, jämförelseperioderna och alla tal räknas ut i webbläsaren. När en ny månad rapporteras in i Firebase flyttas LÅT automatiskt.</p></div>
+      <div class="tm-card"><h4>Bilderna</h4><p>Bastuerna är ritade som SVG av koden och fylls efter dina reglage. Diagrammet ritas med Chart.js 4.4.1 från cdnjs. Delningsbilden <code>og-trangsel.jpg</code> är ritad med Python-biblioteket Pillow.</p></div>
+    </div>
+
+    <h3 class="tm-sec" id="Metoden">Metoden</h3>
+    <div class="tm-grid">
+      <div class="tm-card"><h4>Tre lager</h4><p>Fakta (inpasseringar och platser), beräknat (beläggning med uttalade antaganden) och lek (reglagen). Antagandena ligger öppet i tabell 1 och i texten.</p></div>
+      <div class="tm-card"><h4>Samma beräkning som elanalysen</h4><p>Kapacitet 36 före och 54 efter, 50/50 herrar och damer, 14 respektive 14,5 drifttimmar. Beläggningen är ett medelvärde, inte en toppnivå.</p></div>
+      <div class="tm-card"><h4>Det vi inte vet</h4><p>Hur länge en badare stannar och hur besöken fördelas över dygnet. Därför är vistelsetid och toppstund reglage och inte fasta tal.</p></div>
+      <div class="tm-card"><h4>Inga personuppgifter</h4><p>Sidan använder bara summerade antal per månad. Inga namn eller koder.</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   VERSION
+   ================================================================ */
+const VERSION = '1.0';
+const VERSIONSDATUM = '2026-11-12';
+document.getElementById('versionsrad').textContent = `Version ${VERSION} · ${VERSIONSDATUM}`;
+
+/* ================================================================
+   KONSTANTER (samma värden som elanalysen i Bjerred-el)
+   ================================================================ */
+const FB_URL = 'https://skylt-e0c45-default-rtdb.europe-west1.firebasedatabase.app/bjerred-inpasseringar/data.json';
+const PLATSER_BASTU_FORE  = 18;   /* 18 badare per bastu före ombyggnaden (2 bastuer = 36) */
+const PLATSER_BASTU_EFTER = 27;   /* 27 badare per bastu efter ombyggnaden (2 bastuer = 54) */
+const MAN_KORT = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
+const MAN_LANG = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+
+/** Drifttimmar per dag: 14 (öppet 06–22 minus 2 tim städning), 14,5 från och med maj 2026 (07:30–22:00). */
+function timmarPerDag(ar, man) { return (ar > 2026 || (ar === 2026 && man >= 4)) ? 14.5 : 14; }
+function dagarIManad(ar, man) { return new Date(ar, man + 1, 0).getDate(); }
+const fmt  = (n, d = 0) => n.toLocaleString('sv-SE', { minimumFractionDigits: d, maximumFractionDigits: d });
+const proc = (n) => (n > 0 ? '+' : n < 0 ? '−' : '') + fmt(Math.abs(n), 1) + ' %';
+
+/* ================================================================
+   DATA – hämta och tolka Firebase (nästlad struktur, "null" som text)
+   Resultat: { år: [ { namn, v:[12 värden eller null] } ] }
+   Kategorin Engångsbadare räknas inte (ingår redan i övriga).
+   ================================================================ */
+function samlaBlad(nod, namn, ut) {
+  if (Array.isArray(nod)) { ut.push({ namn, arr: nod }); return; }
+  if (nod && typeof nod === 'object') {
+    const nycklar = Object.keys(nod);
+    if (nycklar.length && nycklar.every(k => /^\d+$/.test(k))) {
+      const arr = new Array(12).fill(null);
+      nycklar.forEach(k => { arr[+k] = nod[k]; });
+      ut.push({ namn, arr });
+      return;
+    }
+    nycklar.forEach(k => samlaBlad(nod[k], namn ? namn + '/' + k : k, ut));
+  }
+}
+function tolkaFirebase(fb) {
+  const data = {};
+  for (const [ar, kat] of Object.entries(fb || {})) {
+    if (!/^\d{4}$/.test(ar)) continue;
+    const blad = [];
+    samlaBlad(kat, '', blad);
+    data[+ar] = blad
+      .filter(b => !/^Eng/i.test(b.namn))
+      .map(b => ({ namn: b.namn, v: Array.from({ length: 12 }, (_, i) => {
+        const x = b.arr[i];
+        return (x === null || x === undefined || x === 'null') ? null : Number(x);
+      }) }));
+  }
+  return data;
+}
+
+/** En månad är hel när alla kategorier för året har ett värde. */
+function arHel(data, ar, man) { const k = data[ar]; return !!k && k.length > 0 && k.every(b => b.v[man] !== null); }
+function manadsTotal(data, ar, man) { return data[ar].reduce((s, b) => s + b.v[man], 0); }
+function senasteHelaManad(data) {
+  const ar = Object.keys(data).map(Number).sort((a, b) => b - a);
+  for (const y of ar) for (let m = 11; m >= 0; m--) if (arHel(data, y, m)) return { y, m };
+  return null;
+}
+
+/** Summerar en lista av { y, m } till { besok, dagar, timmar }. Null om någon månad inte är hel. */
+function summera(data, lista) {
+  let besok = 0, dagar = 0, timmar = 0;
+  for (const { y, m } of lista) {
+    if (!arHel(data, y, m)) return null;
+    const d = dagarIManad(y, m);
+    besok += manadsTotal(data, y, m); dagar += d; timmar += d * timmarPerDag(y, m);
+  }
+  return { besok, dagar, timmar };
+}
+function tolvManaderTill(slut) {
+  const idx = slut.y * 12 + slut.m, lista = [];
+  for (let k = 11; k >= 0; k--) { const i = idx - k; lista.push({ y: Math.floor(i / 12), m: i % 12 }); }
+  return lista;
+}
+
+let D = null;       /* beräknad data: { fore, efter, lat, par } */
+let chart = null;
+
+function beraknaData(data) {
+  const fore = summera(data, Array.from({ length: 12 }, (_, m) => ({ y: 2024, m })));
+  const slut = senasteHelaManad(data);
+  if (!fore || !slut) return null;
+  const lista = tolvManaderTill(slut);
+  const efter = summera(data, lista);
+  if (!efter) return null;
+  /* Månadspar aug–jan: före (aug 2024–jan 2025) mot efter (aug 2025–jan 2026) */
+  const par = [];
+  for (let i = 0; i < 6; i++) {
+    const mF = (7 + i) % 12, yF = 2024 + Math.floor((7 + i) / 12);
+    const sF = summera(data, [{ y: yF, m: mF }]), sE = summera(data, [{ y: yF + 1, m: mF }]);
+    par.push({ namn: MAN_KORT[mF], fore: sF, efter: sE });
+  }
+  const s = lista[0], e = lista[11];
+  return { fore, efter, par, periodEfter: `${MAN_LANG[s.m]} ${s.y} – ${MAN_LANG[e.m]} ${e.y}`, periodKort: `${MAN_KORT[s.m]} ${s.y}–${MAN_KORT[e.m]} ${e.y}` };
+}
+
+/* ================================================================
+   BASTUBILD (SVG) – bänkar med badare. fyllda = antal upptagna platser.
+   ================================================================ */
+function bastuSvg(platser, fyllda, farg, beskrivning) {
+  const kol = 9, rader = Math.ceil(platser / kol), w = 360, h = 74 + rader * 62;
+  let s = `<svg class="bastu-svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${beskrivning}">`;
+  s += `<rect width="${w}" height="${h}" rx="12" fill="#f1dfc2"/>`;
+  for (let x = 12; x < w; x += 24) s += `<line x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="#e5cda3" stroke-width="2"/>`;
+  [80, 180, 280].forEach((x, i) => { s += `<path class="steam s${i + 1}" d="M${x} 62 q-9 -11 0 -22 t0 -22"/>`; });
+  for (let r = 0; r < rader; r++) {
+    const y = 70 + r * 62;
+    s += `<rect x="12" y="${y + 40}" width="${w - 24}" height="10" rx="3" fill="#a8702f"/>`;
+    for (let c = 0; c < kol; c++) {
+      const i = r * kol + c; if (i >= platser) break;
+      const cx = 22 + c * ((w - 44) / (kol - 1));
+      if (i < fyllda) {
+        s += `<circle cx="${cx}" cy="${y + 12}" r="7.5" fill="${farg}"/><rect x="${cx - 9}" y="${y + 21}" width="18" height="19" rx="7" fill="${farg}"/>`;
+      } else {
+        s += `<circle cx="${cx}" cy="${y + 12}" r="7" fill="none" stroke="#c9a56c" stroke-width="1.6" stroke-dasharray="3 3"/><rect x="${cx - 9}" y="${y + 21}" width="18" height="19" rx="7" fill="none" stroke="#c9a56c" stroke-width="1.6" stroke-dasharray="3 3"/>`;
+      }
+    }
+  }
+  return s + '</svg>';
+}
+
+/* ================================================================
+   RENDERING – körs vid dataladdning och varje gång ett reglage ändras
+   ================================================================ */
+const S = { stay: 2, extra: 0, peak: 1 };
+const el = id => document.getElementById(id);
+
+function meterFarg(andel) { return andel > 1 ? '#c0392b' : andel > 0.8 ? '#e67e22' : andel > 0.5 ? '#f0a43a' : '#27ae60'; }
+
+function render() {
+  if (!D) return;
+  const { fore, efter } = D;
+  const stayF = S.stay, stayE = S.stay * (1 + S.extra / 100);
+
+  /* Snittbadare i EN bastu och beläggning */
+  const avgF = (fore.besok / 2) / fore.timmar * stayF;
+  const avgE = (efter.besok / 2) / efter.timmar * stayE;
+  const belF = avgF / PLATSER_BASTU_FORE, belE = avgE / PLATSER_BASTU_EFTER;
+
+  /* Bastubilder + mätare, med toppfaktor */
+  [['fore', avgF, belF, PLATSER_BASTU_FORE, 'var(--fore)', '#2e86c1'], ['efter', avgE, belE, PLATSER_BASTU_EFTER, 'var(--efter)', '#1e8449']].forEach(([id, avg, bel, kap, , farg]) => {
+    const topp = avg * S.peak;
+    const fyllda = Math.round(Math.min(kap, topp));
+    const over = Math.round(topp - kap);
+    const namn = id === 'fore' ? 'Gamla bastun' : 'Nya bastun';
+    el('svg-' + id).innerHTML = bastuSvg(kap, fyllda, farg, `${namn}: ${fyllda} av ${kap} platser upptagna`);
+    const andel = topp / kap;
+    const m = el('meter-' + id);
+    m.style.width = Math.min(100, andel * 100) + '%'; m.style.background = meterFarg(andel);
+    el('stor-' + id).textContent = fmt(Math.min(andel, 9.99) * 100) + ' %';
+    el('rad-' + id).innerHTML = S.peak === 1
+      ? `I snitt ca <strong>${fmt(avg, 1)}</strong> badare i en bastu med <strong>${kap}</strong> platser (vistelse ${fmt(id === 'fore' ? stayF : stayE, 2)} tim).`
+      : `Toppstund (${fmt(S.peak, 2)}× snittet): ca <strong>${fmt(topp, 1)}</strong> badare i en bastu med <strong>${kap}</strong> platser. Snittet är ${fmt(avg, 1)}.`;
+    const ob = el('over-' + id);
+    if (over > 0) { ob.style.display = 'block'; ob.textContent = `⚠️ Fullt! Ungefär ${over} badare får vänta på en plats.`; } else { ob.style.display = 'none'; }
+  });
+
+  /* Slutsats */
+  const diff = (belE / belF - 1) * 100;
+  el('verdict').innerHTML = `Med de här antagandena är snittbeläggningen <strong>${fmt(Math.abs(diff), 1)} % ${diff < 0 ? 'lägre' : 'högre'}</strong> efter ombyggnaden: <strong>${fmt(belF * 100)} % → ${fmt(belE * 100)} %</strong>.`;
+
+  /* Brytpunkt: hur mycket längre vistelse som äter upp vinsten (oberoende av reglagen) */
+  const ratio = (efter.besok / efter.timmar / PLATSER_BASTU_EFTER) / (fore.besok / fore.timmar / PLATSER_BASTU_FORE);
+  el('brytpunkt').innerHTML = `<strong>Brytpunkt.</strong> Stannar man ungefär <strong>${fmt((1 / ratio - 1) * 100)} %</strong> längre nu än 2024 (till exempel ${fmt(S.stay, 1)} tim → ${fmt(S.stay / ratio, 1)} tim) blir snittbeläggningen densamma som före ombyggnaden. Då är hela vinsten i snitt borta.`;
+
+  /* Tre tal */
+  const dagF = fore.besok / fore.dagar, dagE = efter.besok / efter.dagar;
+  el('tal-dag').innerHTML = `${fmt(dagF)}<span class="pil">→</span>${fmt(dagE)}`;
+  el('tal-dag-f').textContent = proc((dagE / dagF - 1) * 100);
+  const platsF = 36 / dagF, platsE = 54 / dagE;
+  el('tal-plats').innerHTML = `${fmt(platsF, 2)}<span class="pil">→</span>${fmt(platsE, 2)}`;
+  el('tal-plats-f').textContent = proc((platsE / platsF - 1) * 100);
+
+  /* Tabell 1 */
+  el('th-efter').textContent = 'LÅT ' + D.periodKort;
+  const rad = (namn, a, b, d, fors) => `<tr><td>${namn}</td><td>${a}</td><td>${b}</td><td class="upp">${fors || ''}</td></tr>`;
+  el('tabell-body').innerHTML =
+    rad('Inpasseringar', fmt(fore.besok), fmt(efter.besok), 0, proc((efter.besok / fore.besok - 1) * 100)) +
+    rad('Dagar', fmt(fore.dagar), fmt(efter.dagar)) +
+    rad('Inpasseringar per dag', fmt(dagF, 1), fmt(dagE, 1), 0, proc((dagE / dagF - 1) * 100)) +
+    rad('Drifttimmar totalt', fmt(fore.timmar, 1), fmt(efter.timmar, 1)) +
+    rad('Badare per timme i en bastu (hälften av besöken)', fmt((fore.besok / 2) / fore.timmar, 2), fmt((efter.besok / 2) / efter.timmar, 2), 0, proc(((efter.besok / efter.timmar) / (fore.besok / fore.timmar) - 1) * 100)) +
+    rad('Platser per bastu', PLATSER_BASTU_FORE, PLATSER_BASTU_EFTER, 0, '+50 %') +
+    rad('Antagen vistelse (tim)', fmt(stayF, 2), fmt(stayE, 2)) +
+    rad('Snittbadare i en bastu', fmt(avgF, 1), fmt(avgE, 1)) +
+    rad('Snittbeläggning', fmt(belF * 100, 1) + ' %', fmt(belE * 100, 1) + ' %', 0, proc(diff));
+
+  /* Diagram 1: månadspar */
+  const val = (p, sida) => p[sida] ? ((p[sida].besok / 2) / p[sida].timmar * (sida === 'fore' ? stayF : stayE)) / (sida === 'fore' ? PLATSER_BASTU_FORE : PLATSER_BASTU_EFTER) * 100 : null;
+  const labels = D.par.map(p => p.namn);
+  const fVals = D.par.map(p => val(p, 'fore')), eVals = D.par.map(p => val(p, 'efter'));
+  if (!chart) {
+    chart = new Chart(el('chart-manad'), {
+      type: 'bar',
+      data: { labels, datasets: [
+        { label: 'Före (aug 2024–jan 2025)', data: fVals, backgroundColor: 'rgba(52,152,219,0.75)', borderColor: '#2e86c1', borderWidth: 1 },
+        { label: 'Efter (aug 2025–jan 2026)', data: eVals, backgroundColor: 'rgba(39,174,96,0.75)', borderColor: '#1e8449', borderWidth: 1 },
+        { type: 'line', label: 'Full bastu (100 %)', data: labels.map(() => 100), borderColor: '#c0392b', borderDash: [6, 5], pointRadius: 0, borderWidth: 2 }
+      ] },
+      options: { responsive: true, maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, suggestedMax: 110, title: { display: true, text: 'Snittbeläggning (%)' }, ticks: { callback: v => v + ' %' } } },
+        plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fmt(c.raw, 1)} %` } } } }
+    });
+  } else {
+    chart.data.datasets[0].data = fVals; chart.data.datasets[1].data = eVals; chart.update();
+  }
+  const sumF = D.par.reduce((s, p) => s + (p.fore ? p.fore.besok : 0), 0), sumE = D.par.reduce((s, p) => s + (p.efter ? p.efter.besok : 0), 0);
+  el('par-sammanfattning').innerHTML = `Samma sex månader: <strong>${fmt(sumF)}</strong> inpasseringar före och <strong>${fmt(sumE)}</strong> efter, alltså <strong>${proc((sumE / sumF - 1) * 100)}</strong>. Det skiljer sig från LÅT mot 2024 (${proc((efter.besok / fore.besok - 1) * 100)} i antal, ${proc((dagE / dagF - 1) * 100)} per dag), eftersom de två jämförelserna täcker olika månader.`;
+}
+
+/* ================================================================
+   REGLAGE – range och number hålls ihop
+   ================================================================ */
+function koppla(rangeId, numId, nyckel) {
+  const r = el(rangeId), n = el(numId);
+  const sat = v => { v = parseFloat(v); if (isNaN(v)) return; v = Math.min(+n.max, Math.max(+n.min, v)); S[nyckel] = v; r.value = v; if (document.activeElement !== n) n.value = v; render(); };
+  r.addEventListener('input', () => sat(r.value));
+  n.addEventListener('input', () => sat(n.value));
+  n.addEventListener('blur', () => { n.value = S[nyckel]; });
+}
+koppla('stay-range', 'stay-num', 'stay');
+koppla('extra-range', 'extra-num', 'extra');
+koppla('peak-range', 'peak-num', 'peak');
+
+/* ================================================================
+   FÖRKLARINGAR – tryck/klick på en term visar/döljer förklaringen (pekskärm)
+   ================================================================ */
+document.querySelectorAll('.term').forEach(t => {
+  t.addEventListener('click', e => { if (e.target.closest('.tip')) return; document.querySelectorAll('.term.open').forEach(o => { if (o !== t) o.classList.remove('open'); }); t.classList.toggle('open'); });
+});
+document.addEventListener('click', e => { if (!e.target.closest('.term')) document.querySelectorAll('.term.open').forEach(o => o.classList.remove('open')); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.term.open').forEach(o => o.classList.remove('open')); });
+
+/* ================================================================
+   TEKNIK-MODAL
+   ================================================================ */
+(function () {
+  const overlay = el('techModal');
+  const oppna = () => overlay.classList.add('show'), stang = () => overlay.classList.remove('show');
+  el('techBtn').addEventListener('click', oppna);
+  el('techClose').addEventListener('click', stang);
+  overlay.addEventListener('click', e => { if (e.target === overlay) stang(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') stang(); });
+})();
+
+/* ================================================================
+   START – hämta Firebase, räkna, rita
+   ================================================================ */
+(async function start() {
+  try {
+    const resp = await fetch(FB_URL, { cache: 'no-store' });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = tolkaFirebase(await resp.json());
+    D = beraknaData(data);
+    if (!D) throw new Error('För få hela månader i datan');
+    el('badge-dot').style.background = '#68d391';
+    el('badge-text').textContent = 'Live från Firebase';
+    el('lat-period').textContent = D.periodEfter;
+    el('period-efter').textContent = 'LÅT: ' + D.periodEfter;
+    render();
+  } catch (err) {
+    console.warn('Trängsel: kunde inte hämta data:', err.message);
+    el('felruta').style.display = 'block';
+    el('badge-text').textContent = 'Firebase ej nådd';
+  }
+})();
+</script>
+</body>
+</html>

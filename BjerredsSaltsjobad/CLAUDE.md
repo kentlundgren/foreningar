@@ -55,6 +55,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-11-11 | BASE_DATA: okt 2026 (SMS/Swish 653, armband 5, Wondr 3 589, Engångsbadare 419) synkad från Firebase i `index.html` och `data.html`; `data.md` uppdaterad jun–okt (okt preliminär, Restaurangen saknas); skillens `$base` uppdaterad |
 | 2026-11-11 | `inpasseringar/index.html`: borttaget "+ Lägg till / uppdatera data", inmatningsmodalen, "Återställ originaldata" och localStorage-overrides (rester från före Firebase); "Senast uppdaterad" läser Firebase-datumet. Inmatning sker bara i `data.html` |
 | 2026-11-11 | Hörnparet `{ } GitHub` + `</> teknik` (modal) tillagt på `inpassering/index.html`, `inpasseringar/data.html`, `inpasseringar/databas.html`, `medlemmar/index.html` (v3.3), `medlemmar/GitHub.html`, `dataformat.html`, `privatadata.html`, `brev_till_Wondr_260105.html` och `ratt_repo.html` (v1.1). Gamla `.github-link` borttagna. Knappen Bjud in på `inpasseringar/data.html` flyttad till höger om hörnparet. `medlemmar/index.html` länkar nu till GitHub.html, dataformat.html, privatadata.html och brevet via teknik-modalen |
+| 2026-11-12 | Ny sida `inpasseringar/trangsel.html` (v1.0): trängsel i bastun före/efter ombyggnaden. Läser Firebase via REST (ingen egen BASE_DATA), räknar LÅT och beläggning (28 % → 21 % vid 1 tim, 56 % → 42 % vid 2 tim, −25,7 %), reglage för vistelse/längre vistelse nu/toppstund, brytpunkt (~35 % längre vistelse äter upp vinsten). Delningsbild `og-trangsel.jpg` ritas av `og_trangsel.py`. Knapp "🔥 Trängsel" i headern på `inpasseringar/index.html` |
 | 2026-11-12 | Nytt avsnitt "Tolka inpasseringar – före och efter ombyggnaden 2025": vad en inpassering är, kapacitet 36 → 54, de två jämförelsebaserna (+11,0 % månadspar, +12,8 % LÅT mot 2024), trängselslutsatsen och dess förutsättningar, samt antagandena på analyssidan i Bjerred-el |
 | 2026-11-12 | `inpasseringar/index.html`: tredje sammanfattningskortet är nu **Löpande årstal (LÅT)** = de 12 senaste hela månaderna (hel = alla kategorier har värde, samma regel som "Preliminärt"). Förklaring och jämförelse med föregående LÅT visas vid hovring, fokus eller tryck. Funktioner: `senasteHelaMånad`, `räknaLåt`, `uppdateraLåtKort`. Nu okt 2025–sep 2026 = 58 340 mot 58 688 (−348, −0,6 %). Förklaringen jämför även LÅT och föregående LÅT mot 2024 (51 712, sista hela året före ombyggnaden): +12,8 % respektive +13,5 % |
 | 2026-11-12 | `medlemmar/index.html` (v3.4): diskret länk "GitHub-guide" (till `GitHub.html`) strax till höger om `{ } GitHub`-knappen nere till vänster |
@@ -90,6 +91,8 @@ BjerredsSaltsjobad/
 │   ├── index.html             ← statistik med diagram (Chart.js) + Firebase-kopplad
 │   ├── data.html              ← redigerbar datatabell (Firebase, inloggning krävs för skrivning)
 │   ├── engangsintraden.html   ← linjediagram: engångsinträden 2026 (anonymiserade)
+│   ├── trangsel.html          ← trängsel i bastun före/efter ombyggnaden (läser Firebase via REST)
+│   ├── og_trangsel.py         ← ritskript för og-trangsel.jpg (delningsbilden)
 │   ├── databas.html           ← Firebase-arbetsdokument
 │   └── PRIVAT-namnmapping.json  ← LOKAL FIL ENBART – ingår INTE i repot (se .gitignore)
 └── medlemmar/                 ← medlemsstatistik och visualisering

@@ -23,6 +23,8 @@ BjerredsSaltsjobad/
 │   ├── index.html           ← Webbapp med diagram och månadsvis statistik (Chart.js)
 │   ├── data.html            ← Redigerbar datatabell kopplad till Firebase Realtime Database
 │   ├── engangsintraden.html ← Linjediagram: engångsinträden 2026 (anonymiserade)
+│   ├── trangsel.html        ← Trängsel i bastun före/efter ombyggnaden (bastubilder, reglage, diagram)
+│   ├── og_trangsel.py       ← Ritskript för delningsbilden og-trangsel.jpg (Pillow)
 │   ├── databas.html         ← Arbetsdokument: Firebase-checklista, config, migrationsskript
 │   └── data.md              ← Läsbar referenstabell med all inpasseringsdata (backup)
 └── medlemmar/               ← Medlemsstatistik och visualisering
@@ -74,6 +76,17 @@ Det här är hela poängen med Firebase-backenden: **flera personer på olika en
 - Besökarnamn anonymiserade med koder (B001, B002 …)
 - Visar återkommande besökare via valbar tabell
 - Data t.o.m. 27 maj 2026 (248 besök totalt)
+
+### [trangsel.html](https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/trangsel.html) – Trängsel i bastun
+
+Visar på ett lekfullt men korrekt sätt hur fullt det är i bastun före och efter ombyggnaden 2025 (2024 mot LÅT, löpande årstal = de 12 senaste hela månaderna).
+
+- Två bastur ritade som SVG, med bänkplatser som fylls efter besökarens antaganden (vistelse per besök, längre vistelse nu, toppstund)
+- Tre tal (inpasseringar per dag, platser, plats per inpassering), Fullsatt-kvällen, månadsdiagram och en tabell som visar beräkningen steg för steg
+- Läser Firebase live via REST och räknar om sig själv när en ny månad rapporterats. Ingen egen kopia av `BASE_DATA`
+- Beräkningen följer elanalysen i [Bjerred-el](https://kentlundgren.github.io/Bjerred-el/fore_och_efter_ombyggnad.html): kapacitet 36 → 54, 50/50 herrar och damer, 14 (från maj 2026 14,5) drifttimmar. Beläggningen är ett medelvärde, inte en toppnivå
+- Delningsbild: [og-trangsel.jpg](https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/og-trangsel.jpg), ritad av [og_trangsel.py](https://github.com/kentlundgren/foreningar/blob/main/BjerredsSaltsjobad/inpasseringar/og_trangsel.py). Procenttalen på bilden ligger fast och måste ritas om när LÅT flyttat sig märkbart
+- Knapp **🔥 Trängsel** uppe till höger på [inpasseringsstatistiken](https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/index.html)
 
 ### Viktig datakontext
 
@@ -155,4 +168,4 @@ Det här projektet använder Claude (via Cursor) för AI-assisterad kodning och 
 **Använda skillet:** Säg till Claude: *"Kör månadssynken för Bjerreds inpasseringsdata"* – inget annat behövs.
 ---
 
-## Senast uppdaterad: 2026-06-05
+## Senast uppdaterad: 2026-11-12

@@ -274,6 +274,9 @@
       transition: background 0.18s;
     }
     .btn-nav:hover { background: rgba(255,255,255,0.28); }
+    /* Trängsel-knappen i orange så den syns (2026-11-12) */
+    .btn-trangsel { background: var(--accent); border-color: var(--accent); font-weight: 600; }
+    .btn-trangsel:hover { background: #cf711a; }
 
     /* Tidsstämpel i footer-raden */
     .footer-row .timestamp {
@@ -381,6 +384,8 @@
     <a href="data.html" class="btn-nav">📊 Visa data</a>
     <!-- Navigering till engångsinträdesstatistik (tillagd 2026-05-27) -->
     <a href="engangsintraden.html" class="btn-nav">👤 Engångsinträden</a>
+    <!-- Trängsel i bastun före/efter ombyggnaden (tillagd 2026-11-12) -->
+    <a href="trangsel.html" class="btn-nav btn-trangsel">🔥 Trängsel</a>
   </div>
 </header>
 
