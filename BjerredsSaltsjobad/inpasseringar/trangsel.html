@@ -24,8 +24,11 @@
   <!--
     ============================================================
     trangsel.html – Trängsel i bastun, före och efter ombyggnaden 2025
-    VERSION 1.0 · 2026-11-12  (konstanterna VERSION och VERSIONSDATUM i skriptet nedan)
-    UPPDATERING 2026-11-12: sidan skapad.
+    VERSION 1.1 · 2026-11-12  (konstanterna VERSION och VERSIONSDATUM i skriptet nedan)
+    UPPDATERING 2026-11-12 (v1.1): "Tre tal" blev "Fyra tal": kortet Plats per inpassering ersatt av
+      Platser per badare i bastun (1 ÷ beläggning, följer reglagen) och Besök per plats och dag (mätt).
+      Varje kort har förklaring vid hovring, fokus och tryck.
+    UPPDATERING 2026-11-12 (v1.0): sidan skapad.
 
     Vad sidan gör:
       Läser inpasseringar ur Firebase (REST, ingen inloggning), räknar ut
@@ -134,8 +137,16 @@
     .verdict strong { color: var(--primary); }
 
     /* ---------- Tre stora tal ---------- */
-    .tal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .tal .kort { background: var(--card); border-radius: 12px; padding: 1.1rem 1.3rem; box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+    .tal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    @media (max-width: 1000px) { .tal { grid-template-columns: repeat(2, 1fr); } }
+    .tal .kort { position: relative; cursor: help; background: var(--card); border-radius: 12px; padding: 1.1rem 1.3rem; box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+    .tal .kort:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+    .tal .info-i { font-size: 0.9em; }
+    /* Förklaring vid hovring, tangentbordsfokus och tryck */
+    .kort-tip { display: none; position: absolute; left: 0; top: calc(100% + 8px); width: min(340px, 86vw); background: #fff; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 0.95rem; box-shadow: 0 8px 24px rgba(0,0,0,0.18); font-size: 0.82rem; line-height: 1.45; font-weight: 400; text-transform: none; letter-spacing: 0; z-index: 40; cursor: default; }
+    .kort-tip p { margin: 0 0 0.5rem; } .kort-tip p:last-child { margin-bottom: 0; }
+    .tal .kort:nth-child(even) .kort-tip { left: auto; right: 0; }
+    .tal .kort:hover .kort-tip, .tal .kort:focus .kort-tip, .tal .kort.open .kort-tip { display: block; }
     .tal .etikett { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
     .tal .par { font-size: 1.5rem; font-weight: 800; margin: 0.3rem 0 0.1rem; letter-spacing: -0.02em; }
     .tal .par .pil { color: var(--muted); font-weight: 400; margin: 0 0.25rem; }
@@ -264,12 +275,26 @@
     <div class="note" id="brytpunkt"></div>
   </section>
 
-  <section id="tre-tal">
-    <h2>Tre tal att minnas<a class="anchor" href="#tre-tal" aria-label="Länk till rubriken">#</a></h2>
+  <section id="fyra-tal">
+    <h2>Fyra tal att minnas<a class="anchor" href="#fyra-tal" aria-label="Länk till rubriken">#</a></h2>
+    <p class="lead">Hovra över, tryck på eller tabba till ett kort för att se vad talet betyder.</p>
     <div class="tal">
-      <div class="kort"><div class="etikett">Inpasseringar per dag</div><div class="par" id="tal-dag">–</div><div class="forandring" id="tal-dag-f"></div><div class="liten">Per dag, eftersom 2024 hade 366 dagar</div></div>
-      <div class="kort"><div class="etikett">Platser i bastuerna</div><div class="par">36<span class="pil">→</span>54</div><div class="forandring">+50 %</div><div class="liten">18 + 18 före, 27 + 27 efter</div></div>
-      <div class="kort"><div class="etikett">Plats per inpassering</div><div class="par" id="tal-plats">–</div><div class="forandring" id="tal-plats-f"></div><div class="liten">Platser delat med inpasseringar per dag</div></div>
+      <div class="kort" tabindex="0" aria-describedby="tip-dag">
+        <div class="etikett">Inpasseringar per dag <span class="info-i" aria-hidden="true">ⓘ</span></div><div class="par" id="tal-dag">–</div><div class="forandring" id="tal-dag-f"></div><div class="liten">Mätt, i snitt per dag</div>
+        <div class="kort-tip" id="tip-dag" role="tooltip"><p><strong>Inpasseringar per dag.</strong> Hur många gånger grinden öppnas per dag, i snitt. Räknas per dag och inte per år, eftersom 2024 hade 366 dagar och LÅT har 365.</p><p>Det är ett uppmätt tal och bygger inte på några antaganden.</p></div>
+      </div>
+      <div class="kort" tabindex="0" aria-describedby="tip-platser">
+        <div class="etikett">Platser i bastuerna <span class="info-i" aria-hidden="true">ⓘ</span></div><div class="par">36<span class="pil">→</span>54</div><div class="forandring">+50 %</div><div class="liten">18 + 18 före, 27 + 27 efter</div>
+        <div class="kort-tip" id="tip-platser" role="tooltip"><p><strong>Platser i bastuerna.</strong> Högsta antal badare som får plats samtidigt: 18 per bastu före ombyggnaden och 27 efter, och det finns två bastuer.</p><p>Det är kapacitet och inte en mätning. Kapaciteten är hämtad från elanalysen före och efter ombyggnaden.</p></div>
+      </div>
+      <div class="kort" tabindex="0" aria-describedby="tip-ppb">
+        <div class="etikett">Platser per badare i bastun <span class="info-i" aria-hidden="true">ⓘ</span></div><div class="par" id="tal-ppb">–</div><div class="forandring" id="tal-ppb-f"></div><div class="liten">I snitt, vid vald vistelsetid</div>
+        <div class="kort-tip" id="tip-ppb" role="tooltip"><p><strong>Platser per badare i bastun.</strong> Så många bänkplatser det finns för varje badare som är i bastun, i snitt. Är talet 2,4 finns det 2,4 platser för varje badare som är där. Högre betyder mer plats.</p><p>Räknas som platser ÷ snittbadare i bastun, alltså 1 ÷ snittbeläggningen. Talet beror på antagandena i reglagen ovan, främst vistelsetiden, och ändras när du flyttar dem. Det gäller snittet över alla öppna timmar och säger inget om toppstunder.</p></div>
+      </div>
+      <div class="kort" tabindex="0" aria-describedby="tip-bpp">
+        <div class="etikett">Besök per plats och dag <span class="info-i" aria-hidden="true">ⓘ</span></div><div class="par" id="tal-bpp">–</div><div class="forandring" id="tal-bpp-f"></div><div class="liten">Mätt, oberoende av vistelsetid</div>
+        <div class="kort-tip" id="tip-bpp" role="tooltip"><p><strong>Besök per plats och dag.</strong> Hur många gånger en bänkplats används per dag, i snitt: inpasseringar per dag delat med antal platser (36 respektive 54). Lägre betyder färre besök per plats.</p><p>Talet bygger bara på uppmätta antal och på kapaciteten, så vistelsetiden påverkar det inte. Det säger däremot inte hur fullt det är vid en viss tidpunkt, och det räknar hela dagen som en enda period.</p></div>
+      </div>
     </div>
   </section>
 
@@ -355,7 +380,7 @@
 /* ================================================================
    VERSION
    ================================================================ */
-const VERSION = '1.0';
+const VERSION = '1.1';
 const VERSIONSDATUM = '2026-11-12';
 document.getElementById('versionsrad').textContent = `Version ${VERSION} · ${VERSIONSDATUM}`;
 
@@ -523,13 +548,18 @@ function render() {
   const ratio = (efter.besok / efter.timmar / PLATSER_BASTU_EFTER) / (fore.besok / fore.timmar / PLATSER_BASTU_FORE);
   el('brytpunkt').innerHTML = `<strong>Brytpunkt.</strong> Stannar man ungefär <strong>${fmt((1 / ratio - 1) * 100)} %</strong> längre nu än 2024 (till exempel ${fmt(S.stay, 1)} tim → ${fmt(S.stay / ratio, 1)} tim) blir snittbeläggningen densamma som före ombyggnaden. Då är hela vinsten i snitt borta.`;
 
-  /* Tre tal */
+  /* Fyra tal */
   const dagF = fore.besok / fore.dagar, dagE = efter.besok / efter.dagar;
   el('tal-dag').innerHTML = `${fmt(dagF)}<span class="pil">→</span>${fmt(dagE)}`;
   el('tal-dag-f').textContent = proc((dagE / dagF - 1) * 100);
-  const platsF = 36 / dagF, platsE = 54 / dagE;
-  el('tal-plats').innerHTML = `${fmt(platsF, 2)}<span class="pil">→</span>${fmt(platsE, 2)}`;
-  el('tal-plats-f').textContent = proc((platsE / platsF - 1) * 100);
+  /* Platser per badare i bastun = platser per bastu / snittbadare i en bastu (= 1 / beläggning). Följer reglagen. */
+  const ppbF = PLATSER_BASTU_FORE / avgF, ppbE = PLATSER_BASTU_EFTER / avgE;
+  el('tal-ppb').innerHTML = `${fmt(ppbF, 1)}<span class="pil">→</span>${fmt(ppbE, 1)}`;
+  el('tal-ppb-f').textContent = proc((ppbE / ppbF - 1) * 100);
+  /* Besök per plats och dag = inpasseringar per dag / totalt antal platser (36 respektive 54). Mätt tal. */
+  const bppF = dagF / (2 * PLATSER_BASTU_FORE), bppE = dagE / (2 * PLATSER_BASTU_EFTER);
+  el('tal-bpp').innerHTML = `${fmt(bppF, 1)}<span class="pil">→</span>${fmt(bppE, 1)}`;
+  el('tal-bpp-f').textContent = proc((bppE / bppF - 1) * 100);
 
   /* Tabell 1 */
   el('th-efter').textContent = 'LÅT ' + D.periodKort;
@@ -590,6 +620,13 @@ document.querySelectorAll('.term').forEach(t => {
 });
 document.addEventListener('click', e => { if (!e.target.closest('.term')) document.querySelectorAll('.term.open').forEach(o => o.classList.remove('open')); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.term.open').forEach(o => o.classList.remove('open')); });
+
+/* Tryck/klick på ett av de fyra korten visar eller döljer förklaringen (pekskärm) */
+document.querySelectorAll('.tal .kort').forEach(k => {
+  k.addEventListener('click', () => { document.querySelectorAll('.tal .kort.open').forEach(o => { if (o !== k) o.classList.remove('open'); }); k.classList.toggle('open'); });
+});
+document.addEventListener('click', e => { if (!e.target.closest('.tal .kort')) document.querySelectorAll('.tal .kort.open').forEach(o => o.classList.remove('open')); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.tal .kort.open').forEach(o => o.classList.remove('open')); });
 
 /* ================================================================
    TEKNIK-MODAL

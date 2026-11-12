@@ -82,7 +82,7 @@ Det här är hela poängen med Firebase-backenden: **flera personer på olika en
 Visar på ett lekfullt men korrekt sätt hur fullt det är i bastun före och efter ombyggnaden 2025 (2024 mot LÅT, löpande årstal = de 12 senaste hela månaderna).
 
 - Två bastur ritade som SVG, med bänkplatser som fylls efter besökarens antaganden (vistelse per besök, längre vistelse nu, toppstund)
-- Tre tal (inpasseringar per dag, platser, plats per inpassering), Fullsatt-kvällen, månadsdiagram och en tabell som visar beräkningen steg för steg
+- Fyra tal med förklaring vid hovring, fokus och tryck (inpasseringar per dag, platser, platser per badare i bastun, besök per plats och dag), Fullsatt-kvällen, månadsdiagram och en tabell som visar beräkningen steg för steg
 - Läser Firebase live via REST och räknar om sig själv när en ny månad rapporterats. Ingen egen kopia av `BASE_DATA`
 - Beräkningen följer elanalysen i [Bjerred-el](https://kentlundgren.github.io/Bjerred-el/fore_och_efter_ombyggnad.html): kapacitet 36 → 54, 50/50 herrar och damer, 14 (från maj 2026 14,5) drifttimmar. Beläggningen är ett medelvärde, inte en toppnivå
 - Delningsbild: [og-trangsel.jpg](https://kentlundgren.github.io/foreningar/BjerredsSaltsjobad/inpasseringar/og-trangsel.jpg), ritad av [og_trangsel.py](https://github.com/kentlundgren/foreningar/blob/main/BjerredsSaltsjobad/inpasseringar/og_trangsel.py). Procenttalen på bilden ligger fast och måste ritas om när LÅT flyttat sig märkbart

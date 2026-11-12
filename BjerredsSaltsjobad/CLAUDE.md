@@ -62,6 +62,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-11-12 | Nytt avsnitt "Tolka inpasseringar – före och efter ombyggnaden 2025": vad en inpassering är, kapacitet 36 → 54, de två jämförelsebaserna (+11,0 % månadspar, +12,8 % LÅT mot 2024), trängselslutsatsen och dess förutsättningar, samt antagandena på analyssidan i Bjerred-el |
 | 2026-11-12 | `inpasseringar/index.html`: tredje sammanfattningskortet är nu **Löpande årstal (LÅT)** = de 12 senaste hela månaderna (hel = alla kategorier har värde, samma regel som "Preliminärt"). Förklaring och jämförelse med föregående LÅT visas vid hovring, fokus eller tryck. Funktioner: `senasteHelaMånad`, `räknaLåt`, `uppdateraLåtKort`. Nu okt 2025–sep 2026 = 58 340 mot 58 688 (−348, −0,6 %). Förklaringen jämför även LÅT och föregående LÅT mot 2024 (51 712, sista hela året före ombyggnaden): +12,8 % respektive +13,5 % |
 | 2026-11-12 | `medlemmar/index.html` (v3.4): diskret länk "GitHub-guide" (till `GitHub.html`) strax till höger om `{ } GitHub`-knappen nere till vänster |
+| 2026-11-12 | `inpasseringar/trangsel.html` (v1.1): "Tre tal" blev "Fyra tal". Kortet Plats per inpassering (0,25 → 0,34, svårtolkat) ersatt av **Platser per badare i bastun** (platser ÷ snittbadare = 1 ÷ beläggning, 1,8 → 2,4 vid 2 tim, följer reglagen) och **Besök per plats och dag** (mätt, 3,9 → 3,0, oberoende av vistelsetid). Varje kort har förklaring vid hovring, fokus och tryck |
 
 ---
 
