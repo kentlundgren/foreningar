@@ -64,6 +64,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-11-12 | `medlemmar/index.html` (v3.4): diskret länk "GitHub-guide" (till `GitHub.html`) strax till höger om `{ } GitHub`-knappen nere till vänster |
 | 2026-11-12 | `inpasseringar/trangsel.html` (v1.1): "Tre tal" blev "Fyra tal". Kortet Plats per inpassering (0,25 → 0,34, svårtolkat) ersatt av **Platser per badare i bastun** (platser ÷ snittbadare = 1 ÷ beläggning, 1,8 → 2,4 vid 2 tim, följer reglagen) och **Besök per plats och dag** (mätt, 3,9 → 3,0, oberoende av vistelsetid). Varje kort har förklaring vid hovring, fokus och tryck |
 | 2026-11-21 | `inpasseringar/data.html`: delningsbild `og-data.jpg` (kallbadhus på pålar, kortläsare och tabellutdrag jan–mar 2026, avslutade månader) + Open Graph/Twitter-taggar. Bilden ritas av `og_data.py` |
+| 2026-11-21 | Extra metataggar på `index.html`, `inpasseringar/index.html`, `data.html`, `engangsintraden.html` och `trangsel.html`: `meta description`, `link rel=canonical`, `og:image:type` och `twitter:image:alt`. `og:url` och `canonical` pekar på samma adress. `inpasseringar/index.html` använder mappadressen `.../inpasseringar/` (`og:url` ändrad från `.../index.html`) |
 
 ---
 
