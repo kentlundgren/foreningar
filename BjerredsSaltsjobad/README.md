@@ -25,6 +25,7 @@ BjerredsSaltsjobad/
 │   ├── engangsintraden.html ← Linjediagram: engångsinträden 2026 (anonymiserade)
 │   ├── trangsel.html        ← Trängsel i bastun före/efter ombyggnaden (bastubilder, reglage, diagram)
 │   ├── og_trangsel.py       ← Ritskript för delningsbilden og-trangsel.jpg (Pillow)
+│   ├── og_data.py           ← Ritskript för delningsbilden og-data.jpg (Pillow)
 │   ├── databas.html         ← Arbetsdokument: Firebase-checklista, config, migrationsskript
 │   └── data.md              ← Läsbar referenstabell med all inpasseringsdata (backup)
 └── medlemmar/               ← Medlemsstatistik och visualisering

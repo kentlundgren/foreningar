@@ -63,6 +63,7 @@ för att Claude och Kent ska kunna fortsätta arbetet i en ny session utan att t
 | 2026-11-12 | `inpasseringar/index.html`: tredje sammanfattningskortet är nu **Löpande årstal (LÅT)** = de 12 senaste hela månaderna (hel = alla kategorier har värde, samma regel som "Preliminärt"). Förklaring och jämförelse med föregående LÅT visas vid hovring, fokus eller tryck. Funktioner: `senasteHelaMånad`, `räknaLåt`, `uppdateraLåtKort`. Nu okt 2025–sep 2026 = 58 340 mot 58 688 (−348, −0,6 %). Förklaringen jämför även LÅT och föregående LÅT mot 2024 (51 712, sista hela året före ombyggnaden): +12,8 % respektive +13,5 % |
 | 2026-11-12 | `medlemmar/index.html` (v3.4): diskret länk "GitHub-guide" (till `GitHub.html`) strax till höger om `{ } GitHub`-knappen nere till vänster |
 | 2026-11-12 | `inpasseringar/trangsel.html` (v1.1): "Tre tal" blev "Fyra tal". Kortet Plats per inpassering (0,25 → 0,34, svårtolkat) ersatt av **Platser per badare i bastun** (platser ÷ snittbadare = 1 ÷ beläggning, 1,8 → 2,4 vid 2 tim, följer reglagen) och **Besök per plats och dag** (mätt, 3,9 → 3,0, oberoende av vistelsetid). Varje kort har förklaring vid hovring, fokus och tryck |
+| 2026-11-21 | `inpasseringar/data.html`: delningsbild `og-data.jpg` (kallbadhus på pålar, kortläsare och tabellutdrag jan–mar 2026, avslutade månader) + Open Graph/Twitter-taggar. Bilden ritas av `og_data.py` |
 
 ---
 
@@ -94,6 +95,7 @@ BjerredsSaltsjobad/
 │   ├── engangsintraden.html   ← linjediagram: engångsinträden 2026 (anonymiserade)
 │   ├── trangsel.html          ← trängsel i bastun före/efter ombyggnaden (läser Firebase via REST)
 │   ├── og_trangsel.py         ← ritskript för og-trangsel.jpg (delningsbilden)
+│   ├── og_data.py             ← ritskript för og-data.jpg (delningsbilden för data.html)
 │   ├── databas.html           ← Firebase-arbetsdokument
 │   └── PRIVAT-namnmapping.json  ← LOKAL FIL ENBART – ingår INTE i repot (se .gitignore)
 └── medlemmar/                 ← medlemsstatistik och visualisering
